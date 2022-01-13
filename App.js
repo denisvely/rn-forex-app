@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Provider } from "react-redux";
+import { LogBox, StatusBar } from "react-native";
+import { AppearanceProvider, useColorScheme } from "react-native-appearance";
+import ServiceManager from "./src/utils/serviceManager";
 
-export default function App() {
+import "./src/translations";
+
+import Store from "./src/store";
+import RootStackNavigator from "./src/navigation/RootStack";
+
+LogBox.ignoreLogs(["Require cycle:"]);
+
+ServiceManager.setStore(Store);
+
+const App = () => {
+  const theme = useColorScheme();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={Store}>
+      <AppearanceProvider>
+        <StatusBar style="auto" />
+        <RootStackNavigator theme={theme} />
+      </AppearanceProvider>
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;

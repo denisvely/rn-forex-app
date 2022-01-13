@@ -1,0 +1,13 @@
+{
+  "no-internet-connection": "No internet connection",
+  "common-labels": {
+    "buy": "Buy",
+    "sell": "Sell"
+  },
+  "navigation": {
+    "quotes": "Quotes",
+    "chart": "Chart",
+    "positions": "Positions",
+    "balance": "Balance"
+  }
+}

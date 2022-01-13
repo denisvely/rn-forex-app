@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "exa-dynamic",
-    "slug": "exa-dynamic",
+    "name": "Exa-Dynamic",
+    "slug": "Exa-Dynamic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,17 +13,22 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.exadynamic",
+      "buildNumber": "1"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "package": "com.exadynamic",
+      "versionCode": 1,
+      "userInterfaceStyle": "automatic",
+      "useNextNotificationsApi": true
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "translucent": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
