@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "store/app";
 import { Typography, Button } from "components";
 import { logout } from "store/app/actions";
+import { colors } from "constants";
 
 const RealForex = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const RealForex = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: colors.backgroundGray,
         justifyContent: "center",
         alignItems: "center",
       }}

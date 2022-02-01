@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Pressable } from "react-native";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -31,7 +30,7 @@ const PositionsStackNavigator = ({ navigation }) => {
           headerStyle: {
             elevation: 0,
             shadowOpacity: 0,
-            backgroundColor: colors.primaryColorWhite,
+            backgroundColor: colors.white,
           },
           headerBackTitleVisible: false,
         }}

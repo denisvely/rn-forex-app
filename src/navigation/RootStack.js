@@ -10,7 +10,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // TODO => Stacks
 import AuthStack from "./AuthStack";
-import TabsStack from "./RealForexStack";
+import MainStack from "./MainStack";
+
+import { InvalidTokenModal } from "components";
 
 import { NoInternetConnection } from "../screens";
 
@@ -18,66 +20,28 @@ import { checkConnection, getApplication, checkAsyncStorage } from "store/app";
 
 const RootStack = createStackNavigator();
 
-const getRootStack = ({ token, loading, isLogged }) => {
-  if (loading) {
-    return {
-      component: null,
-      name: null,
-    };
-  }
-
-  if (token && !isLogged) {
-    return {
-      component: AuthStack,
-      name: "Home",
-    };
-  }
-  return {
-    component: TabsStack,
-    name: "TabsStack",
-  };
-};
-
 const RootStackNavigator = () => {
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const app = useSelector((state) => getApplication(state));
-  const [{ component, name }, updateStack] = useState(() => {
-    return getRootStack({
-      token: app.token,
-      loading: app.loading,
-      isLogged: app.isLogged,
-    });
-  });
 
   const routeNameRef = useRef();
   const navigationRef = useRef();
 
   const [loaded] = useFonts({
-    "Roboto-Bold": require("../../assets/fonts/Roboto-Bold.ttf"),
-    "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
-    "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
+    "Gilroy-Bold": require("../../assets/fonts/Gilroy-Bold.ttf"),
+    "Gilroy-Medium": require("../../assets/fonts/Gilroy-Medium.ttf"),
+    "Gilroy-Regular": require("../../assets/fonts/Gilroy-Regular.ttf"),
   });
 
   useEffect(() => {
-    if (app.loading && !app.token) {
+    if (app.loading) {
       checkConnection(dispatch);
       checkAsyncStorage(dispatch);
-    } else {
-      updateStack(
-        getRootStack({
-          token: app.token,
-          loading: app.loading,
-          isLogged: app.isLogged,
-        })
-      );
     }
-  }, [app.loading, app.token]);
+  }, [app.loading]);
 
-  if (
-    app.hasInternetConnection &&
-    (app.loading || !app.isConnected || !loaded || (!component && !name))
-  ) {
+  if (app.loading || !app.isConnected || !loaded) {
     return <AppLoading />;
   }
 
@@ -93,18 +57,28 @@ const RootStackNavigator = () => {
 
   return (
     <>
+      {!!app.invalidToken && (
+        <InvalidTokenModal
+          logout={() => {
+            logout(dispatch);
+          }}
+        />
+      )}
       <NavigationContainer
         ref={navigationRef}
-        onStateChange={async (one, two) => {
+        onStateChange={async () => {
           const previousRouteName = routeNameRef.current;
           const currentRouteName =
             navigationRef.current?.getCurrentRoute().name;
-
           routeNameRef.current = currentRouteName;
         }}
       >
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
-          <RootStack.Screen name={name} component={component} />
+          {!app.isLogged ? (
+            <RootStack.Screen name="AuthStack" component={AuthStack} />
+          ) : (
+            <RootStack.Screen name="MainStack" component={MainStack} />
+          )}
         </RootStack.Navigator>
       </NavigationContainer>
     </>

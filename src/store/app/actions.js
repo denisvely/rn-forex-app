@@ -65,8 +65,8 @@ export const checkAsyncStorage = (dispatch) => {
 };
 
 export const login = async (dispatch, token) => {
-  Storage.set("token", JSON.stringify(token));
-  await ServiceManager.setToken(token);
+  // Storage.set("token", JSON.stringify(token));
+  // await ServiceManager.setToken(token);
 
   userService
     .getUser()
@@ -140,4 +140,8 @@ const getTokenWithRefresh = (token) => {
         payload: payload,
       });
     });
+};
+
+export const setGame = (dispatch, payload) => {
+  dispatch({ type: actionTypes.SET_GAME, payload });
 };

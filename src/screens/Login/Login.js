@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { View, TextInput } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import { Button } from "components";
+import { Button, TextField } from "components";
+import { SvgXml } from "react-native-svg";
 
 import LoginService from "./services/LoginService";
 import { login } from "store/app";
 
 import { colors } from "constants";
 import { Typography } from "../../components";
+import logo from "../../assets/svg/logo";
 
 import styles from "./loginStyles";
 
@@ -39,7 +41,10 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Typography name="largeBold" text={"Login"} />
+      <View style={styles.logoWrapper}>
+        <SvgXml xml={logo} />
+      </View>
+
       <Formik
         initialValues={{ email: "qa@testqa.me", password: "123qwe!@#" }}
         onSubmit={(values) => {
@@ -48,51 +53,38 @@ const Login = ({ navigation }) => {
       >
         {(props) => (
           <>
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
+            <TextField
               placeholder="Email"
-              onChangeText={props.handleChange("email")}
+              onChange={props.handleChange("email")}
               value={props.values.email}
-              keyboardType="email-address"
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.primaryColorWhite,
-                color: colors.textColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
+              type="email"
+              hasIcon={true}
             />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
+            <TextField
               placeholder="Password"
-              onChangeText={props.handleChange("password")}
+              onChange={props.handleChange("password")}
               value={props.values.password}
               secureTextEntry={true}
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.primaryColorWhite,
-                color: colors.textColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
+              hasIcon={true}
+              type="password"
             />
+            <View style={styles.forgotPassword}>
+              <Button
+                textStyle={{ color: colors.buttonSecondary }}
+                text="Forgot password?"
+                type="text"
+                font="small"
+                size="small"
+                onPress={() => navigation.navigate("ForgotPassoword?")}
+              />
+            </View>
+
             <Button
-              style={{ marginTop: 40 }}
+              style={{ marginTop: 32 }}
               text="Sign In"
               type="primary"
               font="mediumBold"
+              size="big"
               onPress={props.handleSubmit}
             />
           </>
@@ -103,7 +95,7 @@ const Login = ({ navigation }) => {
         <Typography name="tiny" text={"Don't you have an account?"} />
         <Button
           size="small"
-          text="Sign up"
+          text="Create one now!"
           type="secondary"
           font="small"
           onPress={() => navigation.push("Register")}

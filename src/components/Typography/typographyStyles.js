@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 
-const defaultFont = "Roboto-Regular";
-const defaultBold = "Roboto-Bold";
-const defaultMedium = "Roboto-Medium";
+const defaultFont = "Gilroy-Regular";
+const defaultBold = "Gilroy-Bold";
+const defaultMedium = "Gilroy-Medium";
 
 export default StyleSheet.create({
   ultraTiny: {

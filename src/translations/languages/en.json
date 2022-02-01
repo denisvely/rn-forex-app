@@ -2,12 +2,16 @@
   "no-internet-connection": "No internet connection",
   "common-labels": {
     "buy": "Buy",
-    "sell": "Sell"
+    "sell": "Sell",
+    "real-forex": "Real Forex",
+    "simplex": "Simplex",
+    "funding": "Funding"
   },
   "navigation": {
     "quotes": "Quotes",
     "chart": "Chart",
     "positions": "Positions",
+    "instruments": "Instruments",
     "balance": "Balance"
   }
 }

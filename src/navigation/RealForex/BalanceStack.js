@@ -31,7 +31,7 @@ const BalanceStackNavigator = ({ navigation }) => {
           headerStyle: {
             elevation: 0,
             shadowOpacity: 0,
-            backgroundColor: colors.primaryColorWhite,
+            backgroundColor: colors.white,
           },
           headerBackTitleVisible: false,
         }}

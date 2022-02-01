@@ -12,6 +12,7 @@ const initialState = {
   settings: null,
   games: null,
   isLogged: false,
+  game: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -66,6 +67,14 @@ const appReducer = (state = initialState, action) => {
         limitations: action.payload.limitations.data,
         settings: action.payload.settings.data,
         games: action.payload.games.data,
+      };
+    }
+    case actionTypes.SET_GAME: {
+      const stateClone = cloneDeep(state);
+
+      return {
+        ...stateClone,
+        game: action.payload,
       };
     }
     case actionTypes.SIGN_OUT: {

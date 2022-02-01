@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
 import PropTypes from "prop-types";
 
+import { headerOptions } from "constants";
+import { HeaderLeft, HeaderRight, NotificationsIcon } from "components";
 import { Quotes } from "screens";
 
 import { colors } from "constants";
@@ -16,26 +18,31 @@ const QuotesStackNavigator = ({ navigation }) => {
 
   return (
     <QuotesStack.Navigator
-      initialRouteName="Quotes"
+      initialRouteName="quotes"
       screenOptions={{ headerShown: true }}
     >
       <QuotesStack.Screen
-        name="Quotes"
-        component={Quotes}
+        name="quotes"
         options={{
+          tabBarLabel: "quotes",
+          title: t("navigation.quotes"),
           headerTitleAlign: "center",
-          headerTitleStyle: {
-            color: colors.textColor,
-            fontSize: 18,
-          },
-          headerStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            backgroundColor: colors.primaryColorWhite,
-          },
-          headerBackTitleVisible: false,
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
         }}
-      />
+      >
+        {(props) => <Quotes {...props} />}
+      </QuotesStack.Screen>
     </QuotesStack.Navigator>
   );
 };

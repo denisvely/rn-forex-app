@@ -62,7 +62,7 @@ const Register = ({ navigation }) => {
               style={{
                 height: 40,
                 width: "100%",
-                backgroundColor: colors.primaryColorWhite,
+                backgroundColor: colors.white,
                 color: colors.textColor,
                 borderWidth: 1,
                 borderColor: colors.brandPrimary,
@@ -82,7 +82,7 @@ const Register = ({ navigation }) => {
               style={{
                 height: 40,
                 width: "100%",
-                backgroundColor: colors.primaryColorWhite,
+                backgroundColor: colors.white,
                 color: colors.textColor,
                 borderWidth: 1,
                 borderColor: colors.brandPrimary,
@@ -102,7 +102,7 @@ const Register = ({ navigation }) => {
               style={{
                 height: 40,
                 width: "100%",
-                backgroundColor: colors.primaryColorWhite,
+                backgroundColor: colors.white,
                 color: colors.textColor,
                 borderWidth: 1,
                 borderColor: colors.brandPrimary,
@@ -128,7 +128,7 @@ const Register = ({ navigation }) => {
               style={{
                 height: 40,
                 width: "100%",
-                backgroundColor: colors.primaryColorWhite,
+                backgroundColor: colors.white,
                 color: colors.textColor,
                 borderWidth: 1,
                 borderColor: colors.brandPrimary,
@@ -147,7 +147,7 @@ const Register = ({ navigation }) => {
               style={{
                 height: 40,
                 width: "100%",
-                backgroundColor: colors.primaryColorWhite,
+                backgroundColor: colors.white,
                 color: colors.textColor,
                 borderWidth: 1,
                 borderColor: colors.brandPrimary,

@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { Home, Login, Register } from "../screens";
+import { Login, Register } from "../screens";
 
 const AuthStack = createStackNavigator();
 
-const AuthNavigator = ({ route: { name = "Home" } }) => {
+const AuthNavigator = ({ route: { name = "Login" } }) => {
   return (
     <AuthStack.Navigator
       initialRouteName={name}
@@ -16,7 +16,6 @@ const AuthNavigator = ({ route: { name = "Home" } }) => {
         headerBackTitleVisible: true,
       }}
     >
-      <AuthStack.Screen name="Home" component={Home} />
       <AuthStack.Screen name="Login" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
     </AuthStack.Navigator>

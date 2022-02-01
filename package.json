@@ -32,8 +32,10 @@
     "react-native": "0.64.3",
     "react-native-appearance": "^0.3.4",
     "react-native-picker-select": "^8.0.4",
+    "react-native-shadow-2": "^6.0.2",
     "react-native-svg": "^12.1.1",
     "react-native-web": "0.17.1",
+    "react-native-webview": "^11.17.1",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9"

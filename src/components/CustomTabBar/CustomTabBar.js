@@ -52,7 +52,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             accessibilityLabel={options.tabBarAccessibilityLabel}
             key={index}
             onPress={onPress}
-            style={{ width: "25%", margin: 0, padding: 0 }}
+            style={{ width: "20%", margin: 0, padding: 0 }}
           >
             {isFocused ? (
               <View style={styles.iconContainer}>

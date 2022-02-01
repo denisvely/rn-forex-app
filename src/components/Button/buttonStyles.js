@@ -2,10 +2,10 @@ import { StyleSheet } from "react-native";
 import { colors } from "constants";
 import { deviceWidth } from "../../utils";
 
-const borderRadiusBig = 24;
-const borderRadiusSmall = 20;
-const borderRadiusTinyMedium = 16;
-const borderRadiusTiny = 16;
+const borderRadiusBig = 4;
+const borderRadiusSmall = 4;
+const borderRadiusTinyMedium = 4;
+const borderRadiusTiny = 4;
 
 const defaultButtonStyles = {
   justifyContent: "center",
@@ -24,41 +24,57 @@ export default {
       },
       disabled: {
         ...defaultButtonStyles,
-        color: colors.primaryColorBlack,
+        color: colors.black,
         backgroundColor: colors.systemColorInactive,
       },
       text: {
-        color: colors.primaryColorWhite,
+        color: colors.white,
       },
     }),
     primary: StyleSheet.create({
       button: {
         ...defaultButtonStyles,
-        backgroundColor: colors.brandsPrimary,
+        backgroundColor: colors.buttonPrimary,
       },
       disabled: {
         ...defaultButtonStyles,
-        color: colors.primaryColorBlack,
+        color: colors.black,
         backgroundColor: colors.systemColorInactive,
       },
       text: {
-        color: colors.primaryColorWhite,
+        color: colors.white,
       },
     }),
     secondary: StyleSheet.create({
       button: {
         ...defaultButtonStyles,
-        backgroundColor: colors.primaryColorWhite,
+        backgroundColor: colors.white,
       },
       text: {
         color: colors.textColor,
       },
       markedButtonText: {
-        color: colors.brandsPrimary,
+        color: colors.buttonPrimary,
       },
       marked: {
         borderWidth: 1,
-        borderColor: colors.brandsPrimary,
+        borderColor: colors.buttonPrimary,
+      },
+    }),
+    white: StyleSheet.create({
+      button: {
+        ...defaultButtonStyles,
+        backgroundColor: colors.white,
+      },
+      text: {
+        color: colors.green,
+      },
+      markedButtonText: {
+        color: colors.buttonPrimary,
+      },
+      marked: {
+        borderWidth: 1,
+        borderColor: colors.buttonPrimary,
       },
     }),
     text: StyleSheet.create({
@@ -66,11 +82,11 @@ export default {
         ...defaultButtonStyles,
       },
       text: {
-        color: colors.primaryColorBlack,
+        color: colors.black,
       },
       disabled: {
         ...defaultButtonStyles,
-        color: colors.primaryColorBlack,
+        color: colors.black,
         opacity: 0.3,
       },
       pressed: {
@@ -94,7 +110,7 @@ export default {
     big: {
       maxWidth: deviceWidth - 32,
       minWidth: "64%",
-      height: 48,
+      height: 50,
     },
     small: {
       maxWidth: 120,
@@ -103,12 +119,12 @@ export default {
     },
     tinyMedium: {
       maxWidth: 72,
-      height: 32,
+      height: 31,
       marginBottom: 5,
     },
     tiny: {
-      maxWidth: 66,
-      height: 32,
+      maxWidth: 65,
+      height: 31,
       marginBottom: 5,
     },
   }),

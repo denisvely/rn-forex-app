@@ -16,7 +16,7 @@ const ChartStackNavigator = ({ navigation }) => {
 
   return (
     <ChartStack.Navigator
-      initialRouteName="home"
+      initialRouteName="Login"
       screenOptions={{ headerShown: true }}
     >
       <ChartStack.Screen
@@ -31,7 +31,7 @@ const ChartStackNavigator = ({ navigation }) => {
           headerStyle: {
             elevation: 0,
             shadowOpacity: 0,
-            backgroundColor: colors.primaryColorWhite,
+            backgroundColor: colors.white,
           },
           headerBackTitleVisible: false,
         }}
