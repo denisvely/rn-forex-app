@@ -24,7 +24,7 @@ const PositionsStackNavigator = ({ navigation }) => {
         options={{
           headerTitleAlign: "center",
           headerTitleStyle: {
-            color: colors.textColor,
+            color: colors.fontPrimaryColor,
             fontSize: 18,
           },
           headerStyle: {

@@ -9,11 +9,11 @@ import BalanceStack from "./RealForex/BalanceStack";
 
 import { CustomTabBar } from "components";
 
-const TabsStack = createBottomTabNavigator();
+const RealForexStack = createBottomTabNavigator();
 
-const TabsStackNavigator = ({ navigation }) => {
+const RealForexStackNavigator = ({ navigation }) => {
   return (
-    <TabsStack.Navigator
+    <RealForexStack.Navigator
       tabBar={(props) => <CustomTabBar {...props} />}
       initialRouteName="quotes"
       screenOptions={{
@@ -21,33 +21,33 @@ const TabsStackNavigator = ({ navigation }) => {
         headerShown: true,
       }}
     >
-      <TabsStack.Screen
+      <RealForexStack.Screen
         name="quotes"
         component={QuotesStack}
         options={{ headerShown: false }}
       />
-      <TabsStack.Screen
+      <RealForexStack.Screen
         name="chart"
         component={ChartStack}
         options={{ headerShown: false }}
       />
-      <TabsStack.Screen
+      <RealForexStack.Screen
         name="positions"
         component={PositionsStack}
         options={{ headerShown: false }}
       />
-      <TabsStack.Screen
+      <RealForexStack.Screen
         name="instruments"
         component={InstrumentsStack}
         options={{ headerShown: false }}
       />
-      <TabsStack.Screen
+      <RealForexStack.Screen
         name="balance"
         component={BalanceStack}
         options={{ headerShown: false }}
       />
-    </TabsStack.Navigator>
+    </RealForexStack.Navigator>
   );
 };
 
-export default TabsStackNavigator;
+export default RealForexStackNavigator;

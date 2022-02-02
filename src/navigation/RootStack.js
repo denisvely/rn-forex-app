@@ -31,7 +31,7 @@ const RootStackNavigator = () => {
   const [loaded] = useFonts({
     "Gilroy-Bold": require("../../assets/fonts/Gilroy-Bold.ttf"),
     "Gilroy-Medium": require("../../assets/fonts/Gilroy-Medium.ttf"),
-    "Gilroy-Regular": require("../../assets/fonts/Gilroy-Regular.ttf"),
+    "Gilroy-SemiBold": require("../../assets/fonts/Gilroy-SemiBold.ttf"),
   });
 
   useEffect(() => {

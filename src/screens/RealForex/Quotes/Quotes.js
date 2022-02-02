@@ -15,7 +15,7 @@ const RealForex = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: colors.backgroundGray,
+        backgroundColor: colors.containerBackground,
         justifyContent: "center",
         alignItems: "center",
       }}

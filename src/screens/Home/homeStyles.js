@@ -6,7 +6,7 @@ import { deviceWidth } from "utils";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.backgroundGray,
+    backgroundColor: colors.containerBackground,
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 24,

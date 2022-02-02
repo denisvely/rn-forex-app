@@ -51,7 +51,7 @@ export default {
         backgroundColor: colors.white,
       },
       text: {
-        color: colors.textColor,
+        color: colors.fontPrimaryColor,
       },
       markedButtonText: {
         color: colors.buttonPrimary,

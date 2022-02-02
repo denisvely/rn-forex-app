@@ -21,12 +21,12 @@ export default StyleSheet.create({
   input: {
     height: 44,
     backgroundColor: colors.white,
-    color: colors.textColor,
+    color: colors.fontPrimaryColor,
     borderBottomWidth: 1,
     borderColor: colors.gray,
     paddingVertical: 11,
     paddingHorizontal: 9,
     flex: 1,
-    color: colors.textFieldColor,
+    color: colors.fontPrimaryColor,
   },
 });
