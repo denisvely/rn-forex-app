@@ -12,7 +12,7 @@ import { colors } from "../../constants";
 import { Typography } from "../../components";
 import logo from "../../assets/svg/logo";
 
-import styles from "./loginStyles";
+import styles from "./forgotPasswordStyles";
 
 const signInService = LoginService.login();
 
@@ -45,6 +45,8 @@ const Login = ({ navigation }) => {
         <SvgXml xml={logo} />
       </View>
 
+        <Typography name="tiny" text="Enter your email address and we will send you instructions for resetting your password." style={{ color: '#000000', fontSize: 16, marginBottom: 32 }} />
+
       <Formik
         initialValues={{ email: "qa@testqa.me", password: "123qwe!@#" }}
         onSubmit={(values) => {
@@ -60,28 +62,10 @@ const Login = ({ navigation }) => {
               type="email"
               hasIcon={true}
             />
-            <TextField
-              placeholder="Password"
-              onChange={props.handleChange("password")}
-              value={props.values.password}
-              secureTextEntry={true}
-              hasIcon={true}
-              type="password"
-            />
-            <View style={styles.forgotPassword}>
-              <Button
-                textStyle={{ color: colors.buttonSecondary }}
-                text="Forgot password?"
-                type="text"
-                font="small"
-                size="small"
-                onPress={() => navigation.navigate("ForgotPassword")}
-              />
-            </View>
 
             <Button
               style={{ marginTop: 32 }}
-              text="Login"
+              text="Reset password"
               type="primary"
               font="mediumBold"
               size="big"
@@ -90,17 +74,6 @@ const Login = ({ navigation }) => {
           </>
         )}
       </Formik>
-      <Typography name="tiny" text={loginMessage} />
-      <View style={styles.bottomViewLogin}>
-        <Typography name="tiny" text={"Don't you have an account?"} />
-        <Button
-          size="small"
-          text="Create one now!"
-          type="secondary"
-          font="small"
-          onPress={() => navigation.push("Register")}
-        />
-      </View>
     </View>
   );
 };
