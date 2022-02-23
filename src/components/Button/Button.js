@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View, Pressable } from "react-native";
-
-import { Typography } from "components";
-
-import { colors } from "constants";
-
+import Typography from "../Typography/Typography";
 import styles from "./buttonStyles";
 
 const Button = ({

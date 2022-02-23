@@ -1,6 +1,6 @@
 import React from "react";
 
-import { HeaderBackArrow } from "components";
+import { HeaderBackArrow } from "../components/HeaderBackArrow/HeaderBackArrow";
 
 import colors from "./colors";
 

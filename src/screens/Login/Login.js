@@ -8,7 +8,7 @@ import { SvgXml } from "react-native-svg";
 import LoginService from "./services/LoginService";
 import { login } from "store/app";
 
-import { colors } from "constants";
+import { colors } from "../../constants";
 import { Typography } from "../../components";
 import logo from "../../assets/svg/logo";
 
@@ -81,7 +81,7 @@ const Login = ({ navigation }) => {
 
             <Button
               style={{ marginTop: 32 }}
-              text="Sign In"
+              text="Login"
               type="primary"
               font="mediumBold"
               size="big"

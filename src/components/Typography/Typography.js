@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Text} from 'react-native';
 
 import styles from './typographyStyles';
-import {colors} from 'constants';
+import colors from "../../constants/colors";
 
 const Typography = ({
 	name = 'normal',

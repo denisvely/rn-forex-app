@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "constants";
+import colors from "../../constants/colors";
 import { deviceWidth } from "../../utils";
 
 const borderRadiusBig = 4;

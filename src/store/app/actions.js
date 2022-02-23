@@ -32,8 +32,7 @@ export const checkAsyncStorage = (dispatch) => {
         .getToken()
         .fetch()
         .then(async ({ response }) => {
-          const body = response.getBody();
-          token = body;
+          token = response.body.data;
           Storage.set("token", JSON.stringify(token));
           await ServiceManager.setToken(token);
 

@@ -1,4 +1,4 @@
-import { Service, apiConsts } from "utils/serviceManager";
+import { Service, apiConsts } from "../utils/serviceManager";
 
 export default {
   getToken: () => {

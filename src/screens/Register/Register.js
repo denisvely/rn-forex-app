@@ -3,176 +3,95 @@ import { View, TextInput } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 
-import { Button, Picker } from "components";
+import {Button, TextField, Typography} from "../../components";
 import RegisterService from "./services/RegisterService";
-import { Typography } from "../../components";
-import { colors } from "constants";
+import { colors } from "../../constants";
 
 import { register } from "store/app";
+import styles from "../Login/loginStyles";
+import {SvgXml} from "react-native-svg";
+import logo from "../../assets/svg/logo";
 
 const signUpService = RegisterService.register();
 
 const formInitialValues = {
-  email: "",
-  password: "",
-  confirmPassword: "",
-  title: "",
-  firstName: "",
-  lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: ""
 };
 
 const Register = ({ navigation }) => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const signUp = (values) => {
-    signUpService
-      .fetch({ username: userData.email, password: userData.password })
-      .then(({ response }) => {
-        const body = response.getBody();
-        login(dispatch, body);
-      });
-  };
+    const signUp = (userData) => {
+        signUpService
+            .fetch({ username: userData.email, password: userData.password })
+            .then(({ response }) => {
+                const body = response.getBody();
+                register(dispatch, body);
+            });
+    };
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 16,
-      }}
-    >
-      <Typography name="largeBold" text={"Register"} />
-      <Formik
-        initialValues={formInitialValues}
-        onSubmit={(values) => {
-          signUp(values);
-        }}
-      >
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoWrapper}>
+                <SvgXml xml={logo} />
+            </View>
+            <Formik initialValues={formInitialValues}
+                onSubmit={(values) => {
+                  signUp(values);
+                }}
+            >
         {(props) => (
           <>
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Email"
-              onChangeText={props.handleChange("email")}
-              value={props.values.email}
-              keyboardType="email-address"
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.white,
-                color: colors.fontPrimaryColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Password"
-              onChangeText={props.handleChange("password")}
-              value={props.values.password}
-              secureTextEntry={true}
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.white,
-                color: colors.fontPrimaryColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Retype Password"
-              onChangeText={props.handleChange("confirmPassword")}
-              value={props.values.confirmPassword}
-              secureTextEntry={true}
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.white,
-                color: colors.fontPrimaryColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
-            />
-            <Picker
-              placeholderText="Select title"
-              value={props.values.title}
-              onChange={(fieldName, value) => {
-                props.setValues(fieldName, value);
-              }}
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="First Name"
-              onChangeText={props.handleChange("firstName")}
-              value={props.values.firstName}
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.white,
-                color: colors.fontPrimaryColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
-            />
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Last Name"
-              onChangeText={props.handleChange("lastName")}
-              value={props.values.lastName}
-              style={{
-                height: 40,
-                width: "100%",
-                backgroundColor: colors.white,
-                color: colors.fontPrimaryColor,
-                borderWidth: 1,
-                borderColor: colors.brandPrimary,
-                borderRadius: 46,
-                paddingVertical: 9,
-                paddingHorizontal: 16,
-                marginTop: 10,
-              }}
-            />
-            <Button
-              text="Sign In"
-              type="primary"
-              font="mediumBold"
-              onPress={props.handleSubmit}
-            />
+              <TextField
+                  autoCapitalize="none"
+                  placeholder="Email"
+                  onChange={props.handleChange("email")}
+                  value={props.values.email}
+                  type="email"
+                  keyboardType="email-address"
+                  hasIcon={true}
+              />
+              <TextField
+                  placeholder="Password"
+                  onChange={props.handleChange("password")}
+                  value={props.values.password}
+                  secureTextEntry={true}
+                  hasIcon={true}
+                  type="password"
+              />
+              <TextField
+                  placeholder="Retype Password"
+                  onChange={props.handleChange("confirmPassword")}
+                  value={props.values.confirmPassword}
+                  secureTextEntry={true}
+                  hasIcon={true}
+                  type="password"
+              />
+              <Button
+                  style={{ marginTop: 32 }}
+                  text="Register"
+                  type="primary"
+                  font="mediumBold"
+                  size="big"
+                  onPress={props.handleSubmit}
+              />
           </>
         )}
       </Formik>
-      {/* <Button
-        style={{ marginTop: 40 }}
-        text="Already have an account?"
-        type="secondary"
-        font="small"
-        onPress={() => navigation.push("Login")}
-      /> */}
+            <View style={styles.bottomViewLogin}>
+                <Typography name="tiny" text={"Already have an account?"} />
+                <Button
+                    size="small"
+                    text="Login"
+                    type="secondary"
+                    font="small"
+                    onPress={() => navigation.push("Login")}
+                />
+            </View>
     </View>
   );
 };

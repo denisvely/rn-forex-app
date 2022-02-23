@@ -1,4 +1,4 @@
-import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
+import ServiceManager, { Service, apiConsts } from "../utils/serviceManager";
 
 export default {
   getServerSettings: () => {
