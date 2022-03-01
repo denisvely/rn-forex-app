@@ -126,18 +126,33 @@ const getTokenWithRefresh = (token) => {
     .updateRefreshToken()
     .fetch({ refreshToken: token.refreshToken })
     .then(async (response) => {
-      const token = response.getBody();
-      Storage.set("token", JSON.stringify(token));
-      await ServiceManager.setToken(token);
+        if (response.response && response.response.body.code === 400) {
+            tokenService
+                .getToken()
+                .fetch()
+                .then(async ({ response }) => {
+                    token = response.body.data;
+                    Storage.set("token", JSON.stringify(token));
+                    await ServiceManager.setToken(token);
 
-      const payload = {
-        token,
-      };
+                    const payload = {
+                        token,
+                    };
+                });
+        } else {
+            const token = response.getBody();
+            Storage.set("token", JSON.stringify(token));
+            await ServiceManager.setToken(token);
 
-      dispatch({
-        type: actionTypes.SET_TOKEN,
-        payload: payload,
-      });
+            const payload = {
+                token,
+            };
+        }
+
+        dispatch({
+            type: actionTypes.SET_TOKEN,
+            payload: payload,
+        });
     });
 };
 
