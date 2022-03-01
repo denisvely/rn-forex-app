@@ -1,10 +1,12 @@
 import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
+import { Storage } from "../../../utils";
+const token = Storage.get("token")
 
 export default {
   login: () => {
     // TODO => webIds
     const service = new Service(
-      "/v2/users/login?webId=086CA44B-2841-415B-98D3-9499915F3953",
+      "/v2/users/login?webId=97AA047C-D004-4F58-AABA-169C54A8D0AB",
       apiConsts.HTTP_METHOD_POST
     );
 
@@ -22,6 +24,7 @@ export default {
         new Date().getTimezoneOffset()
       );
 
+      request.setHeader('authorization', `oauth oauth_token=${ServiceManager.getAccessToken()}`)
       request.convertToQueryParamsWithoutToken(options);
 
       return request;

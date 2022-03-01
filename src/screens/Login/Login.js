@@ -23,6 +23,7 @@ const Login = ({ navigation }) => {
   const signIn = (values) => {
     signInService
       .fetch({ username: values.email, password: values.password })
+
       .then(({ response }) => {
         const body = response.getBody();
         if (response.body.code === 400 || response.body.code === 401) {

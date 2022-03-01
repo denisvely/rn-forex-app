@@ -26,7 +26,6 @@ export const checkAsyncStorage = (dispatch) => {
     // TODO => sessionId
     // sessionId && ServiceManager.sessionId(token);
     // await (token && ServiceManager.setToken(JSON.parse(token)));
-
     if (!token) {
       tokenService
         .getToken()
@@ -34,7 +33,7 @@ export const checkAsyncStorage = (dispatch) => {
         .then(async ({ response }) => {
           token = response.body.data;
           Storage.set("token", JSON.stringify(token));
-          await ServiceManager.setToken(token);
+          ServiceManager.setToken(token);
 
           const payload = {
             token,
@@ -49,6 +48,7 @@ export const checkAsyncStorage = (dispatch) => {
     }
 
     token = JSON.parse(token);
+    ServiceManager.setToken(token);
 
     if (!isTokenValid(token)) {
       getTokenWithRefresh(token);
