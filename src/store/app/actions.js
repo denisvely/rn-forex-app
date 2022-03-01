@@ -25,7 +25,7 @@ export const checkAsyncStorage = (dispatch) => {
   Storage.getAllEssentialToServiceData().then(async ([token, sessionId]) => {
     // TODO => sessionId
     // sessionId && ServiceManager.sessionId(token);
-    await (token && ServiceManager.setToken(JSON.parse(token)));
+    // await (token && ServiceManager.setToken(JSON.parse(token)));
 
     if (!token) {
       tokenService

@@ -2,6 +2,7 @@ export { default as Login } from "./Login/Login";
 export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
 export { default as Register } from "./Register/Register";
 export { default as Home } from "./Home/Home";
+export { default as Menu } from "./Menu/Menu";
 // Real Forex
 export { default as Quotes } from "./RealForex/Quotes/Quotes";
 export { default as Chart } from "./RealForex/Chart/Chart";

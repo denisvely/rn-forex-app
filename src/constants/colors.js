@@ -22,4 +22,6 @@ export default {
     sellColor: "#D90429",
     sellPressedColor: "#BF0021",
     primaryColorNight: "#BF0021",
+    borderBottomColor: "#DFE2E4",
+    blueColor: "#053FD1",
 };

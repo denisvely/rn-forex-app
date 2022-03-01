@@ -25,10 +25,7 @@ const HeaderLeft = ({
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.avatarButton}
-            onPress={() => {
-              //   navigation.navigate("Menu");
-              // TODO -> Open Drawer Menu
-            }}
+            onPress={() => navigation.navigate("Menu")}
           >
             <SvgXml xml={hamburgerIcon} height={40} width={40} />
           </TouchableOpacity>
