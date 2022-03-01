@@ -16,6 +16,7 @@ export default {
     containerBackground: "#F5F7FA",
     buttonPrimary: "#0511D1",
     buttonPressedColor: "#000BC0",
+    nightShades60: "#000BC0",
     buyColor: "#21BF73",
     buyPressedColor: "#10AB61",
     sellColor: "#D90429",

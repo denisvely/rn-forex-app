@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
 import PropTypes from "prop-types";
 
@@ -12,26 +12,37 @@ import {
   tabStackIconsActive,
 } from "../../assets/svg/tabStackIcons/";
 
-import { colors } from "constants";
+import { colors } from "../../constants";
 
 import styles from "./customTabBarStyles";
 
-const CustomTabBar = ({ state, descriptors, navigation }) => {
-  const { t } = useTranslation();
+const innerRoutes = [
+  {
+    key: 'quotes',
+    name: 'quotes',
+  },
+  {
+    key: 'chart',
+    name: 'chart',
+  },
+  {
+    key: 'positions',
+    name: 'positions',
+  },
+  {
+    key: 'instruments',
+    name: 'instruments',
+  },
+  {
+    key: 'balance',
+    name: 'balance',
+  }
+]
 
+const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View style={styles.navigatorContainerTransparent}>
-      {state.routes.map((route, index) => {
-        tabStackIcons[route.name][0];
-        const { options } = descriptors[route.key];
-
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
+      {innerRoutes.map((route, index) => {
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -49,7 +60,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
+            accessibilityLabel={route.name}
             key={index}
             onPress={onPress}
             style={{ width: "20%", margin: 0, padding: 0 }}
@@ -64,7 +75,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 />
                 <Typography
                   name="tiny"
-                  text={t(`navigation.${label}`)}
+                  text="Text1"
                   style={{
                     color: colors.primaryColorNight,
                   }}
@@ -80,7 +91,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 />
                 <Typography
                   name="tiny"
-                  text={t(`navigation.${label}`)}
+                  text="Text1"
                   style={{ color: colors.nightShades60 }}
                 />
               </View>

@@ -4,11 +4,11 @@ import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import RealForexStack from "./RealForexStack";
-import { Home } from "screens";
-import { headerOptions } from "constants";
-import { HeaderLeft, HeaderRight, NotificationsIcon } from "components";
+import { Home } from "../screens";
+import { headerOptions } from "../constants";
+import { HeaderLeft, HeaderRight, NotificationsIcon } from "../components";
 
-import { getApplication } from "store/app";
+import { getApplication } from "../store/app";
 
 const MainStack = createStackNavigator();
 

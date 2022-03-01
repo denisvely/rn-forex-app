@@ -7,7 +7,7 @@ import PositionsStack from "./RealForex/PositionsStack";
 import InstrumentsStack from "./RealForex/InstrumentsStack";
 import BalanceStack from "./RealForex/BalanceStack";
 
-import { CustomTabBar } from "components";
+import { CustomTabBar } from "../components";
 
 const RealForexStack = createBottomTabNavigator();
 
