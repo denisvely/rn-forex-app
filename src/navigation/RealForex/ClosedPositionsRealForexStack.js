@@ -6,24 +6,27 @@ import { createStackNavigator } from "@react-navigation/stack";
 import PropTypes from "prop-types";
 import { headerOptions } from "constants";
 import { HeaderLeft, HeaderRight, NotificationsIcon } from "components";
-import { Balance } from "screens";
 
-const BalanceStack = createStackNavigator();
+import { ClosedPositionsRealForex } from "screens";
 
-const BalanceStackNavigator = ({ navigation }) => {
+import { colors } from "constants";
+
+const ClosedPositions = createStackNavigator();
+
+const ClosedPositionsNavigator = ({ navigation }) => {
   const { t } = useTranslation();
 
   return (
-    <BalanceStack.Navigator
-      initialRouteName="balance"
+    <ClosedPositions.Navigator
+      initialRouteName="Login"
       screenOptions={{ headerShown: true }}
     >
-      <BalanceStack.Screen
-        name="Balance"
-        component={Balance}
+      <ClosedPositions.Screen
+        name="ClosedPositions"
+        component={ClosedPositionsRealForex}
         options={{
-          tabBarLabel: "balance",
-          title: t("navigation.balance"),
+          tabBarLabel: "closedPositions",
+          title: t("navigation.closedPositions"),
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
@@ -39,12 +42,12 @@ const BalanceStackNavigator = ({ navigation }) => {
           ),
         }}
       />
-    </BalanceStack.Navigator>
+    </ClosedPositions.Navigator>
   );
 };
 
-BalanceStackNavigator.propTypes = {
+ClosedPositionsNavigator.propTypes = {
   navigation: PropTypes.object,
 };
 
-export default BalanceStackNavigator;
+export default ClosedPositionsNavigator;

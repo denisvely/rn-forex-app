@@ -35,18 +35,20 @@ const Menu = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.accountInfo}>
-        <Typography
-          name="mediumBold"
-          style={styles.accountInfoText}
-          text={`${user?.firstName} ${user?.lastName}`}
-        ></Typography>
-        <Typography
-          name="tinyBold"
-          style={styles.accountInfoText}
-          text={user?.email}
-        ></Typography>
+        <View>
+          <Typography
+            name="mediumBold"
+            style={styles.accountInfoText}
+            text={`${user?.firstName} ${user?.lastName}`}
+          ></Typography>
+          <Typography
+            name="tinyBold"
+            style={styles.accountInfoText}
+            text={user?.email}
+          ></Typography>
+        </View>
         <SvgXml
-          styles={styles.accountInfoBG}
+          style={styles.accountInfoBG}
           xml={accountInfoBackground}
           width="93"
           height="93"

@@ -9,9 +9,9 @@
   },
   "navigation": {
     "quotes": "Quotes",
-    "chart": "Chart",
-    "positions": "Positions",
-    "instruments": "Instruments",
+    "openPositions": "Open",
+    "pendingOrders": "Pending",
+    "closedPositions": "Closed",
     "balance": "Balance"
   },
   "menu": {

@@ -22,16 +22,16 @@ const innerRoutes = [
     name: "quotes",
   },
   {
-    key: "chart",
-    name: "chart",
+    key: "openPositions",
+    name: "openPositions",
   },
   {
-    key: "positions",
-    name: "positions",
+    key: "pendingOrders",
+    name: "pendingOrders",
   },
   {
-    key: "instruments",
-    name: "instruments",
+    key: "closedPositions",
+    name: "closedPositions",
   },
   {
     key: "balance",
@@ -78,7 +78,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   name="tiny"
                   text={t(`navigation.${route.name}`)}
                   style={{
-                    color: colors.primaryColorNight,
+                    color: colors.blueColor,
                   }}
                 />
               </View>
@@ -93,7 +93,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 <Typography
                   name="tiny"
                   text={t(`navigation.${route.name}`)}
-                  style={{ color: colors.nightShades60 }}
+                  style={{ color: colors.fontPrimaryColor }}
                 />
               </View>
             )}

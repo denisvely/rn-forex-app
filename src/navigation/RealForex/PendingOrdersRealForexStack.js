@@ -4,26 +4,27 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
 import PropTypes from "prop-types";
+
+import { PendingOrdersRealForex } from "screens";
 import { headerOptions } from "constants";
 import { HeaderLeft, HeaderRight, NotificationsIcon } from "components";
-import { Balance } from "screens";
 
-const BalanceStack = createStackNavigator();
+const PendingOrders = createStackNavigator();
 
-const BalanceStackNavigator = ({ navigation }) => {
+const PendingOrdersNavigator = ({ navigation }) => {
   const { t } = useTranslation();
 
   return (
-    <BalanceStack.Navigator
-      initialRouteName="balance"
+    <PendingOrders.Navigator
+      initialRouteName="Login"
       screenOptions={{ headerShown: true }}
     >
-      <BalanceStack.Screen
-        name="Balance"
-        component={Balance}
+      <PendingOrders.Screen
+        name="pendingOrders"
+        component={PendingOrdersRealForex}
         options={{
-          tabBarLabel: "balance",
-          title: t("navigation.balance"),
+          tabBarLabel: "pendingOrders",
+          title: t("navigation.pendingOrders"),
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
@@ -39,12 +40,12 @@ const BalanceStackNavigator = ({ navigation }) => {
           ),
         }}
       />
-    </BalanceStack.Navigator>
+    </PendingOrders.Navigator>
   );
 };
 
-BalanceStackNavigator.propTypes = {
+PendingOrdersNavigator.propTypes = {
   navigation: PropTypes.object,
 };
 
-export default BalanceStackNavigator;
+export default PendingOrdersNavigator;

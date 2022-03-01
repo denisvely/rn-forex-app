@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { Typography } from "components";
 
-const RealForex = ({ navigation }) => {
+const Balance = ({ navigation }) => {
   const dispatch = useDispatch();
 
   return (
@@ -21,4 +21,4 @@ const RealForex = ({ navigation }) => {
   );
 };
 
-export default RealForex;
+export default Balance;

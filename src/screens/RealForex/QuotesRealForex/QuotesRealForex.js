@@ -3,13 +3,17 @@ import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getUser } from "store/app";
+import { getForexTradingSettings } from "store/realForex";
 import { Typography, Button } from "components";
 import { logout } from "store/app/actions";
 import { colors } from "constants";
 
-const RealForex = ({ navigation }) => {
+const Quotes = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => getUser(state));
+  const QuotesTradingSettings = useSelector((state) =>
+    getForexTradingSettings(state)
+  );
 
   return (
     <View
@@ -45,4 +49,4 @@ const RealForex = ({ navigation }) => {
   );
 };
 
-export default RealForex;
+export default Quotes;

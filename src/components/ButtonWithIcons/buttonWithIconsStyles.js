@@ -5,7 +5,7 @@ import { deviceWidth } from "utils";
 export default StyleSheet.create({
   profileButtonWrapper: {
     width: deviceWidth - 48,
-    height: 31,
+    height: 40,
     borderBottomColor: colors.borderBottomColor,
     borderBottomWidth: 1,
   },
@@ -20,6 +20,7 @@ export default StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     paddingBottom: 12,
+    paddingTop: 6.5,
   },
   profileButtonIcon: {
     height: 16,

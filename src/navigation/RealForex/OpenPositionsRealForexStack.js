@@ -4,26 +4,27 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
 import PropTypes from "prop-types";
+
+import { OpenPositionsRealForex } from "screens";
 import { headerOptions } from "constants";
 import { HeaderLeft, HeaderRight, NotificationsIcon } from "components";
-import { Balance } from "screens";
 
-const BalanceStack = createStackNavigator();
+const OpenPositions = createStackNavigator();
 
-const BalanceStackNavigator = ({ navigation }) => {
+const OpenPositionsNavigator = ({ navigation }) => {
   const { t } = useTranslation();
 
   return (
-    <BalanceStack.Navigator
-      initialRouteName="balance"
+    <OpenPositions.Navigator
+      initialRouteName="Login"
       screenOptions={{ headerShown: true }}
     >
-      <BalanceStack.Screen
-        name="Balance"
-        component={Balance}
+      <OpenPositions.Screen
+        name="OpenPositions"
+        component={OpenPositionsRealForex}
         options={{
-          tabBarLabel: "balance",
-          title: t("navigation.balance"),
+          tabBarLabel: "openPositions",
+          title: t("navigation.openPositions"),
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
@@ -39,12 +40,12 @@ const BalanceStackNavigator = ({ navigation }) => {
           ),
         }}
       />
-    </BalanceStack.Navigator>
+    </OpenPositions.Navigator>
   );
 };
 
-BalanceStackNavigator.propTypes = {
+OpenPositionsNavigator.propTypes = {
   navigation: PropTypes.object,
 };
 
-export default BalanceStackNavigator;
+export default OpenPositionsNavigator;

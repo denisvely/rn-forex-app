@@ -27,21 +27,20 @@ class Request {
     this.body = { ...this.body, [key]: value };
   }
 
-  // convertToQueryParams(resources) {
-  //   var options = {
-  //     token: token,
-  //     resources: JSON.stringify(resources),
-  //   };
+  convertToQueryParams(resources, token) {
+    var options = {
+      token: token,
+      resources: JSON.stringify(resources),
+    };
 
-  //   const queryParams = [];
-  //   for (const i in options) {
-  //     queryParams.push(
-  //       encodeURIComponent(i) + "=" + encodeURIComponent(options[i])
-  //     );
-  //   }
-
-  //   this.body = queryParams.join("&");
-  // }
+    const queryParams = [];
+    for (const i in options) {
+      queryParams.push(
+        encodeURIComponent(i) + "=" + encodeURIComponent(options[i])
+      );
+    }
+    this.body = queryParams.join("&");
+  }
 
   convertToQueryParamsWithoutToken(options) {
     const queryParams = [];

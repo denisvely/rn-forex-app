@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { Typography } from "components";
 
-const RealForex = ({ navigation }) => {
+const ClosedPositionsRealForex = ({ navigation }) => {
   const dispatch = useDispatch();
 
   return (
@@ -16,9 +16,9 @@ const RealForex = ({ navigation }) => {
         alignItems: "center",
       }}
     >
-      <Typography name="largeBold" text={"Chart"}></Typography>
+      <Typography name="largeBold" text={"Closed Positions"}></Typography>
     </View>
   );
 };
 
-export default RealForex;
+export default ClosedPositionsRealForex;

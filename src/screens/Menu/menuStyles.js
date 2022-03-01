@@ -27,8 +27,11 @@ export default StyleSheet.create({
   },
   accountInfoBG: {
     position: "absolute",
+    bottom: -40,
+    right: 0,
     left: 0,
-    top: 0,
+    height: "100%",
+    width: "100%",
   },
   scrollView: {
     marginTop: 24,

@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useDispatch } from "react-redux";
 
-import QuotesStack from "./RealForex/QuotesStack";
-import ChartStack from "./RealForex/ChartStack";
-import PositionsStack from "./RealForex/PositionsStack";
-import InstrumentsStack from "./RealForex/InstrumentsStack";
+import QuotesRealForexStack from "./RealForex/QuotesRealForexStack";
+import OpenPositionsRealForexStack from "./RealForex/OpenPositionsRealForexStack";
+import PendingOrdersRealForexStack from "./RealForex/PendingOrdersRealForexStack";
+import ClosedPositionsRealForexStack from "./RealForex/ClosedPositionsRealForexStack";
 import BalanceStack from "./RealForex/BalanceStack";
 
 import { CustomTabBar } from "../components";
+import { loadInitialRealForexData } from "store/realForex";
 
 const RealForexStack = createBottomTabNavigator();
 
 const RealForexStackNavigator = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    loadInitialRealForexData(dispatch);
+  }, []);
+
   return (
     <RealForexStack.Navigator
       tabBar={(props) => <CustomTabBar {...props} />}
@@ -23,22 +31,22 @@ const RealForexStackNavigator = ({ navigation }) => {
     >
       <RealForexStack.Screen
         name="quotes"
-        component={QuotesStack}
+        component={QuotesRealForexStack}
         options={{ headerShown: false }}
       />
       <RealForexStack.Screen
-        name="chart"
-        component={ChartStack}
+        name="openPositions"
+        component={OpenPositionsRealForexStack}
         options={{ headerShown: false }}
       />
       <RealForexStack.Screen
-        name="positions"
-        component={PositionsStack}
+        name="pendingOrders"
+        component={PendingOrdersRealForexStack}
         options={{ headerShown: false }}
       />
       <RealForexStack.Screen
-        name="instruments"
-        component={InstrumentsStack}
+        name="closedPositions"
+        component={ClosedPositionsRealForexStack}
         options={{ headerShown: false }}
       />
       <RealForexStack.Screen
