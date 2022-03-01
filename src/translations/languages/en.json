@@ -5,7 +5,7 @@
     "sell": "Sell",
     "real-forex": "Real Forex",
     "simplex": "Simplex",
-    "funding": "Funding"
+    "logout": "Logout"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -13,5 +13,15 @@
     "positions": "Positions",
     "instruments": "Instruments",
     "balance": "Balance"
+  },
+  "menu": {
+    "products": "Products",
+    "funding": "Funding",
+    "demoAccount": "Demo Account",
+    "myMessages": "My Messages",
+    "personalDetails": "Personal Details",
+    "settings": "Settings",
+    "terms": "Terms And Agreements",
+    "contactUs": "Contact Us"
   }
 }

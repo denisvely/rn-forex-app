@@ -55,63 +55,63 @@ const Menu = ({ navigation }) => {
       >
         <ButtonWithIcons
           icon={products}
-          text={"Products"}
+          text={t(`menu.products`)}
           navigation={navigation}
           screenName={"Home"}
           onPress={() => submit("Home")}
         />
         <ButtonWithIcons
           icon={funding}
-          text={"Funding"}
+          text={t(`menu.funding`)}
           navigation={navigation}
           screenName={"Funding"}
           onPress={() => submit("Funding")}
         />
         <ButtonWithIcons
           icon={demoAccount}
-          text={"Demo Account"}
+          text={t(`menu.demoAccount`)}
           navigation={navigation}
           screenName={"DemoAccount"}
           onPress={() => submit("DemoAccount")}
         />
         <ButtonWithIcons
           icon={myMessages}
-          text={"My Messages"}
+          text={t(`menu.myMessages`)}
           navigation={navigation}
           screenName={"MyMessages"}
           onPress={() => submit("MyMessages")}
         />
         <ButtonWithIcons
           icon={personalDetails}
-          text={"Personal Details"}
+          text={t(`menu.personalDetails`)}
           navigation={navigation}
           screenName={"PersonalDetails"}
           onPress={() => submit("PersonalDetails")}
         />
         <ButtonWithIcons
           icon={settings}
-          text={"Settings"}
+          text={t(`menu.settings`)}
           navigation={navigation}
           screenName={"Settings"}
           onPress={() => submit("Settings")}
         />
         <ButtonWithIcons
           icon={terms}
-          text={"Terms And Agreements"}
+          text={t(`menu.terms`)}
           navigation={navigation}
           screenName={"TermsAndAgreements"}
           onPress={() => submit("TermsAndAgreements")}
         />
         <ButtonWithIcons
           icon={contactUs}
-          text={"Contact Us"}
+          text={t(`menu.contactUs`)}
           navigation={navigation}
           screenName={"ContactUs"}
           onPress={() => submit("ContactUs")}
         />
         <ButtonWithIcons
           icon={logout}
-          text={"Logout"}
+          text={t(`common-labels.logout`)}
           navigation={navigation}
           screenName={"Logout"}
           onPress={() => submit("Logout")}
