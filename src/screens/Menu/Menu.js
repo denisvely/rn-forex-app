@@ -4,6 +4,7 @@ import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
+import { logout } from "store/app/actions";
 
 import { ButtonWithIcons, Typography } from "components";
 import {
@@ -15,7 +16,7 @@ import {
   settings,
   terms,
   contactUs,
-  logout,
+  logoutIcon,
   accountInfoBackground,
 } from "../../assets/svg/menuIcons/menuIcons";
 import { getUser } from "store/app";
@@ -24,6 +25,8 @@ import styles from "./menuStyles";
 
 const Menu = ({ navigation }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => getUser(state));
 
   const submit = (screenName, params) => {
     navigation.navigate(screenName, params);
@@ -35,12 +38,12 @@ const Menu = ({ navigation }) => {
         <Typography
           name="mediumBold"
           style={styles.accountInfoText}
-          text={"Nikola Kerefein"}
+          text={`${user?.firstName} ${user?.lastName}`}
         ></Typography>
         <Typography
           name="tinyBold"
           style={styles.accountInfoText}
-          text={"koliomamata@gmail.com"}
+          text={user?.email}
         ></Typography>
         <SvgXml
           styles={styles.accountInfoBG}
@@ -110,11 +113,11 @@ const Menu = ({ navigation }) => {
           onPress={() => submit("ContactUs")}
         />
         <ButtonWithIcons
-          icon={logout}
+          icon={logoutIcon}
           text={t(`common-labels.logout`)}
           navigation={navigation}
           screenName={"Logout"}
-          onPress={() => submit("Logout")}
+          onPress={() => logout(dispatch)}
         />
       </ScrollView>
     </View>

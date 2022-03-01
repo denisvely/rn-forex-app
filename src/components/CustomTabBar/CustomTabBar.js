@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
 import PropTypes from "prop-types";
 
-import { Typography } from "../Typography/Typography";
+import { Typography } from "components";
 
 import {
   tabStackIcons,
@@ -18,28 +18,29 @@ import styles from "./customTabBarStyles";
 
 const innerRoutes = [
   {
-    key: 'quotes',
-    name: 'quotes',
+    key: "quotes",
+    name: "quotes",
   },
   {
-    key: 'chart',
-    name: 'chart',
+    key: "chart",
+    name: "chart",
   },
   {
-    key: 'positions',
-    name: 'positions',
+    key: "positions",
+    name: "positions",
   },
   {
-    key: 'instruments',
-    name: 'instruments',
+    key: "instruments",
+    name: "instruments",
   },
   {
-    key: 'balance',
-    name: 'balance',
-  }
-]
+    key: "balance",
+    name: "balance",
+  },
+];
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.navigatorContainerTransparent}>
       {innerRoutes.map((route, index) => {
@@ -75,7 +76,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 />
                 <Typography
                   name="tiny"
-                  text="Text1"
+                  text={t(`navigation.${route.name}`)}
                   style={{
                     color: colors.primaryColorNight,
                   }}
@@ -91,7 +92,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 />
                 <Typography
                   name="tiny"
-                  text="Text1"
+                  text={t(`navigation.${route.name}`)}
                   style={{ color: colors.nightShades60 }}
                 />
               </View>
