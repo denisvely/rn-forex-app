@@ -3,119 +3,87 @@ import moment from "moment";
 import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
 
 export default {
-  // getRealForexTradesResults: () => {
-  //   const service = new Service(
-  //     "v2/users/current/pastTrades/forex/results?",
-  //     apiConsts.HTTP_METHOD_GET
-  //   );
+  getRealForexOpenTrades: () => {
+    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
 
-  //   service.setPrepareRequest(
-  //     (request, { fromDate, toDate, positionId, filterTradableAssetId }) => {
-  //       let data = {
-  //         tradableAssetId:
-  //           filterTradableAssetId === undefined ? 0 : filterTradableAssetId,
-  //         fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
-  //         toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
-  //         limit: 10000,
-  //         offset: 0,
-  //         sortBy: "OrderDate",
-  //         sortOrder: 0,
-  //         positionId: positionId === undefined ? null : positionId,
-  //       };
+    var resources = {};
+    resources.forexOpenTrades = {};
+    resources.forexOpenTrades = {
+      includeOffers: true,
+      filterByOptionType: "forex,harealforex",
+    };
 
-  //       request.setHeader(
-  //         "Authorization",
-  //         `OAuth oauth_token=${ServiceManager.getAccessToken()}`
-  //       );
-  //       request.convertToQueryParamsWithoutToken(data);
+    service.setPrepareRequest((request) => {
+      let options = {
+        token: ServiceManager.getAccessToken(),
+        resources: JSON.stringify(resources),
+      };
 
-  //       return request;
-  //     }
-  //   );
+      request.setQueryParameters(options);
 
-  //   return service;
-  // },
-  // getRealForexTradesOrders: () => {
-  //   const service = new Service(
-  //     "v2/users/current/pastTrades/forex/orders?",
-  //     apiConsts.HTTP_METHOD_GET
-  //   );
+      return request;
+    });
 
-  //   service.setPrepareRequest(
-  //     (request, { fromDate, toDate, positionId, orderId, tradableAssetId }) => {
-  //       let data = {
-  //         tradableAssetId: tradableAssetId === undefined ? 0 : tradableAssetId,
-  //         fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
-  //         toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
-  //         limit: 10000,
-  //         offset: 0,
-  //         sortBy: "OrderDate",
-  //         sortOrder: 0,
-  //         positionId: positionId === undefined ? null : positionId,
-  //         orderId: orderId === undefined ? null : orderId,
-  //       };
+    return service;
+  },
+  getRealForexPendingOrders: () => {
+    const service = new Service(
+      "/v2/users/current/forexpendingorders",
+      apiConsts.HTTP_METHOD_GET
+    );
 
-  //       request.setHeader(
-  //         "Authorization",
-  //         `OAuth oauth_token=${ServiceManager.getAccessToken()}`
-  //       );
-  //       request.convertToQueryParamsWithoutToken(data);
+    let resources = {
+      offset: "0",
+      limit: "100",
+    };
 
-  //       return request;
-  //     }
-  //   );
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
 
-  //   return service;
-  // },
-  // getRealForexClosedTrades: () => {
-  //   const service = new Service(
-  //     "v2/users/current/pastTrades/forex/closedPositions?",
-  //     apiConsts.HTTP_METHOD_GET
-  //   );
+      request.setQueryParameters(resources);
 
-  //   service.setPrepareRequest(
-  //     (request, { fromDate, toDate, positionId, tradableAssetId }) => {
-  //       let data = {
-  //         tradableAssetId: tradableAssetId === undefined ? 0 : tradableAssetId,
-  //         fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
-  //         toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
-  //         limit: 10000,
-  //         action: "all",
-  //         offset: 0,
-  //         sortBy: "OrderDate",
-  //         sortOrder: 0,
-  //         useHours: true,
-  //         positionId: positionId === undefined ? null : positionId,
-  //       };
+      return request;
+    });
 
-  //       request.setHeader("Authorization", `OAuth oauth_token=${ServiceManager.getAccessToken()}`);
-  //       request.convertToQueryParamsWithoutToken(data);
+    return service;
+  },
+  getRealForexClosedPositions: () => {
+    const service = new Service(
+      "/v2/users/current/pastTrades/forex/closedPositions",
+      apiConsts.HTTP_METHOD_GET
+    );
 
-  //       return request;
-  //     }
-  //   );
+    service.setPrepareRequest(
+      (request, { fromDate, toDate, positionId, tradableAssetId }) => {
+        let data = {
+          tradableAssetId: tradableAssetId === undefined ? 0 : tradableAssetId,
+          fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
+          toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
+          limit: 10000,
+          action: "all",
+          offset: 0,
+          sortBy: "OrderDate",
+          sortOrder: 0,
+          useHours: true,
+          positionId: positionId === undefined ? null : positionId,
+        };
 
-  //   return service;
-  // },
-  // getRealForexClosedTrades: () => {
-  //   const service = new Service("/v1/merge?", apiConsts.HTTP_METHOD_GET);
+        request.setHeader(
+          "Authorization",
+          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+        );
 
-  //   service.setPrepareRequest((request) => {
-  //     let resources = {};
+        request.setQueryParameters(data);
 
-  //     resources.options = {
-  //       game: "RealForex",
-  //       hash: 0,
-  //     };
+        return request;
+      }
+    );
 
-  //     request.setHeader("Authorization", `OAuth oauth_token=${ServiceManager.getAccessToken()}`);
-  //     request.convertToQueryParamsWithoutToken(resources);
-
-  //     return request;
-  //   });
-
-  //   return service;
-  // },
+    return service;
+  },
   getRealForexTradingSettings: () => {
     const service = new Service(
       "/v1/tradingsetting/realforex",
@@ -136,16 +104,20 @@ export default {
   getRealForexAssetSettings: () => {
     let resources = {},
       forexAssetSettings;
-    const token = ServiceManager.getAccessToken();
 
     resources.forexassetsettings = {
       optionType: 24,
     };
 
-    const service = new Service("/v1/merge?", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
 
     service.setPrepareRequest((request) => {
-      request.convertToQueryParams(resources, token);
+      let options = {
+        token: ServiceManager.getAccessToken(),
+        resources: JSON.stringify(resources),
+      };
+
+      request.setQueryParameters(options);
 
       return request;
     });
@@ -156,12 +128,57 @@ export default {
     let resources = {
       forexPrices: { OptionType: 24 },
     };
-    const token = ServiceManager.getAccessToken();
 
-    const service = new Service("/v1/merge?", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
 
     service.setPrepareRequest((request) => {
-      request.convertToQueryParams(resources, token);
+      let options = {
+        token: ServiceManager.getAccessToken(),
+        resources: JSON.stringify(resources),
+      };
+
+      request.setQueryParameters(options);
+
+      return request;
+    });
+
+    return service;
+  },
+  getRealForexSwapRates: () => {
+    const service = new Service(
+      "/v1/assets/forexswaprates",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      return request;
+    });
+
+    return service;
+  },
+  getRealForexOptions: () => {
+    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
+
+    let resources = {};
+
+    resources.options = {
+      game: "RealForex",
+      hash: "",
+    };
+    resources.balanceRealForex = {};
+
+    service.setPrepareRequest((request) => {
+      let options = {
+        token: ServiceManager.getAccessToken(),
+        resources: JSON.stringify(resources),
+      };
+
+      request.setQueryParameters(options);
 
       return request;
     });

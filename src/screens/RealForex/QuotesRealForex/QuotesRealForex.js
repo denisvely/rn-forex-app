@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getUser } from "store/app";
-import { getForexTradingSettings } from "store/realForex";
-import { Typography, Button } from "components";
+import { getRealForexOptions } from "store/realForex";
+import { LazyFlatList, AssetBox } from "components";
 import { logout } from "store/app/actions";
+import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { colors } from "constants";
 
+import styles from "./quotesStyles";
+import { deviceWidth } from "../../../utils";
+
 const Quotes = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => getUser(state));
-  const QuotesTradingSettings = useSelector((state) =>
-    getForexTradingSettings(state)
-  );
+  const flatListRef = useRef();
+  const realForexOptions = useSelector((state) => getRealForexOptions(state));
 
   return (
     <View
@@ -24,29 +25,33 @@ const Quotes = ({ navigation }) => {
         alignItems: "center",
       }}
     >
-      <Typography name="largeBold" text={"You are logged in"}></Typography>
-
-      <View
-        style={{
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          marginTop: 20,
-        }}
-      >
-        <Typography name="normal" text={"User Details"}></Typography>
-        <Typography name="normal" text={user?.email}></Typography>
-        <Typography name="normal" text={user?.firstName}></Typography>
-      </View>
-
-      <Button
-        style={{ marginTop: 60 }}
-        text="Logout"
-        type="primary"
-        font="mediumBold"
-        onPress={() => logout(dispatch)}
-      />
+      {realForexOptions && (
+        <LazyFlatList
+          data={realForexOptions}
+          renderItem={({ item, index }) => {
+            return (
+              <AssetBox
+                option={item}
+                index={index}
+                navigation={navigation}
+                icon={assetIcon}
+              />
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            width: deviceWidth,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          style={styles.flatListContainer}
+          listRef={flatListRef}
+        />
+      )}
     </View>
   );
 };
 
-export default Quotes;
+export default memo(Quotes);

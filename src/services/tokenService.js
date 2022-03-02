@@ -18,7 +18,7 @@ export default {
   },
   updateRefreshToken: () => {
     const service = new Service(
-      "v1/tokens/refresh",
+      "/v1/tokens/refresh",
       apiConsts.HTTP_METHOD_POST
     );
     // Not Finished - should be tested

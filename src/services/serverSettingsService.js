@@ -2,7 +2,7 @@ import ServiceManager, { Service, apiConsts } from "../utils/serviceManager";
 
 export default {
   getServerSettings: () => {
-    const service = new Service("/v1/merge?", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
 
     service.setPrepareRequest((request) => {
       var game = "",

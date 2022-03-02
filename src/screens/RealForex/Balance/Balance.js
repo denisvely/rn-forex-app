@@ -1,22 +1,58 @@
 import React from "react";
 import { View } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Typography } from "components";
 
+import { getRealForexBalance } from "store/realForex";
+
+import styles from "./balanceStyles";
+
 const Balance = ({ navigation }) => {
-  const dispatch = useDispatch();
+  const realForexBalance = useSelector((state) => getRealForexBalance(state));
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography name="largeBold" text={"Balance"}></Typography>
+    <View style={styles.container}>
+      <View>
+        <Typography name="tiny" text={"Balance"}></Typography>
+        <Typography
+          name="largeBold"
+          text={realForexBalance.balance}
+          style={styles.balance}
+        ></Typography>
+      </View>
+      <View>
+        <Typography name="tiny" text={"Profit"}></Typography>
+        <Typography
+          name="largeBold"
+          text={realForexBalance.profit}
+          style={styles.balance}
+        ></Typography>
+      </View>
+      <View>
+        <Typography name="tiny" text={"Margin"}></Typography>
+        <Typography
+          name="largeBold"
+          text={realForexBalance.margin}
+          style={styles.balance}
+        ></Typography>
+      </View>
+      <View>
+        <Typography name="tiny" text={"Equity"}></Typography>
+        <Typography
+          name="largeBold"
+          text={realForexBalance.equity}
+          style={styles.balance}
+        ></Typography>
+      </View>
+      <View>
+        <Typography name="tiny" text={"Available balance"}></Typography>
+        <Typography
+          name="largeBold"
+          text={realForexBalance.availableBalance}
+          style={styles.balance}
+        ></Typography>
+      </View>
     </View>
   );
 };

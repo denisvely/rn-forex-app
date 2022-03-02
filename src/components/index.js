@@ -12,3 +12,5 @@ export { default as HeaderX } from "./HeaderX/HeaderX";
 export { default as HeaderLeft } from "./HeaderLeft/HeaderLeft";
 export { default as HeaderRight } from "./HeaderRight/HeaderRight";
 export { default as NotificationsIcon } from "./NotificationsIcon/NotificationsIcon";
+export { default as LazyFlatList } from "./LazyFlatList/LazyFlatList";
+export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";

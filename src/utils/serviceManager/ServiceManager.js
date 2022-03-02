@@ -184,7 +184,7 @@ class ServiceManager {
    * @returns {string}
    */
   getBaseUrl = () => {
-    return "https://api.finte.co/";
+    return "https://api.finte.co";
   };
 
   /**
