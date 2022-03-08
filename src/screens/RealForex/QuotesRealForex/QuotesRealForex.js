@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useCallback, useRef, memo } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getUser } from "store/app";
-import { getRealForexOptions } from "store/realForex";
+import { getRealForexOptions, getRealForexPrices } from "store/realForex";
 import { LazyFlatList, AssetBox } from "components";
-import { logout } from "store/app/actions";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { colors } from "constants";
 
 import styles from "./quotesStyles";
-import { deviceWidth } from "../../../utils";
+import { deviceWidth } from "utils";
 
 const Quotes = ({ navigation }) => {
   const flatListRef = useRef();
   const realForexOptions = useSelector((state) => getRealForexOptions(state));
+  const realForexPrices = useSelector((state) => getRealForexPrices(state));
 
+  // console.log(realForexPrices);
   return (
     <View
       style={{
@@ -27,7 +27,7 @@ const Quotes = ({ navigation }) => {
     >
       {realForexOptions && (
         <LazyFlatList
-          data={realForexOptions}
+          list={realForexOptions}
           renderItem={({ item, index }) => {
             return (
               <AssetBox

@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import moment from "moment";
 
+import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
 
 const getForexOpenTrades = realForexServices.getRealForexOpenTrades();
@@ -11,8 +12,9 @@ const getForexAssetSettings = realForexServices.getRealForexAssetSettings();
 const getForexPrices = realForexServices.getRealForexPrices();
 const getForexSwapRates = realForexServices.getRealForexSwapRates();
 const getForexOptions = realForexServices.getRealForexOptions();
+const getForexNotifications = realForexServices.getRealForexNotifications();
 
-export const loadInitialRealForexData = async (dispatch) => {
+export const loadInitialRealForexData = (dispatch) => {
   getForexOpenTrades
     .fetch()
     .then(({ response }) => {
@@ -91,11 +93,13 @@ export const loadInitialRealForexData = async (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data.forexPrices.data;
-      // Start SignalR
+
       dispatch({
         type: actionTypes.REAL_FOREX_PRICES,
         payload: body,
       });
+      // Start SignalR
+      signalRStart(body, dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -119,6 +123,18 @@ export const loadInitialRealForexData = async (dispatch) => {
       dispatch({
         type: actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE,
         payload: body,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  getForexNotifications
+    .fetch()
+    .then(({ response }) => {
+      const notificationsData = response.body.data.slice(0, 100);
+      dispatch({
+        type: actionTypes.REAL_FOREX_NOTIFICATIONS,
+        payload: notificationsData,
       });
     })
     .catch((err) => {

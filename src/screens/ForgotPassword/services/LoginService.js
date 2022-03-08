@@ -4,7 +4,7 @@ export default {
   login: () => {
     // TODO => webIds
     const service = new Service(
-      "/v2/users/login?webId=97AA047C-D004-4F58-AABA-169C54A8D0AB",
+      "v2/users/login?webId=97AA047C-D004-4F58-AABA-169C54A8D0AB",
       apiConsts.HTTP_METHOD_POST
     );
 

@@ -1,7 +1,11 @@
 import * as actionTypes from "./actionTypes";
 import { cloneDeep } from "lodash";
 
-import { sortOptinsByType, formatRealForexOptions } from "./helpers";
+import {
+  sortOptinsByType,
+  formatRealForexOptions,
+  getRealForexTotalNotifications,
+} from "./helpers";
 
 const initialState = {
   realForexTradingSettings: null,
@@ -26,6 +30,8 @@ const initialState = {
     Futures: {},
     Favorites: [],
   },
+  realForexNotifications: null,
+  realForexTotalNewNotifications: null,
 };
 
 const realForexReducer = (state = initialState, action) => {
@@ -73,7 +79,6 @@ const realForexReducer = (state = initialState, action) => {
         realForexClosedPositions: action.payload,
       };
     }
-
     case actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE: {
       return {
         ...stateClone,
@@ -81,6 +86,15 @@ const realForexReducer = (state = initialState, action) => {
         realForexOptionsByType: sortOptinsByType(action.payload.options.data),
         hash: action.payload.options.hash,
         realForexBalance: action.payload.balanceRealForex.data,
+      };
+    }
+    case actionTypes.REAL_FOREX_NOTIFICATIONS: {
+      return {
+        ...stateClone,
+        realForexNotifications: action.payload,
+        realForexTotalNewNotifications: getRealForexTotalNotifications(
+          action.payload
+        ),
       };
     }
     default:

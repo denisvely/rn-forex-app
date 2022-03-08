@@ -3,13 +3,13 @@ import { colors } from "constants";
 import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
-  assetBox: {
-    width: deviceWidth - 48,
-    paddingHorizontal: 12,
+  notificationRow: {
+    width: deviceWidth - 32,
+    paddingHorizontal: 16,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    height: 84,
+    height: 74,
     borderRadius: 2,
     backgroundColor: colors.white,
     marginBottom: 10,
@@ -25,9 +25,6 @@ export default StyleSheet.create({
     alignItems: "flex-end",
     flexDirection: "column",
     maxWidth: "50%",
-  },
-  assetIcon: {
-    marginRight: 12,
   },
   assetName: {
     color: colors.fontPrimaryColor,

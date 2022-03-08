@@ -4,7 +4,7 @@ import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
 
 export default {
   getRealForexOpenTrades: () => {
-    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("v1/merge", apiConsts.HTTP_METHOD_GET);
 
     var resources = {};
     resources.forexOpenTrades = {};
@@ -28,7 +28,7 @@ export default {
   },
   getRealForexPendingOrders: () => {
     const service = new Service(
-      "/v2/users/current/forexpendingorders",
+      "v2/users/current/forexpendingorders",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -52,7 +52,7 @@ export default {
   },
   getRealForexClosedPositions: () => {
     const service = new Service(
-      "/v2/users/current/pastTrades/forex/closedPositions",
+      "v2/users/current/pastTrades/forex/closedPositions",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -86,7 +86,7 @@ export default {
   },
   getRealForexTradingSettings: () => {
     const service = new Service(
-      "/v1/tradingsetting/realforex",
+      "v1/tradingsetting/realforex",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -109,7 +109,7 @@ export default {
       optionType: 24,
     };
 
-    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("v1/merge", apiConsts.HTTP_METHOD_GET);
 
     service.setPrepareRequest((request) => {
       let options = {
@@ -129,7 +129,7 @@ export default {
       forexPrices: { OptionType: 24 },
     };
 
-    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("v1/merge", apiConsts.HTTP_METHOD_GET);
 
     service.setPrepareRequest((request) => {
       let options = {
@@ -146,7 +146,7 @@ export default {
   },
   getRealForexSwapRates: () => {
     const service = new Service(
-      "/v1/assets/forexswaprates",
+      "v1/assets/forexswaprates",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -162,7 +162,7 @@ export default {
     return service;
   },
   getRealForexOptions: () => {
-    const service = new Service("/v1/merge", apiConsts.HTTP_METHOD_GET);
+    const service = new Service("v1/merge", apiConsts.HTTP_METHOD_GET);
 
     let resources = {};
 
@@ -179,6 +179,23 @@ export default {
       };
 
       request.setQueryParameters(options);
+
+      return request;
+    });
+
+    return service;
+  },
+  getRealForexNotifications: () => {
+    const service = new Service(
+      "v1/users/tradeNotification/getAll/24",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
 
       return request;
     });

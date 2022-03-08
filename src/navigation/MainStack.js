@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import RealForexStack from "./RealForexStack";
-import { Home, Menu } from "screens";
+import { Home, Menu, Notifications } from "screens";
 import { headerOptions } from "constants";
 import {
   HeaderLeft,
@@ -62,6 +62,27 @@ const MainStackNavigator = ({ navigation }) => {
             <HeaderRight
               navigation={navigation}
               firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      />
+      <MainStack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          title: "Notifications",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={
+                <NotificationsIcon navigation={navigation} active={true} />
+              }
             />
           ),
         }}

@@ -132,8 +132,8 @@ const getTokenWithRefresh = (token) => {
   tokenService
     .updateRefreshToken()
     .fetch({ refreshToken: token.refreshToken })
-    .then(async (response) => {
-      if (response.response && response.response.body.code === 400) {
+    .then(async ({ response }) => {
+      if (response.body && response.body.code === 400) {
         tokenService
           .getToken()
           .fetch()
@@ -147,7 +147,7 @@ const getTokenWithRefresh = (token) => {
             };
           });
       } else {
-        const token = response.getBody();
+        const token = response.body.data;
         Storage.set("token", JSON.stringify(token));
         await ServiceManager.setToken(token);
 

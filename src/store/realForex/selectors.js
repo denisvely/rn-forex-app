@@ -18,3 +18,9 @@ export const getRealForexOptions = (state) =>
   get(state, "realForex.realForexOptions");
 export const getRealForexBalance = (state) =>
   get(state, "realForex.realForexBalance");
+export const getRealForexOptionsByType = (state) =>
+  get(state, "realForex.realForexOptionsByType");
+export const getRealForexNotifications = (state) =>
+  get(state, "realForex.realForexNotifications");
+export const getRealForexTotalNewNotifications = (state) =>
+  get(state, "realForex.realForexTotalNewNotifications");
