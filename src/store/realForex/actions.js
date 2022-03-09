@@ -13,6 +13,9 @@ const getForexPrices = realForexServices.getRealForexPrices();
 const getForexSwapRates = realForexServices.getRealForexSwapRates();
 const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
+const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
+const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
+// const getForexDailyChange = realForexServices.getRealForexDailyChange();
 
 export const loadInitialRealForexData = (dispatch) => {
   getForexOpenTrades
@@ -124,10 +127,23 @@ export const loadInitialRealForexData = (dispatch) => {
         type: actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE,
         payload: body,
       });
+      getForexAssetsOrder
+        .fetch()
+        .then(({ response }) => {
+          const body = response.body.data.Favorite;
+          dispatch({
+            type: actionTypes.REAL_FOREX_ASSETS_ORDER,
+            payload: body,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
     .catch((err) => {
       console.log(err);
     });
+
   getForexNotifications
     .fetch()
     .then(({ response }) => {
@@ -135,6 +151,25 @@ export const loadInitialRealForexData = (dispatch) => {
       dispatch({
         type: actionTypes.REAL_FOREX_NOTIFICATIONS,
         payload: notificationsData,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  getForexTraderInsight
+    .fetch()
+    .then(({ response }) => {
+      const body = response.body.data;
+
+      let traderInsightData = {};
+      for (let i = 0; i < body.length; i++) {
+        traderInsightData[body[i].Taid] = {};
+        traderInsightData[body[i].Taid].bid = body[i].totalBuyVolume;
+        traderInsightData[body[i].Taid].ask = body[i].totalSellVolume;
+      }
+      dispatch({
+        type: actionTypes.REAL_FOREX_TRADER_INSIGHT,
+        payload: traderInsightData,
       });
     })
     .catch((err) => {

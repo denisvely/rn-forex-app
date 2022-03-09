@@ -240,3 +240,20 @@ export const getDateDiff = (timestamp) => {
 
   return returnText;
 };
+
+export const updateFavourites = (favouritesArray, forexOptionsByType) => {
+  let result = false;
+  if (favouritesArray.length > 0 && forexOptionsByType) {
+    for (var k = 0; k < favouritesArray.length; k++) {
+      forexOptionsByType.Favorites.push(
+        forexOptionsByType.All[favouritesArray[k]]
+      );
+    }
+    result = forexOptionsByType;
+  } else {
+    forexOptionsByType["Favourites"] = [];
+    result = forexOptionsByType;
+  }
+
+  return result;
+};

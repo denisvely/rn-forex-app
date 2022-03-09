@@ -1,16 +1,16 @@
 import signalr from "react-native-signalr";
 import * as actionTypes from "./actionTypes";
-import { loadInitialRealForexData } from "./actions";
 
 import ServiceManager from "utils/serviceManager";
 
-export async function signalRStop() {
-  signalr.hubConnection("https://api.finte.co").stop();
-}
+export const connection = signalr.hubConnection("https://api.finte.co");
+
+export const signalRStop = () => {
+  connection.stop();
+};
 
 export const signalRStart = (assetsPrices, dispatch) => {
   //This is the server under /example/server published on azure.
-  const connection = signalr.hubConnection("https://api.finte.co");
   connection.logging = true;
   connection.qs = { token: ServiceManager.getAccessToken() };
 
@@ -22,20 +22,9 @@ export const signalRStart = (assetsPrices, dispatch) => {
     realForexHubPrices(assetsPrices, allPrices, dispatch);
   });
 
-  eventsHubProxy.on("simplexOpenPosition", (event) => {
-    if (event.Event === 101) {
-      store.dispatch(getSimpleForexOpenPositions());
-    }
+  connection.start().fail(function () {
+    console.log("Could not connect");
   });
-
-  connection
-    .start()
-    .done(() => {
-      console.log("Now connected, connection ID=" + connection.id);
-    })
-    .fail(() => {
-      console.log("Failed");
-    });
 
   //connection-handling
   connection.connectionSlow(() => {

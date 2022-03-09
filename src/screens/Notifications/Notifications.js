@@ -50,10 +50,10 @@ const Notifications = ({ navigation, game }) => {
       <View style={styles.notificationContainer}>
         <LazyFlatList
           list={notifications}
-          renderItem={({ item, index }) => {
+          renderItem={({ item }) => {
             return (
               <NotificationRow
-                key={index}
+                key={`${item.ID}`}
                 notification={item}
                 navigation={navigation}
               />

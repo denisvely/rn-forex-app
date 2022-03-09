@@ -1,33 +1,30 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useRef, memo } from "react";
 import { View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { getRealForexOptions, getRealForexPrices } from "store/realForex";
-import { LazyFlatList, AssetBox } from "components";
+import { getRealForexOptionsByType } from "store/realForex";
+import { LazyFlatList, AssetBox, AssetsFilter } from "components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
-import { colors } from "constants";
 
 import styles from "./quotesStyles";
 import { deviceWidth } from "utils";
 
 const Quotes = ({ navigation }) => {
   const flatListRef = useRef();
-  const realForexOptions = useSelector((state) => getRealForexOptions(state));
-  const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const realForexOptionsByType = useSelector((state) =>
+    getRealForexOptionsByType(state)
+  );
+  const [activeFilter, setActiveFilter] = useState("All");
 
-  // console.log(realForexPrices);
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.containerBackground,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {realForexOptions && (
+    <View style={styles.container}>
+      <AssetsFilter
+        activeFilter={activeFilter}
+        changeActiveFilter={(translation) => setActiveFilter(translation)}
+      />
+      {realForexOptionsByType && (
         <LazyFlatList
-          list={realForexOptions}
+          list={Object.values(realForexOptionsByType[activeFilter])}
           renderItem={({ item, index }) => {
             return (
               <AssetBox
@@ -45,6 +42,7 @@ const Quotes = ({ navigation }) => {
             width: deviceWidth,
             justifyContent: "center",
             alignItems: "center",
+            paddingBottom: 100,
           }}
           style={styles.flatListContainer}
           listRef={flatListRef}

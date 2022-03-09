@@ -23,5 +23,15 @@
     "settings": "Settings",
     "terms": "Terms And Agreements",
     "contactUs": "Contact Us"
+  },
+  "realForex": {
+    "All": "All",
+    "Currencies": "Currencies",
+    "CryptoCoins": "CryptoCoins",
+    "CryptoTokens": "CryptoTokens",
+    "Indices": "Indices",
+    "Commodities": "Commodities",
+    "Futures": "Futures",
+    "Favourites": "Favourites"
   }
 }

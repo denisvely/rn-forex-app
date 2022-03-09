@@ -10,6 +10,7 @@ import BalanceStack from "./RealForex/BalanceStack";
 
 import { CustomTabBar } from "../components";
 import { loadInitialRealForexData } from "store/realForex";
+import { signalRStop } from "../store/realForex/signalRActions";
 
 const RealForexStack = createBottomTabNavigator();
 
@@ -18,6 +19,9 @@ const RealForexStackNavigator = ({ navigation }) => {
 
   useEffect(() => {
     loadInitialRealForexData(dispatch);
+    return () => {
+      signalRStop();
+    };
   }, []);
 
   return (

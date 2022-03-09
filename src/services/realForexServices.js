@@ -1,4 +1,6 @@
+import axios from "axios";
 import moment from "moment";
+import $ from "jquery";
 
 import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
 
@@ -185,6 +187,23 @@ export default {
 
     return service;
   },
+  getRealForexAssetsOrder: () => {
+    const service = new Service(
+      "v1/tradingsetting/rearrangement?optionType=24",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      return request;
+    });
+
+    return service;
+  },
   getRealForexNotifications: () => {
     const service = new Service(
       "v1/users/tradeNotification/getAll/24",
@@ -202,4 +221,33 @@ export default {
 
     return service;
   },
+  getRealForexTraderInsight: () => {
+    const service = new Service(
+      "/v1/forextraderInsight",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      return request;
+    });
+
+    return service;
+  },
+  // getRealForexDailyChange: () => {
+  //   fetch("https://advfeed.finte.co/Services.ashx/GetDailyChanges", {
+  //     dataType: "jsonp",
+  //     method: "GET",
+  //   })
+  //     .then((result) => {
+  //       debugger;
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // },
 };

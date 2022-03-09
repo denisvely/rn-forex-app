@@ -5,6 +5,7 @@ import {
   sortOptinsByType,
   formatRealForexOptions,
   getRealForexTotalNotifications,
+  updateFavourites,
 } from "./helpers";
 
 const initialState = {
@@ -32,6 +33,7 @@ const initialState = {
   },
   realForexNotifications: null,
   realForexTotalNewNotifications: null,
+  realForexTraderInsight: null,
 };
 
 const realForexReducer = (state = initialState, action) => {
@@ -97,6 +99,22 @@ const realForexReducer = (state = initialState, action) => {
         ),
       };
     }
+    case actionTypes.REAL_FOREX_ASSETS_ORDER: {
+      return {
+        ...stateClone,
+        realForexOptionsByType: updateFavourites(
+          action.payload,
+          stateClone.realForexOptionsByType
+        ),
+      };
+    }
+    case actionTypes.REAL_FOREX_TRADER_INSIGHT: {
+      return {
+        ...stateClone,
+        realForexTraderInsight: action.payload,
+      };
+    }
+
     default:
       return state;
   }

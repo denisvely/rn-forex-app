@@ -20,7 +20,7 @@ const NotificationRow = ({ notification, index, navigation }) => {
 
   return (
     !notification.isDeleted && (
-      <View style={styles.notificationRow}>
+      <View style={styles.notificationRow} key={`${index}`}>
         <Typography
           style={styles.notificationRowTitle}
           text={returnStatusText(notification.TradeNotificationActionType)}
