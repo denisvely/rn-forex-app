@@ -257,3 +257,77 @@ export const updateFavourites = (favouritesArray, forexOptionsByType) => {
 
   return result;
 };
+
+export const getFormattedBidPrice = (asset) => {
+  let accuracy = asset.accuracy,
+    accuracySplit = asset.accuracy,
+    bidSplit = asset.bid.split("."),
+    bidPriceMedium,
+    bidPriceSmall,
+    bidPriceBig;
+
+  if (accuracySplit > 2) {
+    bidPriceMedium =
+      bidSplit[0] + "." + bidSplit[1].substring(0, accuracySplit - 3);
+
+    bidPriceSmall = bidSplit[1].substring(
+      bidSplit[1].length - 3,
+      bidSplit[1].length - 2
+    );
+
+    bidPriceBig = bidSplit[1].substring(
+      bidSplit[1].length - 2,
+      bidSplit[1].length
+    );
+  } else {
+    bidPriceMedium =
+      bidSplit[0] +
+      (accuracySplit > 0
+        ? "." + bidSplit[1].substring(0, accuracySplit - 3)
+        : "");
+
+    bidPriceBig =
+      accuracySplit > 0
+        ? bidSplit[1].substring(bidSplit[1].length - 3, bidSplit[1].length)
+        : "";
+  }
+
+  return { bidPriceMedium, bidPriceSmall, bidPriceBig };
+};
+
+export const getFormattedAskPrice = (asset) => {
+  let accuracy = asset.accuracy,
+    accuracySplit = asset.accuracy,
+    askSplit = asset.ask.split("."),
+    askPriceMedium,
+    askPriceSmall,
+    askPriceBig;
+
+  if (accuracySplit > 2) {
+    askPriceMedium =
+      askSplit[0] + "." + askSplit[1].substring(0, accuracySplit - 3);
+
+    askPriceSmall = askSplit[1].substring(
+      askSplit[1].length - 3,
+      askSplit[1].length - 2
+    );
+
+    askPriceBig = askSplit[1].substring(
+      askSplit[1].length - 2,
+      askSplit[1].length
+    );
+  } else {
+    askPriceMedium =
+      askSplit[0] +
+      (accuracySplit > 0
+        ? "." + askSplit[1].substring(0, accuracySplit - 3)
+        : "");
+
+    askPriceBig =
+      accuracySplit > 0
+        ? askSplit[1].substring(askSplit[1].length - 3, askSplit[1].length)
+        : "";
+  }
+
+  return { askPriceMedium, askPriceSmall, askPriceBig };
+};

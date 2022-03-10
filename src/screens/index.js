@@ -10,5 +10,7 @@ export { default as OpenPositionsRealForex } from "./RealForex/OpenPositionsReal
 export { default as PendingOrdersRealForex } from "./RealForex/PendingOrdersRealForex/PendingOrdersRealForex";
 export { default as ClosedPositionsRealForex } from "./RealForex/ClosedPositionsRealForex/ClosedPositionsRealForex";
 export { default as Balance } from "./RealForex/Balance/Balance";
+export { default as RealForexOrderChart } from "./RealForex/RealForexOrderChart/RealForexOrderChart";
+export { default as RealForexOrderDetails } from "./RealForex/RealForexOrderDetails/RealForexOrderDetails";
 
 export { default as NoInternetConnection } from "./NoInternetConnection/NoInternetConnection";

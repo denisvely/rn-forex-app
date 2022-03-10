@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import QuotesRealForexStack from "./RealForex/QuotesRealForexStack";
-import OpenPositionsRealForexStack from "./RealForex/OpenPositionsRealForexStack";
-import PendingOrdersRealForexStack from "./RealForex/PendingOrdersRealForexStack";
-import ClosedPositionsRealForexStack from "./RealForex/ClosedPositionsRealForexStack";
-import BalanceStack from "./RealForex/BalanceStack";
+import {
+  HeaderLeft,
+  HeaderRight,
+  NotificationsIcon,
+} from "components";
+import { headerOptions } from "constants";
+import {
+  Quotes,
+  OpenPositionsRealForex,
+  PendingOrdersRealForex,
+  ClosedPositionsRealForex,
+  Balance,
+} from "screens";
 
 import { CustomTabBar } from "../components";
 import { loadInitialRealForexData } from "store/realForex";
@@ -15,6 +24,7 @@ import { signalRStop } from "../store/realForex/signalRActions";
 const RealForexStack = createBottomTabNavigator();
 
 const RealForexStackNavigator = ({ navigation }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,29 +45,114 @@ const RealForexStackNavigator = ({ navigation }) => {
     >
       <RealForexStack.Screen
         name="quotes"
-        component={QuotesRealForexStack}
-        options={{ headerShown: false }}
-      />
+        options={{
+          tabBarLabel: "quotes",
+          title: t("navigation.quotes"),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      >
+        {(props) => <Quotes {...props} />}
+      </RealForexStack.Screen>
       <RealForexStack.Screen
         name="openPositions"
-        component={OpenPositionsRealForexStack}
-        options={{ headerShown: false }}
-      />
+        options={{
+          tabBarLabel: "openPositions",
+          title: t("navigation.openPositions"),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      >
+        {(props) => <OpenPositionsRealForex {...props} />}
+      </RealForexStack.Screen>
       <RealForexStack.Screen
         name="pendingOrders"
-        component={PendingOrdersRealForexStack}
-        options={{ headerShown: false }}
-      />
+        options={{
+          tabBarLabel: "pendingOrders",
+          title: t("navigation.pendingOrders"),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      >
+        {(props) => <PendingOrdersRealForex {...props} />}
+      </RealForexStack.Screen>
       <RealForexStack.Screen
         name="closedPositions"
-        component={ClosedPositionsRealForexStack}
-        options={{ headerShown: false }}
-      />
+        options={{
+          tabBarLabel: "closedPositions",
+          title: t("navigation.closedPositions"),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      >
+        {(props) => <ClosedPositionsRealForex {...props} />}
+      </RealForexStack.Screen>
       <RealForexStack.Screen
         name="balance"
-        component={BalanceStack}
-        options={{ headerShown: false }}
-      />
+        options={{
+          tabBarLabel: "balance",
+          title: t("navigation.balance"),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderLeft navigation={navigation} showDrawer={true} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<NotificationsIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      >
+        {(props) => <Balance {...props} />}
+      </RealForexStack.Screen>
     </RealForexStack.Navigator>
   );
 };

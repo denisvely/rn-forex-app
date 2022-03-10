@@ -1612,6 +1612,13 @@
   "resolved" "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.4.tgz"
   "version" "15.7.4"
 
+"@types/react-native@*":
+  "integrity" "sha512-DyBkq7kw1UngzfvBr8WE41+hL/TWpxOZVaeABJz6Si7DmpT0Rq6vJCYjVaR85ViKSYJvIHpzxYfp0dD+lb3ctA=="
+  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.67.2.tgz"
+  "version" "0.67.2"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.20":
   "integrity" "sha512-bLdglUiBSQNzWVVbmNPKGYYjrzp3/YDPwfOH3nLEz99I4awLlaRAPWjo6bZ2POpxztFWtDDXIPxBLVykXqBt+w=="
   "resolved" "https://registry.npmjs.org/@types/react-redux/-/react-redux-7.1.21.tgz"
@@ -4983,6 +4990,13 @@
     "hoist-non-react-statics" "^3.3.0"
     "invariant" "^2.2.4"
     "lodash" "^4.17.21"
+    "prop-types" "^15.7.2"
+
+"react-native-input-spinner@^1.7.12":
+  "integrity" "sha512-U6Cprz8TocsBjbk2fXeaQs5wuHnJCrbIlVbSgL/5FF9X5Mpzp/xcTyqF4I/fUL0z5uZrVceAmEJ2pWBcAJPtew=="
+  "resolved" "https://registry.npmjs.org/react-native-input-spinner/-/react-native-input-spinner-1.7.12.tgz"
+  "version" "1.7.12"
+  dependencies:
     "prop-types" "^15.7.2"
 
 "react-native-picker-select@^8.0.4":

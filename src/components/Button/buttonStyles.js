@@ -93,6 +93,38 @@ export default {
         backgroundColor: colors.primaryColorGray,
       },
     }),
+    buy: StyleSheet.create({
+      button: {
+        ...defaultButtonStyles,
+        color: colors.white,
+        backgroundColor: colors.buyColor,
+        borderRadius: borderRadiusSmall,
+      },
+      disabled: {
+        ...defaultButtonStyles,
+        color: colors.black,
+        backgroundColor: colors.systemColorInactive,
+      },
+      text: {
+        color: colors.white,
+      },
+    }),
+    sell: StyleSheet.create({
+      button: {
+        ...defaultButtonStyles,
+        color: colors.white,
+        backgroundColor: colors.sellColor,
+        borderRadius: borderRadiusSmall,
+      },
+      disabled: {
+        ...defaultButtonStyles,
+        color: colors.black,
+        backgroundColor: colors.systemColorInactive,
+      },
+      text: {
+        color: colors.white,
+      },
+    }),
   },
   sizes: StyleSheet.create({
     bigRadius: {
@@ -111,6 +143,15 @@ export default {
       maxWidth: deviceWidth - 32,
       minWidth: "64%",
       height: 50,
+    },
+    medium: {
+      maxWidth: deviceWidth / 2 - 27,
+      minWidth: deviceWidth / 2 - 27,
+      height: 60,
+    },
+    tabButton: {
+      height: 36,
+      width: "100%",
     },
     small: {
       maxWidth: 120,

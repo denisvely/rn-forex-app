@@ -13,7 +13,16 @@ export { default as HeaderLeft } from "./HeaderLeft/HeaderLeft";
 export { default as HeaderRight } from "./HeaderRight/HeaderRight";
 export { default as NotificationsIcon } from "./NotificationsIcon/NotificationsIcon";
 export { default as LazyFlatList } from "./LazyFlatList/LazyFlatList";
+export { default as MarketPendingButtons } from "./MarketPendingButtons/MarketPendingButtons";
+export { default as Spinner } from "./Spinner/Spinner";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
+export { default as BuyPrice } from "./RealForex/BuyPrice/BuyPrice";
+export { default as SellPrice } from "./RealForex/SellPrice/SellPrice";
 export { default as AssetsFilter } from "./RealForex/AssetsFilter/AssetsFilter";
+export { default as FavouritesIcon } from "./FavouritesIcon/FavouritesIcon";
+export { default as RealForexTradeButtons } from "./RealForex/RealForexTradeButtons/RealForexTradeButtons";
+export { default as QuantityInput } from "./RealForex/QuantityInput/QuantityInput";
+export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
+export { default as StopLoss } from "./RealForex/StopLoss/StopLoss";

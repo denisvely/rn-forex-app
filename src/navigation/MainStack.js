@@ -4,13 +4,20 @@ import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import RealForexStack from "./RealForexStack";
-import { Home, Menu, Notifications } from "screens";
+import {
+  Home,
+  Menu,
+  Notifications,
+  RealForexOrderChart,
+  RealForexOrderDetails,
+} from "screens";
 import { headerOptions } from "constants";
 import {
   HeaderLeft,
   HeaderRight,
   NotificationsIcon,
   HeaderX,
+  FavouritesIcon,
 } from "components";
 
 import { getApplication } from "store/app";
@@ -83,6 +90,48 @@ const MainStackNavigator = ({ navigation }) => {
               firstComponent={
                 <NotificationsIcon navigation={navigation} active={true} />
               }
+            />
+          ),
+        }}
+      />
+      <MainStack.Screen
+        name="RealForexOrderChart"
+        component={RealForexOrderChart}
+        options={{
+          tabBarLabel: "RealForexOrderChart",
+          title: "",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderX onPress={() => navigation.navigate("quotes")} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<FavouritesIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      />
+      <MainStack.Screen
+        name="RealForexOrderDetails"
+        component={RealForexOrderDetails}
+        options={{
+          tabBarLabel: "RealForexOrderDetails",
+          title: "",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderX onPress={() => navigation.navigate("quotes")} />
+          ),
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<FavouritesIcon navigation={navigation} />}
             />
           ),
         }}

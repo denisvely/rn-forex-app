@@ -5,7 +5,14 @@
     "sell": "Sell",
     "real-forex": "Real Forex",
     "simplex": "Simplex",
-    "logout": "Logout"
+    "logout": "Logout",
+    "market": "Market",
+    "pending": "Pending",
+    "quantity": "Quantity",
+    "takeProfit": "Take Profit",
+    "stopLoss": "Stop Loss",
+    "amount": "Amount",
+    "distance": "Distance"
   },
   "navigation": {
     "quotes": "Quotes",

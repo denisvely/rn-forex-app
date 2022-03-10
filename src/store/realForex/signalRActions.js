@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 
 import ServiceManager from "utils/serviceManager";
 
-export const connection = signalr.hubConnection("https://api.finte.co");
+const connection = signalr.hubConnection("https://api.finte.co");
 
 export const signalRStop = () => {
   connection.stop();

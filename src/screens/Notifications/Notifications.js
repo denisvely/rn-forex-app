@@ -28,9 +28,7 @@ const Notifications = ({ navigation, game }) => {
     alert("Clear all here");
   };
 
-  return !notifications ? (
-    <Loading />
-  ) : (
+  return notifications ? (
     <>
       <View style={styles.notificationsHeader}>
         <Typography
@@ -72,6 +70,8 @@ const Notifications = ({ navigation, game }) => {
         />
       </View>
     </>
+  ) : (
+    <Loading />
   );
 };
 

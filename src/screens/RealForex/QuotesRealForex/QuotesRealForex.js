@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useSelector } from "react-redux";
 
 import { getRealForexOptionsByType } from "store/realForex";
-import { LazyFlatList, AssetBox, AssetsFilter } from "components";
+import { LazyFlatList, AssetBox, AssetsFilter, Loading } from "components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 
 import styles from "./quotesStyles";
@@ -22,13 +22,13 @@ const Quotes = ({ navigation }) => {
         activeFilter={activeFilter}
         changeActiveFilter={(translation) => setActiveFilter(translation)}
       />
-      {realForexOptionsByType && (
+      {realForexOptionsByType ? (
         <LazyFlatList
           list={Object.values(realForexOptionsByType[activeFilter])}
           renderItem={({ item, index }) => {
             return (
               <AssetBox
-                option={item}
+                asset={item}
                 index={index}
                 navigation={navigation}
                 icon={assetIcon}
@@ -42,11 +42,14 @@ const Quotes = ({ navigation }) => {
             width: deviceWidth,
             justifyContent: "center",
             alignItems: "center",
+            alignSelf: "center",
             paddingBottom: 100,
           }}
           style={styles.flatListContainer}
           listRef={flatListRef}
         />
+      ) : (
+        <Loading />
       )}
     </View>
   );

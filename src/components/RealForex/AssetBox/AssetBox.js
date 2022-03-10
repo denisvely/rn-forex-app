@@ -1,16 +1,17 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Pressable } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
 
 import { getRealForexPrices } from "store/realForex";
-import { Typography } from "components";
+import { Typography, BuyPrice, SellPrice } from "components";
 
 import styles from "./assetBoxStyles";
 
-const AssetBox = ({ option, navigation, icon }) => {
+const AssetBox = ({ asset, navigation, icon }) => {
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
 
+  // TODO => when getRealForexDailyChange:  is ready because we don`t have asset.openPrice
   const calculateSpread = (
     askPrice,
     bidPrice,
@@ -51,38 +52,42 @@ const AssetBox = ({ option, navigation, icon }) => {
   return (
     realForexPrices && (
       <View style={styles.assetBox}>
-        <View style={styles.left}>
-          <SvgXml style={styles.assetIcon} xml={icon} width="40" height="40" />
-          <View>
-            <Typography
-              name="medium"
-              text={option.name}
-              style={styles.assetName}
+        <Pressable
+          style={styles.assetBoxButton}
+          onPress={() => {
+            navigation.navigate("RealForexOrderChart", { asset });
+          }}
+        >
+          <View style={styles.left}>
+            <SvgXml
+              style={styles.assetIcon}
+              xml={icon}
+              width="40"
+              height="40"
             />
-            <Typography
-              name="small"
-              text={calculateSpread(
-                realForexPrices[option.id].ask,
-                realForexPrices[option.id].bid,
-                realForexPrices[option.id].accuracy,
-                option.openPrice
-              )}
-              style={styles.profit}
-            />
+            <View>
+              <Typography
+                name="medium"
+                text={asset.name}
+                style={styles.assetName}
+              />
+              <Typography
+                name="small"
+                text={calculateSpread(
+                  realForexPrices[asset.id].ask,
+                  realForexPrices[asset.id].bid,
+                  realForexPrices[asset.id].accuracy,
+                  asset.openPrice
+                )}
+                style={styles.profit}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.right}>
-          <Typography
-            name="normal"
-            text={realForexPrices[option.id].ask}
-            style={styles.buy}
-          />
-          <Typography
-            name="normal"
-            text={realForexPrices[option.id].bid}
-            style={styles.sell}
-          />
-        </View>
+          <View style={styles.right}>
+            <BuyPrice asset={asset} />
+            <SellPrice asset={asset} />
+          </View>
+        </Pressable>
       </View>
     )
   );
