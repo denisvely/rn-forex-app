@@ -9,7 +9,9 @@ import {
   QuantityInput,
   TakeProfit,
   StopLoss,
+  HeaderAssetInfo,
 } from "components";
+import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 
 import styles from "./realForexOrderDetailsStyles";
 
@@ -20,19 +22,22 @@ const RealForexOrderDetails = ({ route, navigation }) => {
 
   const [isMarket, setOrderType] = useState(true);
   const [quantity, onChangeQuantity] = useState(null);
+
+  const [takeProfitAmount, onChangeTakeProfitAmount] = useState(null);
+  const [takeProfitDistance, onChangeTakeProfitDistance] = useState(null);
   const [stopLossAmount, onChangeStopLossAmount] = useState(null);
   const [stopLossDistance, onChangeStopLossDistance] = useState(null);
 
   useEffect(() => {
     navigation.setOptions({
-      title: `${asset.name}`,
+      headerLeft: () => (
+        <HeaderAssetInfo
+          assetName={asset.name}
+          assetIcon={assetIcon}
+          navigation={navigation}
+        />
+      ),
     });
-
-    return () => {
-      navigation.setOptions({
-        title: ``,
-      });
-    };
   }, [route.params.asset]);
 
   return (
@@ -45,8 +50,26 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         value={quantity}
         onChange={(text) => onChangeQuantity(text)}
       />
-      <TakeProfit />
-      <StopLoss />
+      <TakeProfit
+        takeProfitAmount={takeProfitAmount}
+        onChangeTakeProfitAmount={(orderType) =>
+          onChangeTakeProfitAmount(orderType)
+        }
+        takeProfitDistance={takeProfitDistance}
+        onChangeTakeProfitDistance={(orderType) =>
+          onChangeTakeProfitDistance(orderType)
+        }
+      />
+      <StopLoss
+        stopLossAmount={stopLossAmount}
+        onChangeStopLossAmount={(orderType) =>
+          onChangeStopLossAmount(orderType)
+        }
+        stopLossDistance={stopLossDistance}
+        onChangeStopLossDistance={(orderType) =>
+          onChangeStopLossDistance(orderType)
+        }
+      />
       <RealForexTradeButtons asset={asset} />
     </View>
   );

@@ -104,9 +104,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
-          headerLeft: () => (
-            <HeaderX onPress={() => navigation.navigate("quotes")} />
-          ),
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
@@ -125,9 +122,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
-          headerLeft: () => (
-            <HeaderX onPress={() => navigation.navigate("quotes")} />
-          ),
           headerRight: () => (
             <HeaderRight
               navigation={navigation}

@@ -54,6 +54,7 @@ const AssetBox = ({ asset, navigation, icon }) => {
       <View style={styles.assetBox}>
         <Pressable
           style={styles.assetBoxButton}
+          activeOpacity={0.5}
           onPress={() => {
             navigation.navigate("RealForexOrderChart", { asset });
           }}

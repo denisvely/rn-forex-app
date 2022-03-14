@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { SvgXml } from "react-native-svg";
 
 import {
   HeaderLeft,
   HeaderRight,
   NotificationsIcon,
+  Typography,
+  HeaderTitleLogo,
 } from "components";
 import { headerOptions } from "constants";
 import {
@@ -47,7 +51,7 @@ const RealForexStackNavigator = ({ navigation }) => {
         name="quotes"
         options={{
           tabBarLabel: "quotes",
-          title: t("navigation.quotes"),
+          title: "",
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
@@ -55,6 +59,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
+          headerTitle: () => <HeaderTitleLogo />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
@@ -77,6 +82,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
+          headerTitle: () => <HeaderTitleLogo />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
@@ -99,6 +105,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
+          headerTitle: () => <HeaderTitleLogo />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
@@ -121,6 +128,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
+          headerTitle: () => <HeaderTitleLogo />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
@@ -143,6 +151,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
+          headerTitle: () => <HeaderTitleLogo />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}

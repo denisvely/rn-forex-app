@@ -34,9 +34,11 @@ export default {
   leftAndRightPadding: {
     headerLeftContainerStyle: {
       paddingLeft: 16,
+      paddingBottom: 8,
     },
     headerRightContainerStyle: {
       paddingRight: 16,
+      paddingBottom: 8,
     },
   },
   headerTitleStyle: {

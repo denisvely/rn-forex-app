@@ -28,12 +28,22 @@ export default StyleSheet.create({
   normal: {
     fontSize: 16,
     lineHeight: 20,
-    fontFamily: defaultBold,
+    fontFamily: defaultFont,
   },
   normalBold: {
     fontSize: 16,
     lineHeight: 22,
     fontFamily: defaultBold,
+  },
+  bigNormal: {
+    fontSize: 18,
+    lineHeight: 25,
+    fontFamily: defaultFont,
+  },
+  bigNormalBold: {
+    fontSize: 18,
+    lineHeight: 25,
+    fontFamily: defaultSemiBold,
   },
   medium: {
     fontSize: 20,

@@ -4,7 +4,7 @@ import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
   assetBox: {
-    width: deviceWidth - 48,
+    width: deviceWidth - 32,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
@@ -17,7 +17,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    width: deviceWidth - 48,
+    width: deviceWidth - 32,
     paddingHorizontal: 12,
     borderRadius: 2,
     height: 84,

@@ -19,4 +19,8 @@ export default StyleSheet.create({
     color: colors.buyColor,
     marginLeft: 15,
   },
+  chartContainer: {
+    width: deviceWidth - 24,
+    height: 500,
+  },
 });
