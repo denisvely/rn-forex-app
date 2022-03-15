@@ -39,9 +39,9 @@ const NotificationsIcon = ({ navigation, active }) => {
             width="20"
             height="20"
           />
-          {unreadNotifications && (
+          {unreadNotifications ? (
             <View style={notificationsListStyles.dotWrapper} />
-          )}
+          ) : null}
         </View>
       </View>
     </Pressable>

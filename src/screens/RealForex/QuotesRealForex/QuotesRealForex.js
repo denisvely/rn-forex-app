@@ -23,7 +23,7 @@ const Quotes = ({ navigation }) => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchString, onChangeSearchField] = useState("");
   const [foundAssets, setFoundAssets] = useState([]);
-
+  console.log(realForexOptionsByType);
   const searchAsset = (str) => {
     if (!str && !str !== "") {
       setFoundAssets([]);

@@ -15,11 +15,11 @@ const TextField = ({
 }) => {
   return (
     <View style={styles.textFieldWrapper}>
-      {hasIcon && (
+      {hasIcon ? (
         <View style={styles.iconWrapper}>
           <SvgXml xml={textFieldIcons[type][0]} height={40} width={32} />
         </View>
-      )}
+      ) : null}
       <TextInput
         autoCapitalize="none"
         autoCorrect={false}

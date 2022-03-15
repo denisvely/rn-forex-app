@@ -89,7 +89,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         isMarket={isMarket}
         setOrderType={(orderType) => setOrderType(orderType)}
       />
-      {isReady && (
+      {isReady ? (
         <ScrollView
           style={styles.scrollView}
           showsHorizontalScrollIndicator={false}
@@ -130,7 +130,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             <OrderInfo />
           </View>
         </ScrollView>
-      )}
+      ) : null}
       <RealForexTradeButtons asset={asset} />
     </View>
   );

@@ -2,7 +2,7 @@ import * as actionTypes from "./actionTypes";
 import { cloneDeep } from "lodash";
 
 import {
-  sortOptinsByType,
+  sortOptionsByType,
   formatRealForexOptions,
   getRealForexTotalNotifications,
   updateFavourites,
@@ -82,10 +82,11 @@ const realForexReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE: {
+      debugger;
       return {
         ...stateClone,
         realForexOptions: formatRealForexOptions(action.payload.options.data),
-        realForexOptionsByType: sortOptinsByType(action.payload.options.data),
+        realForexOptionsByType: sortOptionsByType(action.payload.options.data),
         hash: action.payload.options.hash,
         realForexBalance: action.payload.balanceRealForex.data,
       };
@@ -100,6 +101,7 @@ const realForexReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.REAL_FOREX_ASSETS_ORDER: {
+      debugger;
       return {
         ...stateClone,
         realForexOptionsByType: updateFavourites(

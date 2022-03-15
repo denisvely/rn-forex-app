@@ -81,7 +81,7 @@ const QuantityInput = ({ value, onChange }) => {
             height="32"
           />
         </TouchableHighlight>
-        {isDropdownVisible && (
+        {isDropdownVisible ? (
           <View style={styles.quantityDropdown}>
             {dropdownValues.map((value, index) => {
               return (
@@ -97,7 +97,7 @@ const QuantityInput = ({ value, onChange }) => {
               );
             })}
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   );

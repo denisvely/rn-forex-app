@@ -7,7 +7,8 @@ import styles from "./sellPriceStyles";
 
 const SellPrice = ({ asset, textColor }) => {
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
-  const bidPrice =realForexPrices && getFormattedBidPrice(realForexPrices[asset.id]);
+  const bidPrice =
+    realForexPrices && getFormattedBidPrice(realForexPrices[asset.id]);
 
   return (
     <Typography name="normal" style={styles.sell}>

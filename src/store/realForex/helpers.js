@@ -37,7 +37,7 @@ export const reorderAssets = (assets, oldIndex, newIndex) => {
   return assets;
 };
 
-export const sortOptinsByType = (options) => {
+export const sortOptionsByType = (options) => {
   let optionsByType = {
     All: {},
     Currencies: {},
@@ -63,7 +63,7 @@ export const sortOptinsByType = (options) => {
       }
     });
   });
-
+  debugger;
   return optionsByType;
 };
 

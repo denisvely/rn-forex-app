@@ -41,7 +41,7 @@ const AssetsSearch = ({
         placeholderTextColor={colors.fontSecondaryColor}
         style={styles.searchInput}
       />
-      {assets.length > 0 && (
+      {assets.length > 0 ? (
         <View style={styles.foundAssets}>
           <LazyFlatList
             list={assets}
@@ -72,7 +72,7 @@ const AssetsSearch = ({
             listRef={foundAssetsRef}
           />
         </View>
-      )}
+      ) : null}
     </View>
   );
 };

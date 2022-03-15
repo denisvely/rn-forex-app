@@ -63,9 +63,9 @@ const AssetsFilter = ({ activeFilter, changeActiveFilter }) => {
                 }
                 text={t(`realForex.${translation}`)}
               />
-              {translation === activeFilter && (
+              {translation === activeFilter ? (
                 <View style={styles.activeFilter} />
-              )}
+              ) : null}
             </Pressable>
           );
         })}
