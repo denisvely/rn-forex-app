@@ -1,7 +1,6 @@
 import React from "react";
 import InputSpinner from "react-native-input-spinner";
-import { colors } from "constants";
-
+import { colors } from "../../constants";
 import styles from "./spinnerStyles";
 
 const Spinner = ({ spinnerValue, onSpinnerChange, placeholder }) => {

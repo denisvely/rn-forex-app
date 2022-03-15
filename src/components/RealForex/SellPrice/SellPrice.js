@@ -1,19 +1,13 @@
 import React from "react";
-import { View, Pressable } from "react-native";
-import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
-
-import { getRealForexPrices } from "store/realForex";
-import { Typography } from "components";
-import { getFormattedBidPrice } from "store/realForex/helpers";
-
+import { getRealForexPrices } from "../../../store/realForex";
+import { Typography } from "../../../components";
+import { getFormattedBidPrice } from "../../../store/realForex/helpers";
 import styles from "./sellPriceStyles";
 
 const SellPrice = ({ asset, textColor }) => {
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
-
-  const bidPrice =
-    realForexPrices && getFormattedBidPrice(realForexPrices[asset.id]);
+  const bidPrice =realForexPrices && getFormattedBidPrice(realForexPrices[asset.id]);
 
   return (
     <Typography name="normal" style={styles.sell}>

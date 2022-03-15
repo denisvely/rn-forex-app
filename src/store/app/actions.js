@@ -27,7 +27,7 @@ export const checkAsyncStorage = (dispatch) => {
     // sessionId && ServiceManager.sessionId(token);
     await (token && ServiceManager.setToken(JSON.parse(token)));
 
-    if (!token) {
+    //if (!token) {
       tokenService
         .getToken()
         .fetch()
@@ -46,7 +46,7 @@ export const checkAsyncStorage = (dispatch) => {
           });
         });
       return;
-    }
+    //}
 
     token = JSON.parse(token);
     ServiceManager.setToken(token);
@@ -165,4 +165,7 @@ const getTokenWithRefresh = (token) => {
 
 export const setGame = (dispatch, payload) => {
   dispatch({ type: actionTypes.SET_GAME, payload });
+};
+export const setDailyChanges = (dispatch, payload) => {
+  dispatch({ type: actionTypes.SET_DAILY_CHANGES, payload });
 };

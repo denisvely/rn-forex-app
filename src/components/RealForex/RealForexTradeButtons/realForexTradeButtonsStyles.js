@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "constants";
-import { deviceWidth } from "utils";
+import { colors } from "../../../constants";
 
 export default StyleSheet.create({
   buttonsWrapper: {

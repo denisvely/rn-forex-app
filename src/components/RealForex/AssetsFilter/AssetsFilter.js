@@ -1,9 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, ScrollView, Pressable } from "react-native";
-
-import { Typography } from "components";
-
+import { Typography } from "../../../components";
 import styles from "./assetsFilterStyles";
 
 const realForexFilters = [

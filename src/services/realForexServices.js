@@ -1,8 +1,5 @@
-import axios from "axios";
 import moment from "moment";
-import $ from "jquery";
-
-import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
+import ServiceManager, { Service, apiConsts } from "../utils/serviceManager";
 
 export default {
   getRealForexOpenTrades: () => {

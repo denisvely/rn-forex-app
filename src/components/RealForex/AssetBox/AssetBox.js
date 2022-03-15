@@ -2,9 +2,8 @@ import React from "react";
 import { View, Pressable } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
-
-import { getRealForexPrices } from "store/realForex";
-import { Typography, BuyPrice, SellPrice } from "components";
+import { getRealForexPrices } from "../../../store/realForex";
+import { Typography, BuyPrice, SellPrice } from "../../../components";
 
 import styles from "./assetBoxStyles";
 

@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { TextInput, View } from "react-native";
 import { SvgXml } from "react-native-svg";
-
 import textFieldIcons from "./textFieldIcons";
-
 import styles from "./textFieldStyles";
 
 const TextField = ({

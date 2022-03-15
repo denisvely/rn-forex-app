@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 const defaultFont = "Gilroy-Medium";
 const defaultBold = "Gilroy-Bold";
 const defaultSemiBold = "Gilroy-SemiBold";

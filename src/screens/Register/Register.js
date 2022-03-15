@@ -5,8 +5,6 @@ import { Formik } from "formik";
 
 import {Button, TextField, Typography} from "../../components";
 import RegisterService from "./services/RegisterService";
-import { colors } from "../../constants";
-
 import { register } from "store/app";
 import styles from "../Login/loginStyles";
 import {SvgXml} from "react-native-svg";

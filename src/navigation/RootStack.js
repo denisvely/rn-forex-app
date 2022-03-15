@@ -4,19 +4,15 @@ import { useFonts } from "expo-font";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AppLoading from "expo-app-loading";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // TODO => Stacks
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
-
-import { InvalidTokenModal } from "components";
-
+import { InvalidTokenModal } from "../components/InvalidTokenModal/InvalidTokenModal";
 import { NoInternetConnection } from "../screens";
-
-import { checkConnection, getApplication, checkAsyncStorage } from "store/app";
+import { checkConnection, getApplication, checkAsyncStorage } from "../store/app";
 
 const RootStack = createStackNavigator();
 

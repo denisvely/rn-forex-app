@@ -3,7 +3,7 @@ export const formatRealForexOptions = (options) => {
   let forexOptions = allOptions;
 
   for (var i = allOptions.length - 1; i >= 0; i--) {
-    if (!availableForTrading(allOptions[i])) {
+    if (availableForTrading(allOptions[i])) {
       forexOptions = reorderAssets(allOptions, i, allOptions.length - 1);
     }
   }
@@ -19,7 +19,7 @@ export const availableForTrading = (option) => {
     var dateFrom = new Date(option.rules[i].dates.from.dateTime),
       dateTo = new Date(option.rules[i].dates.to.dateTime);
 
-    if (currTime > dateFrom && dateFrom < dateTo) {
+    if (currTime > dateFrom && currTime < dateTo) {
       isAvailableForTrading = option.rules[i].availableForTrading;
     }
   }

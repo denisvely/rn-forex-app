@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
-
 import chartSvg from "../../../assets/svg/chartSvg";
-import { RealForexTradeButtons, Typography } from "components";
-import { deviceWidth } from "utils";
-
+import { RealForexTradeButtons, Typography } from "../../../components";
+import { deviceWidth } from "../../../utils";
 import styles from "./realForexOrderChartStyles";
 
 const RealForexOrderChart = ({ route, navigation }) => {

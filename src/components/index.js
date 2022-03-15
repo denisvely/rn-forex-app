@@ -26,3 +26,8 @@ export { default as RealForexTradeButtons } from "./RealForex/RealForexTradeButt
 export { default as QuantityInput } from "./RealForex/QuantityInput/QuantityInput";
 export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
 export { default as StopLoss } from "./RealForex/StopLoss/StopLoss";
+
+// Simplex
+export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";
+export { default as AssetsFilterSimplex } from "./Simplex/AssetsFilter/AssetsFilter";
+export { default as BuyPriceSimplex } from "./Simplex/BuyPrice/BuyPrice";

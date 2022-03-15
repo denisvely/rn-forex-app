@@ -1,24 +1,23 @@
 import React from "react";
-import { View } from "react-native";
-import { useDispatch } from "react-redux";
+import {View} from "react-native";
+import {useDispatch} from "react-redux";
+import {Typography} from "../../../components";
 
-import { Typography } from "components";
+const PendingOrdersRealForex = ({navigation}) => {
+    const dispatch = useDispatch();
 
-const PendingOrdersRealForex = ({ navigation }) => {
-  const dispatch = useDispatch();
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography name="largeBold" text={"Pending Orders"}></Typography>
-    </View>
-  );
+    return (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: "white",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <Typography name="largeBold" text={"Pending Orders"}></Typography>
+        </View>
+    );
 };
 
 export default PendingOrdersRealForex;

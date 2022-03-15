@@ -13,6 +13,7 @@ const initialState = {
   games: null,
   isLogged: false,
   game: null,
+  dailyChanges: null
 };
 
 const appReducer = (state = initialState, action) => {
@@ -75,6 +76,14 @@ const appReducer = (state = initialState, action) => {
       return {
         ...stateClone,
         game: action.payload,
+      };
+    }
+    case actionTypes.SET_DAILY_CHANGES: {
+      const stateClone = cloneDeep(state);
+
+      return {
+        ...stateClone,
+        dailyChanges: action.payload,
       };
     }
     case actionTypes.SIGN_OUT: {

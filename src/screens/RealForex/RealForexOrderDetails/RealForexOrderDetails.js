@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, TextInput } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { SvgXml } from "react-native-svg";
-
 import {
   RealForexTradeButtons,
   MarketPendingButtons,
   QuantityInput,
   TakeProfit,
   StopLoss,
-} from "components";
+} from "../../../components";
 
 import styles from "./realForexOrderDetailsStyles";
 

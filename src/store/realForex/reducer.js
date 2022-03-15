@@ -17,7 +17,6 @@ const initialState = {
   realForexPendingOrders: null,
   realForexClosedPositions: null,
   realForexOptions: null,
-  realForexOptionsByType: null,
   realForexBalance: null,
   hash: "",
   realForexOptionsByType: {

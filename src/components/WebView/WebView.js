@@ -1,6 +1,5 @@
 import React from "react";
 import { WebView } from "react-native-webview";
-
 import Loading from "../Loading/Loading";
 
 export default function NativeWebView({

@@ -1,9 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { SvgXml } from "react-native-svg";
-
 import styles from "./headerLeftStyles";
 
 // TODO -> hamburger

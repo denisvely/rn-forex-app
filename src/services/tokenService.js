@@ -7,7 +7,7 @@ export default {
     service.setPrepareRequest((request) => {
       let options = {};
       // TODO => webIds consts file
-      options["webId"] = "97AA047C-D004-4F58-AABA-169C54A8D0AB";
+      options["webId"] = "9A1D49B1-63D1-4791-AE00-084FE5762A1A";
 
       request.convertToQueryParamsWithoutToken(options);
 

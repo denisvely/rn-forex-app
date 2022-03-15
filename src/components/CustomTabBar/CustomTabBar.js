@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
 import PropTypes from "prop-types";
 
-import { Typography } from "components";
+import Typography from "../Typography/Typography";
 
 import {
   tabStackIcons,

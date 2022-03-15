@@ -14,7 +14,6 @@ export default StyleSheet.create({
   },
   box: {
     height: 141,
-    width: "100%",
     borderRadius: 4,
     width: deviceWidth - 48,
     paddingHorizontal: 22,

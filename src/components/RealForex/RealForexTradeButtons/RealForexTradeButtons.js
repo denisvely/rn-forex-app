@@ -2,9 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
-
-import { Button, Typography, BuyPrice, SellPrice } from "components";
-import { getRealForexPrices } from "store/realForex";
+import { Button, Typography, BuyPrice, SellPrice } from "../../../components";
+import { getRealForexPrices } from "../../../store/realForex";
 import {
   getFormattedBidPrice,
   getFormattedAskPrice,

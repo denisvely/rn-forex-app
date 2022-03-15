@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Button } from "components";
+import { Button } from "../Button/Button";
 
 import styles from "./marketPendingButtonsStyles";
 

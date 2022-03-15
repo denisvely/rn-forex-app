@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import { Login, Register, ForgotPassword } from "../screens";
 
 const AuthStack = createStackNavigator();

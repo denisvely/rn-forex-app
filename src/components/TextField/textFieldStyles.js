@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-
-import { colors } from "constants";
+import { colors } from "../../constants";
 
 export default StyleSheet.create({
   textFieldWrapper: {
@@ -21,7 +20,6 @@ export default StyleSheet.create({
   input: {
     height: 44,
     backgroundColor: colors.white,
-    color: colors.fontPrimaryColor,
     borderBottomWidth: 1,
     borderColor: colors.gray,
     paddingVertical: 11,

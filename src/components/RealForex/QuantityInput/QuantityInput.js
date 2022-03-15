@@ -1,10 +1,8 @@
 import React from "react";
 import { View, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Typography } from "components";
-import { colors } from "constants";
-
+import { Typography } from "../../../components";
+import { colors } from "../../../constants";
 import styles from "./quantityInputStyles";
 
 const QuantityInput = ({ value, onChange }) => {

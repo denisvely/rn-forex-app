@@ -1,8 +1,5 @@
 import React from "react";
-
 import { Shadow } from "react-native-shadow-2";
-
-import { colors } from "constants";
 
 export default function CustomShadow({
   children,

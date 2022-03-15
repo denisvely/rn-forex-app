@@ -1,10 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Typography } from "components";
-
-import { colors } from "constants";
+import Typography from "../Typography/Typography";
 
 export default function InvalidTokenModal({ logout }) {
   const { t } = useTranslation();

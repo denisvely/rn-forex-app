@@ -2,23 +2,22 @@ import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import {
-  HeaderLeft,
-  HeaderRight,
-  NotificationsIcon,
-} from "components";
-import { headerOptions } from "constants";
+    HeaderLeft,
+    HeaderRight,
+    NotificationsIcon,
+    CustomTabBar
+} from "../components";
+import { headerOptions } from "../constants";
 import {
   Quotes,
   OpenPositionsRealForex,
   PendingOrdersRealForex,
   ClosedPositionsRealForex,
   Balance,
-} from "screens";
+} from "../screens";
 
-import { CustomTabBar } from "../components";
-import { loadInitialRealForexData } from "store/realForex";
+import { loadInitialRealForexData } from "../store/realForex";
 import { signalRStop } from "../store/realForex/signalRActions";
 
 const RealForexStack = createBottomTabNavigator();
