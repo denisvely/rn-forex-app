@@ -63,7 +63,7 @@ export const sortOptionsByType = (options) => {
       }
     });
   });
-  debugger;
+  
   return optionsByType;
 };
 

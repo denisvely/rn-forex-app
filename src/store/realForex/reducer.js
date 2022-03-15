@@ -82,7 +82,6 @@ const realForexReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE: {
-      debugger;
       return {
         ...stateClone,
         realForexOptions: formatRealForexOptions(action.payload.options.data),
@@ -101,7 +100,6 @@ const realForexReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.REAL_FOREX_ASSETS_ORDER: {
-      debugger;
       return {
         ...stateClone,
         realForexOptionsByType: updateFavourites(
