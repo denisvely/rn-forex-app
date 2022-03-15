@@ -34,6 +34,7 @@ const initialState = {
   realForexNotifications: null,
   realForexTotalNewNotifications: null,
   realForexTraderInsight: null,
+  selectedAsset: null,
 };
 
 const realForexReducer = (state = initialState, action) => {
@@ -112,6 +113,12 @@ const realForexReducer = (state = initialState, action) => {
       return {
         ...stateClone,
         realForexTraderInsight: action.payload,
+      };
+    }
+    case actionTypes.SET_SELECTED_ASSET: {
+      return {
+        ...stateClone,
+        selectedAsset: action.payload,
       };
     }
 

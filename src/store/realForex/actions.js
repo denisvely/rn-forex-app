@@ -176,3 +176,7 @@ export const loadInitialRealForexData = (dispatch) => {
       console.log(err);
     });
 };
+
+export const setSelectedAsset = async (dispatch, asset) => {
+  dispatch({ type: actionTypes.SET_SELECTED_ASSET, payload: asset });
+};

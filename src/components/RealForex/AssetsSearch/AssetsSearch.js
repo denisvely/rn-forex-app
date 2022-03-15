@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { View, TextInput, TouchableHighlight } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Typography, LazyFlatList } from "components";
 
 import { colors } from "constants";
 import search from "../../../assets/svg/realForex/search";
-import { deviceWidth } from "utils";
 
 import styles from "./assetsSearchStyles";
 
