@@ -85,51 +85,53 @@ const RealForexOrderDetails = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <MarketPendingButtons
-        isMarket={isMarket}
-        setOrderType={(orderType) => setOrderType(orderType)}
-      />
       {isReady ? (
-        <ScrollView
-          style={styles.scrollView}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            flexDirection: "column",
-            width: deviceWidth,
-            flexGrow: 1,
-            paddingBottom: 100,
-          }}
-        >
-          <View style={{ width: deviceWidth }}>
-            <QuantityInput
-              value={quantity}
-              onChange={(text) => setQuantity(text)}
-            />
-            <TakeProfit
-              takeProfitAmount={takeProfitAmount}
-              onChangeTakeProfitAmount={(orderType) =>
-                onChangeTakeProfitAmount(orderType)
-              }
-              takeProfitDistance={takeProfitDistance}
-              onChangeTakeProfitDistance={(orderType) =>
-                onChangeTakeProfitDistance(orderType)
-              }
-            />
-            <StopLoss
-              stopLossAmount={stopLossAmount}
-              onChangeStopLossAmount={(orderType) =>
-                onChangeStopLossAmount(orderType)
-              }
-              stopLossDistance={stopLossDistance}
-              onChangeStopLossDistance={(orderType) =>
-                onChangeStopLossDistance(orderType)
-              }
-            />
-            <OrderInfo />
-          </View>
-        </ScrollView>
+        <>
+          <MarketPendingButtons
+            isMarket={isMarket}
+            setOrderType={(orderType) => setOrderType(orderType)}
+          />
+          <ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              width: deviceWidth,
+              flexGrow: 1,
+              paddingBottom: 100,
+            }}
+          >
+            <View style={{ width: deviceWidth }}>
+              <QuantityInput
+                value={quantity}
+                onChange={(text) => setQuantity(text)}
+              />
+              <TakeProfit
+                takeProfitAmount={takeProfitAmount}
+                onChangeTakeProfitAmount={(orderType) =>
+                  onChangeTakeProfitAmount(orderType)
+                }
+                takeProfitDistance={takeProfitDistance}
+                onChangeTakeProfitDistance={(orderType) =>
+                  onChangeTakeProfitDistance(orderType)
+                }
+              />
+              <StopLoss
+                stopLossAmount={stopLossAmount}
+                onChangeStopLossAmount={(orderType) =>
+                  onChangeStopLossAmount(orderType)
+                }
+                stopLossDistance={stopLossDistance}
+                onChangeStopLossDistance={(orderType) =>
+                  onChangeStopLossDistance(orderType)
+                }
+              />
+              <OrderInfo />
+            </View>
+          </ScrollView>
+        </>
       ) : null}
       <RealForexTradeButtons asset={asset} />
     </View>
