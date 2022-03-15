@@ -260,21 +260,13 @@ export const updateFavourites = (favouritesArray, forexOptionsByType) => {
 };
 
 export const getFormattedPrice = (asset, dailyChange) => {
-    let accuracySplit = asset.accuracy,
-        ratePrice = Number((parseFloat(asset.ask) + parseFloat(asset.bid))/2),
-        askSplit = ratePrice.toString().split("."),
+    let ratePrice = Number((parseFloat(asset.ask) + parseFloat(asset.bid))/2).toFixed(asset.accuracy),
+        askSplit = ratePrice.toString(),
         priceMedium,
-        priceSmall,
         priceBig;
 
-    // if (accuracySplit > 2) {
-    //     priceMedium = askSplit[0] + "." + askSplit[1].substring(0, (accuracySplit - 3 === 0 ? 1 : accuracySplit - 3));
-    //     priceSmall = askSplit[1].substring(askSplit[1].length - 3, askSplit[1].length - 2);
-    //     priceBig = askSplit[1].substring(askSplit[1].length - 2);
-    // } else {
-    //     priceMedium = askSplit[0] + (accuracySplit > 0 ? "." + askSplit[1].substring(0, accuracySplit - 2) : "");
-    //     priceBig = accuracySplit > 0 ? askSplit[1].substring(askSplit[1].length - 3) : "";
-    // }
+    priceMedium = askSplit.substring(0, askSplit.length - 2);
+    priceBig = askSplit.substring(askSplit.length - 2);
 
-    return {ratePrice, priceMedium, priceSmall, priceBig};
+    return {priceMedium, priceBig};
 };

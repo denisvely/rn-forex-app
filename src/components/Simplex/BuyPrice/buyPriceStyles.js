@@ -3,7 +3,10 @@ import { colors } from "../../../constants";
 
 export default StyleSheet.create({
   buy: {
-    color: colors.buyColor,
+    color: '#27A34F',
+    fontFamily: 'Gilroy-SemiBold',
+    fontSize: 16,
+    lineHeight: 19,
     textAlign: "right",
   },
 });

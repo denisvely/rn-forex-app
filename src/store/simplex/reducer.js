@@ -22,7 +22,6 @@ const initialState = {
         Currencies: {},
         CryptoCoins: {},
         CryptoTokens: {},
-        Indices: {},
         Stocks: {},
         Commodities: {},
         Futures: {},
