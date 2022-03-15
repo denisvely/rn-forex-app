@@ -12,7 +12,11 @@ import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
 import { InvalidTokenModal } from "../components/InvalidTokenModal/InvalidTokenModal";
 import { NoInternetConnection } from "../screens";
-import { checkConnection, getApplication, checkAsyncStorage } from "../store/app";
+import {
+  checkConnection,
+  getApplication,
+  checkAsyncStorage,
+} from "../store/app";
 
 const RootStack = createStackNavigator();
 
@@ -54,13 +58,13 @@ const RootStackNavigator = () => {
 
   return (
     <>
-      {!!app.invalidToken && (
+      {!!app.invalidToken ? (
         <InvalidTokenModal
           logout={() => {
             logout(dispatch);
           }}
         />
-      )}
+      ) : null}
       <NavigationContainer
         ref={navigationRef}
         onStateChange={async () => {

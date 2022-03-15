@@ -18,20 +18,18 @@ const NotificationRow = ({ notification, index, navigation }) => {
     boUserTitle = " Broker";
   }
 
-  return (
-    !notification.isDeleted && (
-      <View style={styles.notificationRow} key={`${index}`}>
-        <Typography
-          style={styles.notificationRowTitle}
-          text={returnStatusText(notification.TradeNotificationActionType)}
-        />
-        <Typography
-          style={styles.notificationRowTitle}
-          text={getDateDiff(notification.CreatedDate)}
-        />
-      </View>
-    )
-  );
+  return !notification.isDeleted ? (
+    <View style={styles.notificationRow} key={`${index}`}>
+      <Typography
+        style={styles.notificationRowTitle}
+        text={returnStatusText(notification.TradeNotificationActionType)}
+      />
+      <Typography
+        style={styles.notificationRowTitle}
+        text={getDateDiff(notification.CreatedDate)}
+      />
+    </View>
+  ) : null;
 };
 
 export default NotificationRow;

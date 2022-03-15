@@ -2,7 +2,7 @@ import * as actionTypes from "./actionTypes";
 import { cloneDeep } from "lodash";
 
 import {
-  sortOptinsByType,
+  sortOptionsByType,
   formatRealForexOptions,
   getRealForexTotalNotifications,
   updateFavourites,
@@ -85,7 +85,7 @@ const realForexReducer = (state = initialState, action) => {
       return {
         ...stateClone,
         realForexOptions: formatRealForexOptions(action.payload.options.data),
-        realForexOptionsByType: sortOptinsByType(action.payload.options.data),
+        realForexOptionsByType: sortOptionsByType(action.payload.options.data),
         hash: action.payload.options.hash,
         realForexBalance: action.payload.balanceRealForex.data,
       };

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Typography } from "components";
 import { colors } from "constants";
 import dropdownArrow from "../../../assets/svg/realForex/dropdownArrow";
-import { getSelectedAsset, setSelectedAsset } from "store/realForex";
+import { getSelectedAsset } from "store/realForex";
 import { formatDeciamlWithComma } from "store/realForex/helpers";
 
 import styles from "./quantityInputStyles";
@@ -81,7 +81,7 @@ const QuantityInput = ({ value, onChange }) => {
             height="32"
           />
         </TouchableHighlight>
-        {isDropdownVisible && (
+        {isDropdownVisible ? (
           <View style={styles.quantityDropdown}>
             {dropdownValues.map((value, index) => {
               return (
@@ -89,15 +89,13 @@ const QuantityInput = ({ value, onChange }) => {
                   key={`${index}`}
                   style={styles.value}
                   onPress={() => changeQuantity(value)}
-                  activeOpacity={0.1}
-                  underlayColor={colors.containerBackground}
                 >
                   <Typography name="normal" text={value} />
                 </TouchableHighlight>
               );
             })}
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   );

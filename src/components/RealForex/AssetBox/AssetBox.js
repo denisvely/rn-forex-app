@@ -51,50 +51,43 @@ const AssetBox = ({ asset, navigation, icon }) => {
     }
   };
 
-  return (
-    realForexPrices && (
-      <View style={styles.assetBox}>
-        <Pressable
-          style={styles.assetBoxButton}
-          activeOpacity={0.5}
-          onPress={() => {
-            setSelectedAsset(dispatch, asset);
-            navigation.navigate("RealForexOrderChart", { asset });
-          }}
-        >
-          <View style={styles.left}>
-            <SvgXml
-              style={styles.assetIcon}
-              xml={icon}
-              width="40"
-              height="40"
+  return realForexPrices ? (
+    <View style={styles.assetBox}>
+      <Pressable
+        style={styles.assetBoxButton}
+        activeOpacity={0.5}
+        onPress={() => {
+          setSelectedAsset(dispatch, asset);
+          navigation.navigate("RealForexOrderChart", { asset });
+        }}
+      >
+        <View style={styles.left}>
+          <SvgXml style={styles.assetIcon} xml={icon} width="40" height="40" />
+          <View>
+            <Typography
+              name="medium"
+              text={asset.name}
+              style={styles.assetName}
             />
-            <View>
-              <Typography
-                name="medium"
-                text={asset.name}
-                style={styles.assetName}
-              />
-              <Typography
-                name="small"
-                text={calculateSpread(
-                  realForexPrices[asset.id].ask,
-                  realForexPrices[asset.id].bid,
-                  realForexPrices[asset.id].accuracy,
-                  asset.openPrice
-                )}
-                style={styles.profit}
-              />
-            </View>
+            <Typography
+              name="small"
+              text={calculateSpread(
+                realForexPrices[asset.id].ask,
+                realForexPrices[asset.id].bid,
+                realForexPrices[asset.id].accuracy,
+                asset.openPrice
+              )}
+              style={styles.profit}
+            />
           </View>
-          <View style={styles.right}>
-            <BuyPrice asset={asset} />
-            <SellPrice asset={asset} />
-          </View>
-        </Pressable>
-      </View>
-    )
-  );
+        </View>
+        <View style={styles.right}>
+          <BuyPrice asset={asset} />
+          <SellPrice asset={asset} />
+        </View>
+      </Pressable>
+    </View>
+  ) : null;
 };
 
 export default AssetBox;
