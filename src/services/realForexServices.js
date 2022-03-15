@@ -55,6 +55,8 @@ export default {
       apiConsts.HTTP_METHOD_GET
     );
 
+    const accessToken = ServiceManager.getAccessToken();
+
     service.setPrepareRequest(
       (request, { fromDate, toDate, positionId, tradableAssetId }) => {
         let data = {
@@ -70,10 +72,7 @@ export default {
           positionId: positionId === undefined ? null : positionId,
         };
 
-        request.setHeader(
-          "Authorization",
-          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
-        );
+        request.setHeader("Authorization", `OAuth oauth_token=${accessToken}`);
 
         request.setQueryParameters(data);
 

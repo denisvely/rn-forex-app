@@ -1,14 +1,14 @@
 import { StyleSheet } from "react-native";
 import { colors } from "../../../constants";
-import { deviceWidth } from "../../../utils";
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     flex: 1,
+    backgroundColor: colors.containerBackground,
   },
-  chartContainer: {
-    width: deviceWidth - 24,
-    height: 500,
+  flatListContainer: {
+    marginBottom: 0,
+    width: "100%",
+    marginTop: 16,
   },
 });

@@ -3,6 +3,7 @@ import moment from "moment";
 
 import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
+import ServiceManager from "../../utils/serviceManager";
 
 const getForexOpenTrades = realForexServices.getRealForexOpenTrades();
 const getForexPendingOrders = realForexServices.getRealForexPendingOrders();
@@ -17,14 +18,14 @@ const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
 // const getForexDailyChange = realForexServices.getRealForexDailyChange();
 
-export const loadInitialRealForexData = (dispatch) => {
+export const loadInitialRealForexData = async (dispatch) => {
   getForexOpenTrades
     .fetch()
     .then(({ response }) => {
       const body = response.body.data.forexOpenTrades.data;
       if (body.length > 0) {
         dispatch({
-          type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
+          type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
           payload: body,
         });
       }
@@ -57,7 +58,7 @@ export const loadInitialRealForexData = (dispatch) => {
       tradableAssetId: 0,
     })
     .then(({ response }) => {
-      const body = response.body.data;
+      const body = response.body.data.trades;
       if (body.length > 0) {
         dispatch({
           type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,

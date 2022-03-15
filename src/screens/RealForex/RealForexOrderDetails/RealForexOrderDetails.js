@@ -11,6 +11,7 @@ import {
   StopLoss,
   HeaderAssetInfo,
   OrderInfo,
+  Loading,
 } from "../../../components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
@@ -132,7 +133,9 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             </View>
           </ScrollView>
         </>
-      ) : null}
+      ) : (
+        <Loading size="large" />
+      )}
       <RealForexTradeButtons asset={asset} />
     </View>
   );

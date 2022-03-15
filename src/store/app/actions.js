@@ -28,24 +28,24 @@ export const checkAsyncStorage = (dispatch) => {
     await (token && ServiceManager.setToken(JSON.parse(token)));
 
     //if (!token) {
-      tokenService
-        .getToken()
-        .fetch()
-        .then(async ({ response }) => {
-          token = response.body.data;
-          Storage.set("token", JSON.stringify(token));
-          ServiceManager.setToken(token);
+    tokenService
+      .getToken()
+      .fetch()
+      .then(async ({ response }) => {
+        token = response.body.data;
+        Storage.set("token", JSON.stringify(token));
+        ServiceManager.setToken(token);
 
-          const payload = {
-            token,
-          };
+        const payload = {
+          token,
+        };
 
-          dispatch({
-            type: actionTypes.SET_TOKEN,
-            payload: payload,
-          });
+        dispatch({
+          type: actionTypes.SET_TOKEN,
+          payload: payload,
         });
-      return;
+      });
+    return;
     //}
 
     token = JSON.parse(token);

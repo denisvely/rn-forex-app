@@ -17,7 +17,7 @@ const HeaderAssetInfo = ({ assetName, assetIcon, navigation }) => {
         paddingLeft: 20,
       }}
     >
-      <HeaderX onPress={() => navigation.navigate("quotes")} />
+      <HeaderX onPress={() => navigation.goBack()} />
       <SvgXml
         xml={assetIcon}
         width="40"

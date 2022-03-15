@@ -30,14 +30,6 @@ const RealForexOrderChart = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.priceContainer}>
-        <Typography name="large" text={"$1,132.82"} />
-        <Typography
-          name="normal"
-          style={styles.profit}
-          text={"+920.254 (9.77%)"}
-        />
-      </View>
       <View style={styles.chartContainer}>
         <SvgXml xml={chartSvg} width={deviceWidth - 24} height="500" />
       </View>

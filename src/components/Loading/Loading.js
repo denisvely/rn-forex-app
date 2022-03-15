@@ -14,7 +14,7 @@ const Loading = ({ size = "large", color = colors.blueColor, style = {} }) => {
 
 Loading.propTypes = {
   size: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string,
 };
 
 export default Loading;
