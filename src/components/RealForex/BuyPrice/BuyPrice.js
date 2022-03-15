@@ -16,7 +16,7 @@ const BuyPrice = ({ asset, textColor }) => {
       <Typography
         name="normal"
         text={askPrice.askPriceMedium}
-        style={{ ...styles.buy, color: textColor }}
+        style={{ ...styles.buy, color: textColor }} 
       />
       <Typography
         name="smallBold"

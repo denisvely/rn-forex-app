@@ -331,3 +331,17 @@ export const getFormattedAskPrice = (asset) => {
 
   return { askPriceMedium, askPriceSmall, askPriceBig };
 };
+
+export const convertUnits = (value, assetId, reverse) => {
+  return forexHelper.settings.IsVolumeInUnits
+    ? value
+    : reverse
+    ? value * forexHelper.settings.UnitsInLot[assetId]
+    : value / forexHelper.settings.UnitsInLot[assetId];
+};
+
+export const formatDeciamlWithComma = (num) => {
+  return num.toFixed(2).replace(/./g, function (c, i, a) {
+    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+  });
+};

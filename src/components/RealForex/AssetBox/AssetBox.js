@@ -1,13 +1,16 @@
 import React from "react";
 import { View, Pressable } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { useSelector } from "react-redux";
-import { getRealForexPrices } from "../../../store/realForex";
-import { Typography, BuyPrice, SellPrice } from "../../../components";
+import { useSelector, useDispatch } from "react-redux";
+
+import { getRealForexPrices } from "store/realForex";
+import { Typography, BuyPrice, SellPrice } from "components";
+import { setSelectedAsset } from "store/realForex";
 
 import styles from "./assetBoxStyles";
 
 const AssetBox = ({ asset, navigation, icon }) => {
+  const dispatch = useDispatch();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
 
   // TODO => when getRealForexDailyChange:  is ready because we don`t have asset.openPrice
@@ -53,7 +56,9 @@ const AssetBox = ({ asset, navigation, icon }) => {
       <View style={styles.assetBox}>
         <Pressable
           style={styles.assetBoxButton}
+          activeOpacity={0.5}
           onPress={() => {
+            setSelectedAsset(dispatch, asset);
             navigation.navigate("RealForexOrderChart", { asset });
           }}
         >

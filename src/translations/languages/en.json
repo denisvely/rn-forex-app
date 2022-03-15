@@ -12,7 +12,10 @@
     "takeProfit": "Take Profit",
     "stopLoss": "Stop Loss",
     "amount": "Amount",
-    "distance": "Distance"
+    "distance": "Distance",
+    "margin": "Margin",
+    "swap": "Swap",
+    "point": "Point"
   },
   "navigation": {
     "quotes": "Quotes",

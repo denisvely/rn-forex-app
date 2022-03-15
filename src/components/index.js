@@ -15,6 +15,8 @@ export { default as NotificationsIcon } from "./NotificationsIcon/NotificationsI
 export { default as LazyFlatList } from "./LazyFlatList/LazyFlatList";
 export { default as MarketPendingButtons } from "./MarketPendingButtons/MarketPendingButtons";
 export { default as Spinner } from "./Spinner/Spinner";
+export { default as HeaderAssetInfo } from "./HeaderAssetInfo/HeaderAssetInfo";
+export { default as HeaderTitleLogo } from "./HeaderTitleLogo/HeaderTitleLogo";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
@@ -26,6 +28,8 @@ export { default as RealForexTradeButtons } from "./RealForex/RealForexTradeButt
 export { default as QuantityInput } from "./RealForex/QuantityInput/QuantityInput";
 export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
 export { default as StopLoss } from "./RealForex/StopLoss/StopLoss";
+export { default as AssetsSearch } from "./RealForex/AssetsSearch/AssetsSearch";
+export { default as OrderInfo } from "./RealForex/OrderInfo/OrderInfo";
 
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";

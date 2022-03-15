@@ -1,9 +1,16 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
+
 import chartSvg from "../../../assets/svg/chartSvg";
-import { RealForexTradeButtons, Typography } from "../../../components";
+import {
+  RealForexTradeButtons,
+  Typography,
+  HeaderAssetInfo,
+} from "../../../components";
 import { deviceWidth } from "../../../utils";
+import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
+
 import styles from "./realForexOrderChartStyles";
 
 const RealForexOrderChart = ({ route, navigation }) => {
@@ -11,14 +18,16 @@ const RealForexOrderChart = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `${asset.name}`,
+      headerLeft: () => (
+        <HeaderAssetInfo
+          assetName={asset.name}
+          assetIcon={assetIcon}
+          navigation={navigation}
+        />
+      ),
     });
-    return () => {
-      navigation.setOptions({
-        title: ``,
-      });
-    };
   }, [route.params.asset]);
+
   return (
     <View style={styles.container}>
       <View style={styles.priceContainer}>
@@ -29,12 +38,10 @@ const RealForexOrderChart = ({ route, navigation }) => {
           text={"+920.254 (9.77%)"}
         />
       </View>
-      <SvgXml
-        styles={styles.chartSvg}
-        xml={chartSvg}
-        width={deviceWidth - 24}
-        height="500"
-      />
+      <View style={styles.chartContainer}>
+        <SvgXml xml={chartSvg} width={deviceWidth - 24} height="500" />
+      </View>
+
       <RealForexTradeButtons
         asset={asset}
         buyOnPress={() => {

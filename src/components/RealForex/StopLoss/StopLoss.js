@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Typography, Spinner } from "../../../components";
+
+import { Typography, Spinner } from "components";
+import StopLossAmount from "./StopLossAmount/StopLossAmount";
+import StopLossDistance from "./StopLossDitance.js/StopLossDistance";
+
 import styles from "./stopLossStyles";
 
-const StopLoss = () => {
+const StopLoss = ({
+  stopLossAmount,
+  stopLossDistance,
+  onChangeStopLossAmount,
+  onChangeStopLossDistance,
+}) => {
   const { t } = useTranslation();
-
-  const [stopLossAmount, onChangeStopLossAmount] = useState(null);
-  const [stopLossDistance, onChangeStopLossDistance] = useState(null);
 
   return (
     <View style={styles.inputsWrapper}>
@@ -17,12 +23,12 @@ const StopLoss = () => {
         name="normal"
         text={t("common-labels.stopLoss")}
       />
-      <Spinner
+      <StopLossAmount
         spinnerValue={stopLossAmount}
         onSpinnerChange={(orderType) => onChangeStopLossAmount(orderType)}
         placeholder={t("common-labels.amount")}
       />
-      <Spinner
+      <StopLossDistance
         spinnerValue={stopLossDistance}
         onSpinnerChange={(orderType) => onChangeStopLossDistance(orderType)}
         placeholder={t("common-labels.distance")}
