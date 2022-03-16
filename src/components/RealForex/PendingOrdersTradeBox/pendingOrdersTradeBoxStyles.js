@@ -15,6 +15,7 @@ export default StyleSheet.create({
     borderRadius: 2,
     backgroundColor: colors.white,
     marginBottom: 8,
+    borderRadius: 2,
   },
   tradeBoxButton: {
     justifyContent: "space-between",
@@ -71,11 +72,33 @@ export default StyleSheet.create({
   tradeInfoValue: {
     color: colors.fontPrimaryColor,
   },
+  tradeInfoValueClickable: {
+    color: colors.blueColor,
+  },
   assetIcon: {
     marginLeft: 5,
   },
-  tradeInfoValueClickable: {
-    color: colors.blueColor,
+  tradeButtons: {
+    borderTopColor: colors.borderBottomColor,
+    borderTopWidth: 1,
+    paddingVertical: 8,
+    marginBottom: 8,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  tradeButton: {
+    width: "45%",
+    borderColor: colors.borderBottomColor,
+    borderWidth: 1,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 2,
+  },
+  tradeButtonText: {
+    textAlign: "center",
+    color: colors.fontPrimaryColor,
   },
   textRight: {
     marginTop: 3,

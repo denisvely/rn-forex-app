@@ -28,7 +28,7 @@ const Typography = ({
 
 Typography.propTypes = {
   name: PropTypes.string,
-  text: PropTypes.string,
+  text: PropTypes.any,
   style: PropTypes.object,
   children: PropTypes.any,
   onPress: PropTypes.func,

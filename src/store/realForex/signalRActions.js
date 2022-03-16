@@ -22,8 +22,10 @@ export const signalRStart = (assetsPrices, dispatch) => {
     realForexHubPrices(assetsPrices, allPrices, dispatch);
   });
 
-  connection.start().fail(function () {
-    console.log("Could not connect");
+  eventsHubProxy.on("forexPosition", (event) => {
+    if (event.Event === 2) {
+      // debugger;
+    }
   });
 
   //connection-handling

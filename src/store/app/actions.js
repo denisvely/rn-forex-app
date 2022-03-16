@@ -64,9 +64,9 @@ export const checkAsyncStorage = (dispatch) => {
   });
 };
 
-export const login = async (dispatch, token) => {
+export const login = (dispatch, token) => {
   Storage.set("token", JSON.stringify(token));
-  await ServiceManager.setToken(token);
+  ServiceManager.setToken(token);
 
   userService
     .getUser()

@@ -33,7 +33,7 @@ export class LazyFlatList extends Component {
           removeClippedSubviews={true}
           initialNumToRender={cut}
           windowSize={100}
-          maxToRenderPerBatch={100}
+          maxToRenderPerBatch={7}
           refreshing={true}
           updateCellsBatchingPeriod={100}
           data={list}
@@ -47,7 +47,7 @@ export class LazyFlatList extends Component {
 }
 
 LazyFlatList.defaultProps = {
-  cut: 15,
+  cut: 7,
   showsHorizontalScrollIndicator: false,
 };
 

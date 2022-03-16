@@ -30,7 +30,9 @@ export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
 export { default as StopLoss } from "./RealForex/StopLoss/StopLoss";
 export { default as AssetsSearch } from "./RealForex/AssetsSearch/AssetsSearch";
 export { default as OrderInfo } from "./RealForex/OrderInfo/OrderInfo";
-export { default as CollapsibleTradeBox } from "./RealForex/ClosedPositionsTradeBox/ClosedPositionsTradeBox";
+export { default as OpenPositionsTradeBox } from "./RealForex/OpenPositionsTradeBox/OpenPositionsTradeBox";
+export { default as PendingOrdersTradeBox } from "./RealForex/PendingOrdersTradeBox/PendingOrdersTradeBox";
+export { default as ClosedPositionsTradeBox } from "./RealForex/ClosedPositionsTradeBox/ClosedPositionsTradeBox";
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";
 export { default as AssetsFilterSimplex } from "./Simplex/AssetsFilter/AssetsFilter";

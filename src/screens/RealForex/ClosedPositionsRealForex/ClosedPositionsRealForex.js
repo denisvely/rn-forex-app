@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   LazyFlatList,
   Loading,
-  CollapsibleTradeBox,
+  ClosedPositionsTradeBox,
 } from "../../../components";
 import { getRealForexClosedPositions } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
@@ -25,9 +25,9 @@ const ClosedPositionsRealForex = ({ navigation }) => {
         <LazyFlatList
           list={closedPositions}
           renderItem={({ item, index }) => {
-            return <CollapsibleTradeBox item={item} key={`${index}`} />;
+            return <ClosedPositionsTradeBox item={item} key={`${index}`} />;
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.positionId}
           showsVerticalScrollIndicator={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{

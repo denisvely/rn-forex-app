@@ -3,7 +3,6 @@ import moment from "moment";
 
 import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
-import ServiceManager from "../../utils/serviceManager";
 
 const getForexOpenTrades = realForexServices.getRealForexOpenTrades();
 const getForexPendingOrders = realForexServices.getRealForexPendingOrders();
@@ -36,7 +35,7 @@ export const loadInitialRealForexData = async (dispatch) => {
   getForexPendingOrders
     .fetch()
     .then(({ response }) => {
-      const body = response.body.data;
+      const body = response.body.data.results;
       if (body.length > 0) {
         dispatch({
           type: actionTypes.REAL_FOREX_PENDING_ORDERS,

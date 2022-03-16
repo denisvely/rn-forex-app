@@ -1,23 +1,50 @@
-import React from "react";
-import {View} from "react-native";
-import {useDispatch} from "react-redux";
-import {Typography} from "../../../components";
+import React, { useRef } from "react";
+import { View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
-const PendingOrdersRealForex = ({navigation}) => {
-    const dispatch = useDispatch();
+import { getRealForexPendingOrders } from "../../../store/realForex";
+import { deviceWidth } from "../../../utils";
+import {
+  LazyFlatList,
+  Loading,
+  PendingOrdersTradeBox,
+} from "../../../components";
 
-    return (
-        <View
-            style={{
-                flex: 1,
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <Typography name="largeBold" text={"Pending Orders"}></Typography>
-        </View>
-    );
+import styles from "./pendingOrdersRealForexStyles";
+
+const OpenPositionsRealForex = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const pendingOrdersRef = useRef();
+  const pendingOrders = useSelector((state) =>
+    getRealForexPendingOrders(state)
+  );
+
+  return (
+    <View style={styles.container}>
+      {pendingOrders ? (
+        <LazyFlatList
+          list={pendingOrders}
+          renderItem={({ item, index }) => {
+            return <PendingOrdersTradeBox item={item} key={`${index}`} />;
+          }}
+          keyExtractor={(item) => item.OrderID}
+          showsVerticalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            width: deviceWidth,
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
+            paddingBottom: 100,
+          }}
+          style={styles.flatListContainer}
+          listRef={pendingOrdersRef}
+        />
+      ) : (
+        <Loading size="large" />
+      )}
+    </View>
+  );
 };
 
-export default PendingOrdersRealForex;
+export default OpenPositionsRealForex;

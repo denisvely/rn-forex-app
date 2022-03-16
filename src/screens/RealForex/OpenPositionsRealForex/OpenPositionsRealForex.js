@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getRealForexOpenPositions } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
-import { LazyFlatList, Loading } from "../../../components";
+import {
+  LazyFlatList,
+  Loading,
+  OpenPositionsTradeBox,
+} from "../../../components";
 
 import styles from "./openPositionsRealForexStyles";
 
@@ -17,30 +21,28 @@ const OpenPositionsRealForex = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ zIndex: 1 }}>
-        {openPositions ? (
-          <LazyFlatList
-            list={openPositions}
-            renderItem={({ item, index }) => {
-              return <View></View>;
-            }}
-            keyExtractor={(item) => item.id}
-            showsVerticalScrollIndicator={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              width: deviceWidth,
-              justifyContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
-              paddingBottom: 100,
-            }}
-            style={styles.flatListContainer}
-            listRef={openPositionsRef}
-          />
-        ) : (
-          <Loading size="large" />
-        )}
-      </View>
+      {openPositions ? (
+        <LazyFlatList
+          list={openPositions}
+          renderItem={({ item, index }) => {
+            return <OpenPositionsTradeBox item={item} key={`${index}`} />;
+          }}
+          keyExtractor={(item) => item.orderID}
+          showsVerticalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            width: deviceWidth,
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
+            paddingBottom: 100,
+          }}
+          style={styles.flatListContainer}
+          listRef={openPositionsRef}
+        />
+      ) : (
+        <Loading size="large" />
+      )}
     </View>
   );
 };
