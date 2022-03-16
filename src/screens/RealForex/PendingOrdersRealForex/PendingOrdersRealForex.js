@@ -25,7 +25,7 @@ const OpenPositionsRealForex = ({ navigation }) => {
         <LazyFlatList
           list={pendingOrders}
           renderItem={({ item, index }) => {
-            return <PendingOrdersTradeBox item={item} key={`${index}`} />;
+            return <PendingOrdersTradeBox item={item} />;
           }}
           keyExtractor={(item) => item.OrderID}
           showsVerticalScrollIndicator={true}

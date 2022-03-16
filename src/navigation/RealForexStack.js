@@ -9,7 +9,6 @@ import {
   HeaderLeft,
   HeaderRight,
   NotificationsIcon,
-  Typography,
   HeaderTitleLogo,
 } from "components";
 import { headerOptions } from "constants";
@@ -22,7 +21,7 @@ import {
 } from "screens";
 
 import { CustomTabBar } from "../components";
-import { loadInitialRealForexData } from "store/realForex";
+import { loadInitialRealForexData } from "../store/realForex";
 import { signalRStop } from "../store/realForex/signalRActions";
 
 const RealForexStack = createBottomTabNavigator();

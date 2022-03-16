@@ -11,9 +11,9 @@ import {
   AssetsSearch,
 } from "../../../components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
+import { deviceWidth } from "../../../utils";
 
 import styles from "./quotesStyles";
-import { deviceWidth } from "../../../utils";
 
 const Quotes = ({ navigation }) => {
   const flatListRef = useRef();
@@ -94,7 +94,7 @@ const Quotes = ({ navigation }) => {
             listRef={flatListRef}
           />
         ) : (
-          <Loading />
+          <Loading size="large" />
         )}
       </View>
     </View>

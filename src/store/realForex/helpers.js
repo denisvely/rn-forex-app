@@ -47,7 +47,7 @@ export const sortOptionsByType = (options) => {
     Stocks: {},
     Commodities: {},
     Futures: {},
-    Favorites: [],
+    Favourites: [],
   };
 
   options.map((option, i) => {
@@ -243,9 +243,10 @@ export const getDateDiff = (timestamp) => {
 
 export const updateFavourites = (favouritesArray, forexOptionsByType) => {
   let result = false;
+
   if (favouritesArray.length > 0 && forexOptionsByType) {
     for (var k = 0; k < favouritesArray.length; k++) {
-      forexOptionsByType.Favorites.push(
+      forexOptionsByType.Favourites.push(
         forexOptionsByType.All[favouritesArray[k]]
       );
     }

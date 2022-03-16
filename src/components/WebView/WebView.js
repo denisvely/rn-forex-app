@@ -19,7 +19,7 @@ export default function NativeWebView({
       domStorageEnabled={domStorageEnabled}
       javaScriptEnabled={javaScriptEnabled}
       startInLoadingState={true}
-      renderLoading={() => <Loading />}
+      renderLoading={() => <Loading size="large" />}
     />
   );
 }

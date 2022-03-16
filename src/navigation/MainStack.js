@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import RealForexStack from "./RealForexStack";
 import SimplexStack from "./SimplexStack";
 import {
@@ -24,7 +24,7 @@ const MainStack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation }) => {
   const app = useSelector((state) => getApplication(state));
-
+ 
   return (
     <MainStack.Navigator
       initialRouteName={app.game === "RealForex" ? "RealForexStack" : "Home"}

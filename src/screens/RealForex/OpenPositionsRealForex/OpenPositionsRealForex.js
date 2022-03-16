@@ -25,7 +25,7 @@ const OpenPositionsRealForex = ({ navigation }) => {
         <LazyFlatList
           list={openPositions}
           renderItem={({ item, index }) => {
-            return <OpenPositionsTradeBox item={item} key={`${index}`} />;
+            return <OpenPositionsTradeBox item={item} />;
           }}
           keyExtractor={(item) => item.orderID}
           showsVerticalScrollIndicator={true}

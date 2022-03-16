@@ -43,7 +43,7 @@ const OpenPositionsTradeBox = ({ item, index }) => {
   }
 
   return (
-    <View style={styles.tradeBox} key={`${item.positionId}`}>
+    <View style={styles.tradeBox}>
       <TouchableOpacity
         style={styles.tradeBoxButton}
         onPress={() => setContentVisible(!isContentVisible)}

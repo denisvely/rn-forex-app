@@ -28,7 +28,7 @@ const initialState = {
     Stocks: {},
     Commodities: {},
     Futures: {},
-    Favorites: [],
+    Favourites: [],
   },
   realForexNotifications: null,
   realForexTotalNewNotifications: null,

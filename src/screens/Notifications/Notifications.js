@@ -50,14 +50,10 @@ const Notifications = ({ navigation, game }) => {
           list={notifications}
           renderItem={({ item }) => {
             return (
-              <NotificationRow
-                key={`${item.ID}`}
-                notification={item}
-                navigation={navigation}
-              />
+              <NotificationRow notification={item} navigation={navigation} />
             );
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.ID}
           showsVerticalScrollIndicator={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
@@ -71,7 +67,7 @@ const Notifications = ({ navigation, game }) => {
       </View>
     </>
   ) : (
-    <Loading />
+    <Loading size="large" />
   );
 };
 

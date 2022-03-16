@@ -35,6 +35,11 @@ export const signalRStart = (assetsPrices, dispatch) => {
     );
   });
 
+  connection.disconnected(function () {
+    console.log("Disconnected");
+    connection.start();
+  });
+
   connection.error((error) => {
     const errorMessage = error.message;
     let detailedError = "";

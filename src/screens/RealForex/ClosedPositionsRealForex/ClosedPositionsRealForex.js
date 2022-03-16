@@ -25,7 +25,7 @@ const ClosedPositionsRealForex = ({ navigation }) => {
         <LazyFlatList
           list={closedPositions}
           renderItem={({ item, index }) => {
-            return <ClosedPositionsTradeBox item={item} key={`${index}`} />;
+            return <ClosedPositionsTradeBox item={item} />;
           }}
           keyExtractor={(item) => item.positionId}
           showsVerticalScrollIndicator={true}

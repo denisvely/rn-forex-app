@@ -6,12 +6,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { getRealForexPrices } from "store/realForex";
 import { Typography, BuyPrice, SellPrice } from "components";
 import { setSelectedAsset } from "store/realForex";
+import { getApplication } from "../../../store/app";
 
 import styles from "./assetBoxStyles";
 
 const AssetBox = ({ asset, navigation, icon }) => {
   const dispatch = useDispatch();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const app = useSelector((state) => getApplication(state));
 
   // TODO => when getRealForexDailyChange:  is ready because we don`t have asset.openPrice
   const calculateSpread = (
@@ -75,7 +77,7 @@ const AssetBox = ({ asset, navigation, icon }) => {
                 realForexPrices[asset.id].ask,
                 realForexPrices[asset.id].bid,
                 realForexPrices[asset.id].accuracy,
-                asset.openPrice
+                app.dailyChanges ? app.dailyChanges[asset.id].OpenPrice : 0
               )}
               style={styles.profit}
             />

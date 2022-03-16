@@ -15,17 +15,16 @@ const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
-// const getForexDailyChange = realForexServices.getRealForexDailyChange();
 
 export const loadInitialRealForexData = async (dispatch) => {
   getForexOpenTrades
     .fetch()
     .then(({ response }) => {
-      const body = response.body.data.forexOpenTrades.data;
+      const body = response.body.data;
       if (body.length > 0) {
         dispatch({
           type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
-          payload: body,
+          payload: body.forexOpenTrades.data,
         });
       }
     })
@@ -35,11 +34,11 @@ export const loadInitialRealForexData = async (dispatch) => {
   getForexPendingOrders
     .fetch()
     .then(({ response }) => {
-      const body = response.body.data.results;
+      const body = response.body.data;
       if (body.length > 0) {
         dispatch({
           type: actionTypes.REAL_FOREX_PENDING_ORDERS,
-          payload: body,
+          payload: body.results,
         });
       }
     })
@@ -57,11 +56,11 @@ export const loadInitialRealForexData = async (dispatch) => {
       tradableAssetId: 0,
     })
     .then(({ response }) => {
-      const body = response.body.data.trades;
+      const body = response.body.data;
       if (body.length > 0) {
         dispatch({
           type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
-          payload: body,
+          payload: body.trades,
         });
       }
     })
@@ -127,18 +126,7 @@ export const loadInitialRealForexData = async (dispatch) => {
         type: actionTypes.REAL_FOREX_OPTIONS_AND_BALANCE,
         payload: body,
       });
-      getForexAssetsOrder
-        .fetch()
-        .then(({ response }) => {
-          const body = response.body.data.Favorite;
-          dispatch({
-            type: actionTypes.REAL_FOREX_ASSETS_ORDER,
-            payload: body,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      getAssetsOrder(dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -177,6 +165,20 @@ export const loadInitialRealForexData = async (dispatch) => {
     });
 };
 
+export const getAssetsOrder = (dispatch) => {
+  getForexAssetsOrder
+    .fetch()
+    .then(({ response }) => {
+      const body = Object.keys(response.body.data.Favorite);
+      dispatch({
+        type: actionTypes.REAL_FOREX_ASSETS_ORDER,
+        payload: body,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 export const setSelectedAsset = async (dispatch, asset) => {
   dispatch({ type: actionTypes.SET_SELECTED_ASSET, payload: asset });
 };

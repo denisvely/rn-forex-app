@@ -32,7 +32,7 @@ const PendingOrdersTradeBox = ({ item, index }) => {
   );
 
   return (
-    <View style={styles.tradeBox} key={`${item.OrderID}`}>
+    <View style={styles.tradeBox}>
       <TouchableOpacity
         style={styles.tradeBoxButton}
         onPress={() => setContentVisible(!isContentVisible)}

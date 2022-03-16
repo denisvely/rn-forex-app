@@ -132,8 +132,8 @@ class ServiceManager {
   };
 
   setToken = (token) => {
-    this.token = token;
     this.accessToken = token.accessToken;
+    this.token = token;
   };
 
   getToken = () => {

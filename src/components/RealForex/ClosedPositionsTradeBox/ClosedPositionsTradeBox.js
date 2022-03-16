@@ -13,8 +13,12 @@ const ClosedPositionsTradeBox = ({ item, index }) => {
   const { t } = useTranslation();
   const [isContentVisible, setContentVisible] = useState(false);
 
+  if (!item || typeof item != "object") {
+    return;
+  }
+
   return (
-    <View style={styles.tradeBox} key={`${item.positionId}`}>
+    <View style={styles.tradeBox}>
       <TouchableOpacity
         style={styles.tradeBoxButton}
         onPress={() => setContentVisible(!isContentVisible)}
