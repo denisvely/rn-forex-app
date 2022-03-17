@@ -6,14 +6,13 @@ import { getRealForexPendingOrders } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
 import {
   LazyFlatList,
-  Loading,
+  Typography,
   PendingOrdersTradeBox,
 } from "../../../components";
 
 import styles from "./pendingOrdersRealForexStyles";
 
 const OpenPositionsRealForex = ({ navigation }) => {
-  const dispatch = useDispatch();
   const pendingOrdersRef = useRef();
   const pendingOrders = useSelector((state) =>
     getRealForexPendingOrders(state)
@@ -24,8 +23,10 @@ const OpenPositionsRealForex = ({ navigation }) => {
       {pendingOrders ? (
         <LazyFlatList
           list={pendingOrders}
-          renderItem={({ item, index }) => {
-            return <PendingOrdersTradeBox item={item} />;
+          renderItem={({ item }) => {
+            return (
+              <PendingOrdersTradeBox item={item} navigation={navigation} />
+            );
           }}
           keyExtractor={(item) => item.OrderID}
           showsVerticalScrollIndicator={true}
@@ -41,7 +42,9 @@ const OpenPositionsRealForex = ({ navigation }) => {
           listRef={pendingOrdersRef}
         />
       ) : (
-        <Loading size="large" />
+        <View style={styles.noTrades}>
+          <Typography name="largeBold" text={"No trades found."} />
+        </View>
       )}
     </View>
   );

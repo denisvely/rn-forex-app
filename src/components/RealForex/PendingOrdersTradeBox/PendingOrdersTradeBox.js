@@ -15,7 +15,7 @@ import {
 
 import styles from "./pendingOrdersTradeBoxStyles";
 
-const PendingOrdersTradeBox = ({ item, index }) => {
+const PendingOrdersTradeBox = ({ item, navigation }) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const realForexOptionsByType = useSelector((state) =>

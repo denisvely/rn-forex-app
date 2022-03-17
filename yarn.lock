@@ -2192,6 +2192,11 @@
   "resolved" "https://registry.npmjs.org/ci-info/-/ci-info-2.0.0.tgz"
   "version" "2.0.0"
 
+"clamp@^1.0.1":
+  "integrity" "sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ="
+  "resolved" "https://registry.npmjs.org/clamp/-/clamp-1.0.1.tgz"
+  "version" "1.0.1"
+
 "class-utils@^0.3.5":
   "integrity" "sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg=="
   "resolved" "https://registry.npmjs.org/class-utils/-/class-utils-0.3.6.tgz"
@@ -4972,6 +4977,13 @@
     "invariant" "^2.2.4"
     "use-subscription" "^1.0.0"
 
+"react-native-circular-progress@^1.3.7":
+  "integrity" "sha512-Lpe4Sb0Sdfdxopl6sEc3ooKnwlK5j1nKGq5lgi9UKDFKO6iBAszeH+PiUt6acGSRbKMH1av+9G9ni9r/6T0+nQ=="
+  "resolved" "https://registry.npmjs.org/react-native-circular-progress/-/react-native-circular-progress-1.3.7.tgz"
+  "version" "1.3.7"
+  dependencies:
+    "prop-types" "^15.7.2"
+
 "react-native-codegen@^0.0.6":
   "integrity" "sha512-cMvrUelD81wiPitEPiwE/TCNscIVauXxmt4NTGcy18HrUd0WRWXfYzAQGXm0eI87u3NMudNhqFj2NISJenxQHg=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.6.tgz"
@@ -5040,7 +5052,7 @@
     "jquery-deferred" "^0.3.1"
     "ms-signalr-client" "^2.2.7"
 
-"react-native-svg@^12.1.0", "react-native-svg@^12.3.0":
+"react-native-svg@^12.1.0", "react-native-svg@^12.3.0", "react-native-svg@>=7.0.0":
   "integrity" "sha512-ESG1g1j7/WLD7X3XRFTQHVv0r6DpbHNNcdusngAODIxG88wpTWUZkhcM3A2HJTb+BbXTFDamHv7FwtRKWQ/ALg=="
   "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-12.3.0.tgz"
   "version" "12.3.0"
@@ -5069,7 +5081,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@*", "react-native@^0.0.0-0 || ^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || ^0.65.0 || ^0.66.0 || 1000.0.0", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@0.64.3":
+"react-native@*", "react-native@^0.0.0-0 || ^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || ^0.65.0 || ^0.66.0 || 1000.0.0", "react-native@>=0.47", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@0.64.3":
   "integrity" "sha512-2OEU74U0Ek1/WeBzPbg6XDsCfjF/9fhrNX/5TFgEiBKd5mNc9LOZ/OlMmkb7iues/ZZ/oc51SbEfLRQdcW0fVw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.64.3.tgz"
   "version" "0.64.3"
@@ -5124,7 +5136,7 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.4.3.tgz"
   "version" "0.4.3"
 
-"react@*", "react@^16.8.0 || ^17.0.0", "react@^16.8.3 || ^17", "react@^17.0.0", "react@>= 16.8.0", "react@>=16.8.0", "react@>=17.0.1", "react@16 || 17", "react@17.0.1":
+"react@*", "react@^16.8.0 || ^17.0.0", "react@^16.8.3 || ^17", "react@^17.0.0", "react@>= 16.8.0", "react@>=16.0.0", "react@>=16.8.0", "react@>=16.x", "react@>=17.0.1", "react@16 || 17", "react@17.0.1":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -5330,6 +5342,14 @@
   "version" "2.6.3"
   dependencies:
     "glob" "^7.1.3"
+
+"rn-sliding-up-panel@^2.4.5":
+  "integrity" "sha512-Z8TEJE8KMjx0s9P4ikUDAlvyDgvF9n/6QR5GIUi8iWRKhiYJ4sddKjAIDYVI5yT1q+rJu+iAo7Z310H3yCb3sQ=="
+  "resolved" "https://registry.npmjs.org/rn-sliding-up-panel/-/rn-sliding-up-panel-2.4.5.tgz"
+  "version" "2.4.5"
+  dependencies:
+    "clamp" "^1.0.1"
+    "prop-types" "^15.7.2"
 
 "rsvp@^4.8.4":
   "integrity" "sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA=="

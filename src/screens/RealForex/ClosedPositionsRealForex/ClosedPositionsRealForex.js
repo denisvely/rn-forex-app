@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   LazyFlatList,
-  Loading,
   ClosedPositionsTradeBox,
+  Typography,
 } from "../../../components";
 import { getRealForexClosedPositions } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
@@ -24,8 +24,10 @@ const ClosedPositionsRealForex = ({ navigation }) => {
       {closedPositions ? (
         <LazyFlatList
           list={closedPositions}
-          renderItem={({ item, index }) => {
-            return <ClosedPositionsTradeBox item={item} />;
+          renderItem={({ item }) => {
+            return (
+              <ClosedPositionsTradeBox item={item} navigation={navigation} />
+            );
           }}
           keyExtractor={(item) => item.positionId}
           showsVerticalScrollIndicator={true}
@@ -41,7 +43,9 @@ const ClosedPositionsRealForex = ({ navigation }) => {
           listRef={closedPositionsRef}
         />
       ) : (
-        <Loading size="large" />
+        <View style={styles.noTrades}>
+          <Typography name="largeBold" text={"No trades found."} />
+        </View>
       )}
     </View>
   );

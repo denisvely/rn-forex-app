@@ -21,12 +21,10 @@ export const loadInitialRealForexData = async (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data;
-      if (body.length > 0) {
-        dispatch({
-          type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
-          payload: body.forexOpenTrades.data,
-        });
-      }
+      dispatch({
+        type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
+        payload: body.forexOpenTrades.data,
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -35,12 +33,11 @@ export const loadInitialRealForexData = async (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data;
-      if (body.length > 0) {
-        dispatch({
-          type: actionTypes.REAL_FOREX_PENDING_ORDERS,
-          payload: body.results,
-        });
-      }
+
+      dispatch({
+        type: actionTypes.REAL_FOREX_PENDING_ORDERS,
+        payload: body.results,
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -57,12 +54,10 @@ export const loadInitialRealForexData = async (dispatch) => {
     })
     .then(({ response }) => {
       const body = response.body.data;
-      if (body.length > 0) {
-        dispatch({
-          type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
-          payload: body.trades,
-        });
-      }
+      dispatch({
+        type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
+        payload: body.trades,
+      });
     })
     .catch((err) => {
       console.log(err);

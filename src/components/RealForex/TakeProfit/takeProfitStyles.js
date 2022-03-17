@@ -5,6 +5,7 @@ export default StyleSheet.create({
   inputsWrapper: {
     marginVertical: 8,
     paddingHorizontal: 24,
+    width: "100%",
   },
   label: {
     marginTop: 8,

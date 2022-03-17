@@ -11,4 +11,9 @@ export default StyleSheet.create({
     width: "100%",
     marginTop: 16,
   },
+  noTrades: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

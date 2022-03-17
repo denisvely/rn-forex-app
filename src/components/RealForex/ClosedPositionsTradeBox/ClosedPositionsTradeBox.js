@@ -5,11 +5,11 @@ import { SvgXml } from "react-native-svg";
 import moment from "moment";
 
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import { Typography } from "components";
+import { Typography, FormattedTypographyWithCurrency } from "components";
 
 import styles from "./closedPositionsTradeBoxStyles";
 
-const ClosedPositionsTradeBox = ({ item, index }) => {
+const ClosedPositionsTradeBox = ({ item, navigation }) => {
   const { t } = useTranslation();
   const [isContentVisible, setContentVisible] = useState(false);
 
@@ -139,7 +139,7 @@ const ClosedPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.profit`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={parseFloat(item.Pl) < 0 ? styles.red : styles.green}
               text={item.Pl ? item.Pl : "-"}
@@ -151,7 +151,7 @@ const ClosedPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.swap`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={styles.tradeInfoValue}
               text={item.Swap}
@@ -163,7 +163,7 @@ const ClosedPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.commission`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={styles.tradeInfoValue}
               text={item.Commision}

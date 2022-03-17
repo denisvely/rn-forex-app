@@ -17,6 +17,8 @@ export { default as MarketPendingButtons } from "./MarketPendingButtons/MarketPe
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as HeaderAssetInfo } from "./HeaderAssetInfo/HeaderAssetInfo";
 export { default as HeaderTitleLogo } from "./HeaderTitleLogo/HeaderTitleLogo";
+export { default as BottomSlidingPanel } from "./BottomSlidingPanel/BottomSlidingPanel";
+export { default as FormattedTypographyWithCurrency } from "./FormatedCurrency/FormattedTypographyWithCurrency";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,14 +6,16 @@ import { getRealForexOpenPositions } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
 import {
   LazyFlatList,
-  Loading,
   OpenPositionsTradeBox,
+  BottomSlidingPanel,
+  Typography,
 } from "../../../components";
 
 import styles from "./openPositionsRealForexStyles";
 
 const OpenPositionsRealForex = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [isSlidingPanelVisible, setPanelVisibility] = useState(false);
   const openPositionsRef = useRef();
   const openPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
@@ -24,8 +26,14 @@ const OpenPositionsRealForex = ({ navigation }) => {
       {openPositions ? (
         <LazyFlatList
           list={openPositions}
-          renderItem={({ item, index }) => {
-            return <OpenPositionsTradeBox item={item} />;
+          renderItem={({ item }) => {
+            return (
+              <OpenPositionsTradeBox
+                item={item}
+                toggleBottomSlidingPanel={(type) => setPanelVisibility(type)}
+                navigation={navigation}
+              />
+            );
           }}
           keyExtractor={(item) => item.orderID}
           showsVerticalScrollIndicator={true}
@@ -41,8 +49,14 @@ const OpenPositionsRealForex = ({ navigation }) => {
           listRef={openPositionsRef}
         />
       ) : (
-        <Loading size="large" />
+        <View style={styles.noTrades}>
+          <Typography name="largeBold" text={"No trades found."} />
+        </View>
       )}
+      <BottomSlidingPanel
+        isVisible={isSlidingPanelVisible}
+        toggleSlidingPanel={() => setPanelVisibility(false)}
+      />
     </View>
   );
 };

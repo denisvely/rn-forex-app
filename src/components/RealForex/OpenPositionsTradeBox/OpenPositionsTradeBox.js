@@ -7,13 +7,17 @@ import { useSelector } from "react-redux";
 
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import { Typography } from "components";
+import { Typography, FormattedTypographyWithCurrency } from "components";
 import { getRealForexPrices } from "../../../store/realForex";
 
 import styles from "./openPositionsTradeBoxStyles";
 import { colors } from "../../../constants";
 
-const OpenPositionsTradeBox = ({ item, index }) => {
+const OpenPositionsTradeBox = ({
+  item,
+  toggleBottomSlidingPanel,
+  navigation,
+}) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const [isContentVisible, setContentVisible] = useState(false);
@@ -69,7 +73,7 @@ const OpenPositionsTradeBox = ({ item, index }) => {
           </View>
         </View>
         <View style={styles.right}>
-          <Typography
+          <FormattedTypographyWithCurrency
             name="small"
             style={{
               ...styles.textRight,
@@ -95,7 +99,9 @@ const OpenPositionsTradeBox = ({ item, index }) => {
               text={t(`common-labels.takeProfit`)}
             />
             {parseFloat(item.takeProfitRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open TP")}>
+              <TouchableOpacity
+                onPress={() => toggleBottomSlidingPanel("tpAndSl")}
+              >
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -117,7 +123,9 @@ const OpenPositionsTradeBox = ({ item, index }) => {
               text={t(`common-labels.stopLoss`)}
             />
             {parseFloat(item.stopLossRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open SL")}>
+              <TouchableOpacity
+                onPress={() => toggleBottomSlidingPanel("tpAndSl")}
+              >
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -210,7 +218,7 @@ const OpenPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.swap`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={parseFloat(item.swap) < 0 ? styles.red : styles.green}
               text={item.swap ? parseFloat(item.swap).toFixed(2) : "-"}
@@ -222,7 +230,7 @@ const OpenPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.margin`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={styles.tradeInfoValue}
               text={item.margin}
@@ -234,7 +242,7 @@ const OpenPositionsTradeBox = ({ item, index }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.commission`)}
             />
-            <Typography
+            <FormattedTypographyWithCurrency
               name="small"
               style={styles.tradeInfoValue}
               text={

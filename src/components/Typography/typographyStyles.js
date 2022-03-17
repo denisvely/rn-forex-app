@@ -4,6 +4,16 @@ const defaultBold = "Gilroy-Bold";
 const defaultSemiBold = "Gilroy-SemiBold";
 
 export default StyleSheet.create({
+  nano: {
+    fontSize: 10,
+    lineHeight: 12,
+    fontFamily: defaultFont,
+  },
+  nanoBold: {
+    fontSize: 10,
+    lineHeight: 12,
+    fontFamily: defaultBold,
+  },
   tiny: {
     fontSize: 12,
     lineHeight: 16,
@@ -22,7 +32,7 @@ export default StyleSheet.create({
   smallBold: {
     fontSize: 14,
     lineHeight: 18,
-    fontFamily: defaultFont,
+    fontFamily: defaultSemiBold,
   },
   normal: {
     fontSize: 16,

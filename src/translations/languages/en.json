@@ -40,7 +40,10 @@
     "created": "Created",
     "expire": "Expire",
     "type": "Type",
-    "dist": "Dist"
+    "dist": "Dist",
+    "balance": "Balance",
+    "equity": "Equity",
+    "availableBalance": "Available Balance"
   },
   "navigation": {
     "quotes": "Quotes",
