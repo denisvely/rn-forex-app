@@ -246,7 +246,7 @@ export default {
   },
   getRealForexTraderInsight: () => {
     const service = new Service(
-      "/v1/forextraderInsight",
+      "v1/forextraderInsight",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -261,16 +261,101 @@ export default {
 
     return service;
   },
-  // getRealForexDailyChange: () => {
-  //   fetch("https://advfeed.finte.co/Services.ashx/GetDailyChanges", {
-  //     dataType: "jsonp",
-  //     method: "GET",
-  //   })
-  //     .then((result) => {
-  //       debugger;
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // },
+  closePosition: () => {
+    const service = new Service(
+      "v1/games/forex/orders/closeForexTrade",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request, { orderID }) => {
+      const options = {};
+
+      options["orderId"] = orderID;
+
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      request.setQueryParameters(options);
+
+      return request;
+    });
+
+    return service;
+  },
+  closePositioNetting: () => {
+    const service = new Service(
+      "v1/games/forex/orders/closeForexTrade",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request, { orderID }) => {
+      const options = {};
+
+      options["PositionId"] = orderID;
+      options["optionType"] = 24;
+
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      request.setQueryParameters(options);
+
+      return request;
+    });
+
+    return service;
+  },
+  addRealForexTradeOrderV2: () => {
+    const service = new Service(
+      "v1/games/forex/orders/closeForexTrade",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest(
+      (
+        request,
+        {
+          optionId,
+          ruleId,
+          isBuy,
+          rate,
+          volume,
+          takeProfit,
+          StopLoss,
+          leverage,
+          TakeProfitDistance,
+          StoplossDistance,
+          pip,
+          pendingPrice,
+          slippage,
+          orderId,
+          expirationDate,
+          delay,
+          ask,
+          bid,
+          takeProfitRate,
+          stopLossRate,
+        }
+      ) => {
+        const options = {};
+
+        options["PositionId"] = orderID;
+        options["optionType"] = 24;
+
+        request.setHeader(
+          "Authorization",
+          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+        );
+
+        request.setQueryParameters(options);
+
+        return request;
+      }
+    );
+
+    return service;
+  },
 };

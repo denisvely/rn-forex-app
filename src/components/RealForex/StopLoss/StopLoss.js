@@ -25,12 +25,12 @@ const StopLoss = ({
       />
       <StopLossAmount
         spinnerValue={stopLossAmount}
-        onSpinnerChange={(orderType) => onChangeStopLossAmount(orderType)}
+        onSpinnerChange={(value) => onChangeStopLossAmount(value)}
         placeholder={t("common-labels.amount")}
       />
       <StopLossDistance
         spinnerValue={stopLossDistance}
-        onSpinnerChange={(orderType) => onChangeStopLossDistance(orderType)}
+        onSpinnerChange={(value) => onChangeStopLossDistance(value)}
         placeholder={t("common-labels.distance")}
       />
     </View>

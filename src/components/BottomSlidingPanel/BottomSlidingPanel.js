@@ -1,31 +1,45 @@
 import React, { useEffect, useRef } from "react";
-import { View } from "react-native";
-
+import { View, TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import { deviceHeight } from "../../utils";
-import { TakeProfit, StopLoss } from "components";
+import { TakeProfit, StopLoss, Typography, Button } from "components";
 import styles from "./bottomSlidingPanelStyles";
-import Balance from "../../screens/RealForex/Balance/Balance";
+import ClosePositionPanel from "./components/ClosePositionPanel";
 
-const panelHeight = deviceHeight - 400;
 const velocity = 0.1;
-let isFirstLoad = true;
 
-const BottomSlidingPanel = ({ isVisible, toggleSlidingPanel, children }) => {
+const types = {
+  ["tpAndSl"]: {
+    panelHeight: deviceHeight - 400,
+  },
+  ["closePosition"]: {
+    panelHeight: deviceHeight / 3,
+  },
+};
+
+const BottomSlidingPanel = ({
+  panelType,
+  toggleSlidingPanel,
+  item,
+  children,
+}) => {
+  let isFirstLoad = true;
   const slidingPanel = useRef();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isVisible) {
+    if (!panelType) {
       slidingPanel.current.hide();
     } else {
-      slidingPanel.current.show(panelHeight, 0.1);
+      slidingPanel.current.show(types[panelType]?.panelHeight, 0.1);
       isFirstLoad = false;
     }
     return () => {
       isFirstLoad = true;
     };
-  }, [isVisible]);
+  }, [panelType]);
 
   const _onBottomReached = (position) => {
     if (!isFirstLoad) {
@@ -36,9 +50,12 @@ const BottomSlidingPanel = ({ isVisible, toggleSlidingPanel, children }) => {
   return (
     <SlidingUpPanel
       ref={slidingPanel}
-      draggableRange={{ top: panelHeight, bottom: 0 }}
+      draggableRange={{
+        top: panelType ? types[panelType].panelHeight : deviceHeight / 2,
+        bottom: 0,
+      }}
       snappingPoints={[100]}
-      height={deviceHeight - 400}
+      height={panelType ? types[panelType].panelHeight : deviceHeight / 2}
       showBackdrop={true}
       friction={velocity}
       backdropOpacity={0.5}
@@ -59,12 +76,22 @@ const BottomSlidingPanel = ({ isVisible, toggleSlidingPanel, children }) => {
               <View style={styles.slidingLine}></View>
             </View>
             <View style={styles.containerInner}>
-              {isVisible === "tpAndSl" ? (
+              {panelType === "tpAndSl" ? (
                 <>
                   <TakeProfit />
                   <StopLoss />
+                  <Button
+                    text={t(`common-labels.modify`)}
+                    type="primary"
+                    font="mediumBold"
+                    size="almostBig"
+                  />
                 </>
               ) : null}
+              <ClosePositionPanel
+                trade={item}
+                toggleSlidingPanel={() => toggleSlidingPanel(false)}
+              />
               {children ? children : null}
             </View>
           </View>

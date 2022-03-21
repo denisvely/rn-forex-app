@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { colors } from "constants";
-import { deviceWidth } from "../../utils";
+import { deviceWidth, deviceHeight } from "../../utils";
 
 export default StyleSheet.create({
   container: {
@@ -40,7 +40,31 @@ export default StyleSheet.create({
     marginTop: 20,
     backgroundColor: colors.primaryColorGray,
   },
-  flatListContainer: {
-    marginBottom: 0,
+  closePositionWrapper: {
+    paddingHorizontal: 24,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: deviceHeight / 3 - 40,
+  },
+  tradeButtons: {
+    paddingVertical: 12,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    width: deviceWidth - 48,
+    position: "absolute",
+    bottom: 0,
+  },
+  partiallyCloseWrapper: {
+    marginTop: 16,
+    width: deviceWidth - 48,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  onOffWrapper: {
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
   },
 });

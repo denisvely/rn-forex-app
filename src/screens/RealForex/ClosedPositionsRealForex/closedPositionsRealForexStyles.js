@@ -16,4 +16,20 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  closePositionFilterWrapper: {
+    height: 30,
+    width: "100%",
+    paddingHorizontal: 16,
+  },
+  closePositionFilter: {
+    height: 30,
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: colors.tabsBackground,
+  },
+  dateString: {
+    marginHorizontal: 5,
+  },
 });

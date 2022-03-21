@@ -15,7 +15,8 @@ import styles from "./openPositionsRealForexStyles";
 
 const OpenPositionsRealForex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [isSlidingPanelVisible, setPanelVisibility] = useState(false);
+  const [slidingPanelType, setPanelType] = useState(null);
+  const [currentTrade, setCurrentTrade] = useState(null);
   const openPositionsRef = useRef();
   const openPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
@@ -30,7 +31,8 @@ const OpenPositionsRealForex = ({ navigation }) => {
             return (
               <OpenPositionsTradeBox
                 item={item}
-                toggleBottomSlidingPanel={(type) => setPanelVisibility(type)}
+                toggleBottomSlidingPanel={(type) => setPanelType(type)}
+                setCurrentTrade={(trade) => setCurrentTrade(trade)}
                 navigation={navigation}
               />
             );
@@ -54,8 +56,10 @@ const OpenPositionsRealForex = ({ navigation }) => {
         </View>
       )}
       <BottomSlidingPanel
-        isVisible={isSlidingPanelVisible}
-        toggleSlidingPanel={() => setPanelVisibility(false)}
+        panelType={slidingPanelType}
+        item={currentTrade}
+        setCurrentTrade={(trade) => setCurrentTrade(trade)}
+        toggleSlidingPanel={() => setPanelType(false)}
       />
     </View>
   );

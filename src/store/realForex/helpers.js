@@ -333,12 +333,13 @@ export const getFormattedAskPrice = (asset) => {
   return { askPriceMedium, askPriceSmall, askPriceBig };
 };
 
-export const convertUnits = (value, assetId, reverse) => {
-  return forexHelper.settings.IsVolumeInUnits
+export const convertUnits = (value, assetId, reverse, settings) => {
+  debugger;
+  return settings.IsVolumeInUnits
     ? value
     : reverse
-    ? value * forexHelper.settings.UnitsInLot[assetId]
-    : value / forexHelper.settings.UnitsInLot[assetId];
+    ? value * settings.UnitsInLot[assetId]
+    : value / settings.UnitsInLot[assetId];
 };
 
 export const formatDeciamlWithComma = (num) => {

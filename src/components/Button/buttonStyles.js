@@ -15,6 +15,7 @@ const defaultButtonStyles = {
   top: 0,
   left: 0,
   minWidth: "100%",
+  borderRadius: 4,
 };
 export default {
   buttons: {
@@ -144,10 +145,18 @@ export default {
       minWidth: "64%",
       height: 50,
     },
+    almostBig: {
+      maxWidth: deviceWidth - 48,
+      height: 50,
+    },
     medium: {
       maxWidth: deviceWidth / 2 - 27,
       minWidth: deviceWidth / 2 - 27,
       height: 60,
+    },
+    halfWidth: {
+      width: deviceWidth / 2 - 33,
+      height: 50,
     },
     tabButton: {
       height: 36,

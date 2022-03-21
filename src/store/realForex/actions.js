@@ -15,6 +15,9 @@ const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
+const closePositionRealForex = realForexServices.closePosition();
+const closePositionRealForexNetting = realForexServices.closePositioNetting();
+const addForexTradeOrderV2 = realForexServices.addRealForexTradeOrderV2();
 
 export const loadInitialRealForexData = async (dispatch) => {
   getForexOpenTrades
@@ -174,6 +177,54 @@ export const getAssetsOrder = (dispatch) => {
       console.log(err);
     });
 };
+
 export const setSelectedAsset = async (dispatch, asset) => {
   dispatch({ type: actionTypes.SET_SELECTED_ASSET, payload: asset });
+};
+
+export const closePosition = (dispatch, orderId) => {
+  closePositionRealForex
+    .fetch({ orderID: orderId })
+    .then(({ response }) => {
+      // TODO => ?
+      // dispatch({
+      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
+      //   payload: body,
+      // });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const closeForexTradeNetting = (dispatch, orderId) => {
+  closePositionRealForexNetting
+    .fetch({ orderID: orderId })
+    .then(({ response }) => {
+      // TODO => ?
+      // dispatch({
+      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
+      //   payload: body,
+      // });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+addRealForexTradeOrderV2Service = (dispatch, data) => {
+  console.log(data);
+  debugger;
+  addForexTradeOrderV2
+    .fetch({ orderID: orderId })
+    .then(({ response }) => {
+      // TODO => ?
+      // dispatch({
+      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
+      //   payload: body,
+      // });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

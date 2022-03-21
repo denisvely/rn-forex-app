@@ -111,22 +111,22 @@ const RealForexOrderDetails = ({ route, navigation }) => {
               />
               <TakeProfit
                 takeProfitAmount={takeProfitAmount}
-                onChangeTakeProfitAmount={(orderType) =>
-                  onChangeTakeProfitAmount(orderType)
+                onChangeTakeProfitAmount={(value) =>
+                  onChangeTakeProfitAmount(value)
                 }
                 takeProfitDistance={takeProfitDistance}
-                onChangeTakeProfitDistance={(orderType) =>
-                  onChangeTakeProfitDistance(orderType)
+                onChangeTakeProfitDistance={(value) =>
+                  onChangeTakeProfitDistance(value)
                 }
               />
               <StopLoss
                 stopLossAmount={stopLossAmount}
-                onChangeStopLossAmount={(orderType) =>
-                  onChangeStopLossAmount(orderType)
+                onChangeStopLossAmount={(value) =>
+                  onChangeStopLossAmount(value)
                 }
                 stopLossDistance={stopLossDistance}
-                onChangeStopLossDistance={(orderType) =>
-                  onChangeStopLossDistance(orderType)
+                onChangeStopLossDistance={(value) =>
+                  onChangeStopLossDistance(value)
                 }
               />
               <OrderInfo />

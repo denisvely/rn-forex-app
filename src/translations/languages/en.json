@@ -1,6 +1,8 @@
 {
   "no-internet-connection": "No internet connection",
   "common-labels": {
+    "yes": "Yes",
+    "no": "No",
     "buy": "Buy",
     "sell": "Sell",
     "Buy": "Buy",
@@ -28,6 +30,7 @@
     "avgOpPrice": "Avg OP Price",
     "modifyPosition": "Modify Position",
     "modifyOrder": "Modify Order",
+    "modify": "Modify",
     "delete": "Delete",
     "closePosition": "Close Position",
     "addTakeProfit": "Add Take Profit",

@@ -16,6 +16,7 @@ import { colors } from "../../../constants";
 const OpenPositionsTradeBox = ({
   item,
   toggleBottomSlidingPanel,
+  setCurrentTrade,
   navigation,
 }) => {
   const { t } = useTranslation();
@@ -100,7 +101,10 @@ const OpenPositionsTradeBox = ({
             />
             {parseFloat(item.takeProfitRate) == 0 ? (
               <TouchableOpacity
-                onPress={() => toggleBottomSlidingPanel("tpAndSl")}
+                onPress={() => {
+                  setCurrentTrade(item);
+                  toggleBottomSlidingPanel("tpAndSl");
+                }}
               >
                 <Typography
                   name="small"
@@ -124,7 +128,10 @@ const OpenPositionsTradeBox = ({
             />
             {parseFloat(item.stopLossRate) == 0 ? (
               <TouchableOpacity
-                onPress={() => toggleBottomSlidingPanel("tpAndSl")}
+                onPress={() => {
+                  setCurrentTrade(item);
+                  toggleBottomSlidingPanel("tpAndSl");
+                }}
               >
                 <Typography
                   name="small"
@@ -255,7 +262,14 @@ const OpenPositionsTradeBox = ({
           <View style={styles.tradeButtons}>
             <TouchableOpacity
               style={styles.tradeButton}
-              onPress={() => alert("open modify Order")}
+              onPress={() =>
+                navigation.navigate("RealForexOrderDetails", {
+                  asset: item,
+                  isBuy: item.actionType === "Buy" ? true : false,
+                  isPending: false,
+                  isModify: true,
+                })
+              }
             >
               <Typography
                 name="tinyBold"
@@ -268,7 +282,10 @@ const OpenPositionsTradeBox = ({
                 name="tinyBold"
                 style={styles.tradeButtonText}
                 text={t(`common-labels.closePosition`)}
-                onPress={() => alert("close position")}
+                onPress={() => {
+                  setCurrentTrade(item);
+                  toggleBottomSlidingPanel("closePosition");
+                }}
               />
             </TouchableOpacity>
           </View>

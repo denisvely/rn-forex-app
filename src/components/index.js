@@ -19,6 +19,7 @@ export { default as HeaderAssetInfo } from "./HeaderAssetInfo/HeaderAssetInfo";
 export { default as HeaderTitleLogo } from "./HeaderTitleLogo/HeaderTitleLogo";
 export { default as BottomSlidingPanel } from "./BottomSlidingPanel/BottomSlidingPanel";
 export { default as FormattedTypographyWithCurrency } from "./FormatedCurrency/FormattedTypographyWithCurrency";
+export { default as SwitchComponent } from "./Switch/SwitchComponent";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
@@ -35,6 +36,8 @@ export { default as OrderInfo } from "./RealForex/OrderInfo/OrderInfo";
 export { default as OpenPositionsTradeBox } from "./RealForex/OpenPositionsTradeBox/OpenPositionsTradeBox";
 export { default as PendingOrdersTradeBox } from "./RealForex/PendingOrdersTradeBox/PendingOrdersTradeBox";
 export { default as ClosedPositionsTradeBox } from "./RealForex/ClosedPositionsTradeBox/ClosedPositionsTradeBox";
+export { default as PartiallyClose } from "./RealForex/PartiallyClose/PartiallyClose";
+
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";
 export { default as AssetsFilterSimplex } from "./Simplex/AssetsFilter/AssetsFilter";
