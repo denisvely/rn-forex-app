@@ -44,8 +44,6 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   const [partiallyCloseVisible, setVisibility] = useState(false);
 
   const closePositionRealForex = () => {
-    console.log(settings);
-    debugger;
     if (
       partiallyCloseVisible &&
       parseFloat(
@@ -63,7 +61,6 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           settings
         )
     ) {
-      debugger;
       const quantity = convertUnits(
         parseFloat(partiallyCloseValue),
         trade.tradableAssetId,
@@ -80,7 +77,6 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         // The minimum quantity you can trade is {minQty} units.
         return;
       }
-      debugger;
       addRealForexTradeOrderV2Service(
         dispatch,
         (trade.tradableAssetId,

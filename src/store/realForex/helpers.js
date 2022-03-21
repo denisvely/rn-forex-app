@@ -334,7 +334,6 @@ export const getFormattedAskPrice = (asset) => {
 };
 
 export const convertUnits = (value, assetId, reverse, settings) => {
-  debugger;
   return settings.IsVolumeInUnits
     ? value
     : reverse

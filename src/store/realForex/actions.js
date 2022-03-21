@@ -213,8 +213,6 @@ export const closeForexTradeNetting = (dispatch, orderId) => {
 };
 
 addRealForexTradeOrderV2Service = (dispatch, data) => {
-  console.log(data);
-  debugger;
   addForexTradeOrderV2
     .fetch({ orderID: orderId })
     .then(({ response }) => {
