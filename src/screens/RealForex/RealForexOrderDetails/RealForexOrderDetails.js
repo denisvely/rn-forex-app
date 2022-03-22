@@ -4,18 +4,16 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  RealForexTradeButtons,
   MarketPendingButtons,
-  QuantityInput,
-  TakeProfit,
-  StopLoss,
   HeaderAssetInfo,
-  OrderInfo,
   Loading,
+  Button,
+  RealForexDirectionButtons,
+  MarketOrderControls,
+  PendingOrderControls,
 } from "../../../components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
-import { deviceWidth } from "../../../utils";
 import {
   getRealForexTradingSettings,
   getRealForexAssetsSettings,
@@ -34,13 +32,11 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   );
 
   const [isMarket, setOrderType] = useState(true);
-  const [quantity, setQuantity] = useState(null);
   const [isReady, setReadyState] = useState(false);
 
-  const [takeProfitAmount, onChangeTakeProfitAmount] = useState(null);
-  const [takeProfitDistance, onChangeTakeProfitDistance] = useState(null);
-  const [stopLossAmount, onChangeStopLossAmount] = useState(null);
-  const [stopLossDistance, onChangeStopLossDistance] = useState(null);
+  const [isDirectionBuy, setDirection] = useState(
+    route.params.isBuy ? true : false
+  );
 
   const setAllPropsForSelectedAsset = () => {
     // SelectedAsset in Store
@@ -65,8 +61,6 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         );
 
     setSelectedAsset(dispatch, asset);
-    // State
-    setQuantity(`${asset.quantity}`);
     setReadyState(true);
   };
   useEffect(() => {
@@ -92,51 +86,41 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             isMarket={isMarket}
             setOrderType={(orderType) => setOrderType(orderType)}
           />
-          <ScrollView
-            style={styles.scrollView}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              flexDirection: "column",
-              width: deviceWidth,
-              flexGrow: 1,
-              paddingBottom: 100,
-            }}
-          >
-            <View style={{ width: deviceWidth }}>
-              <QuantityInput
-                value={quantity}
-                onChange={(text) => setQuantity(text)}
+          {isMarket ? (
+            <>
+              <RealForexDirectionButtons
+                isBuy={isDirectionBuy}
+                setDirection={(isBuy) => setDirection(isBuy)}
+                asset={asset}
               />
-              <TakeProfit
-                takeProfitAmount={takeProfitAmount}
-                onChangeTakeProfitAmount={(value) =>
-                  onChangeTakeProfitAmount(value)
-                }
-                takeProfitDistance={takeProfitDistance}
-                onChangeTakeProfitDistance={(value) =>
-                  onChangeTakeProfitDistance(value)
-                }
-              />
-              <StopLoss
-                stopLossAmount={stopLossAmount}
-                onChangeStopLossAmount={(value) =>
-                  onChangeStopLossAmount(value)
-                }
-                stopLossDistance={stopLossDistance}
-                onChangeStopLossDistance={(value) =>
-                  onChangeStopLossDistance(value)
-                }
-              />
-              <OrderInfo />
-            </View>
-          </ScrollView>
+              <MarketOrderControls asset={asset} />
+            </>
+          ) : (
+            <PendingOrderControls />
+          )}
         </>
       ) : (
         <Loading size="large" />
       )}
-      <RealForexTradeButtons asset={asset} />
+      <View style={styles.buttonsWrapper}>
+        {isMarket ? (
+          <Button
+            text={t("common-labels.trade")}
+            type="primary"
+            font="mediumBold"
+            size="big"
+            // onPress={props.handleSubmit}
+          />
+        ) : (
+          <Button
+            text={t("common-labels.place")}
+            type="primary"
+            font="mediumBold"
+            size="big"
+            // onPress={props.handleSubmit}
+          />
+        )}
+      </View>
     </View>
   );
 };

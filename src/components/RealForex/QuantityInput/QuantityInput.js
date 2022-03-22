@@ -89,6 +89,7 @@ const QuantityInput = ({ value, onChange }) => {
                   key={`${index}`}
                   style={styles.value}
                   onPress={() => changeQuantity(value)}
+                  underlayColor={colors.containerBackground}
                 >
                   <Typography name="normal" text={value} />
                 </TouchableHighlight>

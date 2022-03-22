@@ -7,7 +7,7 @@ import { colors } from "constants";
 
 import styles from "../stopLossStyles";
 
-const StopLossAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
+const StopLossDistance = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   const { t } = useTranslation();
 
   return (
@@ -19,4 +19,4 @@ const StopLossAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   );
 };
 
-export default StopLossAmount;
+export default StopLossDistance;

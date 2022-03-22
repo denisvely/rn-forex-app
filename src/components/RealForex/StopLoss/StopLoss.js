@@ -4,15 +4,17 @@ import { useTranslation } from "react-i18next";
 
 import { Typography, Spinner } from "components";
 import StopLossAmount from "./StopLossAmount/StopLossAmount";
-import StopLossDistance from "./StopLossDitance.js/StopLossDistance";
-
+import StopLossDistance from "./StopLossDistance/StopLossDistance";
+import StopLossPrice from "./StopLossPrice/StopLossPrice";
 import styles from "./stopLossStyles";
 
 const StopLoss = ({
   stopLossAmount,
   stopLossDistance,
+  stopLossPrice,
   onChangeStopLossAmount,
   onChangeStopLossDistance,
+  onChangeStopLossPrice,
 }) => {
   const { t } = useTranslation();
 
@@ -32,6 +34,11 @@ const StopLoss = ({
         spinnerValue={stopLossDistance}
         onSpinnerChange={(value) => onChangeStopLossDistance(value)}
         placeholder={t("common-labels.distance")}
+      />
+      <StopLossPrice
+        spinnerValue={stopLossPrice}
+        onSpinnerChange={(value) => onChangeStopLossPrice(value)}
+        placeholder={t("common-labels.price")}
       />
     </View>
   );

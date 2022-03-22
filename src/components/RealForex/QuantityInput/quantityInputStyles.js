@@ -4,7 +4,7 @@ import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
   inputsWrapper: {
-    marginVertical: 8,
+    // marginVertical: 8,
     paddingHorizontal: 24,
     zIndex: 5,
   },

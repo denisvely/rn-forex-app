@@ -29,14 +29,19 @@ export { default as AssetsFilter } from "./RealForex/AssetsFilter/AssetsFilter";
 export { default as FavouritesIcon } from "./FavouritesIcon/FavouritesIcon";
 export { default as RealForexTradeButtons } from "./RealForex/RealForexTradeButtons/RealForexTradeButtons";
 export { default as QuantityInput } from "./RealForex/QuantityInput/QuantityInput";
-export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
+export { default as TakeProfitPending } from "./RealForex/TakeProfitPending/TakeProfitPending";
+export { default as StopLossPending } from "./RealForex/StopLossPending/StopLossPending";
 export { default as StopLoss } from "./RealForex/StopLoss/StopLoss";
+export { default as TakeProfit } from "./RealForex/TakeProfit/TakeProfit";
 export { default as AssetsSearch } from "./RealForex/AssetsSearch/AssetsSearch";
 export { default as OrderInfo } from "./RealForex/OrderInfo/OrderInfo";
 export { default as OpenPositionsTradeBox } from "./RealForex/OpenPositionsTradeBox/OpenPositionsTradeBox";
 export { default as PendingOrdersTradeBox } from "./RealForex/PendingOrdersTradeBox/PendingOrdersTradeBox";
 export { default as ClosedPositionsTradeBox } from "./RealForex/ClosedPositionsTradeBox/ClosedPositionsTradeBox";
 export { default as PartiallyClose } from "./RealForex/PartiallyClose/PartiallyClose";
+export { default as RealForexDirectionButtons } from "./RealForex/RealForexDirectionButtons/RealForexDirectionButtons";
+export { default as MarketOrderControls } from "./RealForex/MarketOrderControls/MarketOrderControls";
+export { default as PendingOrderControls } from "./RealForex/PendingOrderControls/PendingOrderControls";
 
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";

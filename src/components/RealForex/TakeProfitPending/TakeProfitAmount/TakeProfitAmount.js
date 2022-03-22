@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { Typography, Spinner } from "components";
-
-import styles from "../takeProfitStyles";
+import { Spinner } from "components";
 
 const TakeProfitAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   const { t } = useTranslation();

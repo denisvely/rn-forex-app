@@ -46,7 +46,11 @@
     "dist": "Dist",
     "balance": "Balance",
     "equity": "Equity",
-    "availableBalance": "Available Balance"
+    "availableBalance": "Available Balance",
+    "price": "Price",
+    "point": "Point",
+    "trade": "Trade",
+    "place": "Place"
   },
   "navigation": {
     "quotes": "Quotes",

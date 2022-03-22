@@ -106,6 +106,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         realForexPrices[trade.tradableAssetId].ask,
         realForexPrices[trade.tradableAssetId].bid
       );
+      toggleSlidingPanel(false);
     } else {
       if (user.forexModeId === 3 && user.forexMarginModeId === 1) {
         closeForexTradeNetting(dispatch, trade.orderID);

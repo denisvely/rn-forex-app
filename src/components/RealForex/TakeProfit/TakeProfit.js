@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import { Typography, Spinner } from "components";
+import { Typography } from "components";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
 import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
+import TakeProfitPrice from "./TakeProfitPrice/TakeProfitPrice";
 
 import styles from "./takeProfitStyles";
 
@@ -13,6 +14,8 @@ const TakeProfit = ({
   onChangeTakeProfitAmount,
   takeProfitDistance,
   onChangeTakeProfitDistance,
+  takeProfitPrice,
+  onChangeTakeProfitPrice,
 }) => {
   const { t } = useTranslation();
 
@@ -32,6 +35,11 @@ const TakeProfit = ({
         spinnerValue={takeProfitDistance}
         onSpinnerChange={(orderType) => onChangeTakeProfitDistance(orderType)}
         placeholder={t("common-labels.distance")}
+      />
+      <TakeProfitPrice
+        spinnerValue={takeProfitPrice}
+        onSpinnerChange={(orderType) => onChangeTakeProfitPrice(orderType)}
+        placeholder={t("common-labels.price")}
       />
     </View>
   );

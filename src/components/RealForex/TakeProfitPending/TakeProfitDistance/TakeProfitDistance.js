@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import { Typography, Spinner } from "components";
-import { colors } from "constants";
+import { Spinner } from "components";
 
-import styles from "../stopLossStyles";
-
-const StopLossDistance = ({ spinnerValue, onSpinnerChange }) => {
+const TakeProfitDistance = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   const { t } = useTranslation();
 
   return (
     <Spinner
       spinnerValue={spinnerValue}
       onSpinnerChange={(orderType) => onSpinnerChange(orderType)}
-      placeholder={t("common-labels.distance")}
+      placeholder={placeholder}
     />
   );
 };
 
-export default StopLossDistance;
+export default TakeProfitDistance;
