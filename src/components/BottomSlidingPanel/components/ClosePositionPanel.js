@@ -77,9 +77,10 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         // The minimum quantity you can trade is {minQty} units.
         return;
       }
+
       addRealForexTradeOrderV2Service(
         dispatch,
-        (trade.tradableAssetId,
+        trade.tradableAssetId,
         realForexOptionsByType.All[trade.tradableAssetId].rules[0].id,
         trade.actionType === "Buy" ? false : true,
         trade.rate,
@@ -101,9 +102,9 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         false,
         trade.orderID,
         null,
-        getRealForexPrices[trade.tradableAssetId].delay,
-        getRealForexPrices[trade.tradableAssetId].ask,
-        getRealForexPrices[trade.tradableAssetId].bid)
+        realForexPrices[trade.tradableAssetId].delay,
+        realForexPrices[trade.tradableAssetId].ask,
+        realForexPrices[trade.tradableAssetId].bid
       );
     } else {
       if (user.forexModeId === 3 && user.forexMarginModeId === 1) {

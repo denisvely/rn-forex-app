@@ -212,15 +212,55 @@ export const closeForexTradeNetting = (dispatch, orderId) => {
     });
 };
 
-addRealForexTradeOrderV2Service = (dispatch, data) => {
+export const addRealForexTradeOrderV2Service = (
+  dispatch,
+  optionId,
+  ruleId,
+  isBuy,
+  rate,
+  volume,
+  takeProfit,
+  StopLoss,
+  leverage,
+  TakeProfitDistance,
+  StoplossDistance,
+  pip,
+  pendingPrice,
+  slippage,
+  orderId,
+  expirationDate,
+  delay,
+  ask,
+  bid,
+  takeProfitRate,
+  stopLossRate
+) => {
   addForexTradeOrderV2
-    .fetch({ orderID: orderId })
+    .fetch(
+      optionId,
+      ruleId,
+      isBuy,
+      rate,
+      volume,
+      takeProfit,
+      StopLoss,
+      leverage,
+      TakeProfitDistance,
+      StoplossDistance,
+      pip,
+      pendingPrice,
+      slippage,
+      orderId,
+      expirationDate,
+      delay,
+      ask,
+      bid,
+      takeProfitRate,
+      stopLossRate
+    )
     .then(({ response }) => {
-      // TODO => ?
-      // dispatch({
-      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
-      //   payload: body,
-      // });
+      // Show Notification
+      // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
     })
     .catch((err) => {
       console.log(err);

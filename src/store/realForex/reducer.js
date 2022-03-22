@@ -120,12 +120,6 @@ const realForexReducer = (state = initialState, action) => {
         selectedAsset: action.payload,
       };
     }
-    case actionTypes.REAL_FOREX_CLOSE_POSITION: {
-      return {
-        ...stateClone,
-        selectedAsset: action.payload,
-      };
-    }
 
     default:
       return state;

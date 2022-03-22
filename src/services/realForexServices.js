@@ -317,33 +317,61 @@ export default {
     service.setPrepareRequest(
       (
         request,
-        {
-          optionId,
-          ruleId,
-          isBuy,
-          rate,
-          volume,
-          takeProfit,
-          StopLoss,
-          leverage,
-          TakeProfitDistance,
-          StoplossDistance,
-          pip,
-          pendingPrice,
-          slippage,
-          orderId,
-          expirationDate,
-          delay,
-          ask,
-          bid,
-          takeProfitRate,
-          stopLossRate,
-        }
+        optionId,
+        ruleId,
+        isBuy,
+        rate,
+        volume,
+        takeProfit,
+        StopLoss,
+        leverage,
+        TakeProfitDistance,
+        StoplossDistance,
+        pip,
+        pendingPrice,
+        slippage,
+        orderId,
+        expirationDate,
+        delay,
+        ask,
+        bid,
+        takeProfitRate,
+        stopLossRate
       ) => {
-        const options = {};
+        // if (widgets.tradeOrderInProgress) {
+        //     $(window).trigger(widgets.events.tradeInProgress);
+        //     return;
+        // // }
 
-        options["PositionId"] = orderID;
-        options["optionType"] = 24;
+        // widgets.tradeOrderInProgress = true;
+
+        const options = {
+          TradableAssetId: optionId,
+          ForexRuleID: ruleId,
+          Rate: rate,
+          Volume: volume,
+          askPrice: ask,
+          bidPrice: bid,
+          TakeProfit: takeProfit,
+          StopLoss: StopLoss,
+          IsBuy: isBuy,
+          Leverage: leverage,
+          TakeProfitDistance: TakeProfitDistance,
+          StoplossDistance: StoplossDistance,
+          Pip: pip,
+          PendingPrice: pendingPrice || 0,
+          Slippage: slippage || false,
+          OrderId: orderId,
+          OptionType: 24,
+          ExpirationDate: expirationDate,
+          qDelay: delay,
+          askPrice: ask,
+          bidPrice: bid,
+          TakeProfitRate: takeProfitRate,
+          StopLostRate: stopLossRate,
+        };
+
+        // widgets.api.setTradeStarted(options);
 
         request.setHeader(
           "Authorization",
