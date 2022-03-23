@@ -9,7 +9,7 @@ export default {
         resources.forexOpenTrades = {};
         resources.forexOpenTrades = {
             includeOffers: true,
-            filterByOptionType: "forex",
+            filterByOptionType: "forex,harealforex",
         };
 
         service.setPrepareRequest((request) => {
@@ -32,10 +32,10 @@ export default {
         );
 
         let resources = {
-            orderId: '',
-            tradeId: '',
-            fromDate: '',
-            toDate: '',
+            orderId: null,
+            tradeId: null,
+            fromDate: null,
+            toDate: null,
             offset: 0,
             limit: 1000,
             tradableAssetId: 0,
@@ -49,6 +49,23 @@ export default {
             );
 
             request.setQueryParameters(resources);
+
+            return request;
+        });
+
+        return service;
+    },
+
+    cancelPendingOrder: (orderId) => {
+        const service = new Service(`v1/games/forex/pendingorders/cancel/${orderId}/18`,
+            apiConsts.HTTP_METHOD_PUT
+        );
+
+        service.setPrepareRequest((request) => {
+            request.setHeader(
+                "Authorization",
+                `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+            );
 
             return request;
         });

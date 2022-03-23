@@ -31,7 +31,7 @@ export const loadInitialSimplexData = (dispatch) => {
     getSimplexPendingOrders
         .fetch()
         .then(({response}) => {
-            const body = response.body.data;
+            const body = response.body.data.results;
             if (body.length > 0) {
                 dispatch({
                     type: actionTypes.SIMPLEX_PENDING_ORDERS,
@@ -127,7 +127,6 @@ export const loadInitialSimplexData = (dispatch) => {
         .catch((err) => {
             console.log(err);
         });
-
     getSimplexNotifications
         .fetch()
         .then(({response}) => {
