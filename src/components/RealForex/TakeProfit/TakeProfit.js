@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Typography } from "components";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
@@ -9,15 +10,15 @@ import TakeProfitPrice from "./TakeProfitPrice/TakeProfitPrice";
 
 import styles from "./takeProfitStyles";
 
-const TakeProfit = ({
-  takeProfitAmount,
-  onChangeTakeProfitAmount,
-  takeProfitDistance,
-  onChangeTakeProfitDistance,
-  takeProfitPrice,
-  onChangeTakeProfitPrice,
-}) => {
+const TakeProfit = () => {
   const { t } = useTranslation();
+  const initialTPState = {
+    TPActive: false,
+    takeProfitDistance: null,
+    takeProfitAmount: null,
+    takeProfitPrice: null,
+  };
+  const [state, setState] = useState(initialTPState);
 
   return (
     <View style={styles.inputsWrapper}>
@@ -26,21 +27,9 @@ const TakeProfit = ({
         name="normal"
         text={t("common-labels.takeProfit")}
       />
-      <TakeProfitAmount
-        spinnerValue={takeProfitAmount}
-        onSpinnerChange={(orderType) => onChangeTakeProfitAmount(orderType)}
-        placeholder={t("common-labels.amount")}
-      />
-      <TakeProfitDistance
-        spinnerValue={takeProfitDistance}
-        onSpinnerChange={(orderType) => onChangeTakeProfitDistance(orderType)}
-        placeholder={t("common-labels.distance")}
-      />
-      <TakeProfitPrice
-        spinnerValue={takeProfitPrice}
-        onSpinnerChange={(orderType) => onChangeTakeProfitPrice(orderType)}
-        placeholder={t("common-labels.price")}
-      />
+      <TakeProfitAmount state={state} setState={setState} />
+      <TakeProfitDistance state={state} setState={setState} />
+      <TakeProfitPrice state={state} setState={setState} />
     </View>
   );
 };

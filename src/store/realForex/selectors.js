@@ -26,3 +26,4 @@ export const getRealForexTotalNewNotifications = (state) =>
   get(state, "realForex.realForexTotalNewNotifications");
 export const getSelectedAsset = (state) =>
   get(state, "realForex.selectedAsset");
+export const getCurrentTrade = (state) => get(state, "realForex.currentTrade");

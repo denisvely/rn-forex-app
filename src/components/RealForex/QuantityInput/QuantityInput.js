@@ -12,7 +12,7 @@ import { formatDeciamlWithComma } from "store/realForex/helpers";
 
 import styles from "./quantityInputStyles";
 
-const QuantityInput = ({ value, onChange }) => {
+const QuantityInput = ({ value, onChange, onFocus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
@@ -23,12 +23,12 @@ const QuantityInput = ({ value, onChange }) => {
   const displayQuantityDropDown = () => {
     const multiplyBy = selectedAsset.quantityMultiplier.split(",");
     const minQuantity =
-      selectedAsset.minQuantity != 0 ? selectedAsset.minQuantity : 1;
+      selectedAsset.MinQuantity != 0 ? selectedAsset.MinQuantity : 1;
     const dropdownData = [];
 
     multiplyBy.forEach(function (qty, n) {
-      if (parseFloat(qty) * minQuantity > selectedAsset.maxQuantity) {
-        dropdownData.push(formatDeciamlWithComma(selectedAsset.maxQuantity));
+      if (parseFloat(qty) * minQuantity > selectedAsset.MaxQuantity) {
+        dropdownData.push(formatDeciamlWithComma(selectedAsset.MaxQuantity));
       } else {
         dropdownData.push(
           formatDeciamlWithComma(parseFloat(qty) * minQuantity)
@@ -62,6 +62,7 @@ const QuantityInput = ({ value, onChange }) => {
           autoCapitalize="none"
           autoCorrect={false}
           onChangeText={onChange}
+          onFocus={onFocus}
           value={value}
           placeholder="Quantity"
           placeholderTextColor={colors.fontSecondaryColor}

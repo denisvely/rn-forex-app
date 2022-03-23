@@ -10,7 +10,15 @@ import {
   OrderInfo,
 } from "../../../components";
 import { deviceWidth } from "../../../utils";
-import { getSelectedAsset } from "../../../store/realForex";
+import {
+  getSelectedAsset,
+  getCurrentTrade,
+  getRealForexTradingSettings,
+} from "../../../store/realForex";
+import {
+  convertUnits,
+  formatDeciamlWithComma,
+} from "../../../store/realForex/helpers";
 
 import styles from "./marketOrderControlsStyles";
 
@@ -18,20 +26,45 @@ const MarketOrderControls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
-
-  const [takeProfitAmount, onChangeTakeProfitAmount] = useState(null);
-  const [takeProfitDistance, onChangeTakeProfitDistance] = useState(null);
-  const [takeProfitPrice, onChangeTakeProfitPrice] = useState(null);
-  const [stopLossAmount, onChangeStopLossAmount] = useState(null);
-  const [stopLossDistance, onChangeStopLossDistance] = useState(null);
-  const [stopLossPrice, onChangeStopLossPrice] = useState(null);
+  const currentTrade = useSelector((state) => getCurrentTrade(state));
+  const settings = useSelector((state) => getRealForexTradingSettings(state));
   const [quantity, setQuantity] = useState(null);
+
+  const initQuantity = () => {
+    setQuantity(`${selectedAsset.quantity}`);
+  };
 
   useEffect(() => {
     if (selectedAsset) {
-      setQuantity(`${selectedAsset.quantity}`);
+      initQuantity();
     }
   }, [selectedAsset]);
+
+  const onChangeQuantity = (value) => {
+    const quantityValue =
+      value.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(value.replace(/,/g, "")),
+            selectedAsset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
+    console.log(quantityValue);
+    setQuantity(formatDeciamlWithComma(quantityValue));
+    currentTrade.quantity = quantityValue;
+  };
+
+  const onQuantityFocus = () => {
+    const quantityValue = convertUnits(
+      parseFloat(quantity.replace(/,/g, "")),
+      selectedAsset.id,
+      true,
+      settings
+    );
+    setQuantity(quantityValue);
+  };
+
   return (
     <ScrollView
       style={styles.scrollView}
@@ -49,26 +82,11 @@ const MarketOrderControls = () => {
       <View style={{ width: deviceWidth }}>
         <QuantityInput
           value={quantity}
-          onChange={(text) => setQuantity(text)}
+          onChange={(value) => onChangeQuantity(value)}
+          onFocus={() => onQuantityFocus()}
         />
-        <TakeProfit
-          takeProfitAmount={takeProfitAmount}
-          onChangeTakeProfitAmount={(value) => onChangeTakeProfitAmount(value)}
-          takeProfitDistance={takeProfitDistance}
-          onChangeTakeProfitDistance={(value) =>
-            onChangeTakeProfitDistance(value)
-          }
-          takeProfitPrice={takeProfitPrice}
-          onChangeTakeProfitPrice={(value) => onChangeTakeProfitPrice(value)}
-        />
-        <StopLoss
-          stopLossAmount={stopLossAmount}
-          onChangeStopLossAmount={(value) => onChangeStopLossAmount(value)}
-          stopLossDistance={stopLossDistance}
-          onChangeStopLossDistance={(value) => onChangeStopLossDistance(value)}
-          stopLossPrice={stopLossPrice}
-          onChangeStopLossPrice={(value) => onChangeStopLossPrice(value)}
-        />
+        <TakeProfit />
+        <StopLoss />
         <OrderInfo />
       </View>
     </ScrollView>

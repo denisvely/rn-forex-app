@@ -6,14 +6,16 @@ import { Typography, Spinner } from "components";
 
 import styles from "../takeProfitStyles";
 
-const TakeProfitAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
+const TakeProfitAmount = ({ state, setState }) => {
   const { t } = useTranslation();
 
   return (
     <Spinner
-      spinnerValue={spinnerValue}
-      onSpinnerChange={(orderType) => onSpinnerChange(orderType)}
-      placeholder={placeholder}
+      placeholder={t("common-labels.amount")}
+      spinnerValue={state.takeProfitAmount}
+      onSpinnerChange={(value) => onChange(value)}
+      step={0.1}
+      accuracy={2}
     />
   );
 };

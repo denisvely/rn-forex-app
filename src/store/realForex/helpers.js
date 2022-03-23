@@ -346,3 +346,9 @@ export const formatDeciamlWithComma = (num) => {
     return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
   });
 };
+
+export const getSpread = (askPrice, bidPrice, accuracy) => {
+  return parseFloat(parseFloat(askPrice) - parseFloat(bidPrice)).toFixed(
+    accuracy
+  );
+};
