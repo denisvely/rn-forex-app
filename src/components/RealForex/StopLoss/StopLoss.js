@@ -1,22 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
 
-import { Typography, Spinner } from "components";
+import { Typography } from "components";
 import StopLossAmount from "./StopLossAmount/StopLossAmount";
 import StopLossDistance from "./StopLossDistance/StopLossDistance";
 import StopLossPrice from "./StopLossPrice/StopLossPrice";
 import styles from "./stopLossStyles";
+import { getSelectedAsset } from "../../../store/realForex";
 
-const StopLoss = ({
-  stopLossAmount,
-  stopLossDistance,
-  stopLossPrice,
-  onChangeStopLossAmount,
-  onChangeStopLossDistance,
-  onChangeStopLossPrice,
-}) => {
+const StopLoss = () => {
   const { t } = useTranslation();
+  const selectedAsset = useSelector((state) => getSelectedAsset(state));
+  const initialSLState = {
+    SLActive: false,
+    stopLossAmount: null,
+    stopLossDistance: null,
+    stopLossPrice: null,
+  };
+  const [state, setState] = useState(initialSLState);
+
+  const initSL = () => {
+    setState((prevState) => ({
+      ...prevState,
+      stopLossAmount: 1,
+    }));
+  };
+
+  useEffect(() => {
+    if (selectedAsset) {
+      initSL();
+    }
+  }, [selectedAsset]);
 
   return (
     <View style={styles.inputsWrapper}>
@@ -26,18 +42,33 @@ const StopLoss = ({
         text={t("common-labels.stopLoss")}
       />
       <StopLossAmount
-        spinnerValue={stopLossAmount}
-        onSpinnerChange={(value) => onChangeStopLossAmount(value)}
+        spinnerValue={state.stopLossAmount}
+        onSpinnerChange={(value) => {
+          setState((prevState) => ({
+            ...prevState,
+            stopLossAmount: value,
+          }));
+        }}
         placeholder={t("common-labels.amount")}
       />
       <StopLossDistance
-        spinnerValue={stopLossDistance}
-        onSpinnerChange={(value) => onChangeStopLossDistance(value)}
+        spinnerValue={state.stopLossDistance}
+        onSpinnerChange={(value) => {
+          setState((prevState) => ({
+            ...prevState,
+            stopLossDistance: value,
+          }));
+        }}
         placeholder={t("common-labels.distance")}
       />
       <StopLossPrice
-        spinnerValue={stopLossPrice}
-        onSpinnerChange={(value) => onChangeStopLossPrice(value)}
+        spinnerValue={state.stopLossPrice}
+        onSpinnerChange={(value) => {
+          setState((prevState) => ({
+            ...prevState,
+            stopLossPrice: value,
+          }));
+        }}
         placeholder={t("common-labels.price")}
       />
     </View>

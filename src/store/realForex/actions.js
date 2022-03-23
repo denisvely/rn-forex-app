@@ -182,6 +182,10 @@ export const setSelectedAsset = async (dispatch, asset) => {
   dispatch({ type: actionTypes.SET_SELECTED_ASSET, payload: asset });
 };
 
+export const setCurrentTrade = async (dispatch, trade) => {
+  dispatch({ type: actionTypes.SET_CURRENT_TRADE, payload: trade });
+};
+
 export const closePosition = (dispatch, orderId) => {
   closePositionRealForex
     .fetch({ orderID: orderId })
