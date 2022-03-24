@@ -17,7 +17,7 @@ import {
   PendingOrdersRealForex,
   ClosedPositionsRealForex,
   Balance,
-} from "screens";
+} from "../screens";
 
 import { CustomTabBar } from "../components";
 import { loadInitialRealForexData } from "../store/realForex";

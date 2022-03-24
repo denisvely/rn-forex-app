@@ -47,3 +47,6 @@ export { default as PendingOrderControls } from "./RealForex/PendingOrderControl
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";
 export { default as AssetsFilterSimplex } from "./Simplex/AssetsFilter/AssetsFilter";
 export { default as BuyPriceSimplex } from "./Simplex/BuyPrice/BuyPrice";
+export { default as OpenPositionsSimplexTradeBox } from "./Simplex/OpenPositionsTradeBox/OpenPositionsTradeBox";
+export { default as PendingOrdersSimplexTradeBox } from "./Simplex/PendingOrdersTradeBox/PendingOrdersTradeBox";
+export { default as ClosedPositionsSimplexTradeBox } from "./Simplex/ClosedPositionsTradeBox/ClosedPositionsTradeBox";

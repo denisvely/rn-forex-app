@@ -350,8 +350,6 @@ export default {
           ForexRuleID: ruleId,
           Rate: rate,
           Volume: volume,
-          askPrice: ask,
-          bidPrice: bid,
           TakeProfit: takeProfit,
           StopLoss: StopLoss,
           IsBuy: isBuy,
