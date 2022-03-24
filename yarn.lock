@@ -5060,6 +5060,11 @@
     "css-select" "^4.2.1"
     "css-tree" "^1.0.0-alpha.39"
 
+"react-native-toast-message@^2.1.2":
+  "integrity" "sha512-nLySPAhxovSisRoorpxQxUBchQJjypDit3SCaMmQMOZh3pUH0Q72XRUFingBCq19i849v+A082fdcfqGlkuiFg=="
+  "resolved" "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.1.2.tgz"
+  "version" "2.1.2"
+
 "react-native-web@0.17.1":
   "integrity" "sha512-lUnn+2O8ynQ6/gJKylSxm7DLi2vHw6AujdDV1+LSa8Epe1bYFJNUcJTEhJf0jNYUFGOujzMtuG8Mkz3HdWTkag=="
   "resolved" "https://registry.npmjs.org/react-native-web/-/react-native-web-0.17.1.tgz"

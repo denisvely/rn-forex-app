@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { LogBox, StatusBar } from "react-native";
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import ServiceManager from "./src/utils/serviceManager";
+import Toast from "./src/components/Toast/Toast";
 
 import "./src/translations";
 
@@ -34,6 +35,7 @@ const App = () => {
       <AppearanceProvider>
         <StatusBar style="auto" />
         <RootStackNavigator theme={theme} />
+        <Toast />
       </AppearanceProvider>
     </Provider>
   );
