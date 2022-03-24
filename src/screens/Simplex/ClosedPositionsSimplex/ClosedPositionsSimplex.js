@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { View, Pressable } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 
 import {
@@ -16,12 +16,11 @@ import { SvgXml } from "react-native-svg";
 import styles from "./closedPositionsSimplexStyles";
 
 const ClosedPositionsSimplex = ({ navigation }) => {
-    const dispatch = useDispatch();
     const [fromDate, setFromDate] = useState(
-        moment(new Date()).format("DD-MM-YYYY")
+        moment(new Date().setMonth(new Date().getMonth() - 1)).format("DD-MM-YYYY")
     );
     const [toDate, setToDate] = useState(
-        moment(new Date().setMonth(new Date().getMonth() + 1)).format("DD-MM-YYYY")
+        moment(new Date()).format("DD-MM-YYYY")
     );
     const closedPositionsRef = useRef();
     const closedPositions = useSelector((state) =>

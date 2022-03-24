@@ -1,24 +1,18 @@
 import React, {useState} from "react";
-import {View, TouchableOpacity} from "react-native";
+import {View, TouchableOpacity, Alert} from "react-native";
 import {useTranslation} from "react-i18next";
 import {SvgXml} from "react-native-svg";
 import moment from "moment";
 import {useSelector} from "react-redux";
-
 import {formatDeciamlWithComma} from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import {Typography, FormattedTypographyWithCurrency} from "components";
+import {Typography, FormattedTypographyWithCurrency} from "../../../components";
 import {getSimplexPrices} from "../../../store/simplex";
 
 import styles from "./openPositionsTradeBoxStyles";
 import {colors} from "../../../constants";
 
-const OpenPositionsSimplexTradeBox = ({
-                                          item,
-                                          toggleBottomSlidingPanel,
-                                          setCurrentTrade,
-                                          navigation,
-                                      }) => {
+const OpenPositionsSimplexTradeBox = ({item, toggleBottomSlidingPanel, setCurrentTrade, navigation,  cancelPosition}) => {
     const {t} = useTranslation();
     const simplexPrices = useSelector((state) => getSimplexPrices(state));
     const [isContentVisible, setContentVisible] = useState(false);
@@ -28,13 +22,12 @@ const OpenPositionsSimplexTradeBox = ({
     }
 
     let result = 0;
+    let profit = 0;
 
     if (typeof simplexPrices != "undefined" && simplexPrices != null && simplexPrices[item.tradableAssetId] != undefined) {
-        result = parseFloat(
-            (item.actionType === "Sell" ? (item.rate - simplexPrices[item.tradableAssetId].ask) : (simplexPrices[item.tradableAssetId].bid - item.rate)) *
-            item.volume *
-            (1 / item.exchangeRate)
-        ).toFixed(2);
+        let price = ((parseFloat(simplexPrices[item.tradableAssetId].ask) + parseFloat(simplexPrices[item.tradableAssetId].bid)) / 2).toFixed(simplexPrices[item.tradableAssetId].accuracy);
+        result = parseFloat(parseFloat(item.volume) + (item.actionType == "Buy" ? ((parseFloat(price) - parseFloat(item.rate)) * (parseFloat(item.volumeWithLeverage)/parseFloat(item.rate))) : ((parseFloat(item.rate) - parseFloat(price)) * (parseFloat(item.volumeWithLeverage)/parseFloat(item.rate))))).toFixed(2);
+        profit = parseFloat(item.actionType == "Buy" ? ((parseFloat(price) - parseFloat(item.rate)) * (parseFloat(item.volumeWithLeverage)/parseFloat(item.rate))) : ((parseFloat(item.rate) - parseFloat(price)) * (parseFloat(item.volumeWithLeverage)/parseFloat(item.rate)))).toFixed(2);
     }
 
     return (
@@ -44,19 +37,27 @@ const OpenPositionsSimplexTradeBox = ({
                 onPress={() => setContentVisible(!isContentVisible)}
             >
                 <View style={styles.left}>
-                    <Typography
-                        name="small"
-                        style={styles.assetName}
-                        text={item.description}
-                    />
                     <View style={styles.leftInner}>
                         <Typography
                             name="tiny"
-                            text={t(`common-labels.${item.actionType}`)}
+                            text={t(`common-labels.simplex-${item.actionType}`)}
                             style={item.actionType === "Buy" ? styles.green : styles.red}
                         />
                         <View style={styles.quantityWrapper}>
                             <Typography
+                                name="small"
+                                style={styles.assetName}
+                                text={item.description}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.leftInner}>
+                        <Typography
+                            name="tiny"
+                            text="Inv. Amount"
+                        />
+                        <View style={styles.quantityWrapper}>
+                            <FormattedTypographyWithCurrency
                                 name="tiny"
                                 text={formatDeciamlWithComma(parseFloat(item.volume))}
                             />
@@ -69,9 +70,9 @@ const OpenPositionsSimplexTradeBox = ({
                         style={{
                             ...styles.textRight,
                             color:
-                                parseFloat(result) < 0 ? colors.sellColor : colors.buyColor,
+                                parseFloat(profit) < 0 ? colors.sellColor : colors.buyColor,
                         }}
-                        text={result}
+                        text={profit}
                     />
                     <SvgXml
                         style={styles.assetIcon}
@@ -89,26 +90,11 @@ const OpenPositionsSimplexTradeBox = ({
                             style={styles.tradeInfoKey}
                             text={t(`common-labels.takeProfit`)}
                         />
-                        {parseFloat(item.takeProfitRate) == 0 ? (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setCurrentTrade(item);
-                                    toggleBottomSlidingPanel("tpAndSl");
-                                }}
-                            >
-                                <Typography
-                                    name="small"
-                                    style={styles.tradeInfoValueClickable}
-                                    text={t(`common-labels.addTakeProfit`)}
-                                />
-                            </TouchableOpacity>
-                        ) : (
-                            <Typography
-                                name="small"
-                                style={styles.tradeInfoValue}
-                                text={item.takeProfitRate}
-                            />
-                        )}
+                        <FormattedTypographyWithCurrency
+                            name="small"
+                            style={styles.tradeInfoValue}
+                            text={formatDeciamlWithComma(parseFloat(item.takeProfitAmount))}
+                        />
                     </View>
                     <View style={styles.tradeInfoRow}>
                         <Typography
@@ -116,39 +102,34 @@ const OpenPositionsSimplexTradeBox = ({
                             style={styles.tradeInfoKey}
                             text={t(`common-labels.stopLoss`)}
                         />
-                        {parseFloat(item.stopLossRate) == 0 ? (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setCurrentTrade(item);
-                                    toggleBottomSlidingPanel("tpAndSl");
-                                }}
-                            >
-                                <Typography
-                                    name="small"
-                                    style={styles.tradeInfoValueClickable}
-                                    text={t(`common-labels.addStopLoss`)}
-                                />
-                            </TouchableOpacity>
-                        ) : (
-                            <Typography
-                                name="small"
-                                style={styles.tradeInfoValue}
-                                text={item.stopLossRate}
-                            />
-                        )}
+                        <FormattedTypographyWithCurrency
+                            name="small"
+                            style={styles.tradeInfoValue}
+                            text={formatDeciamlWithComma(parseFloat(item.stopLossAmount))}
+                        />
                     </View>
                     <View style={styles.tradeInfoRow}>
                         <Typography
                             name="small"
                             style={styles.tradeInfoKey}
-                            text={t(`common-labels.#`)}
+                            text="Order Date"
                         />
                         <Typography
                             name="small"
                             style={styles.tradeInfoValue}
-                            text={moment(item.orderDate.timestamp).format(
-                                "YYYY-MM-DD HH:MM:ss"
-                            )}
+                            text={moment(item.orderDate.timestamp).format("YYYY-MM-DD HH:mm:ss")}
+                        />
+                    </View>
+                    <View style={styles.tradeInfoRow}>
+                        <Typography
+                            name="small"
+                            style={styles.tradeInfoKey}
+                            text="Expiry Date"
+                        />
+                        <Typography
+                            name="small"
+                            style={styles.tradeInfoValue}
+                            text={item.expirationDate ? moment(item.expirationDate.timestamp).format("YYYY-MM-DD HH:mm:ss") : 'GTC'}
                         />
                     </View>
                     <View style={styles.tradeInfoRow}>
@@ -157,32 +138,22 @@ const OpenPositionsSimplexTradeBox = ({
                             style={styles.tradeInfoKey}
                             text={t(`common-labels.id`)}
                         />
-                        <TouchableOpacity onPress={() => alert("open Position history")}>
-                            <Typography
-                                name="small"
-                                style={styles.tradeInfoValueClickable}
-                                text={`POS${item.orderID}`}
-                            />
-                        </TouchableOpacity>
+                        <Typography
+                            name="small"
+                            style={styles.tradeInfoValue}
+                            text={item.orderID}
+                        />
                     </View>
                     <View style={styles.tradeInfoRow}>
                         <Typography
                             name="small"
                             style={styles.tradeInfoKey}
-                            text={t(`common-labels.@`)}
+                            text="Market Price"
                         />
                         <Typography
                             name="small"
                             style={styles.tradeInfoValue}
-                            text={
-                                typeof simplexPrices != "undefined" &&
-                                simplexPrices != null &&
-                                typeof simplexPrices[item.tradableAssetId] != "undefined"
-                                    ? item.actionType == "Sell"
-                                        ? simplexPrices[item.tradableAssetId].ask
-                                        : simplexPrices[item.tradableAssetId].bid
-                                    : "-"
-                            }
+                            text={ typeof simplexPrices != "undefined" && simplexPrices != null && typeof simplexPrices[item.tradableAssetId] != "undefined" ? ((parseFloat(simplexPrices[item.tradableAssetId].ask) + parseFloat(simplexPrices[item.tradableAssetId].bid)) / 2).toFixed(simplexPrices[item.tradableAssetId].accuracy) : "-" }
                         />
                     </View>
                     <View style={styles.tradeInfoRow}>
@@ -201,12 +172,12 @@ const OpenPositionsSimplexTradeBox = ({
                         <Typography
                             name="small"
                             style={styles.tradeInfoKey}
-                            text={t(`common-labels.avgPrice`)}
+                            text="Return"
                         />
-                        <Typography
+                        <FormattedTypographyWithCurrency
                             name="small"
                             style={styles.tradeInfoValue}
-                            text={item.rate}
+                            text={result}
                         />
                     </View>
                     <View style={styles.tradeInfoRow}>
@@ -217,36 +188,8 @@ const OpenPositionsSimplexTradeBox = ({
                         />
                         <FormattedTypographyWithCurrency
                             name="small"
-                            style={parseFloat(item.swap) < 0 ? styles.red : styles.green}
+                            style={styles.tradeInfoValue}
                             text={item.swap ? parseFloat(item.swap).toFixed(2) : "-"}
-                        />
-                    </View>
-                    <View style={styles.tradeInfoRow}>
-                        <Typography
-                            name="small"
-                            style={styles.tradeInfoKey}
-                            text={t(`common-labels.margin`)}
-                        />
-                        <FormattedTypographyWithCurrency
-                            name="small"
-                            style={styles.tradeInfoValue}
-                            text={item.margin}
-                        />
-                    </View>
-                    <View style={styles.tradeInfoRow}>
-                        <Typography
-                            name="small"
-                            style={styles.tradeInfoKey}
-                            text={t(`common-labels.commission`)}
-                        />
-                        <FormattedTypographyWithCurrency
-                            name="small"
-                            style={styles.tradeInfoValue}
-                            text={
-                                item.cfdCommission != null
-                                    ? parseFloat(item.cfdCommission).toFixed(2)
-                                    : "-"
-                            }
                         />
                     </View>
                     <View style={styles.tradeButtons}>
@@ -273,8 +216,18 @@ const OpenPositionsSimplexTradeBox = ({
                                 style={styles.tradeButtonText}
                                 text={t(`common-labels.closePosition`)}
                                 onPress={() => {
-                                    setCurrentTrade(item);
-                                    toggleBottomSlidingPanel("closePosition");
+                                    Alert.alert(
+                                        "Close position",
+                                        `Are you sure you want to close this position for ${item.description}?`,
+                                        [
+                                            {
+                                                text: t(`common-labels.no`),
+                                                style: 'cancel',
+                                            },
+                                            {text: t(`common-labels.yes`), onPress: () => cancelPosition(item.orderID)},
+                                        ],
+                                        {cancelable: false}
+                                    );
                                 }}
                             />
                         </TouchableOpacity>

@@ -7,6 +7,10 @@
     "sell": "Sell",
     "Buy": "Buy",
     "Sell": "Sell",
+    "simplex-buy": "Up",
+    "simplex-sell": "Down",
+    "simplex-Buy": "Up",
+    "simplex-Sell": "Down",
     "real-forex": "Real Forex",
     "simplex": "Simplex",
     "logout": "Logout",
@@ -50,7 +54,8 @@
     "price": "Price",
     "point": "Point",
     "trade": "Trade",
-    "place": "Place"
+    "place": "Place",
+    "cancel": "Cancel"
   },
   "navigation": {
     "quotes": "Quotes",
