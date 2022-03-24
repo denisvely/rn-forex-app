@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
 
 import { Spinner } from "components";
 import {
@@ -13,10 +14,14 @@ import { getSpread, convertUnits } from "store/realForex/helpers";
 
 const TakeProfitDistance = ({ state, setState }) => {
   const { t } = useTranslation();
+  const [isErrorActive, setErrorState] = useState(false);
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
   const settings = useSelector((state) => getRealForexTradingSettings(state));
+  const spinnerMin = parseFloat(selectedAsset.distance).toFixed(
+    selectedAsset.accuracy
+  );
 
   const initTPDistance = () => {
     selectedAsset.minTPDistance = parseFloat(selectedAsset.distance).toFixed(
@@ -26,15 +31,7 @@ const TakeProfitDistance = ({ state, setState }) => {
 
   const onChange = (value) => {
     if (state.takeProfitDistance !== null) {
-      setState((prevState) => ({
-        ...prevState,
-        takeProfitDistance: value,
-        TPActive: true,
-        step: parseFloat(
-          Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
-        ),
-      }));
-      // TODO => onSecondChange -  distance spinner - .change && .stop
+      spinnerOnStop(value);
     } else {
       spinnerOnStart(value);
     }
@@ -65,18 +62,55 @@ const TakeProfitDistance = ({ state, setState }) => {
             parseFloat(TPDistance)
         ).toFixed(realForexPrices[selectedAsset.id].accuracy);
       }
-      console.log(TPAmount);
       setState((prevState) => ({
         ...prevState,
-        takeProfitDistance: TPDistance,
+        takeProfitDistance: parseFloat(TPDistance),
         takeProfitAmount: parseFloat(TPAmount),
         takeProfitPrice: parseFloat(TPRate),
         TPActive: true,
       }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        takeProfitDistance: null,
+        takeProfitAmount: null,
+        takeProfitPrice: null,
+        TPActive: false,
+      }));
     }
   };
 
-  const spinnerOnStart = (value) => {
+  const spinnerOnStop = (value) => {
+    if (parseFloat(value) < parseFloat(spinnerMin)) {
+      setState((prevState) => ({
+        ...prevState,
+        takeProfitDistance: parseFloat(spinnerMin),
+      }));
+      setErrorState(true);
+      Toast.show({
+        type: "error",
+        text1: `TP Distance must be higher than ${spinnerMin}`,
+        topOffset: 100,
+      });
+
+      setTimeout(() => {}, 3000);
+    } else {
+      if (value != "") {
+        const TPDistance = parseFloat(
+          parseFloat(value).toFixed(selectedAsset.accuracy)
+        );
+        setState((prevState) => ({
+          ...prevState,
+          takeProfitDistance: TPDistance,
+        }));
+        setErrorState(false);
+        Toast.hide();
+      }
+    }
+    recalculateTPDistance(value);
+  };
+
+  const spinnerOnStart = () => {
     let TPDistance = "";
     if (currentTrade.isBuy) {
       let TPRate =
@@ -124,6 +158,12 @@ const TakeProfitDistance = ({ state, setState }) => {
     }
   }, [selectedAsset]);
 
+  useEffect(() => {
+    if (!state.TPActive && isErrorActive) {
+      setErrorState(false);
+    }
+  }, [state.TPActive]);
+
   return selectedAsset ? (
     <Spinner
       placeholder={t("common-labels.distance")}
@@ -132,10 +172,11 @@ const TakeProfitDistance = ({ state, setState }) => {
       step={parseFloat(
         Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
       )}
-      min={
-        state.TPActive &&
-        parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
-      }
+      errorActive={isErrorActive}
+      // min={
+      //   state.TPActive &&
+      //   parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
+      // }
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

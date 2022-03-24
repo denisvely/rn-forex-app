@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -22,11 +22,30 @@ const TakeProfit = () => {
 
   return (
     <View style={styles.inputsWrapper}>
-      <Typography
-        style={styles.label}
-        name="normal"
-        text={t("common-labels.takeProfit")}
-      />
+      <View style={styles.takeProfitHeader}>
+        <Typography
+          text={t("common-labels.takeProfit")}
+          style={styles.takeProfitHeaderTitle}
+          name="normal"
+        />
+        <TouchableOpacity>
+          <Typography
+            style={styles.takeProfitHeaderTitle}
+            text={"Clear all"}
+            name="tiny"
+            onPress={() =>
+              setState((prevState) => ({
+                ...prevState,
+                TPActive: false,
+                takeProfitDistance: 0,
+                takeProfitAmount: 0,
+                takeProfitPrice: 0,
+              }))
+            }
+          />
+        </TouchableOpacity>
+      </View>
+
       <TakeProfitAmount state={state} setState={setState} />
       <TakeProfitDistance state={state} setState={setState} />
       <TakeProfitPrice state={state} setState={setState} />

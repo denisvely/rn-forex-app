@@ -25,4 +25,10 @@ export default {
   borderBottomColor: "#DFE2E4",
   blueColor: "#053FD1",
   inputBorder: "#CACACA",
+  error: "#C61333",
+  errorLighten: "#F5D6DC",
+  success: "#0F6E66",
+  successLighten: "#D6F5F2",
+  infoLighten: "#DFE3EC",
+  info: "#55668B",
 };
