@@ -263,6 +263,7 @@ export const addRealForexTradeOrderV2Service = (
       stopLossRate
     )
     .then(({ response }) => {
+
       // Show Notification
       // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
     })

@@ -61,7 +61,7 @@ export default {
       (request, { fromDate, toDate, positionId, tradableAssetId }) => {
         let data = {
           tradableAssetId: tradableAssetId === undefined ? 0 : tradableAssetId,
-          
+
           fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
           toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
           limit: 10000,
@@ -311,8 +311,8 @@ export default {
   },
   addRealForexTradeOrderV2: () => {
     const service = new Service(
-      "v1/games/forex/orders/closeForexTrade",
-      apiConsts.HTTP_METHOD_GET
+      "v3/games/forex/orders",
+      apiConsts.HTTP_METHOD_POST
     );
 
     service.setPrepareRequest(
@@ -368,6 +368,7 @@ export default {
           bidPrice: bid,
           TakeProfitRate: takeProfitRate,
           StopLostRate: stopLossRate,
+          isAnonymous: false,
         };
 
         // widgets.api.setTradeStarted(options);
@@ -377,7 +378,7 @@ export default {
           `OAuth oauth_token=${ServiceManager.getAccessToken()}`
         );
 
-        request.setQueryParameters(options);
+        request.convertToQueryParamsWithoutToken(options);
 
         return request;
       }
