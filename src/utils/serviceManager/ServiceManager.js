@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-
 import Request from "./request/Request";
 import Resp from "./response/Response";
-
-import { INVALID_TOKEN } from "../../store/app/actionTypes";
-
+import { INVALID_TOKEN } from "../../store/app";
 import * as apiConstants from "./const";
 
 class ServiceManager {
@@ -102,11 +99,9 @@ class ServiceManager {
     }
 
     const { errors } = response.getBody();
-    const errorMessage =
-      !!errors && !!errors[0] ? errors[0].detail : "Server error 500";
-    const INVALID_TOKEN_ERROR_MESSAGE = "Your session has expired.";
+    const errorMessage = !!errors && !!errors[0] ? errors[0].detail : "Server error 500";
 
-    if (errorMessage === INVALID_TOKEN_ERROR_MESSAGE && !!this.token) {
+    if (errorMessage === "Your session has expired." && !!this.token) {
       this.dispatchToStore({
         type: INVALID_TOKEN,
       });
