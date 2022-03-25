@@ -27,7 +27,7 @@ export const checkAsyncStorage = (dispatch) => {
     // sessionId && ServiceManager.sessionId(token);
     await (token && ServiceManager.setToken(JSON.parse(token)));
 
-    //if (!token) {
+    if (!token) {
     tokenService
       .getToken()
       .fetch()
@@ -46,15 +46,18 @@ export const checkAsyncStorage = (dispatch) => {
         });
       });
     return;
-    //}
+    }
 
     token = JSON.parse(token);
     ServiceManager.setToken(token);
 
     if (!isTokenValid(token)) {
-      getTokenWithRefresh(token);
+      getTokenWithRefresh(token, dispatch);
       return;
+    } else {
+        login(dispatch, token)
     }
+    
     const payload = token;
 
     dispatch({
@@ -124,7 +127,7 @@ const isTokenValid = (token) => {
   return result;
 };
 
-const getTokenWithRefresh = (token) => {
+const getTokenWithRefresh = (token, dispatch) => {
   if (!token) {
     return;
   }
@@ -133,33 +136,45 @@ const getTokenWithRefresh = (token) => {
     .updateRefreshToken()
     .fetch({ refreshToken: token.refreshToken })
     .then(async ({ response }) => {
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
+        console.log('new token updateRefreshToken')
       if (response.body && response.body.code === 400) {
         tokenService
           .getToken()
           .fetch()
           .then(async ({ response }) => {
-            token = response.body.data;
-            Storage.set("token", JSON.stringify(token));
-            await ServiceManager.setToken(token);
+            let newToken = response.body.data;
+            Storage.set("token", JSON.stringify(newToken));
+            await ServiceManager.setToken(newToken);
 
             const payload = {
-              token,
+                newToken,
             };
+
+              dispatch({
+                  type: actionTypes.SET_TOKEN,
+                  payload: payload
+              });
           });
       } else {
-        const token = response.body.data;
-        Storage.set("token", JSON.stringify(token));
-        await ServiceManager.setToken(token);
+        let newToken = response.body.data;
+        Storage.set("token", JSON.stringify(newToken));
+        await ServiceManager.setToken(newToken);
 
         const payload = {
-          token,
+            newToken,
         };
-      }
 
-      dispatch({
-        type: actionTypes.SET_TOKEN,
-        payload: payload,
-      });
+          dispatch({
+              type: actionTypes.SET_TOKEN,
+              payload: payload
+          });
+      }
     });
 };
 
