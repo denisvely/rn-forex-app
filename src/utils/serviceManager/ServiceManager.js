@@ -2,8 +2,7 @@
 import axios from "axios";
 import Request from "./request/Request";
 import Resp from "./response/Response";
-import { INVALID_TOKEN } from "../../store/app";
-import * as apiConstants from "./const";
+import { INVALID_TOKEN } from "../../store/app/actionTypes";
 
 class ServiceManager {
   /**
@@ -156,7 +155,7 @@ class ServiceManager {
       method: request.getMethod(),
     };
 
-    if (request.getMethod() === apiConstants.HTTP_METHOD_POST) {
+    if (request.getMethod() === 'POST') {
       fetchConfig.data = request.getBody();
     }
 

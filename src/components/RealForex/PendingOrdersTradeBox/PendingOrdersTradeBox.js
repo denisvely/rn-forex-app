@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 import { SvgXml } from "react-native-svg";
 import moment from "moment";
 import { useSelector } from "react-redux";
-
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import { Typography } from "components";
+import Typography from "../../Typography/Typography";
 import {
   getRealForexPrices,
   getRealForexOptionsByType,

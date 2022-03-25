@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Typography } from "components";
+import Typography from "../../../components/Typography/Typography";
 import StopLossAmount from "./StopLossAmount/StopLossAmount";
 import StopLossDistance from "./StopLossDistance/StopLossDistance";
 import styles from "./stopLossStyles";

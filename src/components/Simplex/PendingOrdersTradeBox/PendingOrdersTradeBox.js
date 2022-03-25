@@ -8,7 +8,8 @@ import {useSelector} from "react-redux";
 
 import {formatDeciamlWithComma} from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import {Typography, FormattedTypographyWithCurrency} from "../../../components";
+import Typography from "../../../components/Typography/Typography";
+import FormattedTypographyWithCurrency from "../../../components/FormatedCurrency/FormattedTypographyWithCurrency";
 import {
     getSimplexPrices,
     getSimplexOptionsByType

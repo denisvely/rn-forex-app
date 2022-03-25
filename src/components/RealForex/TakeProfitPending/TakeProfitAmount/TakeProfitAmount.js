@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import { Spinner } from "components";
+import Spinner from "../../../Spinner/Spinner";
 
 const TakeProfitAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   const { t } = useTranslation();

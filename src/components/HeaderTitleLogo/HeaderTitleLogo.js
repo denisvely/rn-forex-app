@@ -1,9 +1,9 @@
 import React from "react";
 import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { Typography } from "components";
+import Typography from "../../components/Typography/Typography";
 import headerLogo from "../../assets/svg/headerLogo";
-import { colors } from "constants";
+import { colors } from "../../constants";
 
 const HeaderTitleLogo = () => {
   return (

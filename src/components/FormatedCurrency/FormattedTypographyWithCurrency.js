@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-
-import { Typography } from "components";
+import Typography from "../Typography/Typography";
 import { getCurrencySymbol, formatCurrency } from "./helpers";
-import { getUser, getSettings } from "store/app";
+import { getUser, getSettings } from "../../store/app";
 
 const FormattedTypographyWithCurrency = ({
   text,

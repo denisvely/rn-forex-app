@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Typography, Spinner } from "components";
-import { colors } from "constants";
-
-import styles from "../stopLossStyles";
+import Spinner from "../../../Spinner/Spinner";
 
 const StopLossAmount = ({ spinnerValue, onSpinnerChange, placeholder }) => {
   const { t } = useTranslation();

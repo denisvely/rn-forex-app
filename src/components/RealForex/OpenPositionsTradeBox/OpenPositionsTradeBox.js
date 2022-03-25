@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import { Typography, FormattedTypographyWithCurrency } from "components";
+import Typography from "../../Typography/Typography";
+import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";
 import { getRealForexPrices } from "../../../store/realForex";
 
 import styles from "./openPositionsTradeBoxStyles";

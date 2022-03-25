@@ -1,7 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { HeaderX, Typography } from "../../components";
+import HeaderX from "../../components/HeaderX/HeaderX";
+import Typography from "../../components/Typography/Typography";
 import { deviceWidth } from "../../utils";
 
 const HeaderAssetInfo = ({ assetName, assetIcon, navigation }) => {

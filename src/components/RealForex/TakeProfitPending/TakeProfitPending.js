@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import { Typography } from "components";
+import Typography from "../../../components/Typography/Typography";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
 import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
 

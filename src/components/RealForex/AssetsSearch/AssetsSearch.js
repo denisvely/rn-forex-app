@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
 import { View, TextInput, TouchableHighlight } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { Typography, LazyFlatList } from "components";
-
-import { colors } from "constants";
+import Typography from "../../Typography/Typography";
+import LazyFlatList from "../../LazyFlatList/LazyFlatList";
+import { colors } from "../../../constants";
 import search from "../../../assets/svg/realForex/search";
-
 import styles from "./assetsSearchStyles";
 
 const AssetsSearch = ({

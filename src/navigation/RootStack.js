@@ -68,10 +68,7 @@ const RootStackNavigator = () => {
       <NavigationContainer
         ref={navigationRef}
         onStateChange={async () => {
-          const previousRouteName = routeNameRef.current;
-          const currentRouteName =
-            navigationRef.current?.getCurrentRoute().name;
-          routeNameRef.current = currentRouteName;
+          routeNameRef.current = navigationRef.current?.getCurrentRoute().name;
         }}
       >
         <RootStack.Navigator screenOptions={{ headerShown: false }}>

@@ -3,11 +3,12 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-import { Button, Typography, BuyPrice, SellPrice } from "../..";
-import { colors } from "constants";
-
-import { getRealForexPrices } from "store/realForex";
-
+import Typography from "../../Typography/Typography";
+import Button from "../../Button/Button";
+import BuyPrice from "../BuyPrice/BuyPrice";
+import SellPrice from "../SellPrice/SellPrice";
+import { colors } from "../../../constants";
+import { getRealForexPrices } from "../../../store/realForex";
 import styles from "./realForexDirectionButtonsStyles";
 
 const RealForexDirectionButtons = ({ isBuy, setDirection, asset }) => {

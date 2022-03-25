@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
-
-import { Typography } from "components";
+import Typography from "../../../components/Typography/Typography";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
 import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
 import TakeProfitPrice from "./TakeProfitPrice/TakeProfitPrice";

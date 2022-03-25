@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { getRealForexPrices } from "../../../store/realForex";
-import { Typography } from "../../../components";
+import Typography from "../../Typography/Typography";
 import { getFormattedAskPrice } from "../../../store/realForex/helpers";
 import styles from "./buyPriceStyles";
 
@@ -16,7 +16,7 @@ const BuyPrice = ({ asset, textColor }) => {
       <Typography
         name="normal"
         text={askPrice.askPriceMedium}
-        style={{ ...styles.buy, color: textColor }} 
+        style={{ ...styles.buy, color: textColor }}
       />
       <Typography
         name="smallBold"

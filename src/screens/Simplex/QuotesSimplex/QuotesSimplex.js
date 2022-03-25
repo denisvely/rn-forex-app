@@ -22,17 +22,16 @@ const QuotesSimplex = ({navigation}) => {
             />
             {simplexOptionsByType ? (
                 <LazyFlatList
+                    removeClippedSubviews
                     list={Object.values(simplexOptionsByType[activeFilter])}
-                    renderItem={({item, index}) => {
-                        return (
-                            <AssetBoxSimplex
-                                asset={item}
-                                index={index}
-                                navigation={navigation}
-                                icon={assetIcon}
-                            />
-                        );
-                    }}
+                    renderItem={({item, index}) =>
+                        <AssetBoxSimplex
+                            asset={item}
+                            index={index}
+                            navigation={navigation}
+                            icon={assetIcon}
+                        />
+                    }
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={true}
                     showsHorizontalScrollIndicator={false}

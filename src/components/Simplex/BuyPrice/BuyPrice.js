@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { getSimplexPrices } from "../../../store/simplex";
-import { Typography } from "../../../components";
+import Typography from "../../../components/Typography/Typography";
 import { getFormattedPrice } from "../../../store/simplex/helpers";
 import styles from "./buyPriceStyles";
 import { colors } from "../../../constants";

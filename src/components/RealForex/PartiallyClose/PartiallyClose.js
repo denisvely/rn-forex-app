@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import {useTranslation} from "react-i18next";
+import Spinner from "../../Spinner/Spinner";
 
-import { Typography, Spinner } from "components";
-import { colors } from "constants";
+const PartiallyClose = ({spinnerValue, onSpinnerChange}) => {
+    const {t} = useTranslation();
 
-const PartiallyClose = ({ spinnerValue, onSpinnerChange }) => {
-  const { t } = useTranslation();
-
-  return (
-    <Spinner
-      spinnerValue={spinnerValue}
-      onSpinnerChange={(orderType) => onSpinnerChange(orderType)}
-      placeholder={t("common-labels.amount")}
-    />
-  );
+    return (
+        <Spinner
+            spinnerValue={spinnerValue}
+            onSpinnerChange={(orderType) => onSpinnerChange(orderType)}
+            placeholder={t("common-labels.amount")}
+        />
+    );
 };
 
 export default PartiallyClose;

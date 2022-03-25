@@ -3,7 +3,8 @@ import {View, Pressable} from "react-native";
 import {SvgXml} from "react-native-svg";
 import {useSelector} from "react-redux";
 import {getSimplexPrices} from "../../../store/simplex";
-import {Typography, BuyPriceSimplex} from "../../../components";
+import Typography from "../../../components/Typography/Typography";
+import BuyPriceSimplex from "../../../components/Simplex/BuyPrice/BuyPrice";
 import styles from "./assetBoxStyles";
 import {getApplication} from "../../../store/app";
 
@@ -17,10 +18,14 @@ const AssetBox = ({asset, navigation, icon}) => {
         );
     };
 
+    const navigateChart = () => {
+        navigation.navigate("RealForexOrderChart", {asset})
+    }
+
     return (
         simplexPrices && (
             <View style={styles.assetBox}>
-                <Pressable style={styles.assetBoxButton} onPress={() => { navigation.navigate("RealForexOrderChart", {asset}); }}>
+                <Pressable style={styles.assetBoxButton} onPress={navigateChart}>
                     <View style={styles.left}>
                         <SvgXml style={styles.assetIcon} xml={icon} width="40" height="40"/>
                         <View>

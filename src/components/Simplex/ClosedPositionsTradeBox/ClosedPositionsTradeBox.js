@@ -3,9 +3,8 @@ import {View, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {SvgXml} from "react-native-svg";
 import moment from "moment";
-
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import {Typography, FormattedTypographyWithCurrency} from "components";
+import Typography from "../../../components/Typography/Typography";
 
 import styles from "./closedPositionsTradeBoxStyles";
 

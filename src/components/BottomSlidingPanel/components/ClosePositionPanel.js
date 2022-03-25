@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  Typography,
-  Button,
-  SwitchComponent,
-  PartiallyClose,
-} from "components";
-
+import Typography from '../../Typography/Typography'
+import Button from '../../Button/Button'
+import SwitchComponent from '../../Switch/SwitchComponent'
+import PartiallyClose from '../../RealForex/PartiallyClose/PartiallyClose'
 import {
   closePosition,
   closeForexTradeNetting,
@@ -18,9 +14,9 @@ import {
   getRealForexPrices,
   getRealForexAssetsSettings,
   getRealForexTradingSettings,
-} from "store/realForex";
-import { getUser } from "store/app";
-import { convertUnits } from "store/realForex/helpers";
+} from "../../../store/realForex";
+import { getUser } from "../../../store/app";
+import { convertUnits } from "../../../store/realForex/helpers";
 
 import styles from "../bottomSlidingPanelStyles";
 

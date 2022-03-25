@@ -52,7 +52,7 @@ const ClosedPositionsSimplex = ({ navigation }) => {
                             <ClosedPositionsSimplexTradeBox item={item} navigation={navigation} />
                         );
                     }}
-                    keyExtractor={(item) => item.positionId}
+                    keyExtractor={(item) => item.orderId}
                     showsVerticalScrollIndicator={true}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{

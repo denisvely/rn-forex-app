@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
-
-import { Spinner } from "components";
+import Spinner from "../../../Spinner/Spinner";
 import {
   getSelectedAsset,
   getRealForexPrices,
   getCurrentTrade,
   getRealForexTradingSettings,
-} from "store/realForex";
-import { getSpread, convertUnits } from "store/realForex/helpers";
+} from "../../../../store/realForex";
+import { getSpread, convertUnits } from "../../../../store/realForex/helpers";
 
 const TakeProfitDistance = ({ state, setState }) => {
   const { t } = useTranslation();
