@@ -11,6 +11,8 @@ import {
   RealForexDirectionButtons,
   MarketOrderControls,
   PendingOrderControls,
+  QuantityInput,
+  OrderInfo,
 } from "../../../components";
 import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
@@ -25,6 +27,7 @@ import {
 } from "../../../store/realForex";
 import { getUser } from "store/app";
 import { convertUnits } from "store/realForex/helpers";
+import { deviceWidth } from "../../../utils";
 
 import styles from "./realForexOrderDetailsStyles";
 
@@ -45,20 +48,21 @@ const RealForexOrderDetails = ({ route, navigation }) => {
 
   const [isMarket, setOrderType] = useState(true);
   const [isReady, setReadyState] = useState(false);
+  const [quantity, setQuantity] = useState(null);
 
   const [isDirectionBuy, setDirection] = useState(
     route.params.isBuy ? true : false
   );
 
   const makeOrder = () => {
-    // const forexOpenPositionsOnly = realForexOpenPositions.filter(function (el) {
-    //   return el.optionType == "HARealForex";
-    // });
+    const forexOpenPositionsOnly = realForexOpenPositions.filter(function (el) {
+      return el.optionType == "HARealForex";
+    });
 
-    // if (forexOpenPositionsOnly.length >= settings.MaxOpenPositions) {
-    //   // Notification for maxOpenPos
-    //   return;
-    // }
+    if (forexOpenPositionsOnly.length >= settings.MaxOpenPositions) {
+      // Notification for maxOpenPos
+      return;
+    }
 
     // Set Current Trade in Store
     const isBuy = route.params.isBuy ? true : false;
@@ -118,10 +122,12 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         );
 
     setSelectedAsset(dispatch, asset);
+    setQuantity(`${asset.quantity}`);
     setReadyState(true);
   };
+
   useEffect(() => {
-    if (asset) {
+    if (asset && realForexOpenPositions) {
       navigation.setOptions({
         headerLeft: () => (
           <HeaderAssetInfo
@@ -143,18 +149,34 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             isMarket={isMarket}
             setOrderType={(orderType) => setOrderType(orderType)}
           />
+          <QuantityInput
+            value={quantity}
+            setQuantity={(value) => setQuantity(value)}
+          />
           {isMarket ? (
-            <>
-              <RealForexDirectionButtons
-                isBuy={isDirectionBuy}
-                setDirection={(isBuy) => setDirection(isBuy)}
-                asset={asset}
-              />
-              <MarketOrderControls />
-            </>
-          ) : (
-            <PendingOrderControls />
-          )}
+            <RealForexDirectionButtons
+              isBuy={isDirectionBuy}
+              setDirection={(isBuy) => setDirection(isBuy)}
+              asset={asset}
+            />
+          ) : null}
+
+          <ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              width: deviceWidth,
+              flexGrow: 1,
+              paddingBottom: 50,
+            }}
+          >
+            {isMarket ? <MarketOrderControls /> : <PendingOrderControls />}
+          </ScrollView>
+          <OrderInfo quantityValue={quantity} isMarket={isMarket} />
         </>
       ) : (
         <Loading size="large" />

@@ -184,8 +184,8 @@ const TakeProfitPrice = ({ state, setState }) => {
       spinnerValue={state.takeProfitPrice}
       onSpinnerChange={(value) => onChange(value)}
       step={parseFloat(Math.pow(10, -selectedAsset.accuracy))}
-      min={min}
-      max={max}
+      // min={min}
+      // max={max}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

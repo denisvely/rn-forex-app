@@ -352,3 +352,17 @@ export const getSpread = (askPrice, bidPrice, accuracy) => {
     accuracy
   );
 };
+
+export const getGlobalSetting = (settingName, settings) => {
+  ///<summary>Gets the setting value if the setting. If the setting  type is boolean it return bool value, if it is not, returns the current value . </summary>
+  /// <param name="settingName" type="string">The name of the boolean setting </param>
+  if (settings && settings.application) {
+    var property = settings.application[settingName];
+    if (property && property.Value) {
+      if (property.Value.toString().toLowerCase() == "true") return true;
+      else if (property.Value.toString().toLowerCase() == "false") return false;
+      else return property.Value;
+    }
+  }
+  return false;
+};

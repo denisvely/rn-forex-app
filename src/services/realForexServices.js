@@ -61,6 +61,7 @@ export default {
       (request, { fromDate, toDate, positionId, tradableAssetId }) => {
         let data = {
           tradableAssetId: tradableAssetId === undefined ? 0 : tradableAssetId,
+          
           fromDate: moment(fromDate).format("YYYY-MM-DD") + "T00:00:01",
           toDate: moment(toDate).format("YYYY-MM-DD") + "T23:59:59",
           limit: 10000,

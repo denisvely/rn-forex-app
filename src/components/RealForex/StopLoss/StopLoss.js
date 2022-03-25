@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -36,11 +36,29 @@ const StopLoss = () => {
 
   return (
     <View style={styles.inputsWrapper}>
-      <Typography
-        style={styles.label}
-        name="normal"
-        text={t("common-labels.stopLoss")}
-      />
+      <View style={styles.stopLossHeader}>
+        <Typography
+          text={t("common-labels.stopLoss")}
+          style={styles.stopLossHeaderTitle}
+          name="normal"
+        />
+        <TouchableOpacity>
+          <Typography
+            style={styles.stopLossHeaderTitle}
+            text={"Clear all"}
+            name="tiny"
+            onPress={() =>
+              setState((prevState) => ({
+                ...prevState,
+                SLActive: false,
+                stopLossDistance: 0,
+                stopLossAmount: 0,
+                stopLossPrice: 0,
+              }))
+            }
+          />
+        </TouchableOpacity>
+      </View>
       <StopLossAmount
         spinnerValue={state.stopLossAmount}
         onSpinnerChange={(value) => {

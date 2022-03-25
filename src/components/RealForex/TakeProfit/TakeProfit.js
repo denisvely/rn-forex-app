@@ -45,7 +45,6 @@ const TakeProfit = () => {
           />
         </TouchableOpacity>
       </View>
-
       <TakeProfitAmount state={state} setState={setState} />
       <TakeProfitDistance state={state} setState={setState} />
       <TakeProfitPrice state={state} setState={setState} />

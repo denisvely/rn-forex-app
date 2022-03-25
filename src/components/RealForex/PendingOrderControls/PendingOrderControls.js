@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -37,53 +37,36 @@ const PendingOrderControls = () => {
     }
   }, [selectedAsset]);
   return (
-    <ScrollView
-      style={styles.scrollView}
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        flexDirection: "column",
-        width: deviceWidth,
-        flexGrow: 1,
-        paddingBottom: 200,
-      }}
-    >
-      <View style={{ width: deviceWidth }}>
-        <QuantityInput
-          value={quantity}
-          onChange={(text) => setQuantity(text)}
-        />
-        <PendingDirectionAndRate
-          isBuy={isBuy}
-          changeDirection={(isBuy) => setDirection(isBuy)}
-          rateValue={rateValue}
-          onRateValueChange={(value) => setRateValue(value)}
-        />
-        <TakeProfitPending
-          takeProfitPendingAmount={takeProfitPendingAmount}
-          onChangeTakeProfitPendingAmount={(value) =>
-            onChangeTakeProfitPendingAmount(value)
-          }
-          takeProfitPendingDistance={takeProfitPendingDistance}
-          onChangeTakeProfitPendingDistance={(value) =>
-            onChangeTakeProfitPendingDistance(value)
-          }
-        />
-        <StopLossPending
-          stopLossPendingAmount={stopLossPendingAmount}
-          onChangeStopLossPendingAmount={(value) =>
-            onChangeStopLossPendingAmount(value)
-          }
-          stopLossPendingDistance={stopLossPendingDistance}
-          onChangeStopLossPendingDistance={(value) =>
-            onChangeStopLossPendingDistance(value)
-          }
-        />
-        <OrderInfo />
-      </View>
-    </ScrollView>
+    <View style={{ width: deviceWidth }}>
+      <QuantityInput value={quantity} onChange={(text) => setQuantity(text)} />
+      <PendingDirectionAndRate
+        isBuy={isBuy}
+        changeDirection={(isBuy) => setDirection(isBuy)}
+        rateValue={rateValue}
+        onRateValueChange={(value) => setRateValue(value)}
+      />
+      <TakeProfitPending
+        takeProfitPendingAmount={takeProfitPendingAmount}
+        onChangeTakeProfitPendingAmount={(value) =>
+          onChangeTakeProfitPendingAmount(value)
+        }
+        takeProfitPendingDistance={takeProfitPendingDistance}
+        onChangeTakeProfitPendingDistance={(value) =>
+          onChangeTakeProfitPendingDistance(value)
+        }
+      />
+      <StopLossPending
+        stopLossPendingAmount={stopLossPendingAmount}
+        onChangeStopLossPendingAmount={(value) =>
+          onChangeStopLossPendingAmount(value)
+        }
+        stopLossPendingDistance={stopLossPendingDistance}
+        onChangeStopLossPendingDistance={(value) =>
+          onChangeStopLossPendingDistance(value)
+        }
+      />
+      <OrderInfo />
+    </View>
   );
 };
 
