@@ -28,10 +28,14 @@ export default StyleSheet.create({
   green: {
     color: colors.buyColor,
     textTransform: "uppercase",
+    fontSize: 13,
+    paddingTop: 1
   },
   red: {
     color: colors.sellColor,
     textTransform: "uppercase",
+    fontSize: 13,
+    paddingTop: 1
   },
   left: {
     justifyContent: "flex-start",
@@ -57,12 +61,13 @@ export default StyleSheet.create({
     borderTopColor: colors.borderBottomColor,
     borderTopWidth: 1,
     width: deviceWidth - 64,
+    paddingTop: 10
   },
   tradeInfoRow: {
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    paddingVertical: 8,
+    paddingVertical: 2,
     marginBottom: 8,
   },
   tradeInfoKey: {

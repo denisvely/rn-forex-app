@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { HeaderX, Typography } from "components";
-import { deviceWidth } from "utils";
+import { HeaderX, Typography } from "../../components";
+import { deviceWidth } from "../../utils";
 
 const HeaderAssetInfo = ({ assetName, assetIcon, navigation }) => {
   return (

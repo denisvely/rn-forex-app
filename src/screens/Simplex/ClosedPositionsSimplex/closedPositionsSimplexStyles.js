@@ -31,5 +31,6 @@ export default StyleSheet.create({
   },
   dateString: {
     marginHorizontal: 5,
+    marginTop: 5
   },
 });

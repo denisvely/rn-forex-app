@@ -1,7 +1,8 @@
 import signalr from "react-native-signalr";
 import * as actionTypes from "./actionTypes";
-
 import ServiceManager from "../../utils/serviceManager";
+import simplexServices from '../../services/simplexServices';
+import moment from "moment";
 
 const connection = signalr.hubConnection("https://api.finte.co");
 
@@ -16,6 +17,45 @@ export const signalRStart = (assetsPrices, dispatch) => {
     const pricesHubProxy = connection.createHubProxy("pricesHub"),
         eventsHubProxy = connection.createHubProxy("monitoringHub"),
         mergeHubProxy = connection.createHubProxy("murgeHub");
+
+    eventsHubProxy.on("simplexOpenPosition", () => {
+        simplexServices.getSimplexOpenTrades(dispatch)
+            .fetch()
+            .then(({response}) => {
+                const body = response.body.data ? response.body.data.forexOpenTrades.data : [];
+                dispatch({
+                    type: actionTypes.SIMPLEX_OPEN_POSITIONS,
+                    payload: body
+                });
+            })
+    })
+
+    eventsHubProxy.on("simplexClosedPosition", () => {
+        simplexServices.getSimplexClosedPositions(dispatch)
+            .fetch({
+                fromDate: moment(new Date().setMonth(new Date().getMonth() - 1)).format("YYYY-MM-DD") + "T00:00:01",
+                toDate: moment(new Date()).format("YYYY-MM-DD") + "T23:59:59"
+            })
+            .then(({response}) => {
+                const body = response.body.data.trades;
+                dispatch({
+                    type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
+                    payload: body,
+                });
+            })
+    })
+
+    eventsHubProxy.on("forexPendingOrder", () => {
+        simplexServices.getSimplexPendingOrders(dispatch)
+            .fetch()
+            .then(({response}) => {
+                const body = response.body.data ? response.body.data.results : [];
+                dispatch({
+                    type: actionTypes.SIMPLEX_PENDING_ORDERS,
+                    payload: body,
+                });
+            })
+    })
 
     pricesHubProxy.on("onChangePrice", (allPrices) => {
         simplexHubPrices(assetsPrices, allPrices, dispatch);

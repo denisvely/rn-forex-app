@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { Alert } from "react-native";
 import {View, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {SvgXml} from "react-native-svg";
@@ -7,7 +8,7 @@ import {useSelector} from "react-redux";
 
 import {formatDeciamlWithComma} from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
-import {Typography} from "../../../components";
+import {Typography, FormattedTypographyWithCurrency} from "../../../components";
 import {
     getSimplexPrices,
     getSimplexOptionsByType
@@ -56,7 +57,7 @@ const PendingOrdersSimplexTradeBox = ({item, navigation, cancelOrder}) => {
                             text="Inv. Amount"
                         />
                         <View style={styles.quantityWrapper}>
-                            <Typography
+                            <FormattedTypographyWithCurrency
                                 name="tiny"
                                 text={formatDeciamlWithComma(parseFloat(item.Volume))}
                             />
@@ -214,7 +215,20 @@ const PendingOrdersSimplexTradeBox = ({item, navigation, cancelOrder}) => {
                                 text={t(`common-labels.modifyOrder`)}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.tradeButton} onPress={() => { cancelOrder(item.OrderID) }}>
+                        <TouchableOpacity style={styles.tradeButton} onPress={() => {
+                            Alert.alert(
+                                "Cancel order",
+                                `Are you sure you want to cancel this pending order for ${item.Description}?`,
+                                [
+                                    {
+                                        text: t(`common-labels.no`),
+                                        style: 'cancel',
+                                    },
+                                    {text: t(`common-labels.yes`), onPress: () => cancelOrder(item.OrderID)},
+                                ],
+                                {cancelable: false}
+                            );
+                        }}>
                             <Typography
                                 name="tinyBold"
                                 style={styles.tradeButtonText}

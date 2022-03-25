@@ -44,22 +44,15 @@ export const loadInitialSimplexData = (dispatch) => {
         });
     getSimplexClosedPositions
         .fetch({
-            fromDate: moment(new Date()).format("YYYY-MM-DD") + "T00:00:01",
-            toDate:
-                moment(new Date().setMonth(new Date().getMonth() + 1)).format(
-                    "YYYY-MM-DD"
-                ) + "T23:59:59",
-            positionId: null,
-            tradableAssetId: 0,
+            fromDate: moment(new Date().setMonth(new Date().getMonth() - 1)).format("YYYY-MM-DD") + "T00:00:01",
+            toDate: moment(new Date()).format("YYYY-MM-DD") + "T23:59:59"
         })
         .then(({response}) => {
-            const body = response.body.data;
-            if (body.length > 0) {
-                dispatch({
-                    type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
-                    payload: body,
-                });
-            }
+            const body = response.body.data.trades;
+            dispatch({
+                type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
+                payload: body,
+            });
         })
         .catch((err) => {
             console.log(err);

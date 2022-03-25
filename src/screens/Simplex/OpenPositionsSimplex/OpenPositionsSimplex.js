@@ -10,7 +10,7 @@ import {
     BottomSlidingPanel,
     Typography,
 } from "../../../components";
-
+import simplexServices from '../../../services/simplexServices';
 import styles from "./openPositionsSimplexStyles";
 
 const OpenPositionsSimplex = ({ navigation }) => {
@@ -21,10 +21,21 @@ const OpenPositionsSimplex = ({ navigation }) => {
     const openPositions = useSelector((state) =>
         getSimplexOpenPositions(state)
     );
+    const cancelSimplexOpenPosition = (id) => {
+        simplexServices.cancelOpenPosition(id)
+            .fetch()
+    };
+
+    let openPositionsLength = 0;
+    openPositions.forEach(el => {
+        if (el.optionType !== 'HARealForex') {
+            openPositionsLength += 1
+        }
+    })
 
     return (
         <View style={styles.container}>
-            {openPositions ? (
+            {openPositionsLength ? (
                 <LazyFlatList
                     list={openPositions}
                     renderItem={({ item }) => {
@@ -34,6 +45,7 @@ const OpenPositionsSimplex = ({ navigation }) => {
                                 toggleBottomSlidingPanel={(type) => setPanelType(type)}
                                 setCurrentTrade={(trade) => setCurrentTrade(trade)}
                                 navigation={navigation}
+                                cancelPosition={cancelSimplexOpenPosition}
                             />
                         );
                     }}
