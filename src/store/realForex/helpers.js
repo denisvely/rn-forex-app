@@ -1,3 +1,5 @@
+import Toast from "react-native-toast-message";
+
 export const formatRealForexOptions = (options) => {
   let allOptions = options.slice();
   let forexOptions = allOptions;
@@ -365,4 +367,93 @@ export const getGlobalSetting = (settingName, settings) => {
     }
   }
   return false;
+};
+
+export const showForexNotification = (outcome, values, removedFromTable) => {
+  if (typeof values.quantity == "undefined" || isNaN(values.quantity)) {
+    return;
+  }
+
+  if (values.type == "CountryNotAllowed") {
+    var text1 = "Trade Rejected";
+    var text2 = "Action is not allowed for this country.";
+    Toast.show({
+      type: "error",
+      text1: text1,
+      text: text2,
+      topOffset: 100,
+      visibilityTime: 5000,
+      autoHide: true,
+    });
+  } else {
+    if (values.isError) {
+      Toast.show({
+        type: "error",
+        text1: values.title,
+        text: values.text,
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+    } else {
+      Toast.show({
+        type: "error",
+        text1: values.title,
+        text: values.text,
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+      // var additionalInfo =
+      //   values.takeProfit !== null ||
+      //   values.stopLoss !== null ||
+      //   values.pendingDate !== null
+      //     ? '<div class="trade-bottom-info" style="font-size:12px;">' +
+      //       (values.takeProfit !== null
+      //         ? '<div class="trade-bottom-info-tp" style="display:inline-block; margin-right:10px;">TP: ' +
+      //           values.takeProfit +
+      //           "</div>"
+      //         : "") +
+      //       (values.stopLoss !== null
+      //         ? '<div class="trade-bottom-info-sl" style="display:inline-block; margin-right:10px;">SL: ' +
+      //           values.stopLoss +
+      //           "</div>"
+      //         : "") +
+      //       (values.pendingDate !== null
+      //         ? '<div class="trade-bottom-info-exp" style="display:inline-block;">EXP: ' +
+      //           helper.formatDate(values.pendingDate, "mm/dd HH:MM") +
+      //           "</div>"
+      //         : "") +
+      //       "</div>"
+      //     : "";
+      // var text =
+      //   '<div class="notification-header">' +
+      //   values.title +
+      //   (values.fromBroker
+      //     ? '<div style="position:absolute;margin-top:-45px;">Broker</div>'
+      //     : "") +
+      //   '</div><div class="notification-body">' +
+      //   helper.getTranslation(values.action.toLowerCase(), values.action) +
+      //   " " +
+      //   values.quantity +
+      //   " " +
+      //   values.option +
+      //   " " +
+      //   helper.getTranslation("forex_notification_at", "at") +
+      //   " " +
+      //   values.strike +
+      //   additionalInfo +
+      //   "</div>";
+    }
+  }
+
+  // if (removedFromTable) {
+  //   var sameNotifications = true;
+
+  //   for (i in values) {
+  //     if (this.forexLastNotification[i] != values[i]) sameNotifications = false;
+  //   }
+
+  //   if (sameNotifications) return;
+  // }
 };

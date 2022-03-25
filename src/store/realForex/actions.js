@@ -1,6 +1,5 @@
 import * as actionTypes from "./actionTypes";
 import moment from "moment";
-import Toast from "react-native-toast-message";
 
 import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
@@ -100,7 +99,7 @@ export const loadInitialRealForexData = async (dispatch) => {
         payload: body,
       });
       // Start SignalR
-      // signalRStart(body, dispatch);
+      signalRStart(body, dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -264,7 +263,7 @@ export const addRealForexTradeOrderV2Service = (
       stopLossRate
     )
     .then(({ response }) => {
-      console.log(response);
+
       // Show Notification
       // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
     })
