@@ -3,24 +3,41 @@ import { View, TextInput, TouchableHighlight } from "react-native";
 import { useTranslation } from "react-i18next";
 import { SvgXml } from "react-native-svg";
 import { useSelector, useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
 
 import { Typography } from "components";
 import { colors } from "constants";
 import dropdownArrow from "../../../assets/svg/realForex/dropdownArrow";
-import { getSelectedAsset } from "store/realForex";
+import {
+  getSelectedAsset,
+  getCurrentTrade,
+  getRealForexTradingSettings,
+  setCurrentTrade,
+} from "store/realForex";
 import { formatDeciamlWithComma } from "store/realForex/helpers";
+import { convertUnits } from "store/realForex/helpers";
 
 import styles from "./quantityInputStyles";
 
-const QuantityInput = ({ value, onChange, onFocus }) => {
+const QuantityInput = ({ value, setQuantity }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
+  const currentTrade = useSelector((state) => getCurrentTrade(state));
+  const settings = useSelector((state) => getRealForexTradingSettings(state));
 
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const [dropdownValues, setDropdownValues] = useState([]);
+  const [min, setMin] = useState([]);
+  const [max, setMax] = useState([]);
 
-  const displayQuantityDropDown = () => {
+  // Init Quantity Input
+  const initQuantityInput = () => {
+    setMin(selectedAsset.MinQuantity);
+    setMax(selectedAsset.MaxQuantity);
+  };
+  // Create Dropwdown
+  const createQuantityDropDown = () => {
     const multiplyBy = selectedAsset.quantityMultiplier.split(",");
     const minQuantity =
       selectedAsset.MinQuantity != 0 ? selectedAsset.MinQuantity : 1;
@@ -37,19 +54,87 @@ const QuantityInput = ({ value, onChange, onFocus }) => {
     });
     if (dropdownData.length > 0) {
       setDropdownValues(dropdownData);
+      setDropdownVisibility(!isDropdownVisible);
     }
   };
 
-  const changeQuantity = (value) => {
-    onChange(value);
+  const onEndEditing = (event) => {
+    let value = event.nativeEvent.text;
+
+    if (!value) {
+      value = 0;
+    }
+
+    const quantity =
+      value.indexOf(",") > -1
+        ? value
+        : formatDeciamlWithComma(parseFloat(value));
+
+    if (parseFloat(value) > parseFloat(max)) {
+      setQuantity(formatDeciamlWithComma(parseFloat(max)));
+
+      Toast.show({
+        type: "error",
+        text1: `The maximum quantity you can trade is ${max} units.'`,
+        topOffset: 100,
+      });
+    } else if (parseFloat(value) < parseFloat(min)) {
+      setQuantity(formatDeciamlWithComma(parseFloat(min)));
+      Toast.show({
+        type: "error",
+        text1: `The minimum quantity you can trade is ${min}`,
+        topOffset: 100,
+      });
+    } else {
+      setQuantity(quantity);
+      // TODO => TP & SL => forex.js - line 4244
+    }
+    // End New
+    currentTrade.quantity = quantity;
     setDropdownVisibility(false);
+    // setCurrentTrade(dispatch, currentTrade);
+  };
+
+  const onChange = (value) => {
+    if (!value) {
+      return;
+    }
+    const quantity =
+      value.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(value.replace(/,/g, "")),
+            selectedAsset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
+    setQuantity(quantity);
+  };
+
+  const onFocus = (event) => {
+    let value = event.nativeEvent.text;
+
+    if (!value) {
+      return;
+    }
+    const quantity =
+      value.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(value.replace(/,/g, "")),
+            selectedAsset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
+    setQuantity(quantity);
   };
 
   useEffect(() => {
     if (selectedAsset) {
-      displayQuantityDropDown();
+      initQuantityInput();
     }
-  }, []);
+  }, [selectedAsset]);
+
   return (
     <View style={styles.inputsWrapper}>
       <Typography
@@ -61,17 +146,18 @@ const QuantityInput = ({ value, onChange, onFocus }) => {
         <TextInput
           autoCapitalize="none"
           autoCorrect={false}
+          onEndEditing={(value) => onEndEditing(value)}
           onChangeText={onChange}
-          onFocus={onFocus}
           value={value}
           placeholder="Quantity"
           placeholderTextColor={colors.fontSecondaryColor}
           style={styles.quantityInput}
-          keyboardType="number-pad"
+          onFocus={onFocus}
+          // keyboardType="number-pad"
         />
         <TouchableHighlight
           style={styles.dropdownArrowWrapper}
-          onPress={() => setDropdownVisibility(!isDropdownVisible)}
+          onPress={createQuantityDropDown}
           activeOpacity={0.1}
           underlayColor={colors.containerBackground}
         >
@@ -89,7 +175,10 @@ const QuantityInput = ({ value, onChange, onFocus }) => {
                 <TouchableHighlight
                   key={`${index}`}
                   style={styles.value}
-                  onPress={() => changeQuantity(value)}
+                  onPress={() => {
+                    setQuantity(value);
+                    setDropdownVisibility(false);
+                  }}
                   underlayColor={colors.containerBackground}
                 >
                   <Typography name="normal" text={value} />

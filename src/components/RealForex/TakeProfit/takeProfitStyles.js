@@ -31,7 +31,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  notificationsHeaderTitle: {
+  takeProfitHeaderTitle: {
     color: colors.fontPrimaryColor,
   },
   clearAllBtn: {
