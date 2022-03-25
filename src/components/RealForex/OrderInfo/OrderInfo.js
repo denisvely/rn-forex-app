@@ -23,7 +23,12 @@ import styles from "./orderInfoStyles";
 // TODO
 const showLeverageInfo = true;
 
-const OrderInfo = ({ quantityValue, isMarket }) => {
+const OrderInfo = ({
+  quantityValue,
+  orderInfoData,
+  setOrderInfoData,
+  isMarket,
+}) => {
   const { t } = useTranslation();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const settings = useSelector((state) => getRealForexTradingSettings(state));
@@ -35,17 +40,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
     getRealForexOpenPositions(state)
   );
   const globalSettings = useSelector((state) => getSettings(state));
-  const initialOrderInfoState = {
-    marginSell: null,
-    marginBuy: null,
-    leverageSell: null,
-    leverageBuy: null,
-    swapSell: null,
-    swapBuy: null,
-    pipSell: null,
-    pipBuy: null,
-  };
-  const [state, setOrderInfo] = useState(initialOrderInfoState);
+
   const calculateMarginRequired = (newQuantity) => {
     const quantity =
       newQuantity != undefined
@@ -64,7 +59,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
   };
 
   const calculateMarginRequiredNetting = () => {
-    const buyMargin = calculateMarginRequired(),
+    let buyMargin = calculateMarginRequired(),
       sellMargin = buyMargin,
       currentQuantity = convertUnits(
         parseFloat(quantityValue),
@@ -152,152 +147,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
         selectedAsset.rate
       ).toFixed(2);
     } else {
-      // TODO -> Modify
-      // if (widget.currentlyModifiedOrder.actionType == "Buy") {
-      //   var p = forexHelper.assetsPrices[widget.selectedAsset.id].ask,
-      //     q0 = widget.currentlyModifiedOrder.volume,
-      //     q1 = forexWidget.elementsCache.newOrder
-      //       .find('[data-type="quantity"]')
-      //       .text()
-      //       .replace(/,/g, "");
-      //   if (widgets.user.forexModeId == 3) {
-      //     swapRates.swapBuy = (
-      //       (quantity *
-      //         (helper.getGlobalSetting("DisplaySwapNumbers")
-      //           ? parseFloat(
-      //               forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //             )
-      //           : (forexHelper.assetsPrices[widget.selectedAsset.id].ask *
-      //               parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //               )) /
-      //             100)) /
-      //       widget.selectedAsset.rate
-      //     ).toFixed(2);
-      //     swapRates.swapSell = 0.0;
-      //   } else {
-      //     swapRates.swapBuy = (
-      //       (q1 *
-      //         (helper.getGlobalSetting("DisplaySwapNumbers")
-      //           ? parseFloat(
-      //               forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //             )
-      //           : (forexHelper.assetsPrices[widget.selectedAsset.id].ask *
-      //               parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //               )) /
-      //             100)) /
-      //       widget.selectedAsset.rate
-      //     ).toFixed(2);
-      //     if (q1 < q0) {
-      //       var localSellSwap = (
-      //         (q0 *
-      //           (helper.getGlobalSetting("DisplaySwapNumbers")
-      //             ? parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //               )
-      //             : (forexHelper.assetsPrices[widget.selectedAsset.id].ask *
-      //                 parseFloat(
-      //                   forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //                 )) /
-      //               100)) /
-      //         widget.selectedAsset.rate
-      //       ).toFixed(2);
-      //       swapRates.swapSell =
-      //         swapRates.swapBuy - localSellSwap > 0
-      //           ? (swapRates.swapBuy - localSellSwap).toFixed(2)
-      //           : 0.0;
-      //     } else if (q1 == q0) {
-      //       swapRates.swapSell = 0.0;
-      //     } else {
-      //       swapRates.swapSell = (
-      //         ((q1 - q0) *
-      //           (helper.getGlobalSetting("DisplaySwapNumbers")
-      //             ? parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //               )
-      //             : (forexHelper.assetsPrices[widget.selectedAsset.id].ask *
-      //                 parseFloat(
-      //                   forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //                 )) /
-      //               100)) /
-      //         widget.selectedAsset.rate
-      //       ).toFixed(2);
-      //     }
-      //   }
-      // } else {
-      //   var p = forexHelper.assetsPrices[widget.selectedAsset.id].bid,
-      //     q0 = widget.currentlyModifiedOrder.volume,
-      //     q1 = forexWidget.elementsCache.newOrder
-      //       .find('[data-type="quantity"]')
-      //       .text()
-      //       .replace(/,/g, "");
-      //   if (widgets.user.forexModeId == 3) {
-      //     swapRates.swapBuy = 0.0;
-      //     swapRates.swapSell = (
-      //       (quantity *
-      //         (helper.getGlobalSetting("DisplaySwapNumbers")
-      //           ? parseFloat(
-      //               forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //             )
-      //           : (forexHelper.assetsPrices[widget.selectedAsset.id].bid *
-      //               parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //               )) /
-      //             100)) /
-      //       widget.selectedAsset.rate
-      //     ).toFixed(2);
-      //   } else {
-      //     swapRates.swapSell = (
-      //       (q1 *
-      //         (helper.getGlobalSetting("DisplaySwapNumbers")
-      //           ? parseFloat(
-      //               forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //             )
-      //           : (forexHelper.assetsPrices[widget.selectedAsset.id].bid *
-      //               parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //               )) /
-      //             100)) /
-      //       widget.selectedAsset.rate
-      //     ).toFixed(2);
-      //     if (q1 < q0) {
-      //       var localBuySwap = (
-      //         (q0 *
-      //           (helper.getGlobalSetting("DisplaySwapNumbers")
-      //             ? parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //               )
-      //             : (forexHelper.assetsPrices[widget.selectedAsset.id].bid *
-      //                 parseFloat(
-      //                   forexHelper.swapRates[widget.selectedAsset.id].swapShort
-      //                 )) /
-      //               100)) /
-      //         widget.selectedAsset.rate
-      //       ).toFixed(2);
-      //       swapRates.swapBuy =
-      //         swapRates.swapSell - localBuySwap > 0
-      //           ? (swapRates.swapSell - localBuySwap).toFixed(2)
-      //           : 0.0;
-      //     } else if (q1 == q0) {
-      //       swapRates.swapBuy = 0.0;
-      //     } else {
-      //       swapRates.swapBuy = (
-      //         ((q1 - q0) *
-      //           (helper.getGlobalSetting("DisplaySwapNumbers")
-      //             ? parseFloat(
-      //                 forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //               )
-      //             : (forexHelper.assetsPrices[widget.selectedAsset.id].bid *
-      //                 parseFloat(
-      //                   forexHelper.swapRates[widget.selectedAsset.id].swapLong
-      //                 )) /
-      //               100)) /
-      //         widget.selectedAsset.rate
-      //       ).toFixed(2);
-      //     }
-      //   }
-      // }
+      // TODO -> forex.js - line 5125
     }
 
     return swapRates;
@@ -350,7 +200,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
       }
     }
 
-    setOrderInfo((prevState) => ({
+    setOrderInfoData((prevState) => ({
       ...prevState,
       marginSell: sellMargin,
       marginBuy: buyMargin,
@@ -360,6 +210,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
       swapBuy: buySwap,
       pipSell: point,
       pipBuy: point,
+      pip: pip,
     }));
   };
   useEffect(() => {
@@ -368,7 +219,7 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
     }
   }, [quantityValue]);
 
-  return state ? (
+  return orderInfoData ? (
     <View style={styles.container}>
       <View>
         <Typography
@@ -388,18 +239,38 @@ const OrderInfo = ({ quantityValue, isMarket }) => {
         />
       </View>
       <View>
-        <Typography style={styles.buy} name="small" text={state.marginBuy} />
-        <Typography style={styles.buy} name="small" text={state.leverageBuy} />
-        <Typography style={styles.buy} name="small" text={state.pipBuy} />
+        <FormattedTypographyWithCurrency
+          style={styles.buy}
+          name="small"
+          text={orderInfoData.marginBuy}
+        />
+        <Typography
+          style={styles.buy}
+          name="small"
+          text={orderInfoData.leverageBuy}
+        />
+        <FormattedTypographyWithCurrency
+          style={styles.buy}
+          name="small"
+          text={orderInfoData.pipBuy}
+        />
       </View>
       <View>
-        <Typography style={styles.sell} name="small" text={state.marginSell} />
+        <FormattedTypographyWithCurrency
+          style={styles.sell}
+          name="small"
+          text={orderInfoData.marginSell}
+        />
         <Typography
           style={styles.sell}
           name="small"
-          text={state.leverageSell}
+          text={orderInfoData.leverageSell}
         />
-        <Typography style={styles.sell} name="small" text={state.pipSell} />
+        <FormattedTypographyWithCurrency
+          style={styles.sell}
+          name="small"
+          text={orderInfoData.pipSell}
+        />
       </View>
     </View>
   ) : null;

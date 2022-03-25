@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
 
 import { Typography } from "components";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";

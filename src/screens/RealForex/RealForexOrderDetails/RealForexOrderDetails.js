@@ -24,6 +24,8 @@ import {
   setCurrentTrade,
   getRealForexPrices,
   getRealForexOpenPositions,
+  addRealForexTradeOrderV2Service,
+  getRealForexOptionsByType,
 } from "../../../store/realForex";
 import { getUser } from "store/app";
 import { convertUnits } from "store/realForex/helpers";
@@ -42,6 +44,9 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   const realForexOpenPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
   );
+  const realForexOptionsByType = useSelector((state) =>
+    getRealForexOptionsByType(state)
+  );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const user = useSelector((state) => getUser(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
@@ -49,6 +54,17 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   const [isMarket, setOrderType] = useState(true);
   const [isReady, setReadyState] = useState(false);
   const [quantity, setQuantity] = useState(null);
+  const initialOrderInfoState = {
+    marginSell: "",
+    marginBuy: "",
+    leverageSell: "",
+    leverageBuy: "",
+    swapSell: "",
+    swapBuy: "",
+    pipSell: "",
+    pipBuy: "",
+  };
+  const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
 
   const [isDirectionBuy, setDirection] = useState(
     route.params.isBuy ? true : false
@@ -67,6 +83,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     // Set Current Trade in Store
     const isBuy = route.params.isBuy ? true : false;
 
+    currentTrade.tradableAssetId = asset.id;
     currentTrade.action = route.params.isBuy;
     currentTrade.isBuy = route.params.isBuy;
     currentTrade.price = assetsSettings[asset.id].MinQuantity;
@@ -126,6 +143,44 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     setReadyState(true);
   };
 
+  const makeNewMarketOrder = () => {
+    const volume =
+      quantity.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(quantity.replace(/,/g, "")),
+            asset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(quantity), asset.id, true, settings);
+
+    addRealForexTradeOrderV2Service(
+      dispatch,
+      currentTrade.tradableAssetId,
+      realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
+      currentTrade.isBuy,
+      currentTrade.isBuy
+        ? realForexPrices[currentTrade.tradableAssetId].ask
+        : realForexPrices[currentTrade.tradableAssetId].bid,
+      volume,
+      "", // TakeProfit
+      "", // StopLoss
+      asset.Leverage || 100,
+      "", // TakeProfitDistance
+      "", // StoplossDistance
+      parseFloat(orderInfoData.pip) == 0 ? 0.00001 : orderInfoData.pip,
+      0, // pendingPrice
+      false,
+      "", // (widget.currentlyModifiedOrder != '' ? orderId : '')
+      "",
+      realForexPrices[currentTrade.tradableAssetId].delay,
+      realForexPrices[currentTrade.tradableAssetId].ask,
+      realForexPrices[currentTrade.tradableAssetId].bid,
+      "", // takeProfitRate
+      "" // stopLossRate
+    );
+  };
+
   useEffect(() => {
     if (asset && realForexOpenPositions) {
       navigation.setOptions({
@@ -176,7 +231,12 @@ const RealForexOrderDetails = ({ route, navigation }) => {
           >
             {isMarket ? <MarketOrderControls /> : <PendingOrderControls />}
           </ScrollView>
-          <OrderInfo quantityValue={quantity} isMarket={isMarket} />
+          <OrderInfo
+            quantityValue={quantity}
+            isMarket={isMarket}
+            orderInfoData={orderInfoData}
+            setOrderInfoData={setOrderInfoData}
+          />
         </>
       ) : (
         <Loading size="large" />
@@ -188,7 +248,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             type="primary"
             font="mediumBold"
             size="big"
-            // onPress={props.handleSubmit}
+            onPress={makeNewMarketOrder}
           />
         ) : (
           <Button
