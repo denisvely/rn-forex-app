@@ -1,31 +1,33 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { View, TouchableOpacity } from "react-native";
 
 import { LazyFlatList, Loading, Typography } from "components";
 import NotificationService from "./services/NotificationsService";
 import { deviceWidth } from "utils";
 import NotificationRow from "./components/NotificationRow/NotificationRow";
-import { getRealForexNotifications } from "store/realForex";
+import { getRealForexNotifications, getNotifications } from "store/realForex";
 
 import styles from "./notificationsStyles";
 
-const getNotifications = NotificationService.getNotifications();
+const clearAll = NotificationService.delAllForexNotifications();
 
-const Notifications = ({ navigation, game }) => {
+const Notifications = () => {
+  const dispatch = useDispatch();
   const flatListRef = useRef();
   const notifications = useSelector((state) =>
     getRealForexNotifications(state)
   );
 
-  useEffect(() => {
-    getNotifications.fetch().then(({ response }) => {
-      // console.log(response);
-    });
-  }, []);
-
   const clearAllNotifications = () => {
-    alert("Clear all here");
+    clearAll
+      .fetch({ optionType: 24 })
+
+      .then(({ response }) => {
+        if (response.body.code === 200) {
+          getNotifications(dispatch);
+        }
+      });
   };
 
   return notifications ? (
@@ -36,25 +38,24 @@ const Notifications = ({ navigation, game }) => {
           text={"Notification history"}
           name="tiny"
         />
-        <TouchableOpacity>
-          <Typography
-            style={styles.notificationsHeaderTitle}
-            text={"Clear all"}
-            name="tiny"
-            onPress={() => clearAllNotifications()}
-          />
-        </TouchableOpacity>
+        {notifications.length > 0 ? (
+          <TouchableOpacity onPress={() => clearAllNotifications()}>
+            <Typography
+              style={styles.notificationsHeaderTitleClearAll}
+              text={"Clear all"}
+              name="tiny"
+            />
+          </TouchableOpacity>
+        ) : null}
       </View>
       <View style={styles.notificationContainer}>
         <LazyFlatList
           list={notifications}
           renderItem={({ item }) => {
-            return (
-              <NotificationRow notification={item} navigation={navigation} />
-            );
+            return <NotificationRow notification={item} />;
           }}
           keyExtractor={(item) => item.ID}
-          showsVerticalScrollIndicator={true}
+          showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             width: deviceWidth,

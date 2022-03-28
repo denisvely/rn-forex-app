@@ -98,7 +98,8 @@ class ServiceManager {
     }
 
     const { errors } = response.getBody();
-    const errorMessage = !!errors && !!errors[0] ? errors[0].detail : "Server error 500";
+    const errorMessage =
+      !!errors && !!errors[0] ? errors[0].detail : "Server error 500";
 
     if (errorMessage === "Your session has expired." && !!this.token) {
       this.dispatchToStore({
@@ -155,7 +156,7 @@ class ServiceManager {
       method: request.getMethod(),
     };
 
-    if (request.getMethod() === 'POST') {
+    if (request.getMethod() === "POST") {
       fetchConfig.data = request.getBody();
     }
 
@@ -170,6 +171,7 @@ class ServiceManager {
 
     url += request.getParsedPath();
     url += this.getQueryString(request.getQueryParameters());
+    url += request.getParamsToTheUrl();
 
     return url;
   };

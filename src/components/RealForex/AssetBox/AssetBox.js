@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import {View, Pressable} from "react-native";
+import {View, TouchableOpacity} from "react-native";
 import {SvgXml} from "react-native-svg";
 import {useSelector, useDispatch} from "react-redux";
 import {getRealForexPrices} from "../../../store/realForex";
@@ -53,7 +53,7 @@ const AssetBox = ({asset, navigation, icon}) => {
 
     return realForexPrices ? (
         <View style={styles.assetBox}>
-            <Pressable style={styles.assetBoxButton} activeOpacity={0.5} onPress={pressAssetBoxButton}>
+            <TouchableOpacity style={styles.assetBoxButton} activeOpacity={0.5} onPress={pressAssetBoxButton}>
                 <View style={styles.left}>
                     <SvgXml style={styles.assetIcon} xml={icon} width="40" height="40"/>
                     <View>
@@ -73,7 +73,7 @@ const AssetBox = ({asset, navigation, icon}) => {
                     <BuyPrice asset={asset}/>
                     <SellPrice asset={asset}/>
                 </View>
-            </Pressable>
+            </TouchableOpacity>
         </View>
     ) : null;
 };

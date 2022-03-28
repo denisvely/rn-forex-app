@@ -19,6 +19,8 @@
     "quantity": "Quantity",
     "takeProfit": "Take Profit",
     "stopLoss": "Stop Loss",
+    "takeProfitShort": "TP",
+    "stopLossShort": "SL",
     "amount": "Amount",
     "distance": "Distance",
     "margin": "Margin",
@@ -55,7 +57,9 @@
     "point": "Point",
     "trade": "Trade",
     "place": "Place",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "at": "at",
+    "exp": "Exp"
   },
   "navigation": {
     "quotes": "Quotes",

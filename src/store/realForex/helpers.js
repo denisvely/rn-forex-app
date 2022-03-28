@@ -397,13 +397,14 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
       });
     } else {
       Toast.show({
-        type: "error",
+        type: "success",
         text1: values.title,
         text: values.text,
         topOffset: 100,
         visibilityTime: 5000,
         autoHide: true,
       });
+      // TODO
       // var additionalInfo =
       //   values.takeProfit !== null ||
       //   values.stopLoss !== null ||

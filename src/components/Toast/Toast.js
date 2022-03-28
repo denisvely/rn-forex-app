@@ -16,7 +16,7 @@ const toastConfig = {
       {...props}
       style={{
         borderLeftColor: colors.successLighten,
-        borderLeftColor: colors.successLighten,
+        backgroundColor: colors.successLighten,
       }}
       contentContainerStyle={{
         borderRadius: 4,

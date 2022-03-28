@@ -130,18 +130,6 @@ export const loadInitialRealForexData = async (dispatch) => {
       console.log(err);
     });
 
-  getForexNotifications
-    .fetch()
-    .then(({ response }) => {
-      const notificationsData = response.body.data.slice(0, 100);
-      dispatch({
-        type: actionTypes.REAL_FOREX_NOTIFICATIONS,
-        payload: notificationsData,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
   getForexTraderInsight
     .fetch()
     .then(({ response }) => {
@@ -161,8 +149,23 @@ export const loadInitialRealForexData = async (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
+  getNotifications(dispatch);
 };
 
+export const getNotifications = (dispatch) => {
+  getForexNotifications
+    .fetch()
+    .then(({ response }) => {
+      const notificationsData = response.body.data;
+      dispatch({
+        type: actionTypes.REAL_FOREX_NOTIFICATIONS,
+        payload: notificationsData,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 export const getAssetsOrder = (dispatch) => {
   getForexAssetsOrder
     .fetch()
@@ -263,7 +266,6 @@ export const addRealForexTradeOrderV2Service = (
       stopLossRate
     )
     .then(({ response }) => {
-
       // Show Notification
       // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
     })

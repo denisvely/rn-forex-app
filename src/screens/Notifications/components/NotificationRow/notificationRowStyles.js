@@ -17,8 +17,32 @@ export default StyleSheet.create({
   left: {
     justifyContent: "flex-start",
     alignItems: "center",
+    flexDirection: "column",
+    maxWidth: "80%",
+  },
+  top: {
+    justifyContent: "flex-start",
+    alignItems: "center",
     flexDirection: "row",
-    maxWidth: "50%",
+    width: "100%",
+  },
+  bottom: {
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    width: "100%",
+  },
+  notificationTpSlRow: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    width: "100%",
+  },
+  tpSlRowData: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    marginRight: 10,
   },
   right: {
     justifyContent: "center",
@@ -26,18 +50,36 @@ export default StyleSheet.create({
     flexDirection: "column",
     maxWidth: "50%",
   },
-  assetName: {
+  notificationDateTime: {
+    marginLeft: 10,
+  },
+  notificationRowTitleDate: {
+    color: colors.fontSecondaryColor,
+  },
+  notificationRowTitle: {
     color: colors.fontPrimaryColor,
   },
-  profit: {
-    color: colors.buyColor,
+  notificationRowDirection: {
+    textTransform: "uppercase",
   },
-  buy: {
-    color: colors.buyColor,
-    textAlign: "right",
+  notificationRowData: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
   },
-  sell: {
+  tradeInfo: {
+    marginHorizontal: 5,
+  },
+  errorMessage: {
     color: colors.sellColor,
-    textAlign: "right",
+    textTransform: "uppercase",
+  },
+  notificationPrice: {
+    marginHorizontal: 5,
+  },
+  tpAndSlLabel: {
+    paddingRight: 5,
+    color: colors.blueColor,
+    textTransform: "uppercase",
   },
 });

@@ -156,13 +156,14 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             settings
           )
         : convertUnits(parseFloat(quantity), asset.id, true, settings);
+    const pip = calculatePipPrice();
 
     addRealForexTradeOrderV2Service
       .fetch(
         currentTrade.tradableAssetId,
         realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
-        currentTrade.isBuy,
-        currentTrade.isBuy
+        isDirectionBuy,
+        isDirectionBuy
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
         volume,
@@ -171,10 +172,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         asset.Leverage || 100,
         "", // TakeProfitDistance
         "", // StoplossDistance
-        parseFloat(orderInfoData.pip) == 0 ? 0.00001 : orderInfoData.pip,
+        parseFloat(pip) == 0 ? 0.00001 : pip,
         0, // pendingPrice
         false,
-        "", // (widget.currentlyModifiedOrder != '' ? orderId : '')
+        "", // (currentlyModifiedOrder != '' ? orderId : '')
         "",
         realForexPrices[currentTrade.tradableAssetId].delay,
         realForexPrices[currentTrade.tradableAssetId].ask,
@@ -271,7 +272,19 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             showForexNotification("error", currTrade);
           }
         }
+        navigation.navigate("quotes");
       });
+  };
+
+  const calculatePipPrice = () => {
+    let quantity = asset.MinQuantity;
+
+    quantity = convertUnits(quantity, asset.id, true, settings);
+
+    var pip = (quantity * Math.pow(10, -asset.accuracy)) / asset.rate,
+      formattedPip = pip.toFixed(5);
+
+    return parseFloat(formattedPip) == 0 ? 0.00001 : formattedPip;
   };
 
   useEffect(() => {
@@ -319,17 +332,17 @@ const RealForexOrderDetails = ({ route, navigation }) => {
               flexDirection: "column",
               width: deviceWidth,
               flexGrow: 1,
-              paddingBottom: 50,
+              paddingBottom: 130,
             }}
           >
             {isMarket ? <MarketOrderControls /> : <PendingOrderControls />}
+            <OrderInfo
+              quantityValue={quantity}
+              isMarket={isMarket}
+              orderInfoData={orderInfoData}
+              setOrderInfoData={setOrderInfoData}
+            />
           </ScrollView>
-          <OrderInfo
-            quantityValue={quantity}
-            isMarket={isMarket}
-            orderInfoData={orderInfoData}
-            setOrderInfoData={setOrderInfoData}
-          />
         </>
       ) : (
         <Loading size="large" />
@@ -349,7 +362,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             type="primary"
             font="mediumBold"
             size="big"
-            // onPress={props.handleSubmit}
+            // onPress={makeNewPendingOrder}
           />
         )}
       </View>

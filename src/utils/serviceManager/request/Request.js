@@ -4,6 +4,7 @@ class Request {
   method = null;
   path = null;
   urlencodedParams = new FormData();
+  urlParams = "";
 
   onSuccessListeners = [];
   onErrorListeners = [];
@@ -55,6 +56,16 @@ class Request {
 
   addUrlencodedParam(key, value) {
     this.urlencodedParams.append(key, value);
+  }
+
+  addParamsToTheUrl(params) {
+    for (const [i, item] of Object.entries(params)) {
+      this.urlParams += `${item}/`;
+    }
+  }
+
+  getParamsToTheUrl() {
+    return this.urlParams;
   }
 
   getUrlencodedParams() {

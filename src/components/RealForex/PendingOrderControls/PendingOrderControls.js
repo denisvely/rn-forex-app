@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import OrderInfo from '../OrderInfo/OrderInfo'
-import TakeProfitPending from '../TakeProfitPending/TakeProfitPending'
-import StopLossPending from '../StopLossPending/StopLossPending'
+import TakeProfitPending from "../TakeProfitPending/TakeProfitPending";
+import StopLossPending from "../StopLossPending/StopLossPending";
 import { deviceWidth } from "../../../utils";
 import PendingDirectionAndRate from "./components/PendingDirectionAndRate/PendingDirectionAndRate";
 
@@ -45,7 +44,6 @@ const PendingOrderControls = () => {
           onChangeStopLossPendingDistance(value)
         }
       />
-      <OrderInfo />
     </View>
   );
 };

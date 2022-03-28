@@ -19,8 +19,16 @@ export default StyleSheet.create({
   notificationsHeaderTitle: {
     color: colors.fontPrimaryColor,
   },
+  notificationsHeaderTitleClearAll: {
+    color: colors.fontSecondaryColor,
+  },
   clearAllBtn: {
     height: 13,
     backgroundColor: "red",
+  },
+  flatListContainer: {
+    marginBottom: 0,
+    width: "100%",
+    marginTop: 16,
   },
 });
