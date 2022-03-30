@@ -59,36 +59,9 @@ const StopLoss = () => {
           />
         </TouchableOpacity>
       </View>
-      <StopLossAmount
-        spinnerValue={state.stopLossAmount}
-        onSpinnerChange={(value) => {
-          setState((prevState) => ({
-            ...prevState,
-            stopLossAmount: value,
-          }));
-        }}
-        placeholder={t("common-labels.amount")}
-      />
-      <StopLossDistance
-        spinnerValue={state.stopLossDistance}
-        onSpinnerChange={(value) => {
-          setState((prevState) => ({
-            ...prevState,
-            stopLossDistance: value,
-          }));
-        }}
-        placeholder={t("common-labels.distance")}
-      />
-      <StopLossPrice
-        spinnerValue={state.stopLossPrice}
-        onSpinnerChange={(value) => {
-          setState((prevState) => ({
-            ...prevState,
-            stopLossPrice: value,
-          }));
-        }}
-        placeholder={t("common-labels.price")}
-      />
+      <StopLossAmount state={state} setState={setState} />
+      <StopLossDistance state={state} setState={setState} />
+      <StopLossPrice state={state} setState={setState} />
     </View>
   );
 };

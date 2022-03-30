@@ -181,7 +181,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         realForexPrices[currentTrade.tradableAssetId].ask,
         realForexPrices[currentTrade.tradableAssetId].bid,
         "", // takeProfitRate
-        "" // stopLossRate);
+        "" // stopLossRate;
       )
       .then(({ response }) => {
         let currTrade = currentTrade;

@@ -30,6 +30,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: 4,
   },
   takeProfitHeaderTitle: {
     color: colors.fontPrimaryColor,

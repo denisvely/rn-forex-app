@@ -458,3 +458,21 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
   //   if (sameNotifications) return;
   // }
 };
+
+export const getSpreadValue = (askPrice, bidPrice, accuracy) => {
+  var stringifyAskPrice = askPrice.toString().split("."),
+    stringifyBidPrice = bidPrice.toString().split("."),
+    askPriceResult = stringifyAskPrice[0] + stringifyAskPrice[1],
+    bidPriceResult = stringifyBidPrice[0] + stringifyBidPrice[1];
+
+  if (parseFloat(askPrice) < 1 && parseFloat(bidPrice) < 1) {
+    return Math.round(
+      askPrice * Math.pow(10, accuracy) - bidPrice * Math.pow(10, accuracy)
+    );
+  } else {
+    return (
+      parseFloat(askPriceResult - bidPriceResult) *
+      Math.pow(10, askPriceResult > 9999 ? 0 : accuracy)
+    );
+  }
+};

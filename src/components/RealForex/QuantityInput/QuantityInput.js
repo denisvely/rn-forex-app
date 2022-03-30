@@ -28,6 +28,7 @@ const QuantityInput = ({ value, setQuantity }) => {
 
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const [dropdownValues, setDropdownValues] = useState([]);
+  const [isFocused, setFocus] = useState(false);
   const [min, setMin] = useState([]);
   const [max, setMax] = useState([]);
 
@@ -59,11 +60,12 @@ const QuantityInput = ({ value, setQuantity }) => {
   };
 
   const onEndEditing = (event) => {
+    setFocus(false);
     let value = event.nativeEvent.text;
-    
+
     if (value == "") {
       value = 0;
-      setQuantity(formatDeciamlWithComma(parseFloat(value)));
+      setQuantity(formatDeciamlWithComma(value));
       return;
     }
 
@@ -91,7 +93,6 @@ const QuantityInput = ({ value, setQuantity }) => {
       setQuantity(quantity);
       // TODO => TP & SL => forex.js - line 4244
     }
-    // End New
     currentTrade.quantity = quantity;
     setDropdownVisibility(false);
     // setCurrentTrade(dispatch, currentTrade);
@@ -114,6 +115,8 @@ const QuantityInput = ({ value, setQuantity }) => {
   };
 
   const onFocus = (event) => {
+    setFocus(true);
+    setDropdownVisibility(false);
     let value = event.nativeEvent.text;
 
     if (!value) {
@@ -157,19 +160,21 @@ const QuantityInput = ({ value, setQuantity }) => {
           onFocus={onFocus}
           // keyboardType="number-pad"
         />
-        <TouchableHighlight
-          style={styles.dropdownArrowWrapper}
-          onPress={createQuantityDropDown}
-          activeOpacity={0.1}
-          underlayColor={colors.containerBackground}
-        >
-          <SvgXml
-            styles={styles.dropdownArrow}
-            xml={dropdownArrow}
-            width="32"
-            height="32"
-          />
-        </TouchableHighlight>
+        {!isFocused ? (
+          <TouchableHighlight
+            style={styles.dropdownArrowWrapper}
+            onPress={createQuantityDropDown}
+            activeOpacity={0.1}
+            underlayColor={colors.containerBackground}
+          >
+            <SvgXml
+              styles={styles.dropdownArrow}
+              xml={dropdownArrow}
+              width="32"
+              height="32"
+            />
+          </TouchableHighlight>
+        ) : null}
         {isDropdownVisible ? (
           <View style={styles.quantityDropdown}>
             {dropdownValues.map((value, index) => {
