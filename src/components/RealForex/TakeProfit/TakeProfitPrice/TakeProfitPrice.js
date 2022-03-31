@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../../Spinner/Spinner";
@@ -10,6 +10,7 @@ import {
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
 import { getSpread, convertUnits } from "../../../../store/realForex/helpers";
+import { colors } from "../../../../constants";
 
 const TakeProfitPrice = ({ state, setState }) => {
   const { t } = useTranslation();
@@ -65,6 +66,7 @@ const TakeProfitPrice = ({ state, setState }) => {
           takeProfitAmount: parseFloat(TPAmount),
           takeProfitPrice: parseFloat(value),
           TPActive: true,
+          isPriceFocused: true,
         }));
       } else {
         TPDistance = Math.abs(
@@ -87,6 +89,7 @@ const TakeProfitPrice = ({ state, setState }) => {
           takeProfitAmount: parseFloat(TPAmount),
           takeProfitPrice: parseFloat(value),
           TPActive: true,
+          isPriceFocused: true,
         }));
       }
     } else {
@@ -96,6 +99,7 @@ const TakeProfitPrice = ({ state, setState }) => {
         takeProfitAmount: null,
         takeProfitPrice: null,
         TPActive: false,
+        isPriceFocused: false,
       }));
     }
   };
@@ -114,7 +118,7 @@ const TakeProfitPrice = ({ state, setState }) => {
         ) {
           Toast.show({
             type: "error",
-            text1: `TP Rate must be higher than ${min.toFixed(
+            text1: `TP Rate must be higher than ${parseFloat(min).toFixed(
               selectedAsset.accuracy
             )}`,
           });
@@ -130,7 +134,7 @@ const TakeProfitPrice = ({ state, setState }) => {
         ) {
           Toast.show({
             type: "error",
-            text1: `TP Rate must be higher than ${max.toFixed(
+            text1: `TP Rate must be higher than ${parseFloat(max).toFixed(
               selectedAsset.accuracy
             )}`,
           });
@@ -185,6 +189,12 @@ const TakeProfitPrice = ({ state, setState }) => {
       step={parseFloat(Math.pow(10, -selectedAsset.accuracy))}
       // min={min}
       // max={max}
+      style={{
+        backgroundColor:
+          state.TPActive && state.isPriceFocused
+            ? colors.containerBackground
+            : colors.white,
+      }}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

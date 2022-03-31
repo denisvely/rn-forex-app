@@ -9,7 +9,12 @@ import {
   getCurrentTrade,
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
-import { getSpread, convertUnits, getSpreadValue } from "../../../../store/realForex/helpers";
+import {
+  getSpread,
+  convertUnits,
+  getSpreadValue,
+} from "../../../../store/realForex/helpers";
+import { colors } from "../../../../constants";
 
 const StopLossDistance = ({ state, setState }) => {
   const { t } = useTranslation();
@@ -78,6 +83,7 @@ const StopLossDistance = ({ state, setState }) => {
         stopLossAmount: parseFloat(SLAmount),
         stopLossPrice: parseFloat(SLRate),
         SLActive: true,
+        isPriceFocused: false,
       }));
     } else {
       setState((prevState) => ({
@@ -86,6 +92,7 @@ const StopLossDistance = ({ state, setState }) => {
         stopLossAmount: null,
         stopLossPrice: null,
         SLActive: false,
+        isPriceFocused: false,
       }));
     }
   };
@@ -112,6 +119,7 @@ const StopLossDistance = ({ state, setState }) => {
         setState((prevState) => ({
           ...prevState,
           stopLossDistance: SLDistance,
+          isPriceFocused: false,
         }));
         setErrorState(false);
         Toast.hide();
@@ -182,8 +190,14 @@ const StopLossDistance = ({ state, setState }) => {
       step={parseFloat(
         Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
       )}
+      style={{
+        backgroundColor:
+          state.SLActive && !state.isPriceFocused
+            ? colors.containerBackground
+            : colors.white,
+      }}
       errorActive={isErrorActive}
-      min={spinnerMin}
+      // min={spinnerMin}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

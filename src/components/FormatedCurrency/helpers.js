@@ -64,7 +64,7 @@ export const formatCurrency = (
     numberWithCommas
   ) {
     // removed decimal, formats in "1,234,567" format
-    value = numberWithCommas(Math.round(value).toString());
+    value = numberWithCommasFunc(Math.round(value).toString());
     // helper.getCurrenciesWithoutSubunits(currencySymbol);
   } else if (
     !checkCurrencySubUnit(currencySymbol, settings) &&
@@ -82,7 +82,7 @@ export const formatCurrency = (
     numberWithCommas === true
   ) {
     // add comma as thousands separator
-    value = numberWithCommas(value.toString());
+    value = numberWithCommasFunc(value.toString());
   }
 
   if (
@@ -94,7 +94,7 @@ export const formatCurrency = (
   } else return value + " " + currencySymbol;
 };
 
-export const numberWithCommas = (x) => {
+export const numberWithCommasFunc = (x) => {
   if (!x) {
     return "";
   }

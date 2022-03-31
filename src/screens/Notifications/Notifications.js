@@ -31,7 +31,7 @@ const Notifications = () => {
   };
 
   return notifications ? (
-    <>
+    <View style={styles.container}>
       <View style={styles.notificationsHeader}>
         <Typography
           style={styles.notificationsHeaderTitle}
@@ -66,7 +66,7 @@ const Notifications = () => {
           listRef={flatListRef}
         />
       </View>
-    </>
+    </View>
   ) : (
     <Loading size="large" />
   );

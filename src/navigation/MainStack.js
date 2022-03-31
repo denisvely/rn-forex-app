@@ -24,7 +24,7 @@ const MainStack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation }) => {
   const app = useSelector((state) => getApplication(state));
- 
+
   return (
     <MainStack.Navigator
       initialRouteName={app.game === "RealForex" ? "RealForexStack" : "Home"}
@@ -40,12 +40,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
-          ),
-          headerRight: () => (
-            <HeaderRight
-              navigation={navigation}
-              firstComponent={<NotificationsIcon navigation={navigation} />}
-            />
           ),
         }}
       />
@@ -68,12 +62,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
-          headerRight: () => (
-            <HeaderRight
-              navigation={navigation}
-              firstComponent={<NotificationsIcon navigation={navigation} />}
-            />
-          ),
         }}
       />
       <MainStack.Screen

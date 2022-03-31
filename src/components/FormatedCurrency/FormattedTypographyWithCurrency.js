@@ -7,7 +7,7 @@ import { getUser, getSettings } from "../../store/app";
 
 const FormattedTypographyWithCurrency = ({
   text,
-  numberwithcommas,
+  numberWithCommas,
   name,
   style,
 }) => {
@@ -22,7 +22,7 @@ const FormattedTypographyWithCurrency = ({
   const formattedValue = formatCurrency(
     currency,
     text,
-    numberwithcommas,
+    numberWithCommas,
     settings
   );
 
@@ -31,7 +31,7 @@ const FormattedTypographyWithCurrency = ({
 
 FormattedTypographyWithCurrency.propTypes = {
   text: PropTypes.any,
-  numberwithcommas: PropTypes.bool,
+  numberWithCommas: PropTypes.bool,
   name: PropTypes.string,
   style: PropTypes.object,
 };

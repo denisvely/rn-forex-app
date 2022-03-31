@@ -17,6 +17,7 @@ const Spinner = ({
   children,
   prepend,
   errorActive,
+  style,
 }) => {
   return (
     <InputSpinner
@@ -41,6 +42,7 @@ const Spinner = ({
       style={{
         ...styles.spinner,
         borderColor: errorActive ? colors.error : colors.inputBorder,
+        ...style,
       }}
       onBlur={onBlur}
       prepend={prepend}

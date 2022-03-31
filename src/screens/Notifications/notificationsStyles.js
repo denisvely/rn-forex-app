@@ -3,9 +3,15 @@ import { colors } from "constants";
 import { deviceHeight, deviceWidth } from "utils";
 
 export default StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flex: 1,
+    backgroundColor: colors.containerBackground,
+  },
   notificationContainer: {
     paddingTop: 16,
-    backgroundColor: colors.containerBackground,
   },
   notificationsHeader: {
     backgroundColor: "#F3F3F3",
@@ -29,6 +35,5 @@ export default StyleSheet.create({
   flatListContainer: {
     marginBottom: 0,
     width: "100%",
-    marginTop: 16,
   },
 });

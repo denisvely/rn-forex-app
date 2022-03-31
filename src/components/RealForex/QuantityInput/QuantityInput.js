@@ -165,7 +165,7 @@ const QuantityInput = ({ value, setQuantity }) => {
             style={styles.dropdownArrowWrapper}
             onPress={createQuantityDropDown}
             activeOpacity={0.1}
-            underlayColor={colors.containerBackground}
+            underlayColor={colors.white}
           >
             <SvgXml
               styles={styles.dropdownArrow}

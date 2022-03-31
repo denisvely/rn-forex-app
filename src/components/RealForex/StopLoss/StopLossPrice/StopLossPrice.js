@@ -10,6 +10,7 @@ import {
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
 import { getSpread, convertUnits } from "../../../../store/realForex/helpers";
+import { colors } from "../../../../constants";
 
 const StopLossPrice = ({ state, setState }) => {
   const { t } = useTranslation();
@@ -69,6 +70,7 @@ const StopLossPrice = ({ state, setState }) => {
           stopLossAmount: parseFloat(SLAmount),
           stopLossPrice: parseFloat(SLRate),
           SLActive: true,
+          isPriceFocused: true,
         }));
       } else {
         // SL Distance = Math.abs(SL Rate - BID Price)
@@ -93,6 +95,7 @@ const StopLossPrice = ({ state, setState }) => {
           stopLossAmount: parseFloat(SLAmount),
           stopLossPrice: parseFloat(SLRate),
           SLActive: true,
+          isPriceFocused: true,
         }));
       }
     } else {
@@ -102,6 +105,7 @@ const StopLossPrice = ({ state, setState }) => {
         stopLossAmount: null,
         stopLossPrice: null,
         SLActive: false,
+        isPriceFocused: false,
       }));
     }
   };
@@ -201,6 +205,12 @@ const StopLossPrice = ({ state, setState }) => {
       errorActive={isErrorActive}
       // min={min}
       // max={max}
+      style={{
+        backgroundColor:
+          state.SLActive && state.isPriceFocused
+            ? colors.containerBackground
+            : colors.white,
+      }}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;
