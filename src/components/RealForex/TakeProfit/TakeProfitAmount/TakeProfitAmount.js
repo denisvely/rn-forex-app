@@ -65,6 +65,7 @@ const TakeProfitAmount = ({ state, setState }) => {
         ...prevState,
         takeProfitDistance: parseFloat(TPDistance),
         takeProfitPrice: parseFloat(TPRate),
+        takeProfitAmount: parseFloat(value),
         TPActive: true,
         isPriceFocused: false,
       }));
@@ -149,10 +150,6 @@ const TakeProfitAmount = ({ state, setState }) => {
         ).toFixed(2);
       }
 
-      setState((prevState) => ({
-        ...prevState,
-        takeProfitAmount: TPAmount,
-      }));
       recalculateTPAmount(TPAmount);
     }
   };

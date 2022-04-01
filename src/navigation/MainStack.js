@@ -9,6 +9,7 @@ import {
   Notifications,
   RealForexOrderChart,
   RealForexOrderDetails,
+  PositionHistory,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -113,13 +114,26 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
-          headerLeft: () => <HeaderX />,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
               firstComponent={<FavouritesIcon navigation={navigation} />}
             />
           ),
+        }}
+      />
+      <MainStack.Screen
+        name="PositionHistory"
+        component={PositionHistory}
+        options={{
+          tabBarLabel: "PositionHistory",
+          title: "Position History",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
     </MainStack.Navigator>

@@ -185,7 +185,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
       )
       .then(({ response }) => {
         let currTrade = currentTrade;
+
         currTrade.type = response.body.data.type;
+        currTrade.option =
+          realForexOptionsByType.All[currTrade.tradableAssetId].name;
 
         if (response && response.body.code == 200) {
           if (
@@ -225,7 +228,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             currTrade.title = response.body.data.parameters.PositionId
               ? "Position closed"
               : "Position opened";
-            showForexNotification("success", currTrade);
+            showForexNotification("successForex", currTrade);
           }
         } else if (
           response.body &&

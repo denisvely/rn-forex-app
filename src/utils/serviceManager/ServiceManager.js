@@ -172,6 +172,7 @@ class ServiceManager {
     url += request.getParsedPath();
     url += this.getQueryString(request.getQueryParameters());
     url += request.getParamsToTheUrl();
+    url += request.getParamToTheUrl();
 
     return url;
   };

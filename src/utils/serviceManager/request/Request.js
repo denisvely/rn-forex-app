@@ -5,6 +5,7 @@ class Request {
   path = null;
   urlencodedParams = new FormData();
   urlParams = "";
+  urlParam = "";
 
   onSuccessListeners = [];
   onErrorListeners = [];
@@ -64,8 +65,16 @@ class Request {
     }
   }
 
+  addParamToTheUrl(param) {
+    this.urlParam = param;
+  }
+
   getParamsToTheUrl() {
     return this.urlParams;
+  }
+
+  getParamToTheUrl() {
+    return this.urlParam;
   }
 
   getUrlencodedParams() {
