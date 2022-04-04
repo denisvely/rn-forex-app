@@ -172,6 +172,7 @@ const OpenPositionsTradeBox = ({
               onPress={() =>
                 navigation.navigate("PositionHistory", {
                   positionId: item.orderID,
+                  result: result,
                 })
               }
             >

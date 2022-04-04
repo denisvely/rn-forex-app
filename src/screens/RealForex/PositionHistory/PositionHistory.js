@@ -2,16 +2,24 @@ import React, { useEffect, useState, useRef } from "react";
 import { View } from "react-native";
 import moment from "moment";
 
-import { Typography, LazyFlatList } from "../../../components";
-import { deviceWidth } from "../../../utils";
+import {
+  Typography,
+  LazyFlatList,
+  FormattedTypographyWithCurrency,
+  Loading,
+} from "../../../components";
+import { deviceHeight, deviceWidth } from "../../../utils";
 import realForexServices from "../../../services/realForexServices";
 import { convertUTCDateToLocalDate } from "../../../store/realForex/helpers";
+import { colors } from "../../../constants";
+
 import styles from "./positionHistoryStyles";
 
 const getPositionInfo = realForexServices.getPositionInfo();
 
 const PositionHistory = ({ route, navigation }) => {
   const positionId = route.params.positionId;
+  const result = route.params.result;
   const [posData, setPosData] = useState(null);
   const flatListRef = useRef();
 
@@ -38,39 +46,68 @@ const PositionHistory = ({ route, navigation }) => {
     return (
       <View style={styles.posRow}>
         <View style={styles.posRowHeader}>
-          <View style={styles.left}>
-            <Typography name="normalBold" text={item.Action} />
+          <View style={styles.leftHeader}>
+            <View
+              style={{
+                ...styles.actionBox,
+                backgroundColor:
+                  item.Action === "Opened"
+                    ? colors.buyColor
+                    : item.Action === "Modified"
+                    ? colors.blueColor
+                    : colors.sellColor,
+              }}
+            >
+              <Typography
+                name="smallBold"
+                text={item.Action}
+                style={styles.actionLabel}
+              />
+            </View>
           </View>
-          <View style={styles.right}>
+          <View style={styles.rightHeader}>
             <Typography
-              name="tiny"
+              name="small"
+              style={styles.secondaryLabel}
               text={`${
                 item.OrderType == "MO" ? "Market Order: " : "Pending Order: "
-              } ${item.OrderType}${item.OrderId}`}
+              }`}
+            />
+            <Typography
+              name="small"
+              text={` ${item.OrderType}${item.OrderId}`}
             />
           </View>
         </View>
-
         <View style={styles.posRowBody}>
           <View style={styles.leftBody}>
             <Typography
-              name="normalBold"
+              name="tiny"
               text={moment(
                 convertUTCDateToLocalDate(
                   new Date(item.DateCreated),
                   "yyyy-mm-dd HH:MM:ss"
                 )
               ).format("YYYY-MM-DD HH:MM:ss")}
+              style={styles.centerAligned}
             />
           </View>
           <View style={styles.rightBody}>
             <View>
-              <Typography name="normalBold" text={"Execution price:"} />
-              <Typography name="normalBold" text={item.ExecutionPrice} />
+              <Typography
+                name="small"
+                text={"Execution price:"}
+                style={styles.secondaryLabel}
+              />
+              <Typography name="small" text={item.ExecutionPrice} />
             </View>
-            <View>
-              <Typography name="normalBold" text={item.Direction} />
-              <Typography name="normalBold" text={item.Quantity} />
+            <View style={styles.quantityBox}>
+              {/* <Typography name="small" text={item.Direction} /> */}
+              <Typography
+                name="small"
+                text={item.Quantity}
+                style={item.Direction === "Buy" ? styles.buy : styles.sell}
+              />
             </View>
           </View>
         </View>
@@ -81,30 +118,25 @@ const PositionHistory = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       {posData ? (
-        <>
+        <View style={styles.positionContainer}>
           <View style={styles.posIdHeader}>
             <View style={styles.left}>
               <Typography
                 style={styles.posId}
                 text={"POS" + positionId}
-                name="mediumBold"
+                name="small"
               />
               <Typography
                 style={styles.posIdAssetName}
                 text={posData[0].Description}
-                name="small"
+                name="tiny"
               />
             </View>
             <View style={styles.right}>
-              <Typography
-                style={styles.posIdHeaderTitle}
-                text={"Result"}
+              <FormattedTypographyWithCurrency
                 name="small"
-              />
-              <Typography
                 style={styles.posIdHeaderTitle}
-                text={"$ 0"}
-                name="small"
+                text={result}
               />
             </View>
           </View>
@@ -117,22 +149,41 @@ const PositionHistory = ({ route, navigation }) => {
               showsVerticalScrollIndicator={true}
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
-                width: deviceWidth,
-                justifyContent: "center",
+                paddingTop: 0,
+                width: deviceWidth - 64,
+                justifyContent: "flex-start",
                 alignItems: "center",
                 alignSelf: "center",
-                marginTop: 16,
               }}
               style={styles.flatListContainer}
               listRef={flatListRef}
             />
           </View>
-        </>
-      ) : (
-        <View>
-          <Typography name="largeBold" text={"No data found."} />
         </View>
+      ) : (
+        <Loading size="large" />
       )}
+      {posData &&
+      posData[0].Action.toLowerCase() == "closed" &&
+      posData[0].AverageClosePrice > 0 ? (
+        <View style={styles.posIdHeader}>
+          <View style={styles.left}>
+            <Typography
+              name="small"
+              style={styles.secondaryLabel}
+              text={"Average Close Price:"}
+            />
+            <Typography name="small" text={item.AverageClosePrice} />
+          </View>
+          <View style={styles.right}>
+            <Typography
+              name="small"
+              style={styles.secondaryLabel}
+              text={item.PositionDirection}
+            />
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 };

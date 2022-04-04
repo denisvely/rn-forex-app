@@ -59,7 +59,8 @@
     "place": "Place",
     "cancel": "Cancel",
     "at": "at",
-    "exp": "Exp"
+    "exp": "Exp",
+    "marketClosed": "Market Closed"
   },
   "navigation": {
     "quotes": "Quotes",
