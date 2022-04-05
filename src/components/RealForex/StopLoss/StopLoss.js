@@ -77,11 +77,16 @@ const StopLoss = () => {
               selectedAsset.rate
             ).toFixed(2);
 
-            setState((prevState) => ({
-              ...prevState,
-              stopLossDistance: SLDistance,
-              stopLossAmount: SLAmount,
-            }));
+            if (
+              SLAmount !== state.stopLossAmount ||
+              SLDistance !== state.stopLossDistance
+            ) {
+              setState((prevState) => ({
+                ...prevState,
+                stopLossDistance: SLDistance,
+                stopLossAmount: SLAmount,
+              }));
+            }
           } else {
             // SL Distance = Math.abs(SL Rate - BID Price)
             const SLDistance = Math.abs(
@@ -98,12 +103,16 @@ const StopLoss = () => {
                 1) /
               selectedAsset.rate
             ).toFixed(2);
-
-            setState((prevState) => ({
-              ...prevState,
-              stopLossDistance: SLDistance,
-              stopLossAmount: SLAmount,
-            }));
+            if (
+              SLAmount !== state.stopLossAmount ||
+              SLDistance !== state.stopLossDistance
+            ) {
+              setState((prevState) => ({
+                ...prevState,
+                stopLossDistance: SLDistance,
+                stopLossAmount: SLAmount,
+              }));
+            }
           }
         } else {
           if (currentTrade.isBuy) {
@@ -113,10 +122,12 @@ const StopLoss = () => {
                 parseFloat(state.stopLossDistance)
             ).toFixed(realForexPrices[selectedAsset.id].accuracy);
 
-            setState((prevState) => ({
-              ...prevState,
-              stopLossPrice: SLRate,
-            }));
+            if (SLRate !== state.stopLossPrice) {
+              setState((prevState) => ({
+                ...prevState,
+                stopLossPrice: SLRate,
+              }));
+            }
           } else {
             // SL Rate = ASK Price + Distance
             const SLRate = parseFloat(
@@ -124,18 +135,31 @@ const StopLoss = () => {
                 parseFloat(state.stopLossDistance)
             ).toFixed(realForexPrices[selectedAsset.id].accuracy);
 
-            setState((prevState) => ({
-              ...prevState,
-              stopLossPrice: SLRate,
-            }));
+            if (SLRate !== state.stopLossPrice) {
+              setState((prevState) => ({
+                ...prevState,
+                stopLossPrice: SLRate,
+              }));
+            }
           }
         }
       }
     }
   };
 
-  useEffect(() => {
+  if (realForexPrices && state.SLActive) {
     updateSlFields();
+  }
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      SLActive: false,
+      stopLossAmount: null,
+      stopLossDistance: null,
+      stopLossPrice: null,
+      isPriceFocused: false,
+    }));
   }, [realForexPrices]);
 
   return (

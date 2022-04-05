@@ -23,6 +23,7 @@ export default StyleSheet.create({
     borderBottomColor: colors.inputBorder,
     borderBottomWidth: 1,
     paddingBottom: 5,
+    marginBottom: 12,
     height: 32,
   },
   posId: {

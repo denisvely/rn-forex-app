@@ -164,9 +164,12 @@ export const getAssetsOrder = (dispatch) => {
 export const getClosedPositions = (dispatch) => {
   getForexClosedPositions
     .fetch({
-      fromDate: moment(new Date()).format("YYYY-MM-DD") + "T00:00:01",
+      fromDate:
+        moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+          "YYYY-MM-DD"
+        ) + "T00:00:01",
       toDate:
-        moment(new Date().setMonth(new Date().getMonth() + 1)).format(
+        moment(new Date().setMonth(new Date().getMonth())).format(
           "YYYY-MM-DD"
         ) + "T23:59:59",
       positionId: null,

@@ -14,7 +14,7 @@ import {
   QuantityInput,
   OrderInfo,
 } from "../../../components";
-import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
+import assetsIcons from "../../../assets/svg/assetIcons/assetsIcons";
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import {
   getRealForexTradingSettings,
@@ -68,6 +68,20 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     pipBuy: "",
   };
   const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
+  const dualFlag = asset.name.indexOf("/") > -1;
+
+  if (dualFlag) {
+    var leftName = asset.name.split("/")[0].toLowerCase(),
+      rightName = asset.name.split("/")[1].toLowerCase();
+  }
+
+  const assetIconName = dualFlag
+    ? leftName + rightName
+    : asset.name.replace("'", "").replace("&", "").toLowerCase();
+
+  const assetIcon = assetsIcons[assetIconName]
+    ? assetsIcons[assetIconName][0]
+    : assetsIcons["default"][0];
 
   const [isDirectionBuy, setDirection] = useState(
     route.params.isBuy ? true : false

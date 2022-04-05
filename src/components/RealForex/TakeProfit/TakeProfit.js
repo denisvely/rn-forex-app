@@ -69,11 +69,16 @@ const TakeProfit = () => {
               selectedAsset.rate
             ).toFixed(2);
 
-            setState((prevState) => ({
-              ...prevState,
-              takeProfitDistance: TPDistance,
-              takeProfitAmount: TPAmount,
-            }));
+            if (
+              TPDistance !== state.takeProfitDistance ||
+              TPAmount !== state.takeProfitAmount
+            ) {
+              setState((prevState) => ({
+                ...prevState,
+                takeProfitDistance: TPDistance,
+                takeProfitAmount: TPAmount,
+              }));
+            }
           } else {
             // TP Distance = Math.abs(TP Rate  - BID Price)
             const TPDistance = Math.abs(
@@ -90,12 +95,16 @@ const TakeProfit = () => {
                 1) /
               selectedAsset.rate
             ).toFixed(2);
-
-            setState((prevState) => ({
-              ...prevState,
-              takeProfitDistance: TPDistance,
-              takeProfitAmount: TPAmount,
-            }));
+            if (
+              TPDistance !== state.takeProfitDistance ||
+              TPAmount !== state.takeProfitAmount
+            ) {
+              setState((prevState) => ({
+                ...prevState,
+                takeProfitDistance: TPDistance,
+                takeProfitAmount: TPAmount,
+              }));
+            }
           }
         } else {
           if (currentTrade.isBuy) {
@@ -104,32 +113,46 @@ const TakeProfit = () => {
               parseFloat(realForexPrices[selectedAsset.id].ask) +
                 parseFloat(state.takeProfitDistance)
             ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-            setState((prevState) => ({
-              ...prevState,
-              takeProfitPrice: TPRate,
-            }));
+            if (TPRate !== state.takeProfitPrice) {
+              setState((prevState) => ({
+                ...prevState,
+                takeProfitPrice: TPRate,
+              }));
+            }
           } else {
             // TP Rate = BID Price – Distance
             const TPRate = parseFloat(
               parseFloat(realForexPrices[selectedAsset.id].bid) -
                 parseFloat(state.takeProfitDistance)
             ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-            console.log(TPRate);
-            setState((prevState) => ({
-              ...prevState,
-              takeProfitPrice: TPRate,
-            }));
+            if (TPRate !== state.takeProfitPrice) {
+              setState((prevState) => ({
+                ...prevState,
+                takeProfitPrice: TPRate,
+              }));
+            }
           }
         }
       }
     }
   };
 
+  if (realForexPrices && state.TPActive) {
+    updateTPFields();
+  }
+
   useEffect(() => {
-    if (realForexPrices) {
-      updateTPFields();
-    }
-  }, [realForexPrices]);
+    return () => {
+      setState((prevState) => ({
+        ...prevState,
+        TPActive: false,
+        takeProfitDistance: null,
+        takeProfitAmount: null,
+        takeProfitPrice: null,
+        isPriceFocused: false,
+      }));
+    };
+  }, []);
 
   return (
     <View style={styles.inputsWrapper}>
@@ -148,9 +171,9 @@ const TakeProfit = () => {
               setState((prevState) => ({
                 ...prevState,
                 TPActive: false,
-                takeProfitDistance: 0,
-                takeProfitAmount: 0,
-                takeProfitPrice: 0,
+                takeProfitDistance: null,
+                takeProfitAmount: null,
+                takeProfitPrice: null,
               }))
             }
           />

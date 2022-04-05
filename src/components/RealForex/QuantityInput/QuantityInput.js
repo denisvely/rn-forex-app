@@ -95,7 +95,7 @@ const QuantityInput = ({ value, setQuantity }) => {
     }
     currentTrade.quantity = quantity;
     setDropdownVisibility(false);
-    // setCurrentTrade(dispatch, currentTrade);
+    setCurrentTrade(dispatch, currentTrade);
   };
 
   const onChange = (value) => {

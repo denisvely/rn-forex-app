@@ -11,6 +11,7 @@ import BuyPrice from "../../../components/RealForex/BuyPrice/BuyPrice";
 import SellPrice from "../../../components/RealForex/SellPrice/SellPrice";
 import { setSelectedAsset } from "../../../store/realForex";
 import { getApplication } from "../../../store/app";
+import assetsIcons from "../../../assets/svg/assetIcons/assetsIcons";
 
 import styles from "./assetBoxStyles";
 
@@ -20,6 +21,21 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const app = useSelector((state) => getApplication(state));
   const [marketClosedInfo, setMarketClosedInfo] = useState(null);
+  const dualFlag = asset.name.indexOf("/") > -1;
+
+  if (dualFlag) {
+    var leftName = asset.name.split("/")[0].toLowerCase(),
+      rightName = asset.name.split("/")[1].toLowerCase();
+  }
+
+  const assetIconName = dualFlag
+    ? leftName + rightName
+    : asset.name.replace("'", "").replace("&", "").toLowerCase();
+
+  const assetIcon = assetsIcons[assetIconName]
+    ? assetsIcons[assetIconName][0]
+    : assetsIcons["default"][0];
+
   const calculateSpread = (
     askPrice,
     bidPrice,
@@ -104,7 +120,9 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
       setSelectedAsset(dispatch, asset);
       navigation.navigate("RealForexOrderChart", { asset });
     } else {
-      const marketClosedInfo = `This market opens at ${remainingTime(asset.id)}. You can place pending orders even when the market is closed.`;
+      const marketClosedInfo = `This market opens at ${remainingTime(
+        asset.id
+      )}. You can place pending orders even when the market is closed.`;
       setMarketClosedInfo(marketClosedInfo);
       setTimeout(() => {
         setMarketClosedInfo(null);
@@ -132,7 +150,7 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
             <View style={styles.left}>
               <SvgXml
                 style={styles.assetIcon}
-                xml={icon}
+                xml={assetIcon}
                 width="40"
                 height="40"
               />
@@ -162,7 +180,7 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
             <View style={styles.left}>
               <SvgXml
                 style={styles.assetIcon}
-                xml={icon}
+                xml={assetIcon}
                 width="40"
                 height="40"
               />

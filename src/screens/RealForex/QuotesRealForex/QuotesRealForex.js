@@ -10,7 +10,6 @@ import {
   Loading,
   AssetsSearch,
 } from "../../../components";
-import { assetIcon } from "../../../assets/svg/assetIcons/assetsIcons";
 import { deviceWidth } from "../../../utils";
 
 import styles from "./quotesStyles";
@@ -103,7 +102,6 @@ const Quotes = ({ navigation }) => {
                   index={index}
                   marketClosed={!checkAvailableForTrading(item.id)}
                   navigation={navigation}
-                  icon={assetIcon}
                 />
               );
             }}
