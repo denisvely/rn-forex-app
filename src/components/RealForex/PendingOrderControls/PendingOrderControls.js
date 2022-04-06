@@ -5,44 +5,32 @@ import StopLossPending from "../StopLossPending/StopLossPending";
 import { deviceWidth } from "../../../utils";
 import PendingDirectionAndRate from "./components/PendingDirectionAndRate/PendingDirectionAndRate";
 
-const PendingOrderControls = () => {
-  const [takeProfitPendingAmount, onChangeTakeProfitPendingAmount] =
-    useState(null);
-  const [takeProfitPendingDistance, onChangeTakeProfitPendingDistance] =
-    useState(null);
-  const [stopLossPendingAmount, onChangeStopLossPendingAmount] = useState(null);
-  const [stopLossPendingDistance, onChangeStopLossPendingDistance] =
-    useState(null);
-  const [isBuy, setDirection] = useState(true);
-  const [rateValue, setRateValue] = useState(null);
-
+const PendingOrderControls = ({ pendingState, setPendingState }) => {
   return (
     <View style={{ width: deviceWidth }}>
       <PendingDirectionAndRate
-        isBuy={isBuy}
-        changeDirection={(isBuy) => setDirection(isBuy)}
-        rateValue={rateValue}
-        onRateValueChange={(value) => setRateValue(value)}
+        isBuy={pendingState.isBuyPending}
+        changeDirection={(isBuy) =>
+          setPendingState((prevState) => ({
+            ...prevState,
+            isBuyPending: isBuy,
+          }))
+        }
+        rateValue={pendingState.pendingPrice}
+        onRateValueChange={(rateValue) =>
+          setPendingState((prevState) => ({
+            ...prevState,
+            pendingPrice: rateValue,
+          }))
+        }
       />
       <TakeProfitPending
-        takeProfitPendingAmount={takeProfitPendingAmount}
-        onChangeTakeProfitPendingAmount={(value) =>
-          onChangeTakeProfitPendingAmount(value)
-        }
-        takeProfitPendingDistance={takeProfitPendingDistance}
-        onChangeTakeProfitPendingDistance={(value) =>
-          onChangeTakeProfitPendingDistance(value)
-        }
+        pendingState={pendingState}
+        setPendingState={setPendingState}
       />
       <StopLossPending
-        stopLossPendingAmount={stopLossPendingAmount}
-        onChangeStopLossPendingAmount={(value) =>
-          onChangeStopLossPendingAmount(value)
-        }
-        stopLossPendingDistance={stopLossPendingDistance}
-        onChangeStopLossPendingDistance={(value) =>
-          onChangeStopLossPendingDistance(value)
-        }
+        pendingState={pendingState}
+        setPendingState={setPendingState}
       />
     </View>
   );

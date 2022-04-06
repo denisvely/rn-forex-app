@@ -412,12 +412,10 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
 
       Toast.show({
         type: "successForex",
-        text1: values.title,
-        text2: orderInfo,
-        text3: orderTPandSL,
-        topOffset: 100,
-        visibilityTime: 5000,
-        autoHide: true,
+        props: { text1: values.title, text2: orderInfo, text3: orderTPandSL },
+        // topOffset: 100,
+        // visibilityTime: 5000,
+        // autoHide: true,
       });
     }
   }

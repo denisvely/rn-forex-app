@@ -146,4 +146,20 @@ export default StyleSheet.create({
   sell: {
     color: colors.sellColor,
   },
+  posRowAveragePrice: {
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  leftAvg: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  rightAvg: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
 });

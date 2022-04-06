@@ -23,12 +23,6 @@ const TakeProfitDistance = ({ state, setState }) => {
     selectedAsset.accuracy
   );
 
-  const initTPDistance = () => {
-    selectedAsset.minTPDistance = parseFloat(selectedAsset.distance).toFixed(
-      selectedAsset.accuracy
-    );
-  };
-
   const onChange = (value) => {
     if (state.takeProfitDistance !== null) {
       spinnerOnStop(value);
@@ -154,12 +148,6 @@ const TakeProfitDistance = ({ state, setState }) => {
     }
     recalculateTPDistance(TPDistance);
   };
-
-  useEffect(() => {
-    if (selectedAsset) {
-      initTPDistance();
-    }
-  }, [selectedAsset]);
 
   useEffect(() => {
     if (!state.TPActive && isErrorActive) {

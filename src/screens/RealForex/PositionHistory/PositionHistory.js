@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View } from "react-native";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 import {
   Typography,
@@ -8,7 +9,7 @@ import {
   FormattedTypographyWithCurrency,
   Loading,
 } from "../../../components";
-import { deviceHeight, deviceWidth } from "../../../utils";
+import { deviceWidth } from "../../../utils";
 import realForexServices from "../../../services/realForexServices";
 import { convertUTCDateToLocalDate } from "../../../store/realForex/helpers";
 import { colors } from "../../../constants";
@@ -18,6 +19,7 @@ import styles from "./positionHistoryStyles";
 const getPositionInfo = realForexServices.getPositionInfo();
 
 const PositionHistory = ({ route, navigation }) => {
+  const { t } = useTranslation();
   const positionId = route.params.positionId;
   const result = route.params.result;
   const [posData, setPosData] = useState(null);
@@ -69,9 +71,11 @@ const PositionHistory = ({ route, navigation }) => {
             <Typography
               name="small"
               style={styles.secondaryLabel}
-              text={`${
-                item.OrderType == "MO" ? "Market Order: " : "Pending Order: "
-              }`}
+              text={
+                item.OrderType == "MO"
+                  ? t("common-labels.marketOrder")
+                  : t("common-labels.pendingOrder")
+              }
             />
             <Typography
               name="small"
@@ -96,7 +100,7 @@ const PositionHistory = ({ route, navigation }) => {
             <View>
               <Typography
                 name="small"
-                text={"Execution price:"}
+                text={t("common-labels.averageClosePrice")}
                 style={styles.secondaryLabel}
               />
               <Typography name="small" text={item.ExecutionPrice} />
@@ -111,10 +115,30 @@ const PositionHistory = ({ route, navigation }) => {
             </View>
           </View>
         </View>
+
+        {item.Action.toLowerCase() == "closed" && item.AverageClosePrice > 0 ? (
+          <View style={styles.posRowAveragePrice}>
+            <View style={styles.leftAvg}>
+              <Typography
+                name="small"
+                style={styles.secondaryLabel}
+                text={t("common-labels.averageClosePrice")}
+              />
+              <Typography name="small" text={item.AverageClosePrice} />
+            </View>
+            <View style={styles.rightAvg}>
+              <Typography
+                name="small"
+                style={styles.secondaryLabel}
+                text={item.PositionDirection}
+              />
+              <Typography name="small" text={0} style={{ paddingLeft: 5 }} />
+            </View>
+          </View>
+        ) : null}
       </View>
     );
   };
-
   return (
     <View style={styles.container}>
       {posData ? (
@@ -133,11 +157,21 @@ const PositionHistory = ({ route, navigation }) => {
               />
             </View>
             <View style={styles.right}>
-              <FormattedTypographyWithCurrency
-                name="small"
-                style={styles.posIdHeaderTitle}
-                text={result}
-              />
+              {posData[posData.length - 1].Action == "Closed" ? (
+                <FormattedTypographyWithCurrency
+                  name="small"
+                  style={styles.posIdHeaderTitle}
+                  text={parseFloat(posData[posData.length - 1].Profit).toFixed(
+                    2
+                  )}
+                />
+              ) : (
+                <FormattedTypographyWithCurrency
+                  name="small"
+                  style={styles.posIdHeaderTitle}
+                  text={result}
+                />
+              )}
             </View>
           </View>
           <View style={{ zIndex: 1 }}>
@@ -163,27 +197,6 @@ const PositionHistory = ({ route, navigation }) => {
       ) : (
         <Loading size="large" />
       )}
-      {posData &&
-      posData[0].Action.toLowerCase() == "closed" &&
-      posData[0].AverageClosePrice > 0 ? (
-        <View style={styles.posIdHeader}>
-          <View style={styles.left}>
-            <Typography
-              name="small"
-              style={styles.secondaryLabel}
-              text={"Average Close Price:"}
-            />
-            <Typography name="small" text={item.AverageClosePrice} />
-          </View>
-          <View style={styles.right}>
-            <Typography
-              name="small"
-              style={styles.secondaryLabel}
-              text={item.PositionDirection}
-            />
-          </View>
-        </View>
-      ) : null}
     </View>
   );
 };

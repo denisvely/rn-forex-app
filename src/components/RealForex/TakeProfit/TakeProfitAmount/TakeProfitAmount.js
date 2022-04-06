@@ -24,7 +24,9 @@ const TakeProfitAmount = ({ state, setState }) => {
   const user = useSelector((state) => getUser(state));
   const globalSettings = useSelector((state) => getSettings(state));
   const spinnerMin = (
-    parseFloat(selectedAsset.minTPDistance) *
+    parseFloat(
+      parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
+    ) *
     convertUnits(
       parseFloat(currentTrade.quantity),
       selectedAsset.id,

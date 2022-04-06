@@ -6,12 +6,7 @@ import StopLossAmount from "./StopLossAmount/StopLossAmount";
 import StopLossDistance from "./StopLossDistance/StopLossDistance";
 import styles from "./stopLossStyles";
 
-const StopLossPending = ({
-  stopLossPendingPendingAmount,
-  stopLossPendingDistance,
-  onChangeStopLossPendingAmount,
-  onChangeStopLossPendingDistance,
-}) => {
+const StopLossPending = ({ pendingState, setPendingState }) => {
   const { t } = useTranslation();
 
   return (
@@ -21,16 +16,8 @@ const StopLossPending = ({
         name="normal"
         text={t("common-labels.stopLoss")}
       />
-      <StopLossAmount
-        spinnerValue={stopLossPendingPendingAmount}
-        onSpinnerChange={(value) => onChangeStopLossPendingAmount(value)}
-        placeholder={t("common-labels.amount")}
-      />
-      <StopLossDistance
-        spinnerValue={stopLossPendingDistance}
-        onSpinnerChange={(value) => onChangeStopLossPendingDistance(value)}
-        placeholder={t("common-labels.distance")}
-      />
+      <StopLossAmount state={pendingState} setState={setPendingState} />
+      <StopLossDistance state={pendingState} setState={setPendingState} />
     </View>
   );
 };

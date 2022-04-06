@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../../Spinner/Spinner";
 import Typography from "../../../Typography/Typography";
@@ -23,7 +23,9 @@ const StopLossAmount = ({ state, setState }) => {
   const user = useSelector((state) => getUser(state));
   const globalSettings = useSelector((state) => getSettings(state));
   const spinnerMin = (
-    -parseFloat(selectedAsset.minTPDistance) *
+    -parseFloat(
+      parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
+    ) *
     convertUnits(
       parseFloat(currentTrade.quantity),
       selectedAsset.id,
