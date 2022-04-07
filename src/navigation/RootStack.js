@@ -10,7 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // TODO => Stacks
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
-import { InvalidTokenModal } from "../components/InvalidTokenModal/InvalidTokenModal";
+import InvalidTokenModal from "../components/InvalidTokenModal/InvalidTokenModal";
 import { NoInternetConnection } from "../screens";
 import {
   checkConnection,

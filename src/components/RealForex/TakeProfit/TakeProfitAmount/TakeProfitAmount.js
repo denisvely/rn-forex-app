@@ -91,7 +91,7 @@ const TakeProfitAmount = ({state, setState}) => {
             onSpinnerChange={(value) => onChange(value)}
             step={0.01}
             accuracy={2}
-            // min={state.TPActive && parseFloat(spinnerMin)}
+            min={state.TPActive ? parseFloat(spinnerMin) : 0}
         />
     ) : null;
 };

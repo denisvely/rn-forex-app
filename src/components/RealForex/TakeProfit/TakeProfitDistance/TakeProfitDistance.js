@@ -165,17 +165,15 @@ const TakeProfitDistance = ({ state, setState }) => {
 
   return selectedAsset ? (
     <Spinner
-      placeholder={t("common-labels.distance")}
+      // placeholder={t("common-labels.distance")}
+      placeholder={parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)}
       spinnerValue={state.takeProfitDistance}
       onSpinnerChange={(value) => onChange(value)}
       step={parseFloat(
         Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
       )}
       errorActive={isErrorActive}
-      // min={
-      //   state.TPActive &&
-      //   parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
-      // }
+      min={state.TPActive ? parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy) : 0}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

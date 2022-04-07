@@ -12,7 +12,7 @@ import { getSimplexClosedPositions } from "../../../store/simplex";
 import { deviceWidth } from "../../../utils";
 import { tabStackIcons } from "../../../assets/svg/tabStackIcons/";
 import { SvgXml } from "react-native-svg";
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from "./closedPositionsSimplexStyles";
 
 const ClosedPositionsSimplex = ({ navigation }) => {
@@ -27,24 +27,58 @@ const ClosedPositionsSimplex = ({ navigation }) => {
         getSimplexClosedPositions(state)
     );
 
+
+
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShow(false);
+        setDate(currentDate);
+    };
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
+
+    const showDatepicker = () => {
+        showMode('date');
+    };
+
+    const showTimepicker = () => {
+        showMode('time');
+    };
+
     return (
         <View style={styles.container}>
-            <View style={styles.closePositionFilterWrapper}>
-                <Pressable
-                    style={styles.closePositionFilter}
-                    onPress={() => alert("Closed Positions FIlter")}
-                >
-                    <SvgXml
-                        xml={tabStackIcons["closedPositions"][0]}
-                        width="16"
-                        height="16"
-                    />
-                    <Typography name="small" text={fromDate} style={styles.dateString} />
-                    <Typography name="small" text={"-"} />
-                    <Typography name="small" text={toDate} style={styles.dateString} />
-                </Pressable>
-            </View>
-            {closedPositions ? (
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={onChange}
+                />
+            )}
+            {!show && (
+                <View style={styles.closePositionFilterWrapper}>
+                    <Pressable
+                        style={styles.closePositionFilter}
+                        onPress={showDatepicker}
+                    >
+                        <SvgXml
+                            xml={tabStackIcons["closedPositions"][0]}
+                            width="16"
+                            height="16"
+                        />
+                        <Typography name="small" text={fromDate} style={styles.dateString} />
+                        <Typography name="small" text={"-"} />
+                        <Typography name="small" text={toDate} style={styles.dateString} />
+                    </Pressable>
+                </View>
+            )}
+            {closedPositions && !show ? (
                 <LazyFlatList
                     list={closedPositions}
                     renderItem={({ item }) => {

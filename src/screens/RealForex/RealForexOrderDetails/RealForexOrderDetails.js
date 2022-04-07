@@ -27,14 +27,12 @@ import {
   getRealForexOptionsByType,
 } from "../../../store/realForex";
 import realForexServices from "../../../services/realForexServices";
-import { getUser } from "store/app";
-import { convertUnits, showForexNotification } from "store/realForex/helpers";
+import { getUser } from "../../../store/app";
+import { convertUnits, showForexNotification } from "../../../store/realForex/helpers";
 import { deviceWidth } from "../../../utils";
-
 import styles from "./realForexOrderDetailsStyles";
 
-const addRealForexTradeOrderV2Service =
-  realForexServices.addRealForexTradeOrderV2();
+const addRealForexTradeOrderV2Service = realForexServices.addRealForexTradeOrderV2();
 
 const RealForexOrderDetails = ({ route, navigation }) => {
   const { t } = useTranslation();

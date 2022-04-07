@@ -1,53 +1,53 @@
 import React from "react";
 import InputSpinner from "react-native-input-spinner";
-import { colors } from "../../constants";
+import {colors} from "../../constants";
 import styles from "./spinnerStyles";
 
 const Spinner = ({
-  spinnerValue,
-  onSpinnerChange,
-  placeholder,
-  step,
-  min,
-  max,
-  initialValue,
-  accuracy,
-  spinnerType,
-  onBlur,
-  children,
-  prepend,
-  errorActive,
-}) => {
-  return (
-    <InputSpinner
-      max={max}
-      min={min}
-      step={step}
-      speed={1}
-      accelerationDelay={1500}
-      placeholder={placeholder}
-      colorLeft={colors.inputBorder}
-      colorRight={colors.inputBorder}
-      emptied={true}
-      value={spinnerValue}
-      initialValue={initialValue}
-      precision={accuracy}
-      height={30}
-      typingTime={1500}
-      buttonFontSize={14}
-      activeOpacity={0.5}
-      onChange={onSpinnerChange}
-      type={"float"}
-      style={{
-        ...styles.spinner,
-        borderColor: errorActive ? colors.error : colors.inputBorder,
-      }}
-      onBlur={onBlur}
-      prepend={prepend}
-    >
-      {children && children}
-    </InputSpinner>
-  );
+                     spinnerValue,
+                     onSpinnerChange,
+                     placeholder,
+                     step,
+                     min,
+                     max,
+                     initialValue,
+                     accuracy,
+                     spinnerType,
+                     onBlur,
+                     children,
+                     prepend,
+                     errorActive,
+                 }) => {
+    return (
+        <InputSpinner
+            max={max}
+            min={min}
+            step={step}
+            speed={1}
+            accelerationDelay={1500}
+            placeholder={placeholder}
+            colorLeft={colors.inputBorder}
+            colorRight={colors.inputBorder}
+            emptied={true}
+            value={spinnerValue}
+            initialValue={initialValue}
+            precision={accuracy}
+            height={30}
+            typingTime={3500}
+            buttonFontSize={14}
+            activeOpacity={0.5}
+            onChange={onSpinnerChange}
+            type={"float"}
+            style={{
+                ...styles.spinner,
+                borderColor: errorActive ? colors.error : colors.inputBorder,
+            }}
+            onBlur={onBlur}
+            prepend={prepend}
+        >
+            {children && children}
+        </InputSpinner>
+    );
 };
 
 export default Spinner;
