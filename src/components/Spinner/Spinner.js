@@ -4,6 +4,7 @@ import {colors} from "../../constants";
 import styles from "./spinnerStyles";
 
 const Spinner = ({
+<<<<<<< HEAD
                      spinnerValue,
                      onSpinnerChange,
                      placeholder,
@@ -48,6 +49,54 @@ const Spinner = ({
             {children && children}
         </InputSpinner>
     );
+=======
+  spinnerValue,
+  onSpinnerChange,
+  placeholder,
+  step,
+  min,
+  max,
+  initialValue,
+  accuracy,
+  spinnerType,
+  onBlur,
+  children,
+  prepend,
+  errorActive,
+  style,
+}) => {
+  return (
+    <InputSpinner
+      max={max}
+      min={min}
+      step={step}
+      speed={1}
+      accelerationDelay={1500}
+      placeholder={placeholder}
+      colorLeft={colors.inputBorder}
+      colorRight={colors.inputBorder}
+      emptied={true}
+      value={spinnerValue}
+      initialValue={initialValue}
+      precision={accuracy}
+      height={30}
+      typingTime={1500}
+      buttonFontSize={14}
+      activeOpacity={0.5}
+      onChange={onSpinnerChange}
+      type={"float"}
+      style={{
+        ...styles.spinner,
+        borderColor: errorActive ? colors.error : colors.inputBorder,
+        ...style,
+      }}
+      onBlur={onBlur}
+      prepend={prepend}
+    >
+      {children && children}
+    </InputSpinner>
+  );
+>>>>>>> 5ac012d48f2e3878066180f81935fe8446fca961
 };
 
 export default Spinner;

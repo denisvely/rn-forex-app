@@ -168,7 +168,14 @@ const OpenPositionsTradeBox = ({
               style={styles.tradeInfoKey}
               text={t(`common-labels.id`)}
             />
-            <TouchableOpacity onPress={() => alert("open Position history")}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("PositionHistory", {
+                  positionId: item.orderID,
+                  result: result,
+                })
+              }
+            >
               <Typography
                 name="small"
                 style={styles.tradeInfoValueClickable}

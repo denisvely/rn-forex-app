@@ -7,10 +7,24 @@ import Typography from "../../../components/Typography/Typography";
 import BuyPriceSimplex from "../../../components/Simplex/BuyPrice/BuyPrice";
 import styles from "./assetBoxStyles";
 import { getApplication } from "../../../store/app";
+import assetsIcons from "../../../assets/svg/assetIcons/assetsIcons";
 
-const AssetBox = ({ asset, navigation, icon }) => {
+const AssetBox = ({ asset, navigation }) => {
   const simplexPrices = useSelector((state) => getSimplexPrices(state));
   const app = useSelector((state) => getApplication(state));
+  const dualFlag = asset.name.indexOf("/") > -1;
+  if (dualFlag) {
+    var leftName = asset.name.split("/")[0].toLowerCase(),
+      rightName = asset.name.split("/")[1].toLowerCase();
+  }
+
+  const assetIconName = dualFlag
+    ? leftName + rightName
+    : asset.name.replace("'", "").replace("&", "").toLowerCase();
+
+  const assetIcon = assetsIcons[assetIconName]
+    ? assetsIcons[assetIconName][0]
+    : assetsIcons["default"][0];
 
   const calculateSpread = (askPrice, bidPrice, openPrice) => {
     return (
@@ -36,7 +50,7 @@ const AssetBox = ({ asset, navigation, icon }) => {
           <View style={styles.left}>
             <SvgXml
               style={styles.assetIcon}
-              xml={icon}
+              xml={assetIcon}
               width="40"
               height="40"
             />

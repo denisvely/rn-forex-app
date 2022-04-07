@@ -59,7 +59,12 @@
     "place": "Place",
     "cancel": "Cancel",
     "at": "at",
-    "exp": "Exp"
+    "exp": "Exp",
+    "marketClosed": "Market Closed",
+    "averageClosePrice": "Average Close Price: ",
+    "executionPrice": "Execution price:",
+    "marketOrder": "Market Order: ",
+    "pendingOrder": "Pending Order: "
   },
   "navigation": {
     "quotes": "Quotes",

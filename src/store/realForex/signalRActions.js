@@ -1,6 +1,7 @@
 import signalr from "react-native-signalr";
 import * as actionTypes from "./actionTypes";
 import ServiceManager from "../../utils/serviceManager";
+import realForexServices from "../../services/realForexServices";
 
 const connection = signalr.hubConnection("https://api.finte.co");
 
@@ -22,8 +23,31 @@ export const signalRStart = (assetsPrices, dispatch) => {
 
   eventsHubProxy.on("forexPosition", (event) => {
     if (event.Event === 2) {
-      // debugger;
+      realForexServices
+        .getRealForexOpenTrades(dispatch)
+        .fetch()
+        .then(({ response }) => {
+          const body = response.body.data;
+          dispatch({
+            type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
+            payload: body.forexOpenTrades.data,
+          });
+        });
     }
+  });
+
+  eventsHubProxy.on("forexPendingOrder", (event) => {
+    realForexServices
+      .getRealForexPendingOrders(dispatch)
+      .fetch()
+      .then(({ response }) => {
+        const body = response.body.data;
+
+        dispatch({
+          type: actionTypes.REAL_FOREX_PENDING_ORDERS,
+          payload: body.results,
+        });
+      });
   });
 
   //connection-handling

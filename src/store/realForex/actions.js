@@ -15,7 +15,6 @@ const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
-const closePositionRealForex = realForexServices.closePosition();
 const closePositionRealForexNetting = realForexServices.closePositioNetting();
 const addForexTradeOrderV2 = realForexServices.addRealForexTradeOrderV2();
 
@@ -45,26 +44,7 @@ export const loadInitialRealForexData = async (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
-  getForexClosedPositions
-    .fetch({
-      fromDate: moment(new Date()).format("YYYY-MM-DD") + "T00:00:01",
-      toDate:
-        moment(new Date().setMonth(new Date().getMonth() + 1)).format(
-          "YYYY-MM-DD"
-        ) + "T23:59:59",
-      positionId: null,
-      tradableAssetId: 0,
-    })
-    .then(({ response }) => {
-      const body = response.body.data;
-      dispatch({
-        type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
-        payload: body.trades,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  getClosedPositions(dispatch);
   getForexTradingSettings
     .fetch()
     .then(({ response }) => {
@@ -99,7 +79,7 @@ export const loadInitialRealForexData = async (dispatch) => {
         payload: body,
       });
       // Start SignalR
-      signalRStart(body, dispatch);
+      // signalRStart(body, dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -181,27 +161,38 @@ export const getAssetsOrder = (dispatch) => {
     });
 };
 
+export const getClosedPositions = (dispatch) => {
+  getForexClosedPositions
+    .fetch({
+      fromDate:
+        moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+          "YYYY-MM-DD"
+        ) + "T00:00:01",
+      toDate:
+        moment(new Date().setMonth(new Date().getMonth())).format(
+          "YYYY-MM-DD"
+        ) + "T23:59:59",
+      positionId: null,
+      tradableAssetId: 0,
+    })
+    .then(({ response }) => {
+      const body = response.body.data;
+      dispatch({
+        type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
+        payload: body.trades,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const setSelectedAsset = async (dispatch, asset) => {
   dispatch({ type: actionTypes.SET_SELECTED_ASSET, payload: asset });
 };
 
 export const setCurrentTrade = async (dispatch, trade) => {
   dispatch({ type: actionTypes.SET_CURRENT_TRADE, payload: trade });
-};
-
-export const closePosition = (dispatch, orderId) => {
-  closePositionRealForex
-    .fetch({ orderID: orderId })
-    .then(({ response }) => {
-      // TODO => ?
-      // dispatch({
-      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
-      //   payload: body,
-      // });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 export const closeForexTradeNetting = (dispatch, orderId) => {

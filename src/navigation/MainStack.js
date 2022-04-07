@@ -9,6 +9,7 @@ import {
   Notifications,
   RealForexOrderChart,
   RealForexOrderDetails,
+  PositionHistory,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -24,7 +25,7 @@ const MainStack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation }) => {
   const app = useSelector((state) => getApplication(state));
- 
+
   return (
     <MainStack.Navigator
       initialRouteName={app.game === "RealForex" ? "RealForexStack" : "Home"}
@@ -40,12 +41,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
-          ),
-          headerRight: () => (
-            <HeaderRight
-              navigation={navigation}
-              firstComponent={<NotificationsIcon navigation={navigation} />}
-            />
           ),
         }}
       />
@@ -68,12 +63,6 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
-          headerRight: () => (
-            <HeaderRight
-              navigation={navigation}
-              firstComponent={<NotificationsIcon navigation={navigation} />}
-            />
-          ),
         }}
       />
       <MainStack.Screen
@@ -125,13 +114,26 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
-          headerLeft: () => <HeaderX />,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
               firstComponent={<FavouritesIcon navigation={navigation} />}
             />
           ),
+        }}
+      />
+      <MainStack.Screen
+        name="PositionHistory"
+        component={PositionHistory}
+        options={{
+          tabBarLabel: "PositionHistory",
+          title: "Position History",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
     </MainStack.Navigator>

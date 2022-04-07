@@ -2,23 +2,31 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import Typography from '../../Typography/Typography'
-import Button from '../../Button/Button'
-import SwitchComponent from '../../Switch/SwitchComponent'
-import PartiallyClose from '../../RealForex/PartiallyClose/PartiallyClose'
+import Toast from "react-native-toast-message";
+
+import Typography from "../../Typography/Typography";
+import Button from "../../Button/Button";
+import SwitchComponent from "../../Switch/SwitchComponent";
+import PartiallyClose from "../../RealForex/PartiallyClose/PartiallyClose";
 import {
-  closePosition,
   closeForexTradeNetting,
   addRealForexTradeOrderV2Service,
   getRealForexOptionsByType,
   getRealForexPrices,
   getRealForexAssetsSettings,
   getRealForexTradingSettings,
+  getClosedPositions,
 } from "../../../store/realForex";
+import realForexServices from "../../../services/realForexServices";
 import { getUser } from "../../../store/app";
-import { convertUnits } from "../../../store/realForex/helpers";
+import {
+  convertUnits,
+  showForexNotification,
+} from "../../../store/realForex/helpers";
 
 import styles from "../bottomSlidingPanelStyles";
+
+const closePosition = realForexServices.closePosition();
 
 const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   if (!trade) {
@@ -105,9 +113,56 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
       toggleSlidingPanel(false);
     } else {
       if (user.forexModeId === 3 && user.forexMarginModeId === 1) {
+        // TODO => Finish closeForexTradeNetting
         closeForexTradeNetting(dispatch, trade.orderID);
       } else {
-        closePosition(dispatch, trade.orderID);
+        closePosition
+          .fetch({ orderID: trade.orderID })
+          .then(({ response }) => {
+            if (
+              response.body.code == 400 &&
+              response.body.data.text == "Minimum Close Interval Error"
+            ) {
+              // TODO => forexHelper.settings.MinCloseInterval
+              Toast.show({
+                type: "error",
+                text1:
+                  "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
+                text2: "Please try again in a few moments.",
+                topOffset: 100,
+                visibilityTime: 5000,
+                autoHide: true,
+              });
+            } else {
+              const notificationValues = {
+                title: !response.body.data
+                  ? "Market Closed"
+                  : "Position closed",
+                action: trade.actionType === "Buy" ? "Sell" : "Buy",
+                quantity: trade.volume,
+                option: trade.description,
+                strike: trade.marketRate,
+                takeProfit:
+                  parseFloat(trade.takeProfitRate) === 0
+                    ? null
+                    : trade.takeProfitRate,
+                stopLoss:
+                  parseFloat(trade.stopLossRate) === 0
+                    ? null
+                    : trade.stopLossRate,
+                pendingDate: trade.expirationDate,
+              };
+              if (response.body.data) {
+                notificationValues.strike = response.body.hash.ClosingPrice;
+              }
+
+              showForexNotification("success", notificationValues);
+              getClosedPositions(dispatch);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
       toggleSlidingPanel(false);
     }

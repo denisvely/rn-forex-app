@@ -176,7 +176,13 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.id`)}
             />
-            <TouchableOpacity onPress={() => alert("open Position history")}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("PositionHistory", {
+                  positionId: item.positionId,
+                })
+              }
+            >
               <Typography
                 name="small"
                 style={styles.tradeInfoValueClickable}

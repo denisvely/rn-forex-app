@@ -29,7 +29,7 @@ const Balance = ({ navigation }) => {
           <FormattedTypographyWithCurrency
             name="largeBold"
             text={realForexBalance.balance}
-            numberwithcommas={false}
+            numberWithCommas={false}
             style={styles.balanceBig}
           />
         </View>

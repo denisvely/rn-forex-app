@@ -386,4 +386,23 @@ export default {
 
     return service;
   },
+  getPositionInfo: () => {
+    const service = new Service(
+      "v1/users/current/position/detailedInfo?positionId=",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request, { posId }) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      request.addParamToTheUrl(posId);
+
+      return request;
+    });
+
+    return service;
+  },
 };

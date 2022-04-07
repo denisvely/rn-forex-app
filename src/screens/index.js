@@ -12,6 +12,7 @@ export { default as ClosedPositionsRealForex } from "./RealForex/ClosedPositions
 export { default as Balance } from "./RealForex/Balance/Balance";
 export { default as RealForexOrderChart } from "./RealForex/RealForexOrderChart/RealForexOrderChart";
 export { default as RealForexOrderDetails } from "./RealForex/RealForexOrderDetails/RealForexOrderDetails";
+export { default as PositionHistory } from "./RealForex/PositionHistory/PositionHistory";
 
 export { default as NoInternetConnection } from "./NoInternetConnection/NoInternetConnection";
 // Simplex

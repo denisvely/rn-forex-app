@@ -7,12 +7,7 @@ import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
 
 import styles from "./takeProfitStyles";
 
-const TakeProfitPendingPending = ({
-  takeProfitPendingAmount,
-  onChangeTakeProfitPendingAmount,
-  takeProfitPendingDistance,
-  onChangeTakeProfitPendingDistance,
-}) => {
+const TakeProfitPendingPending = ({ pendingState, setPendingState }) => {
   const { t } = useTranslation();
 
   return (
@@ -22,20 +17,8 @@ const TakeProfitPendingPending = ({
         name="normal"
         text={t("common-labels.takeProfit")}
       />
-      <TakeProfitAmount
-        spinnerValue={takeProfitPendingAmount}
-        onSpinnerChange={(orderType) =>
-          onChangeTakeProfitPendingAmount(orderType)
-        }
-        placeholder={t("common-labels.amount")}
-      />
-      <TakeProfitDistance
-        spinnerValue={takeProfitPendingDistance}
-        onSpinnerChange={(orderType) =>
-          onChangeTakeProfitPendingDistance(orderType)
-        }
-        placeholder={t("common-labels.distance")}
-      />
+      <TakeProfitAmount state={pendingState} setState={setPendingState} />
+      <TakeProfitDistance state={pendingState} setState={setPendingState} />
     </View>
   );
 };

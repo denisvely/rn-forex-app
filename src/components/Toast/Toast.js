@@ -5,6 +5,9 @@ import Toast, {
   InfoToast,
 } from "react-native-toast-message";
 import { colors } from "constants";
+import { View } from "react-native";
+import { Typography } from "../../components";
+import { deviceWidth } from "../../utils";
 
 const toastConfig = {
   /*
@@ -94,6 +97,40 @@ const toastConfig = {
       }}
     />
   ),
+  successForex: ({ props }) => {
+    return (
+      <View
+        style={{
+          width: deviceWidth - 48,
+          backgroundColor: colors.successLighten,
+          borderLeftColor: colors.successLighten,
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          paddingHorizontal: 16,
+          paddingVertical: 16,
+          borderRadius: 4,
+        }}
+      >
+        <Typography
+          name="normal"
+          text={props.text1}
+          style={{ color: colors.success }}
+        />
+        <Typography
+          name="normal"
+          text={props.text2}
+          style={{ color: colors.success }}
+        />
+        {props.text3 ? (
+          <Typography
+            name="normal"
+            text={props.text3}
+            style={{ color: colors.success }}
+          />
+        ) : null}
+      </View>
+    );
+  },
 };
 
 const CustomToast = () => {

@@ -10,6 +10,7 @@ import {
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
 import { getSpread, convertUnits } from "../../../../store/realForex/helpers";
+import { colors } from "../../../../constants";
 
 const TakeProfitDistance = ({ state, setState }) => {
   const { t } = useTranslation();
@@ -21,12 +22,6 @@ const TakeProfitDistance = ({ state, setState }) => {
   const spinnerMin = parseFloat(selectedAsset.distance).toFixed(
     selectedAsset.accuracy
   );
-
-  const initTPDistance = () => {
-    selectedAsset.minTPDistance = parseFloat(selectedAsset.distance).toFixed(
-      selectedAsset.accuracy
-    );
-  };
 
   const onChange = (value) => {
     if (state.takeProfitDistance !== null) {
@@ -67,6 +62,7 @@ const TakeProfitDistance = ({ state, setState }) => {
         takeProfitAmount: parseFloat(TPAmount),
         takeProfitPrice: parseFloat(TPRate),
         TPActive: true,
+        isPriceFocused: false,
       }));
     } else {
       setState((prevState) => ({
@@ -75,6 +71,7 @@ const TakeProfitDistance = ({ state, setState }) => {
         takeProfitAmount: null,
         takeProfitPrice: null,
         TPActive: false,
+        isPriceFocused: false,
       }));
     }
   };
@@ -101,6 +98,7 @@ const TakeProfitDistance = ({ state, setState }) => {
         setState((prevState) => ({
           ...prevState,
           takeProfitDistance: TPDistance,
+          isPriceFocused: false,
         }));
         setErrorState(false);
         Toast.hide();
@@ -152,12 +150,6 @@ const TakeProfitDistance = ({ state, setState }) => {
   };
 
   useEffect(() => {
-    if (selectedAsset) {
-      initTPDistance();
-    }
-  }, [selectedAsset]);
-
-  useEffect(() => {
     if (!state.TPActive && isErrorActive) {
       setErrorState(false);
     }
@@ -173,7 +165,20 @@ const TakeProfitDistance = ({ state, setState }) => {
         Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
       )}
       errorActive={isErrorActive}
+<<<<<<< HEAD
       min={state.TPActive ? parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy) : 0}
+=======
+      style={{
+        backgroundColor:
+          state.TPActive && !state.isPriceFocused
+            ? colors.containerBackground
+            : colors.white,
+      }}
+      // min={
+      //   state.TPActive &&
+      //   parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
+      // }
+>>>>>>> 5ac012d48f2e3878066180f81935fe8446fca961
       accuracy={selectedAsset.accuracy}
     />
   ) : null;
