@@ -1,9 +1,8 @@
 import React, { useState, useRef, memo } from "react";
-import { View, Text } from "react-native";
+import { View, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 import { getSimplexOptionsByType } from "../../../store/simplex";
 import {
-  LazyFlatList,
   AssetBoxSimplex,
   AssetsFilterSimplex,
   Loading,
@@ -12,7 +11,11 @@ import styles from "./quotesStyles";
 import { deviceWidth } from "../../../utils";
 
 const QuotesSimplex = ({ navigation }) => {
-  const flatListRef = useRef();
+  const onViewRef = useRef((viewableItems) => {
+    console.log(viewableItems);
+    // Use viewable items in state or as intended
+  });
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
   const simplexOptionsByType = useSelector((state) =>
     getSimplexOptionsByType(state)
   );
@@ -25,17 +28,22 @@ const QuotesSimplex = ({ navigation }) => {
         changeActiveFilter={(translation) => setActiveFilter(translation)}
       />
       {simplexOptionsByType ? (
-        <LazyFlatList
+        <FlatList
           removeClippedSubviews
-          list={Object.values(simplexOptionsByType[activeFilter])}
-          renderItem={({ item, index }) => (
-            <AssetBoxSimplex
-              asset={item}
-              index={index}
-              navigation={navigation}
-            />
-          )}
+          data={Object.values(simplexOptionsByType[activeFilter])}
+          renderItem={({ item, index }) => {
+            return (
+              <AssetBoxSimplex
+                asset={item}
+                index={index}
+                navigation={navigation}
+              />
+            );
+          }}
+          horizontal={false}
+          onViewableItemsChanged={onViewRef.current}
           keyExtractor={(item) => item.id}
+          viewabilityConfig={viewConfigRef.current}
           showsVerticalScrollIndicator={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
@@ -46,7 +54,6 @@ const QuotesSimplex = ({ navigation }) => {
             paddingBottom: 100,
           }}
           style={styles.flatListContainer}
-          listRef={flatListRef}
         />
       ) : (
         <Loading />

@@ -17,17 +17,8 @@ import { convertUnits } from "../../../store/realForex/helpers";
 
 import styles from "./takeProfitStyles";
 
-const TakeProfit = () => {
+const TakeProfit = ({ state, setState }) => {
   const { t } = useTranslation();
-  const initialTPState = {
-    TPActive: false,
-    takeProfitDistance: null,
-    takeProfitAmount: null,
-    takeProfitPrice: null,
-    isPriceFocused: false,
-  };
-  const [state, setState] = useState(initialTPState);
-  const [isTradeButtonDisabled, setTradeButtonState] = useState(false);
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
@@ -48,9 +39,15 @@ const TakeProfit = () => {
             parseFloat(state.takeProfitDistance) <
             parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
           ) {
-            setTradeButtonState(true);
-          } else if (isTradeButtonDisabled) {
-            setTradeButtonState(false);
+            setState((prevState) => ({
+              ...prevState,
+              isTradeButtonDisabled: true,
+            }));
+          } else if (state.isTradeButtonDisabled) {
+            setState((prevState) => ({
+              ...prevState,
+              isTradeButtonDisabled: false,
+            }));
           }
           if (currentTrade.isBuy) {
             // TP Distance = Math.abs(TP Rate - ASK Price)

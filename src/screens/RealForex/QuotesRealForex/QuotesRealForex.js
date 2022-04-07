@@ -1,10 +1,9 @@
 import React, { useState, useRef, memo } from "react";
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 
 import { getRealForexOptionsByType } from "../../../store/realForex";
 import {
-  LazyFlatList,
   AssetBox,
   AssetsFilter,
   Loading,
@@ -15,7 +14,11 @@ import { deviceWidth } from "../../../utils";
 import styles from "./quotesStyles";
 
 const Quotes = ({ navigation }) => {
-  const flatListRef = useRef();
+  const onViewRef = useRef((viewableItems) => {
+    console.log(viewableItems);
+    // Use viewable items in state or as intended
+  });
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
   const realForexOptionsByType = useSelector((state) =>
     getRealForexOptionsByType(state)
   );
@@ -92,20 +95,13 @@ const Quotes = ({ navigation }) => {
       </View>
       <View style={{ zIndex: 1 }}>
         {realForexOptionsByType ? (
-          <LazyFlatList
+          <FlatList
             removeClippedSubviews
-            list={Object.values(realForexOptionsByType[activeFilter])}
-            renderItem={({ item, index }) => {
-              return (
-                <AssetBox
-                  asset={item}
-                  index={index}
-                  marketClosed={!checkAvailableForTrading(item.id)}
-                  navigation={navigation}
-                />
-              );
-            }}
+            horizontal={false}
+            onViewableItemsChanged={onViewRef.current}
+            data={Object.values(realForexOptionsByType[activeFilter])}
             keyExtractor={(item) => item.id}
+            viewabilityConfig={viewConfigRef.current}
             showsVerticalScrollIndicator={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
@@ -116,7 +112,16 @@ const Quotes = ({ navigation }) => {
               paddingBottom: 100,
             }}
             style={styles.flatListContainer}
-            listRef={flatListRef}
+            renderItem={({ item, index }) => {
+              return (
+                <AssetBox
+                  asset={item}
+                  index={index}
+                  marketClosed={!checkAvailableForTrading(item.id)}
+                  navigation={navigation}
+                />
+              );
+            }}
           />
         ) : (
           <Loading size="large" />

@@ -29,8 +29,9 @@ import {
 } from "../../../store/realForex";
 import realForexServices from "../../../services/realForexServices";
 import { getUser } from "store/app";
-import { convertUnits, showForexNotification } from "store/realForex/helpers";
+import { convertUnits } from "store/realForex/helpers";
 import { deviceWidth } from "../../../utils";
+import { processMarketOrder, processPendingOrder } from "./helpers";
 
 import styles from "./realForexOrderDetailsStyles";
 
@@ -61,6 +62,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   const [isDirectionBuy, setDirection] = useState(
     route.params.isBuy ? true : false
   );
+  // Order Info
   const initialOrderInfoState = {
     marginSell: "",
     marginBuy: "",
@@ -72,6 +74,21 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     pipBuy: "",
   };
   const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
+  const initalMarketTPandSLState = {
+    isBuyMarket: route.params.isBuy ? true : false,
+    TPActive: false,
+    takeProfitDistance: null,
+    takeProfitAmount: null,
+    takeProfitPrice: null,
+    isPriceFocused: false,
+    isTradeButtonDisabled: false,
+    SLActive: false,
+    stopLossAmount: null,
+    stopLossDistance: null,
+    stopLossPrice: null,
+  };
+  const [marketState, setMarketState] = useState(initalMarketTPandSLState);
+  // Pending Order
   const initalPendingState = {
     isBuyPending: route.params.isBuy ? true : false,
     pendingPrice: route.params.isBuy
@@ -85,6 +102,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     pendingSLAmount: null,
   };
   const [pendingState, setPendingState] = useState(initalPendingState);
+
   const dualFlag = asset.name.indexOf("/") > -1;
 
   if (dualFlag) {
@@ -195,11 +213,11 @@ const RealForexOrderDetails = ({ route, navigation }) => {
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
         volume,
-        "", // TakeProfit
-        "", // StopLoss
+        marketState.TPActive ? marketState.takeProfitAmount : "", // TakeProfit
+        marketState.SLActive ? marketState.stopLossAmount : "", // StopLoss
         asset.Leverage || 100,
-        "", // TakeProfitDistance
-        "", // StoplossDistance
+        marketState.TPActive ? marketState.takeProfitDistance : "", // TakeProfitDistance
+        marketState.SLActive ? marketState.stopLossDistance : "", // StoplossDistance
         parseFloat(pip) == 0 ? 0.00001 : pip,
         0, // pendingPrice
         false,
@@ -208,83 +226,16 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         realForexPrices[currentTrade.tradableAssetId].delay,
         realForexPrices[currentTrade.tradableAssetId].ask,
         realForexPrices[currentTrade.tradableAssetId].bid,
-        "", // takeProfitRate
-        "" // stopLossRate;
+        marketState.TPActive ? marketState.takeProfitPrice : "", // takeProfitRate
+        marketState.SLActive ? marketState.stopLossPrice : "" // stopLossRate;
       )
       .then(({ response }) => {
         let currTrade = currentTrade;
-
         currTrade.type = response.body.data.type;
         currTrade.option =
           realForexOptionsByType.All[currTrade.tradableAssetId].name;
 
-        if (response && response.body.code == 200) {
-          if (
-            response.body.data &&
-            response.body.data.type == "EditOrder_Successful" &&
-            response.body.data.parameters.forexType == "MarketOrder"
-          ) {
-            currTrade.title = "Position modified";
-            showForexNotification("success", currTrade);
-          } else if (
-            (response.body.data.type == "TradeRoom_SuccessTradeModified" ||
-              response.body.data.type == "EditOrder_Successful") &&
-            response.body.data.parameters.forexType == "MarketOrder"
-          ) {
-            currTrade.title = "Position modified";
-            showForexNotification("success", currTrade);
-          } else {
-            currTrade.title = response.body.data.parameters.PositionId
-              ? "Position closed"
-              : "Position opened";
-            showForexNotification("successForex", currTrade);
-          }
-        } else if (
-          response.body &&
-          response.body.code == 400 &&
-          response.body.data.type == "TradeOrder_MinOpenInterval"
-        ) {
-          // TODO
-          // $(window).trigger(
-          //   widgets.events.showTradingLimitsPopup,
-          //   response.body.data.text
-          // );
-        } else if (
-          response.body &&
-          response.body.code == 400 &&
-          response.body.data.type == "TradeOrder_MinCloseIntervalError"
-        ) {
-          // TODO
-          // $(window).trigger(
-          //   widgets.events.showTradingLimitsPopup,
-          //   forexHelper.settings.MinCloseInterval
-          // );
-        } else {
-          if (response.body.data.type === "TradeOrder_InsufficientBalance") {
-            currTrade.title = "Insufficient balance";
-            showForexNotification("error", currTrade);
-          } else if (
-            response.body.data.type === "TradeOrder_RejectedToPreventStopOut"
-          ) {
-            currTrade.title = "Rejected Stop Out";
-            showForexNotification("error", currTrade);
-          } else if (response.body.data.type === "TradeOrder_PriceOutOfDate") {
-            currTrade.title = "Missing price";
-            showForexNotification("error", currTrade);
-          } else if (
-            response.body.data.type === "TradeOrder_QuantityValidationError"
-          ) {
-            currTrade.title = "Failed limitation";
-            showForexNotification("error", currTrade);
-          } else if (response.body.data.type === "Fraud_User_Suspended") {
-            currTrade.title = "User suspended";
-            showForexNotification("error", currTrade);
-          } else {
-            currTrade.title = "Position Failed";
-            showForexNotification("error", currTrade);
-          }
-        }
-
+        processMarketOrder(response, currTrade);
         navigation.navigate("quotes");
       });
   };
@@ -352,53 +303,9 @@ const RealForexOrderDetails = ({ route, navigation }) => {
                     ? realForexPrices[currentTrade.tradableAssetId].ask
                     : realForexPrices[currentTrade.tradableAssetId].bid
                 )
-            ).toFixed(forexHelper.assetsPrices[optionId].accuracy);
+            ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
           }
-
-          if (
-            response.body.data &&
-            response.body.data.type == "TradeOrder_Successful" &&
-            response.body.data.parameters &&
-            response.body.data.parameters.forexType == "PendingOrder"
-          ) {
-            currTrade.title = `Pending Order Confirmed`;
-            currTrade.title = "Pending Order Confirmed";
-            showForexNotification("success", currTrade);
-          } else if (
-            response.body.data &&
-            response.body.data.type == "EditOrder_Successful" &&
-            response.body.data.parameters.forexType == "PendingOrder"
-          ) {
-            currTrade.title = "Pending Order Modified";
-            showForexNotification("success", currTrade);
-          } else {
-            if (response.body.data.type === "TradeOrder_InsufficientBalance") {
-              currTrade.title = "Insufficient balance";
-              showForexNotification("error", currTrade);
-            } else if (
-              response.body.data.type === "TradeOrder_RejectedToPreventStopOut"
-            ) {
-              currTrade.title = "Rejected Stop Out";
-              showForexNotification("error", currTrade);
-            } else if (
-              response.body.data.type === "TradeOrder_PriceOutOfDate"
-            ) {
-              currTrade.title = "Missing price";
-              showForexNotification("error", currTrade);
-            } else if (
-              response.body.data.type === "TradeOrder_QuantityValidationError"
-            ) {
-              currTrade.title = "Failed limitation";
-              showForexNotification("error", currTrade);
-            } else if (response.body.data.type === "Fraud_User_Suspended") {
-              currTrade.title = "User suspended";
-              showForexNotification("error", currTrade);
-            } else {
-              currTrade.title = "Position Failed";
-              showForexNotification("error", currTrade);
-            }
-          }
-
+          processPendingOrder(response, currTrade);
           navigation.navigate("quotes");
         });
     } else {
@@ -473,7 +380,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             }}
           >
             {isMarket ? (
-              <MarketOrderControls />
+              <MarketOrderControls
+                marketState={marketState}
+                setMarketState={setMarketState}
+              />
             ) : (
               <PendingOrderControls
                 pendingState={pendingState}
@@ -498,6 +408,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             type="primary"
             font="mediumBold"
             size="big"
+            disabled={marketState.isTradeButtonDisabled}
             onPress={makeNewMarketOrder}
           />
         ) : (

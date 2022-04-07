@@ -30,7 +30,11 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
 
   const assetIconName = dualFlag
     ? leftName + rightName
-    : asset.name.replace("'", "").replace("&", "").toLowerCase();
+    : asset.name
+        .replace("'", "")
+        .replace("&", "")
+        .replace(" ", "")
+        .toLowerCase();
 
   const assetIcon = assetsIcons[assetIconName]
     ? assetsIcons[assetIconName][0]
