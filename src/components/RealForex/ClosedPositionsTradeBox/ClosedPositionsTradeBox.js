@@ -45,7 +45,7 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
           <Typography
             name="small"
             style={parseFloat(item.Pl) < 0 ? styles.red : styles.green}
-            text={item.Pl}
+            text={item.Pl.toFixed(2)}
           />
           <SvgXml
             style={styles.assetIcon}

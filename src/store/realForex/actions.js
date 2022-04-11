@@ -78,8 +78,11 @@ export const loadInitialRealForexData = async (dispatch) => {
         type: actionTypes.REAL_FOREX_PRICES,
         payload: body,
       });
+      dispatch({
+        type: actionTypes.REAL_FOREX_PRICES_DONE,
+      });
       // Start SignalR
-      signalRStart(body, dispatch);
+      // signalRStart(body, dispatch);
     })
     .catch((err) => {
       console.log(err);

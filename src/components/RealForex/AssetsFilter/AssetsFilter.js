@@ -21,6 +21,9 @@ const realForexFilters = [
     translation: "Indices",
   },
   {
+    translation: "Stocks",
+  },
+  {
     translation: "Commodities",
   },
   {

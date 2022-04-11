@@ -15,10 +15,9 @@ import styles from "./quotesStyles";
 
 const Quotes = ({ navigation }) => {
   const onViewRef = useRef((viewableItems) => {
-    console.log(viewableItems);
     // Use viewable items in state or as intended
   });
-  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 100 });
   const realForexOptionsByType = useSelector((state) =>
     getRealForexOptionsByType(state)
   );

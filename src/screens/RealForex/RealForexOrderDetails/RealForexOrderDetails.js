@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import Toast from "react-native-toast-message";
+import { View } from "react-native";
 
-import {
-  MarketPendingButtons,
-  HeaderAssetInfo,
-  Loading,
-  Button,
-  RealForexDirectionButtons,
-  MarketOrderControls,
-  PendingOrderControls,
-  QuantityInput,
-  OrderInfo,
-} from "../../../components";
-import assetsIcons from "../../../assets/svg/assetIcons/assetsIcons";
+import { HeaderAssetInfo } from "../../../components";
 import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import {
   getRealForexTradingSettings,
@@ -25,23 +12,21 @@ import {
   setCurrentTrade,
   getRealForexPrices,
   getRealForexOpenPositions,
-  getRealForexOptionsByType,
 } from "../../../store/realForex";
-import realForexServices from "../../../services/realForexServices";
 import { getUser } from "store/app";
 import { convertUnits } from "store/realForex/helpers";
-import { deviceWidth } from "../../../utils";
-import { processMarketOrder, processPendingOrder } from "./helpers";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import MarketTab from "./components/MarketTab";
+import PendingTab from "./components/PendingTab";
+import OrderTabBar from "./components/OrderTab/OrderTabBar";
+import { colors } from "../../../constants";
 
-import styles from "./realForexOrderDetailsStyles";
-
-const addRealForexTradeOrderV2Service =
-  realForexServices.addRealForexTradeOrderV2();
+const Tab = createMaterialTopTabNavigator();
 
 const RealForexOrderDetails = ({ route, navigation }) => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const asset = route.params.asset;
+  const isBuy = route.params.isBuy ? true : false;
   const settings = useSelector((state) => getRealForexTradingSettings(state));
   const assetsSettings = useSelector((state) =>
     getRealForexAssetsSettings(state)
@@ -49,74 +34,12 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   const realForexOpenPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
   );
-  const realForexOptionsByType = useSelector((state) =>
-    getRealForexOptionsByType(state)
-  );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const user = useSelector((state) => getUser(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
-
-  const [isMarket, setOrderType] = useState(true);
-  const [isReady, setReadyState] = useState(false);
+  // State
   const [quantity, setQuantity] = useState(null);
-  const [isDirectionBuy, setDirection] = useState(
-    route.params.isBuy ? true : false
-  );
-  // Order Info
-  const initialOrderInfoState = {
-    marginSell: "",
-    marginBuy: "",
-    leverageSell: "",
-    leverageBuy: "",
-    swapSell: "",
-    swapBuy: "",
-    pipSell: "",
-    pipBuy: "",
-  };
-  const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
-  const initalMarketTPandSLState = {
-    isBuyMarket: route.params.isBuy ? true : false,
-    TPActive: false,
-    takeProfitDistance: null,
-    takeProfitAmount: null,
-    takeProfitPrice: null,
-    isPriceFocused: false,
-    isTradeButtonDisabled: false,
-    SLActive: false,
-    stopLossAmount: null,
-    stopLossDistance: null,
-    stopLossPrice: null,
-  };
-  const [marketState, setMarketState] = useState(initalMarketTPandSLState);
-  // Pending Order
-  const initalPendingState = {
-    isBuyPending: route.params.isBuy ? true : false,
-    pendingPrice: route.params.isBuy
-      ? parseFloat(realForexPrices[asset.id].bid)
-      : parseFloat(realForexPrices[asset.id].ask),
-    pendingTPActive: false,
-    pendingTPDistance: null,
-    pendingTPAmount: null,
-    pendingSLActive: false,
-    pendingSLDistance: null,
-    pendingSLAmount: null,
-  };
-  const [pendingState, setPendingState] = useState(initalPendingState);
-
-  const dualFlag = asset.name.indexOf("/") > -1;
-
-  if (dualFlag) {
-    var leftName = asset.name.split("/")[0].toLowerCase(),
-      rightName = asset.name.split("/")[1].toLowerCase();
-  }
-
-  const assetIconName = dualFlag
-    ? leftName + rightName
-    : asset.name.replace("'", "").replace("&", "").toLowerCase();
-
-  const assetIcon = assetsIcons[assetIconName]
-    ? assetsIcons[assetIconName][0]
-    : assetsIcons["default"][0];
+  const [isReady, setReadyState] = useState(false);
 
   const makeOrder = () => {
     const forexOpenPositionsOnly = realForexOpenPositions.filter(function (el) {
@@ -129,11 +52,11 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     }
 
     // Set Current Trade in Store
-    const isBuy = route.params.isBuy ? true : false;
+    const isBuy = isBuy;
 
     currentTrade.tradableAssetId = asset.id;
-    currentTrade.action = route.params.isBuy;
-    currentTrade.isBuy = route.params.isBuy;
+    currentTrade.action = isBuy;
+    currentTrade.isBuy = isBuy;
     currentTrade.price = assetsSettings[asset.id].MinQuantity;
     currentTrade.strike = isBuy
       ? realForexPrices[asset.id].ask
@@ -191,155 +114,11 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     setReadyState(true);
   };
 
-  const makeNewMarketOrder = () => {
-    // Market Order
-    const volume =
-      quantity.indexOf(",") > -1
-        ? convertUnits(
-            parseFloat(quantity.replace(/,/g, "")),
-            asset.id,
-            true,
-            settings
-          )
-        : convertUnits(parseFloat(quantity), asset.id, true, settings);
-    const pip = calculatePipPrice();
-
-    addRealForexTradeOrderV2Service
-      .fetch(
-        currentTrade.tradableAssetId,
-        realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
-        isDirectionBuy,
-        isDirectionBuy
-          ? realForexPrices[currentTrade.tradableAssetId].ask
-          : realForexPrices[currentTrade.tradableAssetId].bid,
-        volume,
-        marketState.TPActive ? marketState.takeProfitAmount : "", // TakeProfit
-        marketState.SLActive ? marketState.stopLossAmount : "", // StopLoss
-        asset.Leverage || 100,
-        marketState.TPActive ? marketState.takeProfitDistance : "", // TakeProfitDistance
-        marketState.SLActive ? marketState.stopLossDistance : "", // StoplossDistance
-        parseFloat(pip) == 0 ? 0.00001 : pip,
-        0, // pendingPrice
-        false,
-        "", // (currentlyModifiedOrder != '' ? orderId : '')
-        "",
-        realForexPrices[currentTrade.tradableAssetId].delay,
-        realForexPrices[currentTrade.tradableAssetId].ask,
-        realForexPrices[currentTrade.tradableAssetId].bid,
-        marketState.TPActive ? marketState.takeProfitPrice : "", // takeProfitRate
-        marketState.SLActive ? marketState.stopLossPrice : "" // stopLossRate;
-      )
-      .then(({ response }) => {
-        let currTrade = currentTrade;
-        currTrade.type = response.body.data.type;
-        currTrade.option =
-          realForexOptionsByType.All[currTrade.tradableAssetId].name;
-
-        processMarketOrder(response, currTrade);
-        navigation.navigate("quotes");
-      });
-  };
-
-  const makeNewPendingOrder = () => {
-    // Pending Order
-    const volume =
-      quantity.indexOf(",") > -1
-        ? convertUnits(
-            parseFloat(quantity.replace(/,/g, "")),
-            asset.id,
-            true,
-            settings
-          )
-        : convertUnits(parseFloat(quantity), asset.id, true, settings);
-    const pip = calculatePipPrice();
-
-    if (pendingState.pendingPrice != 0 && !isNaN(pendingState.pendingPrice)) {
-      addRealForexTradeOrderV2Service
-        .fetch(
-          currentTrade.tradableAssetId,
-          realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
-          pendingState.isBuyPending,
-          pendingState.isBuyPending
-            ? realForexPrices[currentTrade.tradableAssetId].ask
-            : realForexPrices[currentTrade.tradableAssetId].bid,
-          volume,
-          pendingState.pendingTPActive ? pendingState.pendingTPAmount : "", // pendingTakeProfit
-          pendingState.pendingSLActive ? pendingState.pendingSLAmount : "", // pendingStopLoss
-          asset.Leverage || 100,
-          pendingState.pendingTPActive ? pendingState.pendingTPDistance : "", // pendingTakeProfitDistance
-          pendingState.pendingSLActive ? pendingState.pendingSLDistance : "", // pendingStopLossDistance
-          parseFloat(pip) == 0 ? 0.00001 : pip,
-          pendingState.pendingPrice,
-          false,
-          "", // (currentlyModifiedOrder != '' ? orderId : '')
-          "",
-          realForexPrices[currentTrade.tradableAssetId].delay,
-          "",
-          "",
-          "", // pendingTakeProfitRate
-          "" // pendingStopLossRate;
-        )
-        .then(({ response }) => {
-          let currTrade = currentTrade;
-
-          currTrade.type = response.body.data.type;
-          currTrade.option =
-            realForexOptionsByType.All[currTrade.tradableAssetId].name;
-          if (pendingState.pendingTPActive) {
-            currentTrade.takeProfit = (
-              parseFloat(pendingState.pendingTPDistance) +
-              parseFloat(
-                pendingState.isBuyPending
-                  ? realForexPrices[currentTrade.tradableAssetId].ask
-                  : realForexPrices[currentTrade.tradableAssetId].bid
-              )
-            ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
-          }
-          if (pendingState.pendingSLActive) {
-            currentTrade.stopLoss = Math.abs(
-              parseFloat(pendingState.pendingSLDistance) -
-                parseFloat(
-                  pendingState.isBuyPending
-                    ? realForexPrices[currentTrade.tradableAssetId].ask
-                    : realForexPrices[currentTrade.tradableAssetId].bid
-                )
-            ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
-          }
-          processPendingOrder(response, currTrade);
-          navigation.navigate("quotes");
-        });
-    } else {
-      Toast.show({
-        type: "error",
-        text1: "Please choose rate.",
-        topOffset: 100,
-        visibilityTime: 5000,
-        autoHide: true,
-      });
-      return false;
-    }
-  };
-
-  const calculatePipPrice = () => {
-    let quantity = asset.MinQuantity;
-
-    quantity = convertUnits(quantity, asset.id, true, settings);
-
-    var pip = (quantity * Math.pow(10, -asset.accuracy)) / asset.rate,
-      formattedPip = pip.toFixed(5);
-
-    return parseFloat(formattedPip) == 0 ? 0.00001 : formattedPip;
-  };
-
   useEffect(() => {
     if (asset && realForexOpenPositions) {
       navigation.setOptions({
         headerLeft: () => (
-          <HeaderAssetInfo
-            assetName={asset.name}
-            assetIcon={assetIcon}
-            navigation={navigation}
-          />
+          <HeaderAssetInfo asset={asset} navigation={navigation} />
         ),
       });
       makeOrder();
@@ -347,81 +126,36 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   }, [route.params.asset]);
 
   return (
-    <View style={styles.container}>
-      {isReady ? (
-        <>
-          <MarketPendingButtons
-            isMarket={isMarket}
-            setOrderType={(orderType) => setOrderType(orderType)}
-          />
-          <QuantityInput
-            value={quantity}
-            setQuantity={(value) => setQuantity(value)}
-          />
-          {isMarket ? (
-            <RealForexDirectionButtons
-              isBuy={isDirectionBuy}
-              setDirection={(isBuy) => setDirection(isBuy)}
-              asset={asset}
-            />
-          ) : null}
-
-          <ScrollView
-            style={styles.scrollView}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              flexDirection: "column",
-              width: deviceWidth,
-              flexGrow: 1,
-              paddingBottom: 130,
-            }}
-          >
-            {isMarket ? (
-              <MarketOrderControls
-                marketState={marketState}
-                setMarketState={setMarketState}
-              />
-            ) : (
-              <PendingOrderControls
-                pendingState={pendingState}
-                setPendingState={setPendingState}
-              />
-            )}
-            <OrderInfo
-              quantityValue={quantity}
-              isMarket={isMarket}
-              orderInfoData={orderInfoData}
-              setOrderInfoData={setOrderInfoData}
-            />
-          </ScrollView>
-        </>
-      ) : (
-        <Loading size="large" />
-      )}
-      <View style={styles.buttonsWrapper}>
-        {isMarket ? (
-          <Button
-            text={t("common-labels.trade")}
-            type="primary"
-            font="mediumBold"
-            size="big"
-            disabled={marketState.isTradeButtonDisabled}
-            onPress={makeNewMarketOrder}
-          />
-        ) : (
-          <Button
-            text={t("common-labels.place")}
-            type="primary"
-            font="mediumBold"
-            size="big"
-            onPress={makeNewPendingOrder}
+    <Tab.Navigator
+      tabBar={(props) => <OrderTabBar {...props} />}
+      initialRouteName="Market"
+      style={{ backgroundColor: colors.white }}
+    >
+      <Tab.Screen name="Market">
+        {() => (
+          <MarketTab
+            asset={asset}
+            isDirectionBuy={isBuy}
+            navigation={navigation}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            isReady={isReady}
           />
         )}
-      </View>
-    </View>
+      </Tab.Screen>
+      <Tab.Screen name="Pending">
+        {() => (
+          <PendingTab
+            asset={asset}
+            isDirectionBuy={isBuy}
+            navigation={navigation}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            isReady={isReady}
+          />
+        )}
+      </Tab.Screen>
+    </Tab.Navigator>
   );
 };
 

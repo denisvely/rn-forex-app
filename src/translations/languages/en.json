@@ -16,6 +16,8 @@
     "logout": "Logout",
     "market": "Market",
     "pending": "Pending",
+    "Market": "Market",
+    "Pending": "Pending",
     "quantity": "Quantity",
     "takeProfit": "Take Profit",
     "stopLoss": "Stop Loss",
@@ -89,6 +91,7 @@
     "CryptoCoins": "CryptoCoins",
     "CryptoTokens": "CryptoTokens",
     "Indices": "Indices",
+    "Stocks": "Stocks",
     "Commodities": "Commodities",
     "Futures": "Futures",
     "Favourites": "Favourites"

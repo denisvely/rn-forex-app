@@ -7,11 +7,11 @@ import moment from "moment";
 
 import { getRealForexPrices } from "../../../store/realForex";
 import Typography from "../../../components/Typography/Typography";
+import AssetIcon from "../../../components/AssetIcon/AssetIcon";
 import BuyPrice from "../../../components/RealForex/BuyPrice/BuyPrice";
 import SellPrice from "../../../components/RealForex/SellPrice/SellPrice";
 import { setSelectedAsset } from "../../../store/realForex";
 import { getApplication } from "../../../store/app";
-import assetsIcons from "../../../assets/svg/assetIcons/assetsIcons";
 
 import styles from "./assetBoxStyles";
 
@@ -21,24 +21,6 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const app = useSelector((state) => getApplication(state));
   const [marketClosedInfo, setMarketClosedInfo] = useState(null);
-  const dualFlag = asset.name.indexOf("/") > -1;
-
-  if (dualFlag) {
-    var leftName = asset.name.split("/")[0].toLowerCase(),
-      rightName = asset.name.split("/")[1].toLowerCase();
-  }
-
-  const assetIconName = dualFlag
-    ? leftName + rightName
-    : asset.name
-        .replace("'", "")
-        .replace("&", "")
-        .replace(" ", "")
-        .toLowerCase();
-
-  const assetIcon = assetsIcons[assetIconName]
-    ? assetsIcons[assetIconName][0]
-    : assetsIcons["default"][0];
 
   const calculateSpread = (
     askPrice,
@@ -152,11 +134,11 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
             onPress={() => pressAssetBoxButton(true)}
           >
             <View style={styles.left}>
-              <SvgXml
+              <AssetIcon
+                asset={asset}
                 style={styles.assetIcon}
-                xml={assetIcon}
-                width="40"
-                height="40"
+                width={50}
+                height={100}
               />
               <View>
                 <Typography
@@ -182,11 +164,9 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
             onPress={() => pressAssetBoxButton(false)}
           >
             <View style={styles.left}>
-              <SvgXml
+              <AssetIcon
+                asset={asset}
                 style={styles.assetIcon}
-                xml={assetIcon}
-                width="40"
-                height="40"
               />
               <View>
                 <Typography

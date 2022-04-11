@@ -20,7 +20,7 @@ export { default as HeaderTitleLogo } from "./HeaderTitleLogo/HeaderTitleLogo";
 export { default as BottomSlidingPanel } from "./BottomSlidingPanel/BottomSlidingPanel";
 export { default as FormattedTypographyWithCurrency } from "./FormatedCurrency/FormattedTypographyWithCurrency";
 export { default as SwitchComponent } from "./Switch/SwitchComponent";
-
+export { default as AssetIcon } from "./AssetIcon/AssetIcon";
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
 export { default as BuyPrice } from "./RealForex/BuyPrice/BuyPrice";
