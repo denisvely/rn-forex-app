@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import Typography from "../../../components/Typography/Typography";
 import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
@@ -12,11 +12,28 @@ const TakeProfitPendingPending = ({ pendingState, setPendingState }) => {
 
   return (
     <View style={styles.inputsWrapper}>
-      <Typography
-        style={styles.label}
-        name="normal"
-        text={t("common-labels.takeProfit")}
-      />
+      <View style={styles.takeProfitHeader}>
+        <Typography
+          text={t("common-labels.takeProfit")}
+          style={styles.takeProfitHeaderTitle}
+          name="normal"
+        />
+        <TouchableOpacity>
+          <Typography
+            style={styles.takeProfitHeaderTitle}
+            text={t("common-labels.clearAll")}
+            name="tiny"
+            onPress={() =>
+              setPendingState((prevState) => ({
+                ...prevState,
+                pendingTPActive: false,
+                pendingTPDistance: null,
+                pendingTPAmount: null,
+              }))
+            }
+          />
+        </TouchableOpacity>
+      </View>
       <TakeProfitAmount state={pendingState} setState={setPendingState} />
       <TakeProfitDistance state={pendingState} setState={setPendingState} />
     </View>

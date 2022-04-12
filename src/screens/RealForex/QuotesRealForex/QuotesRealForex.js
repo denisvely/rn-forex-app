@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from "react";
+import React, { useState, useRef } from "react";
 import { View, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -57,7 +57,7 @@ const Quotes = ({ navigation }) => {
       var currTime = new Date(),
         availableForTrading = false;
 
-      for (i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
         var dateFrom = new Date(
             realForexOptionsByType.All[id].rules[i].dates.from.dateTime
           ),
@@ -74,6 +74,13 @@ const Quotes = ({ navigation }) => {
       return availableForTrading;
     }
   };
+  const renderAssetBox = ({ item }) => (
+    <AssetBox
+      asset={item}
+      marketClosed={!checkAvailableForTrading(item.id)}
+      navigation={navigation}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -95,7 +102,10 @@ const Quotes = ({ navigation }) => {
       <View style={{ zIndex: 1 }}>
         {realForexOptionsByType ? (
           <FlatList
-            removeClippedSubviews
+            initialNumToRender={6}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={6}
+            windowSize={1}
             horizontal={false}
             onViewableItemsChanged={onViewRef.current}
             data={Object.values(realForexOptionsByType[activeFilter])}
@@ -111,16 +121,7 @@ const Quotes = ({ navigation }) => {
               paddingBottom: 100,
             }}
             style={styles.flatListContainer}
-            renderItem={({ item, index }) => {
-              return (
-                <AssetBox
-                  asset={item}
-                  index={index}
-                  marketClosed={!checkAvailableForTrading(item.id)}
-                  navigation={navigation}
-                />
-              );
-            }}
+            renderItem={renderAssetBox}
           />
         ) : (
           <Loading size="large" />
@@ -130,4 +131,4 @@ const Quotes = ({ navigation }) => {
   );
 };
 
-export default memo(Quotes);
+export default Quotes;

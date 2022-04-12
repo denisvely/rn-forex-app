@@ -122,7 +122,8 @@ const StopLossAmount = ({ state, setState }) => {
       onSpinnerChange={(value) => onChange(value)}
       step={0.1}
       accuracy={2}
-      max={parseFloat(spinnerMax)}
+      // max={parseFloat(spinnerMax)}
+      min={-1000000}
     />
   ) : null;
 };

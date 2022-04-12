@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../../Spinner/Spinner";
@@ -10,8 +11,7 @@ import {
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
 import { getUser, getSettings } from "../../../../store/app";
-import { convertUnits, getSpread } from "../../../../store/realForex/helpers";
-import { colors } from "../../../../constants";
+import { getSpreadValue } from "../../../../store/realForex/helpers";
 import { formatCurrency } from "../../../FormatedCurrency/helpers";
 
 const StopLossAmount = ({ state, setState }) => {
@@ -19,67 +19,32 @@ const StopLossAmount = ({ state, setState }) => {
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
-  const settings = useSelector((state) => getRealForexTradingSettings(state));
   const user = useSelector((state) => getUser(state));
   const globalSettings = useSelector((state) => getSettings(state));
-  const spinnerMin = (
-    -parseFloat(
-      parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
-    ) *
-    convertUnits(
-      parseFloat(currentTrade.quantity),
-      selectedAsset.id,
-      true,
-      settings
-    ) *
-    parseFloat(1 / selectedAsset.rate)
-  ).toFixed(2);
   const spinnerMax = (
     -parseFloat(selectedAsset.minSLDistance) *
-    convertUnits(
-      parseFloat(currentTrade.quantity),
-      selectedAsset.id,
-      true,
-      settings
-    ) *
+    currentTrade.quantity *
     parseFloat(1 / selectedAsset.rate)
   ).toFixed(2);
 
   const recalculateSLAmount = (value) => {
     if (value) {
-      let SLRate;
-
-      let SLDistance = Math.abs(
-        parseFloat(value) /
-          ((convertUnits(
-            parseFloat(parseFloat(currentTrade.quantity), true),
-            selectedAsset.id,
-            true,
-            settings
-          ) *
-            1) /
-            selectedAsset.rate)
+      const SLDistance = Math.abs(
+        parseFloat(value) / ((currentTrade.quantity * 1) / selectedAsset.rate)
       ).toFixed(selectedAsset.accuracy);
-
-      if (currentTrade.isBuy) {
-        SLRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].ask) -
-            parseFloat(SLDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      } else {
-        SLRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].bid) +
-            parseFloat(SLDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      }
 
       setState((prevState) => ({
         ...prevState,
         stopLosstDistance: parseFloat(SLDistance),
-        stopLosstPrice: parseFloat(SLRate),
         stopLossAmount: parseFloat(value),
         SLActive: true,
-        isPriceFocused: false,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        stopLosstDistance: null,
+        stopLossAmount: null,
+        SLActive: false,
       }));
     }
   };
@@ -87,7 +52,7 @@ const StopLossAmount = ({ state, setState }) => {
   const onChange = (value) => {
     if (value) {
       if (state.stopLossAmount) {
-        if (parseFloat(value) < parseFloat(spinnerMin)) {
+        if (parseFloat(value) < parseFloat(spinnerMax)) {
           Toast.show({
             type: "error",
             text1: `SL Amount must be below ${formatCurrency(
@@ -98,81 +63,29 @@ const StopLossAmount = ({ state, setState }) => {
             )}`,
           });
 
-          recalculateSLAmount(state.stopLossAmount);
+          recalculateSLAmount(spinnerMax);
           return;
         }
-      }
-      let SLAmount;
-      if (currentTrade.isBuy) {
-        var SLRate =
-          parseFloat(realForexPrices[selectedAsset.id].ask) -
-          parseFloat(selectedAsset.distance) -
-          parseFloat(
-            10 *
-              parseFloat(
-                getSpread(
-                  realForexPrices[selectedAsset.id].ask,
-                  realForexPrices[selectedAsset.id].bid,
-                  realForexPrices[selectedAsset.id].accuracy
-                )
-              )
-          );
-        // SL Distance = Math.abs(SL Rate  - ASK Price)
-        var SLDistance = Math.abs(
-          SLRate - parseFloat(realForexPrices[selectedAsset.id].ask)
-        );
-        SLAmount = (
-          -parseFloat(
-            parseFloat(SLDistance).toFixed(
-              realForexPrices[selectedAsset.id].accuracy
-            )
-          ) *
-          convertUnits(
-            parseFloat(currentTrade.quantity),
-            selectedAsset.id,
-            true,
-            settings
-          ) *
-          parseFloat(1 / selectedAsset.rate)
-        ).toFixed(2);
       } else {
-        var SLRate =
-          parseFloat(realForexPrices[selectedAsset.id].bid) +
-          parseFloat(selectedAsset.distance) +
-          parseFloat(
-            10 *
+        const SLAmount = (
+          -parseFloat(
+            (
               parseFloat(
-                getSpread(
+                getSpreadValue(
                   realForexPrices[selectedAsset.id].ask,
                   realForexPrices[selectedAsset.id].bid,
                   realForexPrices[selectedAsset.id].accuracy
-                )
-              )
-          );
-        // SL Distance = Math.abs(SL Rate - BID Price)
-        var SLDistance = Math.abs(
-          SLRate - parseFloat(realForexPrices[selectedAsset.id].bid)
-        );
-        SLAmount = (
-          -parseFloat(
-            parseFloat(SLDistance).toFixed(
-              realForexPrices[selectedAsset.id].accuracy
-            )
+                ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
+              ) +
+              parseFloat(selectedAsset.distance) * 3
+            ).toFixed(realForexPrices[selectedAsset.id].accuracy)
           ) *
-          convertUnits(
-            parseFloat(currentTrade.quantity),
-            selectedAsset.id,
-            true,
-            settings
-          ) *
+          currentTrade.quantity *
           parseFloat(1 / selectedAsset.rate)
         ).toFixed(2);
+
+        recalculateSLAmount(SLAmount);
       }
-      setState((prevState) => ({
-        ...prevState,
-        stopLossAmount: parseFloat(SLAmount),
-      }));
-      recalculateSLAmount(parseFloat(SLAmount));
     }
   };
 
@@ -187,19 +100,13 @@ const StopLossAmount = ({ state, setState }) => {
           />
         ) : null
       }
-      style={{
-        backgroundColor:
-          state.SLActive && !state.isPriceFocused
-            ? colors.containerBackground
-            : colors.white,
-      }}
       placeholder={t("common-labels.amount")}
       spinnerValue={state.stopLossAmount}
       onSpinnerChange={(value) => onChange(value)}
       step={0.01}
       accuracy={2}
-      // min={parseFloat(spinnerMin)}
-      // max={parseFloat(spinnerMax)}
+      min={parseFloat(-1000000)}
+      max={state.SLActive ? parseFloat(spinnerMax) : 0}
     />
   ) : null;
 };

@@ -20,15 +20,17 @@ const StopLossDistance = ({ state, setState }) => {
   const currentTrade = useSelector((state) => getCurrentTrade(state));
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const settings = useSelector((state) => getRealForexTradingSettings(state));
-  const spinnerMin = (
-    parseFloat(
-      getSpreadValue(
-        realForexPrices[selectedAsset.id].ask,
-        realForexPrices[selectedAsset.id].bid,
-        realForexPrices[selectedAsset.id].accuracy
-      ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
-    ) + parseFloat(selectedAsset.distance)
-  ).toFixed(selectedAsset.accuracy);
+  const spinnerMin =
+    state.pendingSLActive &&
+    (
+      parseFloat(
+        getSpreadValue(
+          realForexPrices[selectedAsset.id].ask,
+          realForexPrices[selectedAsset.id].bid,
+          realForexPrices[selectedAsset.id].accuracy
+        ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
+      ) + parseFloat(selectedAsset.distance)
+    ).toFixed(selectedAsset.accuracy);
 
   const recalculatePendingSLDistance = (value) => {
     const pendingSLAmount = (

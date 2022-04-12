@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 
 import {
-  MarketPendingButtons,
   Loading,
   Button,
   PendingOrderControls,
@@ -190,7 +189,7 @@ const PendingTab = ({
               setPendingState={setPendingState}
             />
             <OrderInfo
-              quantityValue={quantity}
+              quantityValue={currentTrade.quantity}
               isMarket={false}
               orderInfoData={orderInfoData}
               setOrderInfoData={setOrderInfoData}

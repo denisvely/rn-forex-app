@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Pressable } from "react-native";
-import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
 import { getSimplexPrices } from "../../../store/simplex";
 import Typography from "../../../components/Typography/Typography";

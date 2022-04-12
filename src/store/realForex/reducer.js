@@ -124,7 +124,7 @@ const realForexReducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_TRADE: {
       return {
         ...stateClone,
-        selectedAsset: action.payload,
+        currentTrade: action.payload,
       };
     }
 

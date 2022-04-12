@@ -17,9 +17,32 @@ export default StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
-    height: 130,
+    height: 120,
     paddingHorizontal: 16,
     paddingTop: 24,
     backgroundColor: colors.white,
+  },
+  buyButton: {
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: colors.buyColor,
+  },
+  buyButtonText: {
+    color: colors.white,
+    textTransform: "uppercase",
+  },
+  // Sell Button
+  sellButton: {
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: colors.sellColor,
+  },
+  sellButtonText: {
+    color: colors.white,
+    textTransform: "uppercase",
   },
 });

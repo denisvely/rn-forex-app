@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
 
 import {
+  HeaderAssetInfo,
   Loading,
   Button,
+  RealForexDirectionButtons,
   MarketOrderControls,
   QuantityInput,
   OrderInfo,
-  Typography,
-  BuyPrice,
-  SellPrice,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
+  getRealForexAssetsSettings,
   getCurrentTrade,
   getRealForexPrices,
+  getRealForexOpenPositions,
   getRealForexOptionsByType,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
+import { getUser } from "store/app";
 import { convertUnits } from "store/realForex/helpers";
 import { deviceWidth } from "../../../../utils";
 import { processMarketOrder } from "../helpers";
-import { colors } from "../../../../constants";
 
 import styles from "../realForexOrderDetailsStyles";
 
@@ -39,12 +41,23 @@ const MarketTab = ({
   isReady,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const settings = useSelector((state) => getRealForexTradingSettings(state));
+  const assetsSettings = useSelector((state) =>
+    getRealForexAssetsSettings(state)
+  );
+  const realForexOpenPositions = useSelector((state) =>
+    getRealForexOpenPositions(state)
+  );
   const realForexOptionsByType = useSelector((state) =>
     getRealForexOptionsByType(state)
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const user = useSelector((state) => getUser(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
+
+  const [isMarket, setOrderType] = useState(true);
+  const [isTradeBuy, setDirection] = useState(isDirectionBuy);
   // Order Info
   const initialOrderInfoState = {
     marginSell: "",
@@ -58,17 +71,21 @@ const MarketTab = ({
   };
   const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
   const initalMarketTPandSLState = {
-    isBuyMarket: isDirectionBuy,
+    isBuyMarket: isTradeBuy,
     TPActive: false,
     takeProfitDistance: null,
     takeProfitAmount: null,
+    takeProfitPrice: null,
+    isPriceFocused: false,
+    isTradeButtonDisabled: false,
     SLActive: false,
     stopLossAmount: null,
     stopLossDistance: null,
+    stopLossPrice: null,
   };
   const [marketState, setMarketState] = useState(initalMarketTPandSLState);
 
-  const makeNewMarketOrder = (isBuy) => {
+  const makeNewMarketOrder = () => {
     // Market Order
     const volume =
       quantity.indexOf(",") > -1
@@ -85,8 +102,8 @@ const MarketTab = ({
       .fetch(
         currentTrade.tradableAssetId,
         realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
-        isBuy,
-        isBuy
+        isTradeBuy,
+        isTradeBuy
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
         volume,
@@ -103,15 +120,15 @@ const MarketTab = ({
         realForexPrices[currentTrade.tradableAssetId].delay,
         realForexPrices[currentTrade.tradableAssetId].ask,
         realForexPrices[currentTrade.tradableAssetId].bid,
-        "", // takeProfitRate
-        "" // stopLossRate;
+        marketState.TPActive ? marketState.takeProfitPrice : "", // takeProfitRate
+        marketState.SLActive ? marketState.stopLossPrice : "" // stopLossRate;
       )
       .then(({ response }) => {
         let currTrade = currentTrade;
         currTrade.type = response.body.data.type;
         currTrade.option =
           realForexOptionsByType.All[currTrade.tradableAssetId].name;
-        currTrade.isBuy = isBuy;
+        currTrade.isBuy = isTradeBuy;
 
         processMarketOrder(response, currTrade);
         navigation.navigate("quotes");
@@ -137,6 +154,11 @@ const MarketTab = ({
             value={quantity}
             setQuantity={(value) => setQuantity(value)}
           />
+          <RealForexDirectionButtons
+            isBuy={isTradeBuy}
+            setDirection={(isBuy) => setDirection(isBuy)}
+            asset={asset}
+          />
 
           <ScrollView
             style={styles.scrollView}
@@ -157,8 +179,8 @@ const MarketTab = ({
             />
 
             <OrderInfo
-              quantityValue={currentTrade.quantity}
-              isMarket={true}
+              quantityValue={quantity}
+              isMarket={isMarket}
               orderInfoData={orderInfoData}
               setOrderInfoData={setOrderInfoData}
             />
@@ -169,45 +191,13 @@ const MarketTab = ({
       )}
       <View style={styles.buttonsWrapper}>
         <Button
-          size="medium"
-          type="buy"
-          style={styles.buyButton}
-          onPress={() => makeNewMarketOrder(true)}
-        >
-          {() => (
-            <View>
-              <Typography
-                style={styles.buyButtonText}
-                name="small"
-                text={t("common-labels.buy")}
-              />
-              <BuyPrice
-                asset={realForexPrices[asset.id]}
-                textColor={colors.white}
-              />
-            </View>
-          )}
-        </Button>
-        <Button
-          size="medium"
-          type="sell"
-          style={styles.sellButton}
-          onPress={() => makeNewMarketOrder(false)}
-        >
-          {() => (
-            <View>
-              <Typography
-                style={styles.sellButtonText}
-                name="small"
-                text={t("common-labels.sell")}
-              />
-              <SellPrice
-                asset={realForexPrices[asset.id]}
-                textColor={colors.white}
-              />
-            </View>
-          )}
-        </Button>
+          text={t("common-labels.trade")}
+          type="primary"
+          font="mediumBold"
+          size="big"
+          disabled={marketState.isTradeButtonDisabled}
+          onPress={makeNewMarketOrder}
+        />
       </View>
     </View>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { SvgXml } from "react-native-svg";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -164,10 +163,7 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
             onPress={() => pressAssetBoxButton(false)}
           >
             <View style={styles.left}>
-              <AssetIcon
-                asset={asset}
-                style={styles.assetIcon}
-              />
+              <AssetIcon asset={asset} style={styles.assetIcon} />
               <View>
                 <Typography
                   name="medium"

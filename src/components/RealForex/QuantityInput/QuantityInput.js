@@ -93,7 +93,7 @@ const QuantityInput = ({ value, setQuantity }) => {
       setQuantity(quantity);
       // TODO => TP & SL => forex.js - line 4244
     }
-    currentTrade.quantity = quantity;
+    currentTrade.quantity = parseFloat(value);
     setDropdownVisibility(false);
     setCurrentTrade(dispatch, currentTrade);
   };
@@ -132,6 +132,25 @@ const QuantityInput = ({ value, setQuantity }) => {
           )
         : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
     setQuantity(quantity);
+  };
+
+  const quantityDropdownPick = (value) => {
+    const quantity =
+      value.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(value.replace(/,/g, "")),
+            selectedAsset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
+
+    currentTrade.quantity = quantity;
+
+    setQuantity(value);
+    setDropdownVisibility(false);
+
+    setCurrentTrade(dispatch, currentTrade);
   };
 
   useEffect(() => {
@@ -182,10 +201,7 @@ const QuantityInput = ({ value, setQuantity }) => {
                 <TouchableHighlight
                   key={`${index}`}
                   style={styles.value}
-                  onPress={() => {
-                    setQuantity(value);
-                    setDropdownVisibility(false);
-                  }}
+                  onPress={() => quantityDropdownPick(value)}
                   underlayColor={colors.containerBackground}
                 >
                   <Typography name="normal" text={value} />

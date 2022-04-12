@@ -14,7 +14,7 @@ import {
   getRealForexOpenPositions,
 } from "../../../store/realForex";
 import { getUser } from "store/app";
-import { convertUnits } from "store/realForex/helpers";
+import { convertUnits, getSpreadValue } from "store/realForex/helpers";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import MarketTab from "./components/MarketTab";
 import PendingTab from "./components/PendingTab";
@@ -52,8 +52,6 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     }
 
     // Set Current Trade in Store
-    const isBuy = isBuy;
-
     currentTrade.tradableAssetId = asset.id;
     currentTrade.action = isBuy;
     currentTrade.isBuy = isBuy;
@@ -108,6 +106,15 @@ const RealForexOrderDetails = ({ route, navigation }) => {
       : formatDeciamlWithComma(
           asset.MinQuantity * asset.quantityMultiplier.split(",")[0]
         );
+    asset.minSLDistance = (
+      parseFloat(
+        getSpreadValue(
+          realForexPrices[asset.id].ask,
+          realForexPrices[asset.id].bid,
+          realForexPrices[asset.id].accuracy
+        ) * Math.pow(10, -realForexPrices[asset.id].accuracy)
+      ) + parseFloat(asset.distance)
+    ).toFixed(asset.accuracy);
 
     setSelectedAsset(dispatch, asset);
     setQuantity(`${asset.quantity}`);
