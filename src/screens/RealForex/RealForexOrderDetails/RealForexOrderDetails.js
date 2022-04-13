@@ -122,7 +122,14 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (asset && realForexOpenPositions) {
+    if (
+      asset &&
+      realForexOpenPositions &&
+      user &&
+      currentTrade &&
+      settings &&
+      assetsSettings
+    ) {
       navigation.setOptions({
         headerLeft: () => (
           <HeaderAssetInfo asset={asset} navigation={navigation} />

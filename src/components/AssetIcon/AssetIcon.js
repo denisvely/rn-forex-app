@@ -24,7 +24,7 @@ const AssetIcon = ({ asset, style, width, height }) => {
   const assetIcon = assetsIcons[assetIconName]
     ? assetsIcons[assetIconName][0]
     : assetsIcons["default"][0];
-
+    
   return (
     <SvgXml
       xml={assetIcon}

@@ -111,7 +111,7 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
       setMarketClosedInfo(marketClosedInfo);
       setTimeout(() => {
         setMarketClosedInfo(null);
-      }, 2000);
+      }, 5000);
     }
   };
 
