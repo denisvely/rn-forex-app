@@ -27,8 +27,6 @@ export default StyleSheet.create({
     paddingHorizontal: 24,
   },
   expirationHeader: {
-    backgroundColor: "#F3F3F3",
-    paddingHorizontal: 16,
     paddingVertical: 8.5,
     justifyContent: "space-between",
     flexDirection: "row",
