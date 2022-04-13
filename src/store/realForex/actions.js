@@ -44,7 +44,12 @@ export const loadInitialRealForexData = async (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
-  getClosedPositions(dispatch);
+  getClosedPositions(dispatch, {
+    fromDate: null,
+    toDate: null,
+    positionId: null,
+    tradableAssetId: null,
+  });
   getForexTradingSettings
     .fetch()
     .then(({ response }) => {
@@ -164,19 +169,24 @@ export const getAssetsOrder = (dispatch) => {
     });
 };
 
-export const getClosedPositions = (dispatch) => {
+export const getClosedPositions = (
+  dispatch,
+  { fromDate, toDate, positionId, tradableAssetId }
+) => {
   getForexClosedPositions
     .fetch({
-      fromDate:
-        moment(new Date().setMonth(new Date().getMonth() - 1)).format(
-          "YYYY-MM-DD"
-        ) + "T00:00:01",
-      toDate:
-        moment(new Date().setMonth(new Date().getMonth())).format(
-          "YYYY-MM-DD"
-        ) + "T23:59:59",
-      positionId: null,
-      tradableAssetId: 0,
+      fromDate: fromDate
+        ? moment(fromDate).format("YYYY-MM-DD") + "T00:00:01"
+        : moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+            "YYYY-MM-DD"
+          ) + "T00:00:01",
+      toDate: toDate
+        ? moment(toDate).format("YYYY-MM-DD") + "T23:59:59"
+        : moment(new Date().setMonth(new Date().getMonth())).format(
+            "YYYY-MM-DD"
+          ) + "T23:59:59",
+      positionId: positionId ? positionId : null,
+      tradableAssetId: tradableAssetId ? tradableAssetId : 0,
     })
     .then(({ response }) => {
       const body = response.body.data;

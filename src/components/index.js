@@ -21,6 +21,9 @@ export { default as BottomSlidingPanel } from "./BottomSlidingPanel/BottomSlidin
 export { default as FormattedTypographyWithCurrency } from "./FormatedCurrency/FormattedTypographyWithCurrency";
 export { default as SwitchComponent } from "./Switch/SwitchComponent";
 export { default as AssetIcon } from "./AssetIcon/AssetIcon";
+export { default as Datepicker } from "./Datepicker/Datepicker";
+export { default as ExpirationDate } from "./ExpirationDate/ExpirationDate";
+
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
 export { default as BuyPrice } from "./RealForex/BuyPrice/BuyPrice";

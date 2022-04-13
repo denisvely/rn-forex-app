@@ -1,6 +1,7 @@
 {
   "no-internet-connection": "No internet connection",
   "common-labels": {
+    "apply": "Apply",
     "yes": "Yes",
     "no": "No",
     "buy": "Buy",
@@ -67,7 +68,9 @@
     "executionPrice": "Execution price:",
     "marketOrder": "Market Order: ",
     "pendingOrder": "Pending Order: ",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "expiryDate": "Expiry Date",
+    "expiryTime": "Expiry Time"
   },
   "navigation": {
     "quotes": "Quotes",

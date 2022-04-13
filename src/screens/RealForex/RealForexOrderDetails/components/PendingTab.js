@@ -68,6 +68,8 @@ const PendingTab = ({
     pendingSLActive: false,
     pendingSLDistance: null,
     pendingSLAmount: null,
+    pendingExpirationDate: null,
+    pendingExpirationTime: null,
   };
   const [pendingState, setPendingState] = useState(initalPendingState);
 
@@ -103,7 +105,7 @@ const PendingTab = ({
           pendingState.pendingPrice,
           false,
           "", // (currentlyModifiedOrder != '' ? orderId : '')
-          "",
+          pendingState.pendingExpirationDate ? pendingExpirationDate : "", // expirationDate
           realForexPrices[currentTrade.tradableAssetId].delay,
           "",
           "",

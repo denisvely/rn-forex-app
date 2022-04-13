@@ -4,6 +4,8 @@ import TakeProfitPending from "../TakeProfitPending/TakeProfitPending";
 import StopLossPending from "../StopLossPending/StopLossPending";
 import { deviceWidth } from "../../../utils";
 import PendingDirectionAndRate from "./components/PendingDirectionAndRate/PendingDirectionAndRate";
+import { ExpirationDate } from "../../../components";
+
 
 const PendingOrderControls = ({ pendingState, setPendingState }) => {
   return (
@@ -29,6 +31,10 @@ const PendingOrderControls = ({ pendingState, setPendingState }) => {
         setPendingState={setPendingState}
       />
       <StopLossPending
+        pendingState={pendingState}
+        setPendingState={setPendingState}
+      />
+      <ExpirationDate
         pendingState={pendingState}
         setPendingState={setPendingState}
       />
