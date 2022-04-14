@@ -208,6 +208,10 @@ export const setCurrentTrade = async (dispatch, trade) => {
   dispatch({ type: actionTypes.SET_CURRENT_TRADE, payload: trade });
 };
 
+export const setCurrentlyModifiedOrder = async (dispatch, order) => {
+  dispatch({ type: actionTypes.SET_CURRENTLY_MODIFIED_ORDER, payload: order });
+};
+
 export const closeForexTradeNetting = (dispatch, orderId) => {
   closePositionRealForexNetting
     .fetch({ orderID: orderId })

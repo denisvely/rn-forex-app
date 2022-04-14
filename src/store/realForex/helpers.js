@@ -404,18 +404,24 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
         values.takeProfit ? values.takeProfit : ""
       } ${values.stopLoss ? "SL" : ""} ${
         values.stopLoss ? values.stopLoss : ""
-      } ${values.pendingDate ? "EXP" : ""} ${
+      }`;
+      const expirationDate = `${values.pendingDate ? "EXP" : ""} ${
         values.pendingDate
-          ? moment(values.pendingDate).format("mm/dd HH:MM")
+          ? moment(values.pendingDate).format("YYYY/MM/DD HH:MM")
           : ""
       }`;
 
       Toast.show({
         type: "successForex",
-        props: { text1: values.title, text2: orderInfo, text3: orderTPandSL },
-        // topOffset: 100,
-        // visibilityTime: 5000,
-        // autoHide: true,
+        props: {
+          text1: values.title,
+          text2: orderInfo,
+          text3: orderTPandSL,
+          text4: expirationDate,
+        },
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
       });
     }
   }

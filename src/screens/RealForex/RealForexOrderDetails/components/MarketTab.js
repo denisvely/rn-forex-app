@@ -37,6 +37,7 @@ const MarketTab = ({
   quantity,
   setQuantity,
   isReady,
+  isModify,
 }) => {
   const { t } = useTranslation();
   const settings = useSelector((state) => getRealForexTradingSettings(state));
@@ -151,6 +152,7 @@ const MarketTab = ({
               paddingBottom: 130,
             }}
           >
+            {/* TODO if isModify  MarketModifyOrderControls -> create */}
             <MarketOrderControls
               marketState={marketState}
               setMarketState={setMarketState}

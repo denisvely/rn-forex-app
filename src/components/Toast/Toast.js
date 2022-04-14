@@ -128,6 +128,13 @@ const toastConfig = {
             style={{ color: colors.success }}
           />
         ) : null}
+        {props.text4 ? (
+          <Typography
+            name="normal"
+            text={props.text4}
+            style={{ color: colors.success }}
+          />
+        ) : null}
       </View>
     );
   },

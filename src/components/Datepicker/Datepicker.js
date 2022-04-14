@@ -11,6 +11,7 @@ const Datepicker = ({
   toggleModal,
   datepickerDate,
   maxDate,
+  minDate,
   mode = "date",
 }) => {
   const { t } = useTranslation();
@@ -37,11 +38,8 @@ const Datepicker = ({
             is24Hour={true}
             onChange={onChange}
             style={styles.datePicker}
-            maximumDate={
-              maxDate
-                ? maxDate
-                : new Date(new Date().setMonth(new Date().getMonth() + 1))
-            }
+            maximumDate={maxDate}
+            minimumDate={minDate}
           />
           <View style={styles.buttonsWrapper}>
             <Button

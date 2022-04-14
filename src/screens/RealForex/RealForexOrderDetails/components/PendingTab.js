@@ -3,6 +3,7 @@ import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
+import moment from "moment";
 
 import {
   Loading,
@@ -85,6 +86,41 @@ const PendingTab = ({
           )
         : convertUnits(parseFloat(quantity), asset.id, true, settings);
     const pip = calculatePipPrice();
+    let expirationDate;
+
+    if (pendingState.pendingExpirationDate !== null) {
+      var time = pendingState.pendingExpirationTime,
+        hours = Number(time.match(/^(\d+)/)[1]),
+        minutes = Number(time.match(/:(\d+)/)[1]),
+        currDateAndTime = new Date();
+
+      var sHours = hours.toString(),
+        sMinutes = minutes.toString();
+
+      if (hours < 10) sHours = "0" + sHours;
+      if (minutes < 10) sMinutes = "0" + sMinutes;
+
+      expirationDate =
+        moment(pendingState.pendingExpirationDate).format("YYYY-MM-DD") +
+        "T" +
+        sHours +
+        ":" +
+        sMinutes +
+        ":00";
+      currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 5);
+
+      if (new Date(expirationDate) < currDateAndTime) {
+        Toast.show({
+          type: "error",
+          text1: "Please choose a future date.",
+          topOffset: 100,
+          visibilityTime: 5000,
+          autoHide: true,
+        });
+        return false;
+      }
+      currentTrade.pendingDate = expirationDate;
+    }
 
     if (pendingState.pendingPrice != 0 && !isNaN(pendingState.pendingPrice)) {
       addRealForexTradeOrderV2Service
@@ -105,7 +141,7 @@ const PendingTab = ({
           pendingState.pendingPrice,
           false,
           "", // (currentlyModifiedOrder != '' ? orderId : '')
-          pendingState.pendingExpirationDate ? pendingExpirationDate : "", // expirationDate
+          pendingState.pendingExpirationDate ? currentTrade.pendingDate : "", // expirationDate
           realForexPrices[currentTrade.tradableAssetId].delay,
           "",
           "",

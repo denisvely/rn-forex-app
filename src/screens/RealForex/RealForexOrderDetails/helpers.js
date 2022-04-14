@@ -45,25 +45,31 @@ export const processMarketOrder = (response, currTrade) => {
   } else {
     if (response.body.data.type === "TradeOrder_InsufficientBalance") {
       currTrade.title = "Insufficient balance";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (
       response.body.data.type === "TradeOrder_RejectedToPreventStopOut"
     ) {
       currTrade.title = "Rejected Stop Out";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (response.body.data.type === "TradeOrder_PriceOutOfDate") {
       currTrade.title = "Missing price";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (
       response.body.data.type === "TradeOrder_QuantityValidationError"
     ) {
       currTrade.title = "Failed limitation";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (response.body.data.type === "Fraud_User_Suspended") {
       currTrade.title = "User suspended";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else {
       currTrade.title = "Position Failed";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     }
   }
@@ -89,25 +95,31 @@ export const processPendingOrder = (response, currTrade) => {
   } else {
     if (response.body.data.type === "TradeOrder_InsufficientBalance") {
       currTrade.title = "Insufficient balance";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (
       response.body.data.type === "TradeOrder_RejectedToPreventStopOut"
     ) {
       currTrade.title = "Rejected Stop Out";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (response.body.data.type === "TradeOrder_PriceOutOfDate") {
       currTrade.title = "Missing price";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (
       response.body.data.type === "TradeOrder_QuantityValidationError"
     ) {
       currTrade.title = "Failed limitation";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else if (response.body.data.type === "Fraud_User_Suspended") {
       currTrade.title = "User suspended";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     } else {
       currTrade.title = "Position Failed";
+      currTrade.isError = true;
       showForexNotification("error", currTrade);
     }
   }

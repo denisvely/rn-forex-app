@@ -9,7 +9,10 @@ import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
 import Typography from "../../Typography/Typography";
 import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";
-import { getRealForexPrices } from "../../../store/realForex";
+import {
+  getRealForexPrices,
+  getRealForexOptionsByType,
+} from "../../../store/realForex";
 
 import styles from "./openPositionsTradeBoxStyles";
 import { colors } from "../../../constants";
@@ -22,6 +25,9 @@ const OpenPositionsTradeBox = ({
 }) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const realForexOptionsByType = useSelector((state) =>
+    getRealForexOptionsByType(state)
+  );
   const [isContentVisible, setContentVisible] = useState(false);
 
   if (item.optionType !== "HARealForex") {
@@ -47,6 +53,43 @@ const OpenPositionsTradeBox = ({
       }
     }
   }
+
+  const checkAvailableForTrading = (id) => {
+    if (!realForexOptionsByType.All[id].rules.length) {
+      return false;
+    } else {
+      var currTime = new Date(),
+        availableForTrading = false;
+
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+        var dateFrom = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.from.dateTime
+          ),
+          dateTo = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.to.dateTime
+          );
+
+        if (currTime > dateFrom && dateFrom < dateTo) {
+          availableForTrading =
+            realForexOptionsByType.All[id].rules[i].availableForTrading;
+        }
+      }
+
+      return availableForTrading;
+    }
+  };
+
+  const modifyTrade = () => {
+    if (realForexOptionsByType.All[item.tradableAssetId]) {
+      navigation.navigate("RealForexOrderDetails", {
+        asset: realForexOptionsByType.All[item.tradableAssetId],
+        isBuy: item.actionType === "Buy" ? true : false,
+        isPending: false,
+        order: item,
+        isMarketClosed: checkAvailableForTrading(item.tradableAssetId),
+      });
+    }
+  };
 
   return (
     <View style={styles.tradeBox}>
@@ -270,14 +313,7 @@ const OpenPositionsTradeBox = ({
           <View style={styles.tradeButtons}>
             <TouchableOpacity
               style={styles.tradeButton}
-              onPress={() =>
-                navigation.navigate("RealForexOrderDetails", {
-                  asset: item,
-                  isBuy: item.actionType === "Buy" ? true : false,
-                  isPending: false,
-                  isModify: true,
-                })
-              }
+              onPress={() => modifyTrade()}
             >
               <Typography
                 name="tinyBold"

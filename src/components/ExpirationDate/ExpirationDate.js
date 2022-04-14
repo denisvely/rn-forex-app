@@ -50,7 +50,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
             ? pendingState.pendingExpirationDate
             : new Date(Date.now())
         }
-        maxDate={new Date(Date.now())}
+        minDate={new Date(Date.now())}
       />
       <View style={styles.expirationHeader}>
         <Typography

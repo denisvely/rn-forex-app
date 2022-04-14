@@ -12,6 +12,7 @@ import {
   setCurrentTrade,
   getRealForexPrices,
   getRealForexOpenPositions,
+  setCurrentlyModifiedOrder,
 } from "../../../store/realForex";
 import { getUser } from "store/app";
 import { convertUnits, getSpreadValue } from "store/realForex/helpers";
@@ -27,6 +28,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const asset = route.params.asset;
   const isBuy = route.params.isBuy ? true : false;
+  const order = route.params.order;
+  const isPending = route.params.isPending;
+  const isMarketClosed = route.params.isMarketClosed;
+
   const settings = useSelector((state) => getRealForexTradingSettings(state));
   const assetsSettings = useSelector((state) =>
     getRealForexAssetsSettings(state)
@@ -49,6 +54,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     if (forexOpenPositionsOnly.length >= settings.MaxOpenPositions) {
       // Notification for maxOpenPos
       return;
+    }
+
+    if (order) {
+      setCurrentlyModifiedOrder(dispatch, order);
     }
 
     // Set Current Trade in Store
@@ -98,9 +107,18 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     asset.quantityMultiplier = assetsSettings[asset.id].QuantityMultiplier;
 
     asset.minAmount = (
-      (parseFloat(asset.distance) * parseFloat(asset.minQuantity) * 1) /
+      (parseFloat(asset.distance) *
+        parseFloat(
+          !order
+            ? parseFloat(asset.MinQuantity)
+            : typeof order.Volume != "undefined"
+            ? order.Volume
+            : order.volume
+        ) *
+        1) /
       asset.rate
     ).toFixed(2);
+
     asset.quantity = !settings.IsVolumeInUnits
       ? asset.MinQuantity * asset.quantityMultiplier.split(",")[0]
       : formatDeciamlWithComma(
@@ -116,8 +134,14 @@ const RealForexOrderDetails = ({ route, navigation }) => {
       ) + parseFloat(asset.distance)
     ).toFixed(asset.accuracy);
 
+    const quantity = order
+      ? !settings.IsVolumeInUnits
+        ? order.volume
+        : formatDeciamlWithComma(parseFloat(order.volume))
+      : asset.quantity;
+
     setSelectedAsset(dispatch, asset);
-    setQuantity(`${asset.quantity}`);
+    setQuantity(`${quantity}`);
     setReadyState(true);
   };
 
@@ -142,7 +166,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
   return (
     <Tab.Navigator
       tabBar={(props) => <OrderTabBar {...props} />}
-      initialRouteName="Market"
+      initialRouteName={isPending ? "Pending" : "Market"}
       style={{ backgroundColor: colors.white }}
     >
       <Tab.Screen name="Market">
@@ -154,6 +178,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             quantity={quantity}
             setQuantity={setQuantity}
             isReady={isReady}
+            isModify={order ? true : false}
           />
         )}
       </Tab.Screen>
