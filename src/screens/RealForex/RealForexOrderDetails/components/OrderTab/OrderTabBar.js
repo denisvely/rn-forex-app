@@ -1,12 +1,9 @@
 /* eslint-disable indent */
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View, TouchableOpacity } from "react-native";
-import { Button, Typo } from "../../../../../components";
-import { SvgXml } from "react-native-svg";
+import { View } from "react-native";
+import { Button } from "../../../../../components";
 import PropTypes from "prop-types";
-
-import { colors } from "../../../../../constants";
 
 import styles from "./orderTabBarStyles";
 
@@ -16,18 +13,28 @@ const innerRoutes = [
     name: "Market",
   },
   {
+    key: "profitloss",
+    name: "ProfitLoss",
+  },
+  {
     key: "pending",
     name: "Pending",
   },
 ];
 
-const OrderTabBar = ({ state, descriptors, navigation }) => {
+const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.orderTypeButtonsWrapper}>
         {innerRoutes.map((route, index) => {
           const isFocused = state.index === index;
+          if (isPending && order && route.key === "market") {
+            return null;
+          }
+          if (!isPending && !order && route.key === "profitloss") {
+            return null;
+          }
 
           const onPress = () => {
             const event = navigation.emit({
@@ -47,7 +54,11 @@ const OrderTabBar = ({ state, descriptors, navigation }) => {
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={styles.orderTypeButtonActive}
+                  pressableStyle={
+                    order
+                      ? styles.orderTypeButtonActiveSmall
+                      : styles.orderTypeButtonActive
+                  }
                   onPress={onPress}
                 />
               ) : (
@@ -55,7 +66,9 @@ const OrderTabBar = ({ state, descriptors, navigation }) => {
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={styles.orderTypeButton}
+                  pressableStyle={
+                    order ? styles.orderTypeButtonSmall : styles.orderTypeButton
+                  }
                   onPress={onPress}
                 />
               )}

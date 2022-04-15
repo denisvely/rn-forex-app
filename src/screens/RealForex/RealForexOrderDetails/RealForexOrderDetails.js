@@ -19,6 +19,7 @@ import { convertUnits, getSpreadValue } from "store/realForex/helpers";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import MarketTab from "./components/MarketTab";
 import PendingTab from "./components/PendingTab";
+import ProfitLoss from "./components/ProfitLossTab";
 import OrderTabBar from "./components/OrderTab/OrderTabBar";
 import { colors } from "../../../constants";
 
@@ -136,7 +137,11 @@ const RealForexOrderDetails = ({ route, navigation }) => {
 
     const quantity = order
       ? !settings.IsVolumeInUnits
-        ? order.volume
+        ? isPending
+          ? order.Volume
+          : order.volume
+        : isPending
+        ? formatDeciamlWithComma(parseFloat(order.Volume))
         : formatDeciamlWithComma(parseFloat(order.volume))
       : asset.quantity;
 
@@ -165,22 +170,48 @@ const RealForexOrderDetails = ({ route, navigation }) => {
 
   return (
     <Tab.Navigator
-      tabBar={(props) => <OrderTabBar {...props} />}
+      tabBar={(props) => (
+        <OrderTabBar
+          state={props.state}
+          navigation={props.navigation}
+          isPending={isPending}
+          order={order}
+        />
+      )}
       initialRouteName={isPending ? "Pending" : "Market"}
       style={{ backgroundColor: colors.white }}
     >
       <Tab.Screen name="Market">
-        {() => (
-          <MarketTab
-            asset={asset}
-            isDirectionBuy={isBuy}
-            navigation={navigation}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            isReady={isReady}
-            isModify={order ? true : false}
-          />
-        )}
+        {() =>
+          isPending && order ? null : (
+            <MarketTab
+              asset={asset}
+              isDirectionBuy={isBuy}
+              navigation={navigation}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              isReady={isReady}
+              isModify={order ? true : false}
+              isMarketClosed={isMarketClosed}
+            />
+          )
+        }
+      </Tab.Screen>
+      <Tab.Screen name="ProfitLoss">
+        {() =>
+          !isPending && !order ? null : (
+            <ProfitLoss
+              asset={asset}
+              isDirectionBuy={isBuy}
+              navigation={navigation}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              isReady={isReady}
+              isModify={order ? true : false}
+              isMarketClosed={isMarketClosed}
+            />
+          )
+        }
       </Tab.Screen>
       <Tab.Screen name="Pending">
         {() => (

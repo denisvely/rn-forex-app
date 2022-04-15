@@ -416,8 +416,8 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
         props: {
           text1: values.title,
           text2: orderInfo,
-          text3: orderTPandSL,
-          text4: expirationDate,
+          text3: orderTPandSL.trim() !== "" ? orderTPandSL : "",
+          text4: expirationDate.trim() !== "" ? expirationDate : "",
         },
         topOffset: 100,
         visibilityTime: 5000,
@@ -443,4 +443,46 @@ export const getSpreadValue = (askPrice, bidPrice, accuracy) => {
       Math.pow(10, askPriceResult > 9999 ? 0 : accuracy)
     );
   }
+};
+
+export const remainingTime = (asset) => {
+  var currTime = new Date(),
+    optionStart = new Date(asset.rules[0].dates.from.timestamp);
+
+  if (optionStart.getTime() - currTime.getTime() < 0) {
+    for (i = 1; asset.rules.length; i++) {
+      if (!asset.rules[i].availableForTrading) {
+        optionStart = new Date(asset.rules[i].dates.from.timestamp);
+
+        if (optionStart.getTime() - currTime.getTime() > 0) {
+          break;
+        }
+      }
+    }
+  }
+
+  var timeDiff = optionStart.getTime() - currTime.getTime(),
+    diffMinutes = Math.ceil(timeDiff / (1000 * 60)),
+    remainingMins = diffMinutes % 60,
+    remainingHrs =
+      Math.floor(diffMinutes / 60) > 24
+        ? Math.floor(diffMinutes / 60) % 24
+        : Math.floor(diffMinutes / 60),
+    remainingDays = Math.floor(Math.floor(diffMinutes / 60) / 24);
+
+  return (
+    moment(optionStart).format("HH:MM") +
+    "(in " +
+    (remainingDays > 0
+      ? remainingDays == 1
+        ? "1day "
+        : remainingDays + "days "
+      : "") +
+    (remainingHrs > 0
+      ? remainingHrs == 1
+        ? "1hr "
+        : remainingHrs + "hrs "
+      : "") +
+    (remainingMins + "min)")
+  );
 };

@@ -86,7 +86,7 @@ const OpenPositionsTradeBox = ({
         isBuy: item.actionType === "Buy" ? true : false,
         isPending: false,
         order: item,
-        isMarketClosed: checkAvailableForTrading(item.tradableAssetId),
+        isMarketClosed: !checkAvailableForTrading(item.tradableAssetId),
       });
     }
   };
@@ -311,10 +311,7 @@ const OpenPositionsTradeBox = ({
             />
           </View>
           <View style={styles.tradeButtons}>
-            <TouchableOpacity
-              style={styles.tradeButton}
-              onPress={() => modifyTrade()}
-            >
+            <TouchableOpacity style={styles.tradeButton} onPress={modifyTrade}>
               <Typography
                 name="tinyBold"
                 style={styles.tradeButtonText}

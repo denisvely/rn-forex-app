@@ -45,4 +45,14 @@ export default StyleSheet.create({
     color: colors.white,
     textTransform: "uppercase",
   },
+  marketClosedWrapper: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  remainingTimeText: {
+    marginTop: 24,
+  },
 });

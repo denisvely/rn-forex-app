@@ -6,12 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Loading,
   Button,
-  MarketOrderControls,
-  QuantityInput,
-  OrderInfo,
-  Typography,
-  BuyPrice,
-  SellPrice,
+  ProfitLossOrderControls,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
@@ -30,7 +25,7 @@ import styles from "../realForexOrderDetailsStyles";
 const addRealForexTradeOrderV2Service =
   realForexServices.addRealForexTradeOrderV2();
 
-const MarketTab = ({
+const ProfitLossTab = ({
   asset,
   isDirectionBuy,
   navigation,
@@ -47,30 +42,20 @@ const MarketTab = ({
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
-  // Order Info
-  const initialOrderInfoState = {
-    marginSell: "",
-    marginBuy: "",
-    leverageSell: "",
-    leverageBuy: "",
-    swapSell: "",
-    swapBuy: "",
-    pipSell: "",
-    pipBuy: "",
-  };
-  const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
   const initalMarketTPandSLState = {
     isBuyMarket: isDirectionBuy,
     TPActive: false,
     takeProfitDistance: null,
     takeProfitAmount: null,
+    takeProfitRate: null,
     SLActive: false,
     stopLossAmount: null,
     stopLossDistance: null,
+    stopLossRate: null,
   };
   const [marketState, setMarketState] = useState(initalMarketTPandSLState);
 
-  const makeNewMarketOrder = (isBuy) => {
+  const makeModifyMarketOrder = (isBuy) => {
     // Market Order
     const volume =
       quantity.indexOf(",") > -1
@@ -133,102 +118,43 @@ const MarketTab = ({
 
   return (
     <View style={styles.container}>
-      {isMarketClosed ? (
-        <View style={styles.marketClosedWrapper}>
-          <Typography name="largeBold" text={t("common-labels.marketClosed")} />
-          <View style={styles.remainingTimeText}>
-            <Typography
-              name="small"
-              text={`This market opens at ${remainingTime(
-                asset
-              )}. You can place pending orders even when the market is closed.`}
-            />
-          </View>
-        </View>
-      ) : (
-        <>
-          {isReady ? (
-            <>
-              <QuantityInput
-                value={quantity}
-                setQuantity={(value) => setQuantity(value)}
+      <>
+        {isReady ? (
+          <>
+            <ScrollView
+              style={styles.scrollView}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                flexDirection: "column",
+                width: deviceWidth,
+                flexGrow: 1,
+                paddingBottom: 130,
+              }}
+            >
+              <ProfitLossOrderControls
+                state={marketState}
+                setState={setMarketState}
               />
-
-              <ScrollView
-                style={styles.scrollView}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  flexDirection: "column",
-                  width: deviceWidth,
-                  flexGrow: 1,
-                  paddingBottom: 130,
-                }}
-              >
-                <MarketOrderControls
-                  marketState={marketState}
-                  setMarketState={setMarketState}
-                />
-
-                <OrderInfo
-                  quantityValue={currentTrade.quantity}
-                  isMarket={true}
-                  orderInfoData={orderInfoData}
-                  setOrderInfoData={setOrderInfoData}
-                />
-              </ScrollView>
-            </>
-          ) : (
-            <Loading size="large" />
-          )}
-          <View style={styles.buttonsWrapper}>
-            <Button
-              size="medium"
-              type="buy"
-              style={styles.buyButton}
-              onPress={() => makeNewMarketOrder(true)}
-            >
-              {() => (
-                <View>
-                  <Typography
-                    style={styles.buyButtonText}
-                    name="small"
-                    text={t("common-labels.buy")}
-                  />
-                  <BuyPrice
-                    asset={realForexPrices[asset.id]}
-                    textColor={colors.white}
-                  />
-                </View>
-              )}
-            </Button>
-            <Button
-              size="medium"
-              type="sell"
-              style={styles.sellButton}
-              onPress={() => makeNewMarketOrder(false)}
-            >
-              {() => (
-                <View>
-                  <Typography
-                    style={styles.sellButtonText}
-                    name="small"
-                    text={t("common-labels.sell")}
-                  />
-                  <SellPrice
-                    asset={realForexPrices[asset.id]}
-                    textColor={colors.white}
-                  />
-                </View>
-              )}
-            </Button>
-          </View>
-        </>
-      )}
+            </ScrollView>
+          </>
+        ) : (
+          <Loading size="large" />
+        )}
+        <View style={styles.buttonsWrapper}>
+          <Button
+            text={t("common-labels.modify")}
+            type="primary"
+            font="mediumBold"
+            size="big"
+            onPress={makeModifyMarketOrder}
+          />
+        </View>
+      </>
     </View>
   );
 };
 
-export default MarketTab;
+export default ProfitLossTab;

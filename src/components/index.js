@@ -45,6 +45,7 @@ export { default as PartiallyClose } from "./RealForex/PartiallyClose/PartiallyC
 export { default as RealForexDirectionButtons } from "./RealForex/RealForexDirectionButtons/RealForexDirectionButtons";
 export { default as MarketOrderControls } from "./RealForex/MarketOrderControls/MarketOrderControls";
 export { default as PendingOrderControls } from "./RealForex/PendingOrderControls/PendingOrderControls";
+export { default as ProfitLossOrderControls } from "./RealForex/ProfitLossOrderControls/ProfitLossOrderControls";
 
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";

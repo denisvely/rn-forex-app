@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { Typography, Datepicker } from "../../components";
 import { tabStackIcons } from "../../assets/svg/tabStackIcons/";
+import platfromIcons from "../../assets/svg/platformIcons/platfromIcons";
 
 import styles from "./expirationDateStyles";
 
@@ -98,7 +99,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         style={styles.expirationWrapper}
       >
         <SvgXml
-          xml={tabStackIcons["closedPositions"][0]}
+          xml={platfromIcons["time"][0]}
           style={{ position: "absolute", left: 28 }}
           width="20"
           height="20"

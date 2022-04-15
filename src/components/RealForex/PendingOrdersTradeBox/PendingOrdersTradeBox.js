@@ -30,6 +30,43 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
       parseFloat(item.TradeRate) * Math.pow(10, accuracy)
   );
 
+  const checkAvailableForTrading = (id) => {
+    if (!realForexOptionsByType.All[id].rules.length) {
+      return false;
+    } else {
+      var currTime = new Date(),
+        availableForTrading = false;
+
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+        var dateFrom = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.from.dateTime
+          ),
+          dateTo = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.to.dateTime
+          );
+
+        if (currTime > dateFrom && dateFrom < dateTo) {
+          availableForTrading =
+            realForexOptionsByType.All[id].rules[i].availableForTrading;
+        }
+      }
+
+      return availableForTrading;
+    }
+  };
+
+  const modifyTrade = () => {
+    if (realForexOptionsByType.All[item.TradableAssetId]) {
+      navigation.navigate("RealForexOrderDetails", {
+        asset: realForexOptionsByType.All[item.TradableAssetId],
+        isBuy: item.actionType === "Buy" ? true : false,
+        isPending: true,
+        order: item,
+        isMarketClosed: !checkAvailableForTrading(item.TradableAssetId),
+      });
+    }
+  };
+
   return (
     <View style={styles.tradeBox}>
       <TouchableOpacity
@@ -215,10 +252,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
             />
           </View>
           <View style={styles.tradeButtons}>
-            <TouchableOpacity
-              style={styles.tradeButton}
-              onPress={() => alert("open modify Order")}
-            >
+            <TouchableOpacity style={styles.tradeButton} onPress={modifyTrade}>
               <Typography
                 name="tinyBold"
                 style={styles.tradeButtonText}

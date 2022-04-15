@@ -23,9 +23,18 @@ export default StyleSheet.create({
     width: deviceWidth / 2 - 40,
     borderRadius: 4,
   },
+  orderTypeButtonSmall: {
+    width: deviceWidth / 3 - 24,
+    borderRadius: 4,
+  },
   orderTypeButtonActive: {
     backgroundColor: colors.white,
     width: deviceWidth / 2 - 40,
+    borderRadius: 4,
+  },
+  orderTypeButtonActiveSmall: {
+    width: deviceWidth / 3 - 24,
+    backgroundColor: colors.white,
     borderRadius: 4,
   },
   inputsWrapper: {

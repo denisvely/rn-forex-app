@@ -11,10 +11,11 @@ import BuyPrice from "../../../components/RealForex/BuyPrice/BuyPrice";
 import SellPrice from "../../../components/RealForex/SellPrice/SellPrice";
 import { setSelectedAsset } from "../../../store/realForex";
 import { getApplication } from "../../../store/app";
+import { remainingTime } from "../../../store/realForex/helpers";
 
 import styles from "./assetBoxStyles";
 
-const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
+const AssetBox = ({ asset, navigation, marketClosed }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
@@ -58,55 +59,13 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
     }
   };
 
-  const remainingTime = () => {
-    var currTime = new Date(),
-      optionStart = new Date(asset.rules[0].dates.from.timestamp);
-
-    if (optionStart.getTime() - currTime.getTime() < 0) {
-      for (i = 1; asset.rules.length; i++) {
-        if (!asset.rules[i].availableForTrading) {
-          optionStart = new Date(asset.rules[i].dates.from.timestamp);
-
-          if (optionStart.getTime() - currTime.getTime() > 0) {
-            break;
-          }
-        }
-      }
-    }
-
-    var timeDiff = optionStart.getTime() - currTime.getTime(),
-      diffMinutes = Math.ceil(timeDiff / (1000 * 60)),
-      remainingMins = diffMinutes % 60,
-      remainingHrs =
-        Math.floor(diffMinutes / 60) > 24
-          ? Math.floor(diffMinutes / 60) % 24
-          : Math.floor(diffMinutes / 60),
-      remainingDays = Math.floor(Math.floor(diffMinutes / 60) / 24);
-
-    return (
-      moment(optionStart).format("HH:MM") +
-      "(in " +
-      (remainingDays > 0
-        ? remainingDays == 1
-          ? "1day "
-          : remainingDays + "days "
-        : "") +
-      (remainingHrs > 0
-        ? remainingHrs == 1
-          ? "1hr "
-          : remainingHrs + "hrs "
-        : "") +
-      (remainingMins + "min)")
-    );
-  };
-
   const pressAssetBoxButton = (isMarketClosed) => {
     if (!isMarketClosed) {
       setSelectedAsset(dispatch, asset);
       navigation.navigate("RealForexOrderChart", { asset });
     } else {
       const marketClosedInfo = `This market opens at ${remainingTime(
-        asset.id
+        asset
       )}. You can place pending orders even when the market is closed.`;
       setMarketClosedInfo(marketClosedInfo);
       setTimeout(() => {
@@ -192,7 +151,17 @@ const AssetBox = ({ asset, navigation, icon, marketClosed }) => {
       {marketClosedInfo ? (
         <View style={styles.marketClosedInfo}>
           <Typography name="tiny" text={marketClosedInfo} />
-          <TouchableOpacity style={styles.marketCloseBtn}>
+          <TouchableOpacity
+            style={styles.marketCloseBtn}
+            onPress={() =>
+              navigation.navigate("RealForexOrderDetails", {
+                asset: asset,
+                isBuy: true,
+                isPending: true,
+                isMarketClosed: true,
+              })
+            }
+          >
             <Typography
               name="tiny"
               text={"New Pending Order"}
