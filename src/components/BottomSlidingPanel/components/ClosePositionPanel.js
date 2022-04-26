@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,13 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   const [partiallyCloseValue, setPartialllyClose] = useState(trade.volume);
   const [partiallyCloseVisible, setVisibility] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      setVisibility(false);
+      setPartialllyClose(trade.volume);
+    };
+  }, [partiallyCloseVisible]);
+
   const closePositionRealForex = () => {
     if (
       partiallyCloseVisible &&
@@ -77,8 +84,14 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
       if (
         parseFloat(quantity) < assetSettings[trade.tradableAssetId].MinQuantity
       ) {
-        // TODO => Min Quantity Notification
-        // The minimum quantity you can trade is {minQty} units.
+        Toast.show({
+          type: "error",
+          text1: `The minimum quantity you can trade is ${
+            assetSettings[trade.tradableAssetId].MinQuantity
+          } units.`,
+          topOffset: 100,
+        });
+        toggleSlidingPanel(false);
         return;
       }
 
@@ -130,7 +143,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
                   "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
                 text2: "Please try again in a few moments.",
                 topOffset: 100,
-                visibilityTime: 5000,
+                visibilityTime: 3000,
                 autoHide: true,
               });
             } else {
@@ -189,7 +202,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         {partiallyCloseVisible ? (
           <PartiallyClose
             spinnerValue={partiallyCloseValue}
-            onSpinnerChange={(orderType) => setPartialllyClose(orderType)}
+            onSpinnerChange={(value) => setPartialllyClose(value)}
             placeholder={t("common-labels.amount")}
           />
         ) : null}

@@ -131,7 +131,7 @@ const realForexReducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENTLY_MODIFIED_ORDER: {
       return {
         ...stateClone,
-        currentTrade: action.payload,
+        currentlyModifiedOrder: action.payload,
       };
     }
 

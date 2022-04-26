@@ -168,7 +168,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     }
   }, [route.params.asset]);
 
-  return (
+  return isReady ? (
     <Tab.Navigator
       tabBar={(props) => (
         <OrderTabBar
@@ -183,8 +183,8 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     >
       <Tab.Screen name="Market">
         {() =>
-          isPending && order ? null : (
-            <MarketTab
+          !isPending && order ? (
+            <ProfitLoss
               asset={asset}
               isDirectionBuy={isBuy}
               navigation={navigation}
@@ -194,13 +194,8 @@ const RealForexOrderDetails = ({ route, navigation }) => {
               isModify={order ? true : false}
               isMarketClosed={isMarketClosed}
             />
-          )
-        }
-      </Tab.Screen>
-      <Tab.Screen name="ProfitLoss">
-        {() =>
-          !isPending && !order ? null : (
-            <ProfitLoss
+          ) : (
+            <MarketTab
               asset={asset}
               isDirectionBuy={isBuy}
               navigation={navigation}
@@ -226,7 +221,7 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         )}
       </Tab.Screen>
     </Tab.Navigator>
-  );
+  ) : null;
 };
 
 export default RealForexOrderDetails;

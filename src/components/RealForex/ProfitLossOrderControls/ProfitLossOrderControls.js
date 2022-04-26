@@ -1,14 +1,14 @@
 import React from "react";
 import { View } from "react-native";
-import TakeProfit from "../TakeProfit/TakeProfit";
-import StopLoss from "../StopLoss/StopLoss";
+import TakeProfitModify from "../TakeProfitModify/TakeProfitModify";
+import StopLossModify from "../StopLossModify/StopLossModify";
 import { deviceWidth } from "../../../utils";
 
 const ProfitLossOrderControls = ({ state, setState }) => {
   return (
     <View style={{ width: deviceWidth }}>
-      <TakeProfit state={state} setState={setState} />
-      <StopLoss state={state} setState={setState} />
+      <TakeProfitModify state={state} setState={setState} />
+      <StopLossModify state={state} setState={setState} />
     </View>
   );
 };

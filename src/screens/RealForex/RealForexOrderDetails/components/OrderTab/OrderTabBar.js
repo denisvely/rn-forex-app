@@ -13,10 +13,6 @@ const innerRoutes = [
     name: "Market",
   },
   {
-    key: "profitloss",
-    name: "ProfitLoss",
-  },
-  {
     key: "pending",
     name: "Pending",
   },
@@ -29,10 +25,8 @@ const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
       <View style={styles.orderTypeButtonsWrapper}>
         {innerRoutes.map((route, index) => {
           const isFocused = state.index === index;
+
           if (isPending && order && route.key === "market") {
-            return null;
-          }
-          if (!isPending && !order && route.key === "profitloss") {
             return null;
           }
 
@@ -54,11 +48,7 @@ const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={
-                    order
-                      ? styles.orderTypeButtonActiveSmall
-                      : styles.orderTypeButtonActive
-                  }
+                  pressableStyle={styles.orderTypeButtonActive}
                   onPress={onPress}
                 />
               ) : (
@@ -66,9 +56,7 @@ const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={
-                    order ? styles.orderTypeButtonSmall : styles.orderTypeButton
-                  }
+                  pressableStyle={styles.orderTypeButton}
                   onPress={onPress}
                 />
               )}

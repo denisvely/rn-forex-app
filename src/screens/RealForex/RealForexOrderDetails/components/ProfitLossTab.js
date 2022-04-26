@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,18 +7,21 @@ import {
   Loading,
   Button,
   ProfitLossOrderControls,
+  QuantityInput,
+  OrderInfo,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
   getCurrentTrade,
   getRealForexPrices,
   getRealForexOptionsByType,
+  getCurrentlyModifiedOrder,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
-import { convertUnits, remainingTime } from "store/realForex/helpers";
+import { convertUnits } from "store/realForex/helpers";
 import { deviceWidth } from "../../../../utils";
 import { processMarketOrder } from "../helpers";
-import { colors } from "../../../../constants";
+import { getUser } from "../../../../store/app";
 
 import styles from "../realForexOrderDetailsStyles";
 
@@ -32,7 +35,6 @@ const ProfitLossTab = ({
   quantity,
   setQuantity,
   isReady,
-  isModify,
   isMarketClosed,
 }) => {
   const { t } = useTranslation();
@@ -42,6 +44,10 @@ const ProfitLossTab = ({
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
+  const user = useSelector((state) => getUser(state));
+  const currentlyModifiedOrder = useSelector((state) =>
+    getCurrentlyModifiedOrder(state)
+  );
   const initalMarketTPandSLState = {
     isBuyMarket: isDirectionBuy,
     TPActive: false,
@@ -54,6 +60,45 @@ const ProfitLossTab = ({
     stopLossRate: null,
   };
   const [marketState, setMarketState] = useState(initalMarketTPandSLState);
+  const initialOrderInfoState = {
+    marginSell: "",
+    marginBuy: "",
+    leverageSell: "",
+    leverageBuy: "",
+    swapSell: "",
+    swapBuy: "",
+    pipSell: "",
+    pipBuy: "",
+  };
+  const [orderInfoData, setOrderInfoData] = useState(initialOrderInfoState);
+
+  useEffect(() => {
+    if (currentlyModifiedOrder !== null) {
+      if (
+        currentlyModifiedOrder.takeProfitAmount &&
+        currentlyModifiedOrder.takeProfitRate
+      ) {
+        setMarketState((prevState) => ({
+          ...prevState,
+          takeProfitRate: parseFloat(currentlyModifiedOrder.takeProfitAmount),
+          takeProfitAmount: parseFloat(currentlyModifiedOrder.takeProfitRate),
+          TPActive: true,
+        }));
+      }
+
+      if (
+        currentlyModifiedOrder.stopLossAmount &&
+        currentlyModifiedOrder.stopLossRate
+      ) {
+        setMarketState((prevState) => ({
+          ...prevState,
+          stopLossRate: parseFloat(currentlyModifiedOrder.stopLossAmount),
+          stopLossAmount: parseFloat(currentlyModifiedOrder.stopLossRate),
+          SLPActive: true,
+        }));
+      }
+    }
+  }, [currentlyModifiedOrder]);
 
   const makeModifyMarketOrder = (isBuy) => {
     // Market Order
@@ -77,7 +122,7 @@ const ProfitLossTab = ({
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
         volume,
-        marketState.TPActive ? marketState.takeProfitAmount : "", // TakeProfit
+        marketState.TPActive ? marketState.stopLossAmount : "", // TakeProfit
         marketState.SLActive ? marketState.stopLossAmount : "", // StopLoss
         asset.Leverage || 100,
         marketState.TPActive ? marketState.takeProfitDistance : "", // TakeProfitDistance
@@ -85,7 +130,7 @@ const ProfitLossTab = ({
         parseFloat(pip) == 0 ? 0.00001 : pip,
         0, // pendingPrice
         false,
-        "", // (currentlyModifiedOrder != '' ? orderId : '')
+        currentlyModifiedOrder != "" ? currentlyModifiedOrder.orderID : "", //
         "",
         realForexPrices[currentTrade.tradableAssetId].delay,
         realForexPrices[currentTrade.tradableAssetId].ask,
@@ -121,6 +166,12 @@ const ProfitLossTab = ({
       <>
         {isReady ? (
           <>
+            {user.forexModeId === 2 ? (
+              <QuantityInput
+                value={quantity}
+                setQuantity={(value) => setQuantity(value)}
+              />
+            ) : null}
             <ScrollView
               style={styles.scrollView}
               showsHorizontalScrollIndicator={false}
@@ -138,6 +189,14 @@ const ProfitLossTab = ({
                 state={marketState}
                 setState={setMarketState}
               />
+              {user.forexModeId === 2 ? (
+                <OrderInfo
+                  quantityValue={currentTrade.quantity}
+                  isMarket={true}
+                  orderInfoData={orderInfoData}
+                  setOrderInfoData={setOrderInfoData}
+                />
+              ) : null}
             </ScrollView>
           </>
         ) : (

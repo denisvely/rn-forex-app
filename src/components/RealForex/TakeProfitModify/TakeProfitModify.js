@@ -1,16 +1,15 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-
-import Typography from "../../Typography/Typography";
-import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
+import TakeProfitRate from "./TakeProfitRate/TakeProfitRate";
 import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
+import Typography from "../../Typography/Typography";
 
 import styles from "./takeProfitStyles";
 
-const TakeProfit = ({ state, setState }) => {
+const TakeProfitModify = ({ state, setState }) => {
   const { t } = useTranslation();
-  
+
   return (
     <View style={styles.inputsWrapper}>
       <View style={styles.takeProfitHeader}>
@@ -28,17 +27,17 @@ const TakeProfit = ({ state, setState }) => {
               setState((prevState) => ({
                 ...prevState,
                 TPActive: false,
-                takeProfitDistance: null,
+                takeProfitRate: null,
                 takeProfitAmount: null,
               }))
             }
           />
         </TouchableOpacity>
       </View>
+      <TakeProfitRate state={state} setState={setState} />
       <TakeProfitAmount state={state} setState={setState} />
-      <TakeProfitDistance state={state} setState={setState} />
     </View>
   );
 };
 
-export default TakeProfit;
+export default TakeProfitModify;
