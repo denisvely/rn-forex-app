@@ -47,6 +47,7 @@ const MarketTab = ({
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
+
   // Order Info
   const initialOrderInfoState = {
     marginSell: "",
@@ -135,13 +136,26 @@ const MarketTab = ({
     <View style={styles.container}>
       {isMarketClosed ? (
         <View style={styles.marketClosedWrapper}>
-          <Typography name="largeBold" text={t("common-labels.marketClosed")} />
+          <Typography
+            name="largeBold"
+            text={t("common-labels.marketClosed")}
+            style={{ textAlign: "left", alignSelf: "flex-start" }}
+          />
           <View style={styles.remainingTimeText}>
             <Typography
               name="small"
               text={`This market opens at ${remainingTime(
                 asset
               )}. You can place pending orders even when the market is closed.`}
+            />
+          </View>
+          <View style={styles.buttonsWrapper}>
+            <Button
+              text={t("common-labels.newPendingOrder")}
+              type="primary"
+              font="mediumBold"
+              size="big"
+              onPress={() => navigation.navigate("Pending")}
             />
           </View>
         </View>

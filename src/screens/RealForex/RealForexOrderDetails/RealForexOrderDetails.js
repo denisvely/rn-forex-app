@@ -25,7 +25,6 @@ import OrderTabBar from "./components/OrderTab/OrderTabBar";
 import { colors } from "../../../constants";
 
 import styles from "./realForexOrderDetailsStyles";
-import { upperCase } from "lodash";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -173,6 +172,10 @@ const RealForexOrderDetails = ({ route, navigation }) => {
         ),
       });
       makeOrder();
+
+      return () => {
+        setCurrentlyModifiedOrder(dispatch, null);
+      };
     }
   }, [route.params.asset]);
 
@@ -277,6 +280,17 @@ const RealForexOrderDetails = ({ route, navigation }) => {
                   isMarketClosed={isMarketClosed}
                 />
               )
+            ) : isPending && isMarketClosed ? (
+              <MarketTab
+                asset={asset}
+                isDirectionBuy={isBuy}
+                navigation={navigation}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                isReady={isReady}
+                isModify={order ? true : false}
+                isMarketClosed={isMarketClosed}
+              />
             ) : null
           }
         </Tab.Screen>

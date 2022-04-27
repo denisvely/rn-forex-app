@@ -72,7 +72,8 @@
     "pendingOrder": "Pending Order: ",
     "clearAll": "Clear all",
     "expiryDate": "Expiry Date",
-    "expiryTime": "Expiry Time"
+    "expiryTime": "Expiry Time",
+    "newPendingOrder": "New Pending Order"
   },
   "navigation": {
     "quotes": "Quotes",

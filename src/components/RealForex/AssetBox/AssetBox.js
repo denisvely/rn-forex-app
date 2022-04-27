@@ -164,7 +164,7 @@ const AssetBox = ({ asset, navigation, marketClosed }) => {
           >
             <Typography
               name="tiny"
-              text={"New Pending Order"}
+              text={t("common-labels.newPendingOrder")}
               style={styles.buttonLabel}
             />
           </TouchableOpacity>

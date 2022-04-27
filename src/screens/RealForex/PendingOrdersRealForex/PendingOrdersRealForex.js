@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { getRealForexPendingOrders } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";

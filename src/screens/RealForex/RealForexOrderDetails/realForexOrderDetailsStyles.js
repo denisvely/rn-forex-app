@@ -54,6 +54,7 @@ export default StyleSheet.create({
   },
   remainingTimeText: {
     marginTop: 24,
+    alignSelf: "flex-start",
   },
   modifyTitle: {
     backgroundColor: colors.white,

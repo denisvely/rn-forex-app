@@ -16,19 +16,4 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  closeAll: {
-    width: 50,
-    height: 24,
-    backgroundColor: colors.blueColor,
-    borderRadius: 4,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    right: 16,
-    top: 0,
-    zIndex: 10,
-  },
-  closeAllLabel: {
-    color: colors.white,
-  },
 });
