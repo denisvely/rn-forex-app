@@ -55,4 +55,27 @@ export default StyleSheet.create({
   remainingTimeText: {
     marginTop: 24,
   },
+  modifyTitle: {
+    backgroundColor: colors.white,
+    paddingHorizontal: 24,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    height: 20,
+  },
+  left: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  paddingLeft: {
+    paddingLeft: 7,
+  },
+  blue: {
+    paddingLeft: 7,
+    color: colors.blueColor,
+  },
+  orderId: {
+    color: colors.fontSecondaryColor,
+  },
 });

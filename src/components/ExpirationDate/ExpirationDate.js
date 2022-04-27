@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Pressable } from "react-native";
 import moment from "moment";
 import { SvgXml } from "react-native-svg";
@@ -14,8 +14,6 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
   const { t } = useTranslation();
   const [isPickerExpDateShow, setIsPickerExpDateShow] = useState(false);
   const [isPickerExpTimeShow, setIsPickerExpTimeShow] = useState(false);
-  const [expDate, setExpDate] = useState(false);
-  const [expTime, setExpTime] = useState(false);
 
   const onChangeExpDate = (value) => {
     if (value !== null) {
@@ -23,19 +21,16 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         ...prevState,
         pendingExpirationDate: value,
       }));
-      setExpDate(value);
     }
     setIsPickerExpDateShow(false);
   };
 
   const onChangeExpTime = (value) => {
-    const time = moment(value).format("HH:mm");
     if (value !== null) {
       setPendingState((prevState) => ({
         ...prevState,
-        pendingExpirationTime: time,
+        pendingExpirationTime: value,
       }));
-      setExpTime(value);
     }
     setIsPickerExpTimeShow(false);
   };
@@ -72,7 +67,11 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         />
         <Typography
           name="small"
-          text={expDate ? moment(expDate).format("DD-MM-YYYY") : "GTC"}
+          text={
+            pendingState.pendingExpirationTime
+              ? moment(pendingState.pendingExpirationTime).format("DD-MM-YYYY")
+              : "GTC"
+          }
           style={styles.dateString}
         />
       </Pressable>
@@ -106,7 +105,11 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         />
         <Typography
           name="small"
-          text={expTime ? moment(expTime).format("HH:mm") : ""}
+          text={
+            pendingState.pendingExpirationTime
+              ? moment(pendingState.pendingExpirationDate).format("HH:mm")
+              : ""
+          }
           style={styles.dateString}
         />
       </Pressable>

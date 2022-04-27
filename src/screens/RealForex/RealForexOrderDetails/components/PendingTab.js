@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -11,12 +11,15 @@ import {
   PendingOrderControls,
   QuantityInput,
   OrderInfo,
+  Typography,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
   getCurrentTrade,
   getRealForexPrices,
   getRealForexOptionsByType,
+  getCurrentlyModifiedOrder,
+  getSelectedAsset,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
 import { convertUnits } from "store/realForex/helpers";
@@ -43,6 +46,10 @@ const PendingTab = ({
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
+  const currentlyModifiedOrder = useSelector((state) =>
+    getCurrentlyModifiedOrder(state)
+  );
+  const selectedAsset = useSelector((state) => getSelectedAsset(state));
 
   // Order Info
   const initialOrderInfoState = {
@@ -200,6 +207,78 @@ const PendingTab = ({
 
     return parseFloat(formattedPip) == 0 ? 0.00001 : formattedPip;
   };
+
+  useEffect(() => {
+    if (currentlyModifiedOrder !== null) {
+      let TPDistance = null,
+        TPAmount = null,
+        SLDistance = null,
+        SLAmount = null,
+        expDate = null,
+        expTime = null;
+
+      if (currentlyModifiedOrder.TakeProfitRate > 0) {
+        TPDistance = Math.abs(
+          parseFloat(currentlyModifiedOrder.TradeRate) -
+            currentlyModifiedOrder.TakeProfitRate
+        ).toFixed(
+          realForexOptionsByType.All[currentlyModifiedOrder.TradableAssetId]
+            .accuracy
+        );
+
+        TPAmount = (
+          (parseFloat(TPDistance) *
+            convertUnits(
+              parseFloat(currentTrade.quantity),
+              selectedAsset.id,
+              true,
+              settings
+            ) *
+            1) /
+          selectedAsset.rate
+        ).toFixed(2);
+      }
+
+      if (currentlyModifiedOrder.StopLossRate > 0) {
+        SLDistance = Math.abs(
+          parseFloat(currentlyModifiedOrder.TradeRate) -
+            currentlyModifiedOrder.StopLossRate
+        ).toFixed(
+          realForexOptionsByType.All[currentlyModifiedOrder.TradableAssetId]
+            .accuracy
+        );
+        SLAmount = (
+          (-parseFloat(SLDistance) *
+            convertUnits(
+              parseFloat(currentTrade.quantity),
+              selectedAsset.id,
+              true,
+              settings
+            ) *
+            1) /
+          selectedAsset.rate
+        ).toFixed(2);
+      }
+
+      if (currentlyModifiedOrder.ExpirationDate) {
+        expDate = new Date(currentlyModifiedOrder.ExpirationDate);
+        expTime = moment(currentlyModifiedOrder.ExpirationDate);
+      }
+      setPendingState((prevState) => ({
+        ...prevState,
+        pendingPrice: currentlyModifiedOrder.TradeRate,
+        isBuyPending: isDirectionBuy,
+        pendingTPDistance: TPDistance,
+        pendingTPAmount: TPAmount,
+        pendingTPActive: TPDistance && TPAmount ? true : false,
+        pendingSLDistance: SLDistance,
+        pendingSLAmount: SLAmount,
+        pendingSLActive: SLDistance && SLAmount ? true : false,
+        pendingExpirationDate: expDate,
+        pendingExpirationTime: expDate,
+      }));
+    }
+  }, [currentlyModifiedOrder]);
 
   return (
     <View style={styles.container}>
