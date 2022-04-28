@@ -10,6 +10,7 @@ import {
   RealForexOrderChart,
   RealForexOrderDetails,
   PositionHistory,
+  Settings
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -59,6 +60,17 @@ const MainStackNavigator = ({ navigation }) => {
         component={Menu}
         options={{
           title: "Menu",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          title: "Settings",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,

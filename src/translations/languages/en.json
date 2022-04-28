@@ -90,7 +90,22 @@
     "personalDetails": "Personal Details",
     "settings": "Settings",
     "terms": "Terms And Agreements",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "tradingModes": "Trading Modes",
+    "hedgingMode": "Hedging mode",
+    "hedgingModeSwitch": "Switch to Hedging mode",
+    "hedgingModeInfo": "When trading under this mode you can open multiple positions for the same asset. Every new postion will be executed at a different price and will be opened as a separate position.",
+    "aggretatingMode": "Aggregating mode",
+    "aggretatingModeSwitch": "Switch to Aggregating mode",
+    "aggretatingModeInfo": "When trading under this mode you can only open one position with the same asset. Every new position opened with this asset will be combined with the first one and the price will be averaged.",
+    "switchMarginNet": "Switch to margin netting",
+    "nettingInfo": "Required margin for positions with opposite directions will be netted",
+    "changeModeToAggFail": "You have to close all of your open positions, pending orders and Robots, in order to switch to aggregating mode.",
+    "changeModeToHedgFail": "You have to close all of your open positions and pending orders, in order to switch to hedging mode.",
+    "changeModeSuccess": "Trading mode has been switched successfully.",
+    "changeModeToAggTitle": "Switching to Aggregating Mode",
+    "changeModeToHedgTitle": "Switching to Hedging Mode",
+    "changeMarginMode": "Change margin mode"
   },
   "realForex": {
     "All": "All",

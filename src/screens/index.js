@@ -4,6 +4,7 @@ export { default as Register } from "./Register/Register";
 export { default as Home } from "./Home/Home";
 export { default as Menu } from "./Menu/Menu";
 export { default as Notifications } from "./Notifications/Notifications";
+export { default as Settings } from "./Menu/Settings/Settings";
 // Real Forex
 export { default as Quotes } from "./RealForex/QuotesRealForex/QuotesRealForex";
 export { default as OpenPositionsRealForex } from "./RealForex/OpenPositionsRealForex/OpenPositionsRealForex";
