@@ -29,17 +29,7 @@ export default StyleSheet.create({
     borderRadius: 2,
     height: 64,
   },
-  aggregatingBox: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "column",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: colors.white,
-    width: "100%",
-    borderRadius: 2,
-  },
-  hedgingBox: {
+  box: {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     flexDirection: "column",
@@ -128,5 +118,13 @@ export default StyleSheet.create({
   },
   rotatedArrow: {
     transform: [{ rotate: "180deg" }],
+  },
+  acceptBtn: {
+    width: deviceWidth - 64,
+    minWidth: deviceWidth - 64,
+    alignSelf: "center",
+  },
+  tradingModes: {
+    paddingBottom: 16,
   },
 });

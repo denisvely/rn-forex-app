@@ -5,7 +5,7 @@ import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
 import { View, Pressable, TouchableOpacity } from "react-native";
-import { Typography, SwitchComponent } from "../../../../components";
+import { Typography, SwitchComponent, Button } from "../../../../components";
 import { getUser, setUser } from "../../../../store/app";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
 import TradingModesService from "./services/TradingModesService";
@@ -20,6 +20,7 @@ const TradingModes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector((state) => getUser(state));
+  const [userForexModeId, setModeId] = useState(user.forexModeId);
   const [isHedgnetActive, setHedgnet] = useState(
     user.forexModeId === 3 && user.forexMarginModeId === 1 ? true : false
   );
@@ -59,10 +60,10 @@ const TradingModes = () => {
         }
       });
   };
-  const changeModeId = (id) => {
+  const changeModeId = () => {
     changeForexMode
       .fetch({
-        modeId: id,
+        modeId: userForexModeId,
       })
       .then(({ response }) => {
         if (response.body.code === 200) {
@@ -82,7 +83,7 @@ const TradingModes = () => {
                 type: "platformInfoSuccess",
                 props: {
                   text1: `${
-                    id === 2
+                    userForexModeId === 2
                       ? t("menu.changeModeToAggTitle")
                       : t("menu.changeModeToHedgTitle")
                   }`,
@@ -98,12 +99,12 @@ const TradingModes = () => {
             type: "platformInfoError",
             props: {
               text1: `${
-                id === 2
+                userForexModeId === 2
                   ? t("menu.changeModeToAggTitle")
                   : t("menu.changeModeToHedgTitle")
               }`,
               text2: `${
-                id === 2
+                userForexModeId === 2
                   ? t("menu.changeModeToAggFail")
                   : t("menu.changeModeToHedgFail")
               }`,
@@ -139,14 +140,14 @@ const TradingModes = () => {
       </TouchableOpacity>
       {isContentVisible ? (
         <View style={styles.tradingModes}>
-          <View style={styles.aggregatingBox}>
+          <View style={styles.box}>
             <View style={styles.row}>
               <Pressable
-                onPress={() => changeModeId(2)}
+                onPress={() => setModeId(2)}
                 style={styles.directionButton}
               >
                 <View style={styles.btnContainer}>
-                  {user.forexModeId === 2 ? (
+                  {userForexModeId === 2 ? (
                     <View style={styles.checkboxActiveView}>
                       <View style={styles.whiteDot} />
                     </View>
@@ -158,7 +159,7 @@ const TradingModes = () => {
                   <Typography
                     name="normal"
                     style={
-                      user.forexModeId === 2
+                      userForexModeId === 2
                         ? styles.btnTextActive
                         : styles.btnText
                     }
@@ -177,15 +178,15 @@ const TradingModes = () => {
               style={styles.text}
             />
           </View>
-          <View style={styles.hedgingBox}>
+          <View style={styles.box}>
             <View style={styles.hedgingWrapper}>
               <View style={styles.row}>
                 <Pressable
-                  onPress={() => changeModeId(3)}
+                  onPress={() => setModeId(3)}
                   style={styles.directionButton}
                 >
                   <View style={styles.btnContainer}>
-                    {user.forexModeId === 3 ? (
+                    {userForexModeId === 3 ? (
                       <View style={styles.checkboxActiveView}>
                         <View style={styles.whiteDot} />
                       </View>
@@ -216,7 +217,7 @@ const TradingModes = () => {
                 onValueChange={(value) => changeHedgForexMode(value)}
                 value={isHedgnetActive}
                 style={styles.switch}
-                disabled={user.forexModeId === 2}
+                disabled={userForexModeId === 2}
               />
               <Typography name="normal" text={t(`menu.switchMarginNet`)} />
             </View>
@@ -228,6 +229,14 @@ const TradingModes = () => {
               />
             </View>
           </View>
+          <Button
+            text={t("common-labels.accept")}
+            type="primary"
+            font="mediumBold"
+            size="big"
+            style={styles.acceptBtn}
+            onPress={() => changeModeId()}
+          />
         </View>
       ) : null}
     </View>

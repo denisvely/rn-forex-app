@@ -6,6 +6,7 @@ import { View, Pressable } from "react-native";
 import { Typography, SwitchComponent } from "../../../components";
 import { getUser, setUser } from "../../../store/app";
 import TradingModes from "./TradingModes/TradingModes";
+import ChartTimezone from "./ChartTimezone/ChartTimezone";
 
 import styles from "./settingsStyles";
 
@@ -27,6 +28,7 @@ const TradingSettings = () => {
   return (
     <View style={styles.container}>
       <TradingModes />
+      <ChartTimezone />
     </View>
   );
 };

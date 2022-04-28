@@ -73,7 +73,8 @@
     "clearAll": "Clear all",
     "expiryDate": "Expiry Date",
     "expiryTime": "Expiry Time",
-    "newPendingOrder": "New Pending Order"
+    "newPendingOrder": "New Pending Order",
+    "accept": "Accept"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -105,7 +106,10 @@
     "changeModeSuccess": "Trading mode has been switched successfully.",
     "changeModeToAggTitle": "Switching to Aggregating Mode",
     "changeModeToHedgTitle": "Switching to Hedging Mode",
-    "changeMarginMode": "Change margin mode"
+    "changeMarginMode": "Change margin mode",
+    "chartTimezone": "Chart timezone",
+    "europeAthens": "Europe/Athens time zone",
+    "localPcTime": "Local PC time"
   },
   "realForex": {
     "All": "All",
