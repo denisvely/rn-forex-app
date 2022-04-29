@@ -1,6 +1,5 @@
 import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
 import { Storage } from "../../../utils";
-const token = Storage.get("token")
 
 export default {
   login: () => {

@@ -1,25 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
 import { View, Pressable, TouchableOpacity } from "react-native";
 import { Typography, Button } from "../../../../components";
-import { getUser } from "../../../../store/app";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
+import { Storage } from "../../../../utils";
 
 import styles from "../settingsStyles";
 
 const ChartTimezone = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => getUser(state));
-  const [chartTimezone, setChartTimezone] = useState(user.forexModeId);
+  const [isEuropeAthens, setChartTimezone] = useState(0);
   const [isContentVisible, setContentVisible] = useState(false);
 
-  const changeTimezone = (id) => {
-    //   TODO => When chart is ready
+  useEffect(() => {
+    Storage.get("timezone").then((result) => {
+      if (result === "Europe/Athens") {
+        setChartTimezone(true);
+      } else {
+        setChartTimezone(false);
+      }
+    });
+  }, []);
+
+  const changeTimezone = () => {
+    if (isEuropeAthens) {
+      Storage.set("timezone", "Europe/Athens");
+      Toast.show({
+        type: "platformInfoSuccess",
+        props: {
+          text1: `${t("menu.europeAthens")}`,
+          text2: `${t("menu.timezoneChanged")}`,
+        },
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+    } else {
+      Storage.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+      Toast.show({
+        type: "platformInfoSuccess",
+        props: {
+          text1: `${t("menu.localPcTime")}`,
+          text2: `${t("menu.timezoneChanged")}`,
+        },
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+    }
+    setContentVisible(false);
   };
 
   return (
@@ -45,11 +77,11 @@ const ChartTimezone = () => {
           <View style={styles.box}>
             <View style={styles.row}>
               <Pressable
-                onPress={() => setChartTimezone(2)}
+                onPress={() => setChartTimezone(true)}
                 style={styles.directionButton}
               >
                 <View style={styles.btnContainer}>
-                  {chartTimezone === 2 ? (
+                  {isEuropeAthens ? (
                     <View style={styles.checkboxActiveView}>
                       <View style={styles.whiteDot} />
                     </View>
@@ -61,9 +93,7 @@ const ChartTimezone = () => {
                   <Typography
                     name="normal"
                     style={
-                      chartTimezone === 2
-                        ? styles.btnTextActive
-                        : styles.btnText
+                      isEuropeAthens ? styles.btnTextActive : styles.btnText
                     }
                     text={t(`menu.europeAthens`)}
                   />
@@ -74,11 +104,11 @@ const ChartTimezone = () => {
           <View style={styles.box}>
             <View style={styles.row}>
               <Pressable
-                onPress={() => setChartTimezone(3)}
+                onPress={() => setChartTimezone(false)}
                 style={styles.directionButton}
               >
                 <View style={styles.btnContainer}>
-                  {chartTimezone === 3 ? (
+                  {!isEuropeAthens ? (
                     <View style={styles.checkboxActiveView}>
                       <View style={styles.whiteDot} />
                     </View>
@@ -87,7 +117,13 @@ const ChartTimezone = () => {
                       <View style={styles.whiteDot} />
                     </View>
                   )}
-                  <Typography name="normal" text={t(`menu.localPcTime`)} />
+                  <Typography
+                    name="normal"
+                    style={
+                      !isEuropeAthens ? styles.btnTextActive : styles.btnText
+                    }
+                    text={t(`menu.localPcTime`)}
+                  />
                 </View>
               </Pressable>
             </View>

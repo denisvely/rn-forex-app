@@ -10,7 +10,9 @@ import {
   RealForexOrderChart,
   RealForexOrderDetails,
   PositionHistory,
-  Settings
+  Settings,
+  Funding,
+  BrowserScreen,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -75,6 +77,33 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Funding"
+        component={Funding}
+        options={{
+          title: "Funding",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Deposit"
+        component={BrowserScreen}
+        options={{
+          title: "Deposit",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.arrowBackWithoutTitleNoMargin,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderX
+              onPress={() => navigation.goBack()}
+              styles={{ marginLeft: 16 }}
+            />
+          ),
         }}
       />
       <MainStack.Screen

@@ -74,7 +74,8 @@
     "expiryDate": "Expiry Date",
     "expiryTime": "Expiry Time",
     "newPendingOrder": "New Pending Order",
-    "accept": "Accept"
+    "accept": "Accept",
+    "deposit": "Deposit"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -109,7 +110,9 @@
     "changeMarginMode": "Change margin mode",
     "chartTimezone": "Chart timezone",
     "europeAthens": "Europe/Athens time zone",
-    "localPcTime": "Local PC time"
+    "localPcTime": "Local PC time",
+    "timezoneChanged": "Timezone has been changed successfully",
+    "fundingInfo": "To fund your account, please proceed to the full website version"
   },
   "realForex": {
     "All": "All",
