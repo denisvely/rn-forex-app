@@ -68,8 +68,8 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         <Typography
           name="small"
           text={
-            pendingState.pendingExpirationTime
-              ? moment(pendingState.pendingExpirationTime).format("DD-MM-YYYY")
+            pendingState.pendingExpirationDate
+              ? moment(pendingState.pendingExpirationDate).format("DD-MM-YYYY")
               : "GTC"
           }
           style={styles.dateString}
@@ -107,7 +107,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
           name="small"
           text={
             pendingState.pendingExpirationTime
-              ? moment(pendingState.pendingExpirationDate).format("HH:mm")
+              ? moment(pendingState.pendingExpirationTime).format("HH:mm")
               : ""
           }
           style={styles.dateString}

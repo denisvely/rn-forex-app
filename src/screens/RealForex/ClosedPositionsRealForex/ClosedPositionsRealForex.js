@@ -41,8 +41,8 @@ const ClosedPositionsRealForex = ({ navigation }) => {
         positionId: null,
         tradableAssetId: null,
       });
+      setIsPickerFromDateShow(false);
     }
-    setIsPickerFromDateShow(false);
   };
 
   const onChangeToDate = (value) => {
