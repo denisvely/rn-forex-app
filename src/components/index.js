@@ -23,6 +23,7 @@ export { default as SwitchComponent } from "./Switch/SwitchComponent";
 export { default as AssetIcon } from "./AssetIcon/AssetIcon";
 export { default as Datepicker } from "./Datepicker/Datepicker";
 export { default as ExpirationDate } from "./ExpirationDate/ExpirationDate";
+export { default as CountryPicker } from "./CountryPicker/CountryPicker";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";

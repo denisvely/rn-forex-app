@@ -1,45 +1,43 @@
 import React from "react";
+import { View } from "react-native";
 import PropTypes from "prop-types";
 import RNPickerSelect from "react-native-picker-select";
+import { SvgXml } from "react-native-svg";
+import dropdownArrow from "../../assets/svg/realForex/dropdownArrow";
+
+import { colors } from "../../constants";
 
 const pickerStyle = {
   inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 46,
-    color: "black",
+    borderBottomWidth: 1,
+    borderColor: colors.gray,
+    color: colors.fontPrimaryColor,
     paddingRight: 30,
-    marginTop: 10,
+    height: 44,
+    paddingVertical: 11,
+    paddingHorizontal: 9,
+    marginBottom: 16,
+    paddingRight: 30,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 46,
-    color: "black",
+    borderBottomWidth: 1,
+    borderColor: colors.gray,
+    color: colors.fontPrimaryColor,
     paddingRight: 30,
-    marginTop: 10,
+    height: 44,
+    paddingVertical: 11,
+    paddingHorizontal: 9,
+    marginBottom: 16,
+    paddingRight: 30,
   },
   placeholderColor: "black",
   underline: { borderTopWidth: 0 },
   icon: {
+    width: 32,
+    height: 32,
     position: "absolute",
-    backgroundColor: "transparent",
-    borderTopWidth: 5,
-    borderTopColor: "#00000099",
-    borderRightWidth: 5,
-    borderRightColor: "transparent",
-    borderLeftWidth: 5,
-    borderLeftColor: "transparent",
-    width: 0,
-    height: 0,
-    top: 20,
-    right: 15,
+    right: 8,
+    top: 0,
   },
 };
 
@@ -49,22 +47,27 @@ const Picker = ({
   styles,
   children,
   onChange,
+  values,
 }) => {
   return (
-    <RNPickerSelect
-      value={value}
-      placeholder={{ ...placeholderText, key: 0, color: "gray" }}
-      onValueChange={(itemValue) => {
-        onChange("title", itemValue);
-      }}
-      useNativeAndroidPickerStyle={false}
-      style={{ ...pickerStyle, ...styles }}
-      items={[
-        { label: "Mister", itemKey: 1, value: "mister" },
-        { label: "Miss", itemKey: 2, value: "miss" },
-        { label: "Mrs", itemKey: 3, value: "mrs" },
-      ]}
-    />
+    <View>
+      <RNPickerSelect
+        value={value}
+        placeholder={{ ...placeholderText }}
+        onValueChange={(itemValue) => {
+          onChange(itemValue);
+        }}
+        useNativeAndroidPickerStyle={false}
+        style={{ ...pickerStyle, ...styles }}
+        items={values}
+      />
+      <SvgXml
+        xml={dropdownArrow}
+        width="32"
+        height="32"
+        style={pickerStyle.icon}
+      />
+    </View>
   );
 };
 

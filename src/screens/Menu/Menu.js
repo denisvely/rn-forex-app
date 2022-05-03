@@ -90,8 +90,8 @@ const Menu = ({ navigation }) => {
           icon={personalDetails}
           text={t(`menu.personalDetails`)}
           navigation={navigation}
-          screenName={"PersonalDetails"}
-          onPress={() => submit("PersonalDetails")}
+          screenName={"MyProfile"}
+          onPress={() => submit("MyProfile")}
         />
         <ButtonWithIcons
           icon={settings}

@@ -75,7 +75,8 @@
     "expiryTime": "Expiry Time",
     "newPendingOrder": "New Pending Order",
     "accept": "Accept",
-    "deposit": "Deposit"
+    "deposit": "Deposit",
+    "submit": "Submit"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -112,7 +113,22 @@
     "europeAthens": "Europe/Athens time zone",
     "localPcTime": "Local PC time",
     "timezoneChanged": "Timezone has been changed successfully",
-    "fundingInfo": "To fund your account, please proceed to the full website version"
+    "fundingInfo": "To fund your account, please proceed to the full website version",
+    "changePassword": "Change Password",
+    "changePasswordShort": "Password",
+    "uploadDocuments": "Upload Documents",
+    "uploadDocumentsShort": "Documents",
+    "personalDetailsShort": "Details",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "country": "Country",
+    "dateOfBirth": "Date of Birth",
+    "streetAddress": "Street Address",
+    "houseFlatNumber": "House/Flat Number",
+    "city": "City",
+    "primaryPhone": "Primary Phone/Mobile",
+    "secondaryPhone": "Secondary Phone/Mobile",
+    "title": "Title"
   },
   "realForex": {
     "All": "All",

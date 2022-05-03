@@ -13,6 +13,7 @@ import {
   Settings,
   Funding,
   BrowserScreen,
+  MyProfile,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -104,6 +105,17 @@ const MainStackNavigator = ({ navigation }) => {
               styles={{ marginLeft: 16 }}
             />
           ),
+        }}
+      />
+      <MainStack.Screen
+        name="MyProfile"
+        component={MyProfile}
+        options={{
+          title: "MyProfile",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
       <MainStack.Screen

@@ -12,6 +12,7 @@ const TextField = ({
   onChange,
   hasIcon,
   secureTextEntry,
+  editable,
 }) => {
   return (
     <View style={styles.textFieldWrapper}>
@@ -29,6 +30,7 @@ const TextField = ({
         keyboardType="email-address"
         style={styles.input}
         secureTextEntry={secureTextEntry}
+        editable={editable}
       />
     </View>
   );
