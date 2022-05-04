@@ -76,7 +76,8 @@
     "newPendingOrder": "New Pending Order",
     "accept": "Accept",
     "deposit": "Deposit",
-    "submit": "Submit"
+    "submit": "Submit",
+    "save": "Save"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -128,7 +129,14 @@
     "city": "City",
     "primaryPhone": "Primary Phone/Mobile",
     "secondaryPhone": "Secondary Phone/Mobile",
-    "title": "Title"
+    "title": "Title",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "repeatPassword": "Repeat Password",
+    "selectType": "Select Type",
+    "chooseFile": "Choose File",
+    "noFileChosen": "No file chosen",
+    "expirationDate": "Expiration date"
   },
   "realForex": {
     "All": "All",

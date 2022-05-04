@@ -18,7 +18,8 @@
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
       "bundleIdentifier": "com.exadynamic",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "usesIcloudStorage": true
     },
     "android": {
       "package": "com.exadynamic",

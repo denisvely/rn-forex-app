@@ -188,3 +188,4 @@ export const setDailyChanges = (dispatch, payload) => {
 export const setUser = (dispatch, payload) => {
   dispatch({ type: actionTypes.SET_USER, payload });
 };
+

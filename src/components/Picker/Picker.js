@@ -30,7 +30,7 @@ const pickerStyle = {
     marginBottom: 16,
     paddingRight: 30,
   },
-  placeholderColor: "black",
+  placeholderColor: colors.fontPrimaryColor,
   underline: { borderTopWidth: 0 },
   icon: {
     width: 32,
@@ -49,7 +49,7 @@ const Picker = ({
   onChange,
   values,
 }) => {
-  return (
+  return values ? (
     <View>
       <RNPickerSelect
         value={value}
@@ -68,7 +68,7 @@ const Picker = ({
         style={pickerStyle.icon}
       />
     </View>
-  );
+  ) : null;
 };
 
 Picker.propTypes = {

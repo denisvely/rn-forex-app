@@ -1,19 +1,18 @@
 import { StyleSheet } from "react-native";
 import { colors } from "constants";
+import { deviceWidth } from "../../../../utils";
 
 export default StyleSheet.create({
   container: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
-    backgroundColor: colors.containerBackground,
+    backgroundColor: colors.white,
   },
-  fundingWrapper: {
-    paddingHorizontal: 45,
-    paddingVertical: 48,
-  },
-  fundingInfo: {
-    marginTop: 10,
+  submitBtn: {
+    width: deviceWidth - 48,
+    minWidth: deviceWidth - 48,
+    alignSelf: "center",
   },
   buttonsWrapper: {
     justifyContent: "space-between",
@@ -26,6 +25,17 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 24,
     backgroundColor: colors.white,
+    width: deviceWidth - 48,
   },
-  depositBtn: {},
+  input: {
+    height: 44,
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderColor: colors.gray,
+    paddingVertical: 11,
+    paddingHorizontal: 9,
+    flex: 1,
+    color: colors.fontPrimaryColor,
+    width: deviceWidth - 48,
+  },
 });
