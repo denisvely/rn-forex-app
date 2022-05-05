@@ -27,7 +27,7 @@ const getUploadedDocumentsStatus =
 const getComplianceAllowedDocuments =
   UploadDocumentsServices.getComplianceAllowedDocuments();
 
-const uploadDocuments = () => {
+const UploadDocuments = ({ navigation }) => {
   const { t } = useTranslation();
   const token = useSelector((state) => getToken(state));
   const [disabled, setDisabled] = useState(false);
@@ -131,6 +131,24 @@ const uploadDocuments = () => {
                   toggleModal={onChangeExpDate}
                   datepickerDate={expDate ? expDate : new Date(Date.now())}
                 />
+                <View style={styles.chooseFileWrapper}>
+                  <Pressable
+                    style={styles.chooseFileBtn}
+                    title="open picker for single file selection"
+                    onPress={_pickDocument}
+                  >
+                    <Typography
+                      name="small"
+                      text={"Choose file"}
+                      style={styles.btnText}
+                    />
+                  </Pressable>
+                  <Typography
+                    name="small"
+                    text={"No file chosen"}
+                    style={styles.fileText}
+                  />
+                </View>
                 <View style={styles.textFieldWrapper}>
                   <Pressable
                     onPress={() => setDatepickerOpen(!isDatepickerOpen)}
@@ -146,15 +164,18 @@ const uploadDocuments = () => {
                     />
                   </Pressable>
                 </View>
-                <View style={styles.textFieldWrapper}>
-                  <Pressable
-                    style={styles.input}
-                    title="open picker for single file selection"
-                    onPress={_pickDocument}
-                  >
-                    <Typography name="small" text={"Choose file"} />
-                  </Pressable>
-                </View>
+                <Button
+                  textStyle={styles.myDocumentsBtn}
+                  text={t(`menu.myDocuments`)}
+                  type="text"
+                  font="normal"
+                  size="medium"
+                  onPress={() =>
+                    navigation.navigate("MyDocuments", {
+                      documents: uploadedDocuments,
+                    })
+                  }
+                />
               </ScrollView>
               <View style={styles.buttonsWrapper}>
                 <Button
@@ -176,4 +197,4 @@ const uploadDocuments = () => {
   );
 };
 
-export default uploadDocuments;
+export default UploadDocuments;

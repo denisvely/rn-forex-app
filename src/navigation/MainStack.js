@@ -14,6 +14,9 @@ import {
   Funding,
   BrowserScreen,
   MyProfile,
+  MyDocuments,
+  MyMessages,
+  MessageDetails,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -111,7 +114,40 @@ const MainStackNavigator = ({ navigation }) => {
         name="MyProfile"
         component={MyProfile}
         options={{
-          title: "MyProfile",
+          title: "My Profile",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MyDocuments"
+        component={MyDocuments}
+        options={{
+          title: "My Documents",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MyMessages"
+        component={MyMessages}
+        options={{
+          title: "My Messages",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MessageDetails"
+        component={MessageDetails}
+        options={{
+          title: "Message",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,

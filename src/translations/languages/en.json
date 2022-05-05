@@ -77,7 +77,10 @@
     "accept": "Accept",
     "deposit": "Deposit",
     "submit": "Submit",
-    "save": "Save"
+    "save": "Save",
+    "forgotPassword": "Forgot Password",
+    "approved": "Approved",
+    "notApproved": "Expired / Not Approved"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -136,7 +139,8 @@
     "selectType": "Select Type",
     "chooseFile": "Choose File",
     "noFileChosen": "No file chosen",
-    "expirationDate": "Expiration date"
+    "expirationDate": "Expiration date",
+    "myDocuments": "My Documents"
   },
   "realForex": {
     "All": "All",

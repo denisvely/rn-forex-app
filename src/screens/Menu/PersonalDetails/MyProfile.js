@@ -31,7 +31,7 @@ const MyProfile = ({ navigation }) => {
           {() => <ChangePassword />}
         </Tab.Screen>
         <Tab.Screen name="Upload Documents">
-          {() => <UploadDocuments />}
+          {() => <UploadDocuments navigation={navigation} />}
         </Tab.Screen>
       </Tab.Navigator>
     </View>
