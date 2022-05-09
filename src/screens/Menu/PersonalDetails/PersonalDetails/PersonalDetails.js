@@ -23,9 +23,9 @@ import { getUser, setUser, getToken } from "../../../../store/app";
 import styles from "./personalDetailsStyles";
 
 const titleValues = [
-  { label: "Mister", itemKey: 1, value: "mister" },
-  { label: "Miss", itemKey: 2, value: "miss" },
-  { label: "Mrs", itemKey: 3, value: "mrs" },
+  { label: "Mister", itemKey: 0, value: "mister" },
+  { label: "Miss", itemKey: 1, value: "miss" },
+  { label: "Mrs", itemKey: 2, value: "mrs" },
 ];
 
 const updateUser = PersonalDetailsService.updateUser();
@@ -36,7 +36,7 @@ const PersonalDetails = () => {
   const user = useSelector((state) => getUser(state));
   const token = useSelector((state) => getToken(state));
   const [title, setTitle] = useState(null);
-  const [countryCode, changeCountryCode] = useState(user.country);
+  const [countryCode, changeCountryCode] = useState(user.countryCode);
   const [birthDate, setBirthDate] = useState(null);
   const [isDatepickerOpen, setDatepickerOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -88,7 +88,7 @@ const PersonalDetails = () => {
         style={styles.form}
         onSubmit={(values) => {
           setDisabled(true);
-          values.title = title;
+          values.title = title ? title : user.title;
           values.countryCode = countryCode;
           values.birthDay = birthDate.getDate();
           values.birthMonth = birthDate.getMonth() + 1;
@@ -104,15 +104,16 @@ const PersonalDetails = () => {
               if (response.body.code !== 200) {
                 Toast.show({
                   type: "error",
-                  text1: `Your changes were not saved`,
+                  text1: t(`menu.notSaved`),
                   topOffset: 100,
                 });
               } else {
                 Toast.show({
                   type: "success",
-                  text1: `User details updated successfully`,
+                  text1: t(`menu.userUpdatedSuccessfully`),
                   topOffset: 100,
                 });
+                updateUserDetails();
               }
               setDisabled(false);
             });
@@ -148,10 +149,10 @@ const PersonalDetails = () => {
               />
               <View style={styles.textFieldWrapper}>
                 <CountryPicker
-                  selectedCountryCode={props.values.countryCode}
-                  changeCountry={(countryCode) =>
-                    changeCountryCode(countryCode)
-                  }
+                  selectedCountryCode={countryCode}
+                  changeCountry={(countryCode) => {
+                    changeCountryCode(countryCode);
+                  }}
                 />
               </View>
               <Datepicker

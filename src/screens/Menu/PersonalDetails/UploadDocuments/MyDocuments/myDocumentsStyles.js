@@ -4,7 +4,7 @@ import { deviceWidth } from "../../../../../utils";
 
 export default StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     flex: 1,
     backgroundColor: colors.containerBackground,

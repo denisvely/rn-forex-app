@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { LazyFlatList, Typography } from "../../../../../components";
-import { deviceWidth } from "../../../../../utils";
+import { deviceHeight, deviceWidth } from "../../../../../utils";
 
 import styles from "./myDocumentsStyles";
 import { colors } from "../../../../../constants";
@@ -51,24 +51,25 @@ const MyDocuments = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <LazyFlatList
-        list={documents}
-        renderItem={({ item }) => renderDocument(item)}
-        keyExtractor={(item, index) => item.index}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          marginTop: 16,
-          width: deviceWidth - 32,
-          justifyContent: "flex-start",
-          alignItems: "center",
-          alignSelf: "center",
-          flexGrow: 1,
-          height: "100%",
-        }}
-        style={styles.flatListContainer}
-        listRef={flatListRef}
-      />
+      {documents ? (
+        <LazyFlatList
+          list={documents}
+          renderItem={({ item }) => renderDocument(item)}
+          keyExtractor={(item) => item.UserDocumentId}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            marginTop: 16,
+            width: deviceWidth - 32,
+            justifyContent: "flex-start",
+            alignItems: "center",
+            alignSelf: "center",
+            flex: 1,
+          }}
+          style={styles.flatListContainer}
+          listRef={flatListRef}
+        />
+      ) : null}
     </View>
   );
 };

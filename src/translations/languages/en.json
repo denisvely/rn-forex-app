@@ -80,7 +80,8 @@
     "save": "Save",
     "forgotPassword": "Forgot Password",
     "approved": "Approved",
-    "notApproved": "Expired / Not Approved"
+    "notApproved": "Expired / Not Approved",
+    "no-data": "No data"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -140,7 +141,13 @@
     "chooseFile": "Choose File",
     "noFileChosen": "No file chosen",
     "expirationDate": "Expiration date",
-    "myDocuments": "My Documents"
+    "myDocuments": "My Documents",
+    "notSaved": "Your changes were not saved",
+    "userUpdatedSuccessfully": "User details updated successfully",
+    "enterValidExpDate": "Please eneter a valid expiration date.",
+    "expDateInThePast": "Expiration date cannot be in the past! Please enter valid date!",
+    "selectTypeError": "Select type of a document you are uploading",
+    "attachValidFile": "Please attach valid file."
   },
   "realForex": {
     "All": "All",

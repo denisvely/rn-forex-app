@@ -89,13 +89,13 @@ const MyMessages = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
-            paddingTop: 0,
             marginTop: 16,
             width: deviceWidth - 32,
             justifyContent: "flex-start",
             alignItems: "center",
             alignSelf: "center",
             flexGrow: 1,
+            height: "100%",
           }}
           style={styles.flatListContainer}
           listRef={flatListRef}
