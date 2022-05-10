@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import {
   Loading,
@@ -47,6 +47,7 @@ const MarketTab = ({
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
+  const [tradeInProgress, setTradeProgress] = useState(false);
 
   // Order Info
   const initialOrderInfoState = {
@@ -72,6 +73,7 @@ const MarketTab = ({
   const [marketState, setMarketState] = useState(initalMarketTPandSLState);
 
   const makeNewMarketOrder = (isBuy) => {
+    setTradeProgress(true);
     // Market Order
     const volume =
       quantity.indexOf(",") > -1
@@ -115,7 +117,7 @@ const MarketTab = ({
         currTrade.option =
           realForexOptionsByType.All[currTrade.tradableAssetId].name;
         currTrade.isBuy = isBuy;
-
+        setTradeProgress(false);
         processMarketOrder(response, currTrade);
         navigation.navigate("quotes");
       });
@@ -201,7 +203,11 @@ const MarketTab = ({
             <Button
               size="medium"
               type="buy"
-              style={styles.buyButton}
+              style={{
+                ...styles.buyButton,
+                opacity: tradeInProgress ? 0.3 : 1,
+              }}
+              disabled={tradeInProgress}
               onPress={() => makeNewMarketOrder(true)}
             >
               {() => (
@@ -221,7 +227,11 @@ const MarketTab = ({
             <Button
               size="medium"
               type="sell"
-              style={styles.sellButton}
+              style={{
+                ...styles.sellButton,
+                opacity: tradeInProgress ? 0.3 : 1,
+              }}
+              disabled={tradeInProgress}
               onPress={() => makeNewMarketOrder(false)}
             >
               {() => (

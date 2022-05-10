@@ -13,7 +13,8 @@ const initialState = {
   games: null,
   isLogged: false,
   game: null,
-  dailyChanges: null
+  dailyChanges: null,
+  hash: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -54,7 +55,6 @@ const appReducer = (state = initialState, action) => {
 
     case actionTypes.SET_USER: {
       const stateClone = cloneDeep(state);
-
       return {
         ...stateClone,
         user: action.payload,
@@ -62,12 +62,12 @@ const appReducer = (state = initialState, action) => {
     }
     case actionTypes.SET_SERVER_SETTINGS: {
       const stateClone = cloneDeep(state);
-
       return {
         ...stateClone,
-        limitations: action.payload.limitations.data,
-        settings: action.payload.settings.data,
-        games: action.payload.games.data,
+        limitations: action.payload.body.limitations.data,
+        settings: action.payload.body.settings.data,
+        games: action.payload.body.games.data,
+        hash: action.payload.hash,
       };
     }
     case actionTypes.SET_GAME: {

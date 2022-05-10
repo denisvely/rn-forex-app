@@ -60,6 +60,14 @@ const signalRMiddleware =
           });
       });
 
+      mergeHubProxy.on("forexTradingSettings", (response) => {
+        console.log(response);
+        // forexHelper.settings.MarginUsage = response.MarginUsage;
+        // forexHelper.settings.MinCloseInterval = response.MinCloseInterval;
+        // widgets.user.MarginCallLevel = response.MarginCallLevel;
+        // widgets.user.StopOutLevel = response.StopOutLevel;
+      });
+
       //connection-handling
       connection.connectionSlow(() => {
         console.log(

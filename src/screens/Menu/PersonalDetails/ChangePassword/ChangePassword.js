@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";

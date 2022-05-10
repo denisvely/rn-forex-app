@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import RealForexStack from "./RealForexStack";
 import SimplexStack from "./SimplexStack";
 import {
@@ -17,6 +18,7 @@ import {
   MyDocuments,
   MyMessages,
   MessageDetails,
+  ContactUs,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -31,6 +33,7 @@ import { getApplication } from "../store/app";
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation }) => {
+  const { t } = useTranslation();
   const app = useSelector((state) => getApplication(state));
 
   return (
@@ -65,7 +68,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Menu"
         component={Menu}
         options={{
-          title: "Menu",
+          title: t(`navigation.Menu`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -76,7 +79,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Settings"
         component={Settings}
         options={{
-          title: "Settings",
+          title: t(`navigation.Settings`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -87,7 +90,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Funding"
         component={Funding}
         options={{
-          title: "Funding",
+          title: t(`navigation.Funding`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -98,7 +101,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Deposit"
         component={BrowserScreen}
         options={{
-          title: "Deposit",
+          title: t(`navigation.Deposit`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.arrowBackWithoutTitleNoMargin,
           ...headerOptions.whiteBackgroundHeader,
@@ -114,7 +117,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="MyProfile"
         component={MyProfile}
         options={{
-          title: "My Profile",
+          title: t(`navigation.MyProfile`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -125,7 +128,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="MyDocuments"
         component={MyDocuments}
         options={{
-          title: "My Documents",
+          title: t(`navigation.MyDocuments`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -136,7 +139,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="MyMessages"
         component={MyMessages}
         options={{
-          title: "My Messages",
+          title: t(`navigation.MyMessages`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -147,7 +150,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="MessageDetails"
         component={MessageDetails}
         options={{
-          title: "Message",
+          title: t(`navigation.MessageDetails`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -155,10 +158,22 @@ const MainStackNavigator = ({ navigation }) => {
         }}
       />
       <MainStack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{
+          title: t(`navigation.ContactUs`),
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+
+      <MainStack.Screen
         name="Notifications"
         component={Notifications}
         options={{
-          title: "Notifications",
+          title: t(`navigation.Notifications`),
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -217,7 +232,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={PositionHistory}
         options={{
           tabBarLabel: "PositionHistory",
-          title: "Position History",
+          title: t(`navigation.PositionHistory`),
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,

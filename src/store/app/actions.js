@@ -79,7 +79,6 @@ export const login = (dispatch, token) => {
         return;
       }
       const body = response.getBody();
-
       dispatch({
         type: actionTypes.SET_USER,
         payload: body,
@@ -93,10 +92,9 @@ export const login = (dispatch, token) => {
             return;
           }
           const body = response.getBody();
-
           dispatch({
             type: actionTypes.SET_SERVER_SETTINGS,
-            payload: body,
+            payload: { body: body, hash: body.user.hash },
           });
         });
     });
@@ -188,4 +186,3 @@ export const setDailyChanges = (dispatch, payload) => {
 export const setUser = (dispatch, payload) => {
   dispatch({ type: actionTypes.SET_USER, payload });
 };
-

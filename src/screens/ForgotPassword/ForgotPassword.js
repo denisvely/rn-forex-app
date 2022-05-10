@@ -61,6 +61,7 @@ const Login = ({ navigation }) => {
               value={props.values.email}
               type="email"
               hasIcon={true}
+              keyboardType="email-address"
             />
 
             <Button

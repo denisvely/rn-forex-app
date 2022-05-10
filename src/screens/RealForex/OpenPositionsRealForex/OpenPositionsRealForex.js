@@ -45,7 +45,6 @@ const OpenPositionsRealForex = ({ navigation }) => {
             alignItems: "center",
             alignSelf: "center",
             paddingBottom: 100,
-            marginTop: 30,
           }}
           style={styles.flatListContainer}
           listRef={openPositionsRef}

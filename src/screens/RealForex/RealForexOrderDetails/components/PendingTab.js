@@ -50,6 +50,7 @@ const PendingTab = ({
     getCurrentlyModifiedOrder(state)
   );
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
+  const [tradeInProgress, setTradeProgress] = useState(false);
 
   // Order Info
   const initialOrderInfoState = {
@@ -82,6 +83,7 @@ const PendingTab = ({
   const [pendingState, setPendingState] = useState(initalPendingState);
 
   const makeNewPendingOrder = () => {
+    setTradeProgress(true);
     // Pending Order
     const volume =
       quantity.indexOf(",") > -1
@@ -183,6 +185,7 @@ const PendingTab = ({
             ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
           }
           processPendingOrder(response, currTrade);
+          setTradeProgress(false);
           navigation.navigate("quotes");
         });
     } else {
@@ -318,6 +321,9 @@ const PendingTab = ({
       )}
       <View style={styles.buttonsWrapper}>
         <Button
+          style={{
+            opacity: tradeInProgress ? 0.3 : 1,
+          }}
           text={t("common-labels.place")}
           type="primary"
           font="mediumBold"
