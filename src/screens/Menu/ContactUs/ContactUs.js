@@ -9,9 +9,16 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
+import * as Yup from "yup";
 import Toast from "react-native-toast-message";
 
-import { Button, TextField, Picker, Typography } from "../../../components";
+import {
+  Button,
+  TextField,
+  Picker,
+  Typography,
+  Error,
+} from "../../../components";
 import { deviceWidth } from "../../../utils";
 import ContactUsService from "./services/ContactUsService";
 
@@ -20,6 +27,19 @@ import { getUser } from "../../../store/app";
 import styles from "./contactUsStyles";
 
 const postContactUsMessage = ContactUsService.postContactUsMessage();
+
+const ContactUsSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  phone: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  message: Yup.string().required("Required"),
+});
 
 const ContactUs = ({ navigation }) => {
   const { t } = useTranslation();
@@ -58,8 +78,6 @@ const ContactUs = ({ navigation }) => {
       {!isKeyboardShown ? (
         <View style={styles.contactUsInfo}>
           <Typography name="small" text={t(`menu.contactUsInfo1`)} />
-          <Typography name="small" text={t(`menu.contactUsInfo2`)} />
-          <Typography name="small" text={t(`menu.contactUsInfo3`)} />
           <View style={styles.additionalInfo}>
             <View style={styles.left}>
               <Typography
@@ -122,6 +140,7 @@ const ContactUs = ({ navigation }) => {
           email: user.email,
           subject: "deposit/withdraw",
         }}
+        validationSchema={ContactUsSchema}
         onSubmit={(values) => {
           setDisabled(true);
           //   TODO
@@ -183,18 +202,27 @@ const ContactUs = ({ navigation }) => {
                 value={props.values.name}
                 onSubmitEditing={Keyboard.dismiss}
               />
+              {props.errors.name && props.touched.name ? (
+                <Error name="nano" text={props.errors.name} />
+              ) : null}
               <TextField
                 placeholder={t(`menu.email`)}
                 onChange={props.handleChange("email")}
                 value={props.values.email}
                 keyboardType="email-address"
               />
+              {props.errors.email && props.touched.email ? (
+                <Error name="nano" text={props.errors.email} />
+              ) : null}
               <TextField
                 placeholder={t(`menu.phone`)}
                 onChange={props.handleChange("phone")}
                 value={props.values.phone}
                 keyboardType="phone-pad"
               />
+              {props.errors.phone && props.touched.phone ? (
+                <Error name="nano" text={props.errors.phone} />
+              ) : null}
               <Picker
                 values={subjects}
                 placeholderText={subject}
@@ -208,6 +236,9 @@ const ContactUs = ({ navigation }) => {
                 value={props.values.message}
                 style={styles.message}
               />
+              {props.errors.message && props.touched.message ? (
+                <Error name="nano" text={props.errors.message} />
+              ) : null}
             </ScrollView>
             <View style={styles.buttonsWrapper}>
               <Button

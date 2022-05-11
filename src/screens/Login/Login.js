@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, TextInput } from "react-native";
+import { View } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import { Button, TextField } from "components";
+import * as Yup from "yup";
+import { Button, TextField, Error } from "../../components";
 import { SvgXml } from "react-native-svg";
+import Toast from "react-native-toast-message";
 
 import LoginService from "./services/LoginService";
 import { login } from "store/app";
@@ -16,11 +18,20 @@ import styles from "./loginStyles";
 
 const signInService = LoginService.login();
 
+const SignInSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .min(6, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Invalid password"),
+});
+
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [loginMessage, setLogginMessage] = useState("");
+  const [requestInProgress, setRequestProgress] = useState(false);
 
   const signIn = (values) => {
+    setRequestProgress(true);
     signInService
       .fetch({ username: values.email, password: values.password })
 
@@ -31,12 +42,16 @@ const Login = ({ navigation }) => {
             // TODO => 2FA_NotValid
             return;
           } else {
-            setLogginMessage("Invalid Username or Password");
+            Toast.show({
+              type: "success",
+              text1: `Invalid Username or Password`,
+              topOffset: 100,
+            });
             return;
           }
         }
-        setLogginMessage("You have been logged in.");
         login(dispatch, body);
+        setRequestProgress(false);
       });
   };
 
@@ -51,6 +66,7 @@ const Login = ({ navigation }) => {
         onSubmit={(values) => {
           signIn(values);
         }}
+        validationSchema={SignInSchema}
       >
         {(props) => (
           <>
@@ -62,6 +78,9 @@ const Login = ({ navigation }) => {
               hasIcon={true}
               keyboardType="email-address"
             />
+            {props.errors.email && props.touched.email ? (
+              <Error name="nano" text={props.errors.email} bigPadding={true} />
+            ) : null}
             <TextField
               placeholder="Password"
               onChange={props.handleChange("password")}
@@ -70,6 +89,13 @@ const Login = ({ navigation }) => {
               hasIcon={true}
               type="password"
             />
+            {props.errors.password && props.touched.password ? (
+              <Error
+                name="nano"
+                text={props.errors.password}
+                bigPadding={true}
+              />
+            ) : null}
             <View style={styles.forgotPassword}>
               <Button
                 textStyle={{ color: colors.buttonSecondary }}
@@ -82,6 +108,7 @@ const Login = ({ navigation }) => {
             </View>
 
             <Button
+              disabled={requestInProgress}
               style={{ marginTop: 32 }}
               text="Login"
               type="primary"
@@ -92,7 +119,6 @@ const Login = ({ navigation }) => {
           </>
         )}
       </Formik>
-      <Typography name="tiny" text={loginMessage} />
       <View style={styles.bottomViewLogin}>
         <Typography name="tiny" text={"Don't you have an account?"} />
         <Button

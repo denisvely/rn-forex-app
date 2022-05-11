@@ -25,6 +25,7 @@ export default StyleSheet.create({
     paddingTop: 24,
     backgroundColor: colors.white,
     width: deviceWidth - 48,
+    zIndex: 10,
   },
   submitBtn: {
     width: deviceWidth - 48,

@@ -24,6 +24,8 @@ export { default as AssetIcon } from "./AssetIcon/AssetIcon";
 export { default as Datepicker } from "./Datepicker/Datepicker";
 export { default as ExpirationDate } from "./ExpirationDate/ExpirationDate";
 export { default as CountryPicker } from "./CountryPicker/CountryPicker";
+export { default as Error } from "./Error/Error";
+export { default as PhoneInput } from "./PhoneInput/PhoneInput";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";

@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
+import * as Yup from "yup";
 import Toast from "react-native-toast-message";
 
-import { Button, TextField } from "../../../../components";
+import { Button, TextField, Error } from "../../../../components";
 import { deviceWidth } from "../../../../utils";
 import ChangePasswordService from "./services/ChangePasswordService";
 
@@ -14,6 +15,21 @@ import { getToken } from "../../../../store/app";
 import styles from "./changePasswordStyles";
 
 const changePassword = ChangePasswordService.changePassword();
+
+const ChangePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .min(6, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Invalid password"),
+  newPassword: Yup.string()
+    .min(6, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Invalid password"),
+  repeatPassword: Yup.string()
+    .min(6, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Invalid password"),
+});
 
 const ChangePassword = () => {
   const { t } = useTranslation();
@@ -29,6 +45,7 @@ const ChangePassword = () => {
           newPassword: "",
           repeatPassword: "",
         }}
+        validationSchema={ChangePasswordSchema}
         onSubmit={(values) => {
           setDisabled(true);
           if (values.newPassword != values.repeatPassword) {
@@ -83,18 +100,27 @@ const ChangePassword = () => {
                 value={props.values.currentPassword}
                 secureTextEntry={true}
               />
+              {props.errors.currentPassword && props.touched.currentPassword ? (
+                <Error name="nano" text={props.errors.currentPassword} />
+              ) : null}
               <TextField
                 placeholder={t(`menu.newPassword`)}
                 onChange={props.handleChange("newPassword")}
                 value={props.values.newPassword}
                 secureTextEntry={true}
               />
+              {props.errors.newPassword && props.touched.newPassword ? (
+                <Error name="nano" text={props.errors.newPassword} />
+              ) : null}
               <TextField
                 placeholder={t(`menu.repeatPassword`)}
                 onChange={props.handleChange("repeatPassword")}
                 value={props.values.repeatPassword}
                 secureTextEntry={true}
               />
+              {props.errors.repeatPassword && props.touched.repeatPassword ? (
+                <Error name="nano" text={props.errors.repeatPassword} />
+              ) : null}
             </ScrollView>
             <View style={styles.buttonsWrapper}>
               <Button

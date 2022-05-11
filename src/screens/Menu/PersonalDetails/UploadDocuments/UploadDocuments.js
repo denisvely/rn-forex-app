@@ -96,7 +96,6 @@ const UploadDocuments = ({ navigation }) => {
 
   const expirationDateValidaton = (date) => {
     var mdate = moment(date, "MM-DD-YYYY"),
-      widget = this,
       today = moment().startOf("day").format("x"),
       regexp = new RegExp("^[0-9]{2}/[0-9]{2}/[0-9]{4}$"),
       isValidDate = {},
