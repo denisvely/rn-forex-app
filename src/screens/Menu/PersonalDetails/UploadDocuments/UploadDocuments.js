@@ -30,8 +30,7 @@ const submitDocs = UploadDocumentsServices.complianceAddDocument();
 
 const UploadDocuments = ({ navigation }) => {
   const { t } = useTranslation();
-  const [disabled, setDisabled] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState({});
   const [fileType, setFileType] = useState(null);
   const [expDate, setExpDate] = useState(null);
   const [isDatepickerOpen, setDatepickerOpen] = useState(false);
@@ -39,7 +38,8 @@ const UploadDocuments = ({ navigation }) => {
   const [allDocuments, setDocuments] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isDocsReady, setDocsReady] = useState(false);
-  const [fileResponse, setFileResponse] = useState(123);
+  const [fileResponse, setFileResponse] = useState("");
+  const [fileName, setFileName] = useState("No file chosen");
 
   const getUploadedDocsStatus = () => {
     getUploadedDocumentsStatus.fetch().then(({ response }) => {
@@ -65,6 +65,7 @@ const UploadDocuments = ({ navigation }) => {
             RequiredExpirationDate: doc.RequiredExpirationDate,
           };
         });
+        setSelectedDocument(allDocs[0]);
         setDocuments(allDocs);
         setLoading(false);
         setDocsReady(true);
@@ -72,19 +73,49 @@ const UploadDocuments = ({ navigation }) => {
     });
   };
 
-  useEffect(() => {
-    getUploadedDocsStatus();
-  }, []);
-
   const _pickDocument = async () => {
+    const validFileExtensions = [
+      "image/png",
+      "image/bmp",
+      "image/jpg",
+      "image/jpeg",
+      "image/gif",
+      "image/x-windows-bmp",
+      "application/pdf",
+    ];
+
     // To work on IOS we should provide App AppleID !!!!!!!
     if (Platform.OS === "ios") {
       alert("To work on IOS we should provide App AppleID !!!!!!!");
       return;
     }
+
     let result = await DocumentPicker.getDocumentAsync({});
-    alert(result.uri);
-    console.log(result);
+    if (result) {
+      if (!result.uri && result.size > 30000000) {
+        Toast.show({
+          type: "error",
+          text1: "Please attach valid file.",
+          topOffset: 100,
+        });
+      }
+      const match = validFileExtensions.indexOf(result.mimeType);
+
+      if (match < 0) {
+        Toast.show({
+          type: "error",
+          text1: "This file type is not allowed.",
+          topOffset: 100,
+        });
+      }
+
+      result.lastModified = Date.now();
+      result.lastModifiedDate = new Date();
+      result.type = result.mimeType;
+      result.webkitRelativePath = result.uri;
+      setFileResponse(result);
+      setFileName(result.name);
+    }
   };
 
   const onChangeExpDate = (value) => {
@@ -119,7 +150,7 @@ const UploadDocuments = ({ navigation }) => {
     return isValidDate;
   };
 
-  const submitDocument = (values) => {
+  const submitDocument = () => {
     const isRequired = selectedDocument.RequiredExpirationDate;
     let expirationDate = expDate ? moment(expDate).format("MM/DD/YYYY") : "";
     const date = expirationDateValidaton(expirationDate);
@@ -154,9 +185,6 @@ const UploadDocuments = ({ navigation }) => {
         : moment().format("MM/DD/YYYY");
     }
 
-    // TODO => checkFileSizeAndFormat
-    // if (widget.checkFileSizeAndFormat(files).error) return;
-
     submitDocs
       .fetch({
         image: fileResponse,
@@ -165,115 +193,113 @@ const UploadDocuments = ({ navigation }) => {
       })
       .then(({ response }) => {
         if (response.body.code !== 200) {
+          Toast.show({
+            type: "error",
+            text1: response.body.data.text,
+            topOffset: 100,
+          });
           return;
         }
         getUploadedDocsStatus();
       });
   };
 
+  useEffect(() => {
+    getUploadedDocsStatus();
+  }, []);
+
   return (
     <View style={styles.container}>
       {!isLoading ? (
-        <Formik
-          style={styles.form}
-          onSubmit={(values) => {
-            setDisabled(true);
-            submitDocument(values);
-          }}
-        >
-          {(props) => (
-            <View style={styles.formWrapper}>
-              <ScrollView
-                horizontal={false}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  width: deviceWidth - 48,
-                  flexGrow: 1,
-                  paddingBottom: 130,
-                  marginTop: 16,
+        <View style={styles.formWrapper}>
+          <ScrollView
+            horizontal={false}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              width: deviceWidth - 48,
+              flexGrow: 1,
+              paddingBottom: 130,
+              marginTop: 16,
+            }}
+          >
+            {isDocsReady ? (
+              <Picker
+                values={allDocuments}
+                placeholderText={fileType}
+                value={fileType}
+                onChange={(value) => {
+                  if (value !== fileType) {
+                    setSelectedDocument(
+                      allDocuments.find((x) => x.label === value)
+                    );
+                    setFileType(value);
+                  }
                 }}
+              />
+            ) : null}
+            <Datepicker
+              modalState={isDatepickerOpen}
+              toggleModal={onChangeExpDate}
+              datepickerDate={expDate ? expDate : new Date(Date.now())}
+              minDate={new Date()}
+            />
+            <View style={styles.chooseFileWrapper}>
+              <Pressable
+                style={styles.chooseFileBtn}
+                title="open picker for single file selection"
+                onPress={_pickDocument}
               >
-                {isDocsReady ? (
-                  <Picker
-                    values={allDocuments}
-                    placeholderText={fileType}
-                    value={fileType}
-                    onChange={(value) => {
-                      if (value !== fileType) {
-                        setSelectedDocument(
-                          allDocuments.find((x) => x.label === value)
-                        );
-                        setFileType(value);
-                      }
-                    }}
-                  />
-                ) : null}
-                <Datepicker
-                  modalState={isDatepickerOpen}
-                  toggleModal={onChangeExpDate}
-                  datepickerDate={expDate ? expDate : new Date(Date.now())}
-                  minDate={new Date()}
+                <Typography
+                  name="small"
+                  text={"Choose file"}
+                  style={styles.btnText}
                 />
-                <View style={styles.chooseFileWrapper}>
-                  <Pressable
-                    style={styles.chooseFileBtn}
-                    title="open picker for single file selection"
-                    onPress={_pickDocument}
-                  >
-                    <Typography
-                      name="small"
-                      text={"Choose file"}
-                      style={styles.btnText}
-                    />
-                  </Pressable>
-                  <Typography
-                    name="small"
-                    text={"No file chosen"}
-                    style={styles.fileText}
-                  />
-                </View>
-                <View style={styles.textFieldWrapper}>
-                  <Pressable
-                    onPress={() => setDatepickerOpen(!isDatepickerOpen)}
-                    style={styles.input}
-                  >
-                    <Typography
-                      name="small"
-                      text={
-                        expDate
-                          ? moment(expDate).format("DD-MM-YYYY")
-                          : t(`menu.expirationDate`)
-                      }
-                    />
-                  </Pressable>
-                </View>
-                <Button
-                  textStyle={styles.myDocumentsBtn}
-                  text={t(`menu.myDocuments`)}
-                  type="text"
-                  font="normal"
-                  size="medium"
-                  onPress={() =>
-                    navigation.navigate("MyDocuments", {
-                      documents: uploadedDocuments,
-                    })
+              </Pressable>
+              <Typography
+                name="small"
+                text={fileName}
+                style={styles.fileText}
+              />
+            </View>
+            <View style={styles.textFieldWrapper}>
+              <Pressable
+                onPress={() => setDatepickerOpen(!isDatepickerOpen)}
+                style={styles.input}
+              >
+                <Typography
+                  name="small"
+                  text={
+                    expDate
+                      ? moment(expDate).format("DD-MM-YYYY")
+                      : t(`menu.expirationDate`)
                   }
                 />
-              </ScrollView>
-              <View style={styles.buttonsWrapper}>
-                <Button
-                  text={t("common-labels.save")}
-                  type="primary"
-                  font="mediumBold"
-                  size="big"
-                  onPress={props.handleSubmit}
-                  disabled={disabled}
-                />
-              </View>
+              </Pressable>
             </View>
-          )}
-        </Formik>
+            <Button
+              textStyle={styles.myDocumentsBtn}
+              text={t(`menu.myDocuments`)}
+              type="text"
+              font="normal"
+              size="medium"
+              onPress={() =>
+                navigation.navigate("MyDocuments", {
+                  documents: uploadedDocuments,
+                })
+              }
+            />
+          </ScrollView>
+          <View style={styles.buttonsWrapper}>
+            <Button
+              text={t("common-labels.save")}
+              type="primary"
+              font="mediumBold"
+              size="big"
+              onPress={() => submitDocument()}
+            />
+          </View>
+        </View>
       ) : (
         <Loading size="large" />
       )}

@@ -29,8 +29,9 @@ export default {
     return service;
   },
   complianceAddDocument: () => {
+    const token = ServiceManager.getAccessToken();
     const service = new Service(
-      `v1/compliance/documents/add?token=${ServiceManager.getAccessToken()}`,
+      `v1/compliance/documents/add?token=${token}`,
       apiConsts.HTTP_METHOD_POST
     );
 
@@ -38,8 +39,6 @@ export default {
       request.addUrlencodedParam("UploadedImage", image);
       request.addUrlencodedParam("DocumentTypeID", documentTypeId);
       request.addUrlencodedParam("DocumentExpirationDate", expDate);
-
-      // request.addParamToTheUrl(ServiceManager.getAccessToken());
 
       return request;
     });
