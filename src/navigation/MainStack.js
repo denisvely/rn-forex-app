@@ -69,6 +69,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={Menu}
         options={{
           title: t(`navigation.Menu`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -80,6 +81,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={Settings}
         options={{
           title: t(`navigation.Settings`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -91,6 +93,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={Funding}
         options={{
           title: t(`navigation.Funding`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -102,6 +105,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={BrowserScreen}
         options={{
           title: t(`navigation.Deposit`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.arrowBackWithoutTitleNoMargin,
           ...headerOptions.whiteBackgroundHeader,
@@ -118,6 +122,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={MyProfile}
         options={{
           title: t(`navigation.MyProfile`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -129,6 +134,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={MyDocuments}
         options={{
           title: t(`navigation.MyDocuments`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -140,6 +146,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={MyMessages}
         options={{
           title: t(`navigation.MyMessages`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -151,6 +158,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={MessageDetails}
         options={{
           title: t(`navigation.MessageDetails`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -162,6 +170,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={ContactUs}
         options={{
           title: t(`navigation.ContactUs`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -174,6 +183,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={Notifications}
         options={{
           title: t(`navigation.Notifications`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,

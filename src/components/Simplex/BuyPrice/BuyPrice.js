@@ -14,7 +14,7 @@ const BuyPrice = ({ asset, textColor = colors.white }) => {
     getFormattedPrice(simplexPrices[asset.id]);
 
   return (
-    <Typography name="normal" style={styles.buy}>
+    <Typography name="medium" style={styles.buy}>
       <Typography
         name="normal"
         text={price.priceMedium}

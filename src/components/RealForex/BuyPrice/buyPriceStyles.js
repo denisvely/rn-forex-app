@@ -5,5 +5,6 @@ export default StyleSheet.create({
   buy: {
     color: colors.buyColor,
     textAlign: "right",
+    lineHeight: 24,
   },
 });

@@ -10,6 +10,7 @@ i18n
   .use(languageDetector)
   .use(initReactI18next)
   .init({
+    compatibilityJSON: "v3",
     lng: lang.EN.toLocaleLowerCase(),
     resources: languages,
     react: {
