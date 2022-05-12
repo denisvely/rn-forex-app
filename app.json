@@ -33,18 +33,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "Exa-dynamic",
-            "project": "Exa-dynamic",
-            "authToken": "86ee57644cea4219910884aafbe5d0efe50409b2686940f5a3b5584f00ed2278"
-          }
-        }
-      ]
     }
   }
 }
