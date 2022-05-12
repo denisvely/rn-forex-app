@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -106,16 +106,16 @@ const Login = ({ navigation }) => {
                 onPress={() => navigation.navigate("ForgotPassword")}
               />
             </View>
-
-            <Button
-              disabled={requestInProgress}
-              style={{ marginTop: 32 }}
-              text="Login"
-              type="primary"
-              font="mediumBold"
-              size="big"
+            <TouchableOpacity
               onPress={props.handleSubmit}
-            />
+              style={styles.loginBtn}
+            >
+              <Typography
+                name="mediumBold"
+                text={"Login"}
+                style={{ color: colors.white }}
+              />
+            </TouchableOpacity>
           </>
         )}
       </Formik>

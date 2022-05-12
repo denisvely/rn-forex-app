@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { colors } from "constants";
+import { deviceWidth } from "../../utils";
 
 export default StyleSheet.create({
   container: {
@@ -27,5 +28,19 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginTop: 50,
     width: "100%",
+  },
+  loginBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    position: "relative",
+    top: 0,
+    left: 0,
+    minWidth: "100%",
+    borderRadius: 4,
+    marginTop: 32,
+    maxWidth: deviceWidth - 32,
+    height: 50,
+    backgroundColor: colors.buttonPrimary,
   },
 });

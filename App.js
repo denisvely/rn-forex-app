@@ -4,7 +4,6 @@ import { LogBox, StatusBar } from "react-native";
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import ServiceManager from "./src/utils/serviceManager";
 import Toast from "./src/components/Toast/Toast";
-import * as Sentry from "sentry-expo";
 
 import "./src/translations";
 
@@ -30,11 +29,6 @@ global.fetch = function (uri, options, ...args) {
 };
 
 const App = () => {
-  Sentry.init({
-    dsn: "https://d3f21029ceeb41588a7518e83ef5424d@o1239946.ingest.sentry.io/6391793",
-    debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-  });
-
   const theme = useColorScheme();
   return (
     <Provider store={Store}>
