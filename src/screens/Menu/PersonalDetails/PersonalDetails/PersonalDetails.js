@@ -129,7 +129,7 @@ const PersonalDetails = () => {
             values.countryCode = countryCode;
             values.birthDay = birthDate.getDate();
             values.birthMonth = birthDate.getMonth() + 1;
-            values.birthYear = birthDate.getYear();
+            values.birthYear = birthDate.getFullYear();
             values.email = user.email;
             updateUser
               .fetch({

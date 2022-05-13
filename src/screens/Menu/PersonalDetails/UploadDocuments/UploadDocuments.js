@@ -1,14 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { View, ScrollView, Pressable, Text, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, ScrollView, Pressable, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Formik } from "formik";
 import moment from "moment";
 import Toast from "react-native-toast-message";
 import * as DocumentPicker from "expo-document-picker";
-
 import UploadDocumentsServices from "./service/UploadDocumentsServices";
-
 import {
   Button,
   Picker,
@@ -38,7 +34,7 @@ const UploadDocuments = ({ navigation }) => {
   const [allDocuments, setDocuments] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isDocsReady, setDocsReady] = useState(false);
-  const [fileResponse, setFileResponse] = useState("");
+  const [fileResponse, setFileResponse] = useState(null);
   const [fileName, setFileName] = useState("No file chosen");
 
   const getUploadedDocsStatus = () => {
@@ -53,17 +49,18 @@ const UploadDocuments = ({ navigation }) => {
         }
         let allDocs = [];
         const documents = response.body.data;
-        documents.forEach((doc) => {
-          allDocs[doc.Id - 1] = {
+        documents.forEach((doc, index) => {
+          const docObj = {
             label: doc.Name,
-            itemKey: doc.Id,
-            key: doc.Id,
+            itemKey: `${index}`,
+            key: `${index}`,
             value: doc.Name,
             DocumentGroupId: doc.DocumentGroupId,
             GroupName: doc.GroupName,
             Name: doc.Name,
             RequiredExpirationDate: doc.RequiredExpirationDate,
           };
+          allDocs.push(docObj);
         });
         setSelectedDocument(allDocs[0]);
         setDocuments(allDocs);
@@ -161,6 +158,7 @@ const UploadDocuments = ({ navigation }) => {
         text1: t(`menu.selectTypeError`),
         topOffset: 100,
       });
+      return;
     } else if (!fileResponse) {
       // TODO => finish uploadin file on android
       Toast.show({
@@ -168,6 +166,7 @@ const UploadDocuments = ({ navigation }) => {
         text1: t(`menu.attachValidFile`),
         topOffset: 100,
       });
+      return;
     }
 
     if (isRequired) {
@@ -226,8 +225,7 @@ const UploadDocuments = ({ navigation }) => {
             {isDocsReady ? (
               <Picker
                 values={allDocuments}
-                placeholderText={fileType}
-                value={fileType}
+                value={fileType ? fileType : ""}
                 onChange={(value) => {
                   if (value !== fileType) {
                     setSelectedDocument(

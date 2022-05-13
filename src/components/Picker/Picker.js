@@ -48,7 +48,6 @@ const Picker = ({
   children,
   onChange,
   values,
-  key,
 }) => {
   return values ? (
     <View>
@@ -58,7 +57,6 @@ const Picker = ({
         onValueChange={(itemValue) => {
           onChange(itemValue);
         }}
-        itemKey={values.itemKey}
         useNativeAndroidPickerStyle={false}
         style={{ ...pickerStyle, ...styles }}
         items={values}
