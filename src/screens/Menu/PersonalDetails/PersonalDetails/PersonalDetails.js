@@ -116,7 +116,7 @@ const PersonalDetails = () => {
             lastName: user.lastName,
             city: user.city,
             countryCode: user.countryCode,
-            phone: phone,
+            phone: user.phone,
             secondaryPhone: user.secondaryPhone,
             addressLine1: user.addressLine1,
             addressLine2: user.addressLine2,
@@ -241,7 +241,8 @@ const PersonalDetails = () => {
                   {props.errors.city && props.touched.city ? (
                     <Error name="nano" text={props.errors.city} />
                   ) : null}
-                  <PhoneInput
+                  {/* TODO -> PhoneInput*/}
+                  {/* <PhoneInput
                     value={phone}
                     placeholder={t(`menu.primaryPhone`)}
                     onChange={(value) => onChangePhone(value)}
@@ -253,7 +254,15 @@ const PersonalDetails = () => {
                     onPhoneCountryCodeChange={(value) =>
                       setPhoneCountryCode(value)
                     }
+                  /> */}
+                  <TextField
+                    placeholder={t(`menu.primaryPhone`)}
+                    onChange={props.handleChange("phone")}
+                    value={props.values.phone}
                   />
+                  {props.errors.phone && props.touched.phone ? (
+                    <Error name="nano" text={props.errors.phone} />
+                  ) : null}
                   <TextField
                     placeholder={t(`menu.secondaryPhone`)}
                     onChange={props.handleChange("secondaryPhone")}

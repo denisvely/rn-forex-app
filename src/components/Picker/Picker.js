@@ -29,6 +29,7 @@ const pickerStyle = {
     paddingHorizontal: 9,
     marginBottom: 16,
     paddingRight: 30,
+    width: "100%",
   },
   placeholderColor: colors.fontPrimaryColor,
   underline: { borderTopWidth: 0 },
@@ -50,7 +51,7 @@ const Picker = ({
   values,
 }) => {
   return values ? (
-    <View>
+    <View style={{ width: "100%" }}>
       <RNPickerSelect
         value={value}
         placeholder={{ ...placeholderText }}

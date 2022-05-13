@@ -10,6 +10,7 @@ import { register } from "store/app";
 import styles from "../Login/loginStyles";
 import { SvgXml } from "react-native-svg";
 import logo from "../../assets/svg/logo";
+import { colors } from "../../constants";
 
 const signUpService = RegisterService.register();
 
@@ -119,6 +120,7 @@ const Register = ({ navigation }) => {
       <View style={styles.bottomViewLogin}>
         <Typography name="tiny" text={"Already have an account?"} />
         <Button
+          textStyle={{ color: colors.blueColor }}
           size="small"
           text="Login"
           type="secondary"

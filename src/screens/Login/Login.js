@@ -122,6 +122,7 @@ const Login = ({ navigation }) => {
       <View style={styles.bottomViewLogin}>
         <Typography name="tiny" text={"Don't you have an account?"} />
         <Button
+          textStyle={{ color: colors.blueColor }}
           size="small"
           text="Create one now!"
           type="secondary"

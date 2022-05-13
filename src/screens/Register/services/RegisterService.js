@@ -2,29 +2,42 @@ import { Service, apiConsts } from "../../../utils/serviceManager";
 
 export default {
   register: () => {
-    // TODO => webIds
-    const service = new Service(
-      "v2/users/login?webId=9A1D49B1-63D1-4791-AE00-084FE5762A1A",
-      apiConsts.HTTP_METHOD_POST
+    const service = new Service("v2/users", apiConsts.HTTP_METHOD_POST);
+
+    service.setPrepareRequest(
+      (request, { email, password, confirmPassword, firstName, lastName }) => {
+        let options = {};
+
+        options["email"] = email;
+        options["password"] = password;
+        options["confirmPassword"] = confirmPassword;
+        options["firstName"] = firstName;
+        options["lastName"] = lastName;
+        options["title"] = "";
+        options["NonExpiringID"] = false;
+        options["base64Photo"] = null;
+        options["submit"] = "Sign up";
+        options["error"] = "";
+
+        // TODO
+        options["birthDay"] = "";
+        options["birthMonth"] = "";
+        options["birthYear"] = "";
+        options["countryCode"] = "DK";
+        options["countryPhoneCode"] = "";
+        options["currencyCode"] = "";
+
+        options["phone"] = "";
+        options["subscribeToPromoEmail"] = false;
+        options["subscribeToPromoSms"] = false;
+        options["tos"] = "on";
+        options["wantContact"] = "";
+
+        request.convertToQueryParamsWithoutToken(options);
+
+        return request;
+      }
     );
-
-    service.setPrepareRequest((request, { username, password }) => {
-      let options = {};
-
-      options["username"] = username;
-      options["password"] = password;
-      options["lcid"] = 1033;
-      options["dataType"] = "json";
-      options["format"] = "json";
-      options["loginHistory"] = 0; // TODO
-      options["ServerTimeMinutesOffset"] = Math.abs(
-        new Date().getTimezoneOffset()
-      );
-
-      request.convertToQueryParamsWithoutToken(options);
-
-      return request;
-    });
 
     return service;
   },

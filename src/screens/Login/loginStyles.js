@@ -43,4 +43,27 @@ export default StyleSheet.create({
     height: 50,
     backgroundColor: colors.buttonPrimary,
   },
+  buttonsWrapper: {
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+    height: 120,
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    backgroundColor: colors.white,
+    width: deviceWidth - 48,
+    zIndex: 10,
+  },
+  submitBtn: {
+    width: deviceWidth - 48,
+    minWidth: deviceWidth - 48,
+    alignSelf: "center",
+  },
+  formWrapper: {
+    flex: 1,
+    marginTop: 16,
+  },
 });
