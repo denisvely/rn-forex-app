@@ -5,6 +5,7 @@ const CountryPickerComponent = ({
   selectedCountryCode,
   changeCountry,
   style,
+  customContryCodeList,
 }) => {
   const [countryCode, setCountryCode] = useState(selectedCountryCode);
 
@@ -16,12 +17,13 @@ const CountryPickerComponent = ({
   return (
     <CountryPicker
       theme={{ ...style }}
+      countryCodes={customContryCodeList}
       {...{
         countryCode,
         withFilter: true,
         withFlag: true,
         withCountryNameButton: true,
-        withAlphaFilter: true,
+        withAlphaFilter: false,
         withCallingCode: false,
         withEmoji: true,
         onSelect,

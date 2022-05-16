@@ -87,7 +87,7 @@ export default StyleSheet.create({
     margin: 0,
     marginBottom: 16,
     padding: 0,
-    width: deviceWidth - 48,
+    width: deviceWidth - 80,
     height: 44,
     borderColor: colors.gray,
   },
@@ -109,6 +109,7 @@ export default StyleSheet.create({
     color: colors.fontPrimaryColor,
     width: deviceWidth - 48,
     paddingLeft: 9,
+    width: "100%",
   },
   iconWrapper: {
     height: 44,

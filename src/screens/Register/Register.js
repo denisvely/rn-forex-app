@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Pressable,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
@@ -78,6 +79,10 @@ const Register = ({ navigation }) => {
   const [isDatepickerOpen, setDatepickerOpen] = useState(false);
   const [countryCode, changeCountryCode] = useState(null);
   const [initialRegisterSettingsLoaded, setRegisterSettings] = useState(false);
+  const [submitButtonClicked, setButtonClicked] = useState(false);
+  const [countryCodeList, setCountryCodeList] = useState(null);
+  const [currencies, setCurrencies] = useState(null);
+  const [currency, setCurrency] = useState(null);
 
   useEffect(() => {
     initialResourcesService
@@ -86,6 +91,28 @@ const Register = ({ navigation }) => {
       .then(({ response }) => {
         if (response.body.code === 200 || response.body.code === 201) {
           const body = response.getBody();
+          const myCountryCodeList = [];
+          console.log(body);
+          body.countries.data.forEach((item, index) => {
+            myCountryCodeList.push(item.countryCode);
+          });
+          setCountryCodeList(myCountryCodeList);
+          if (body.location.data) {
+            changeCountryCode(body.location.data.country.code);
+          }
+          if (body.currencies.data) {
+            const allCurrencies = [];
+            for (const [i, item] of Object.entries(body.currencies.data)) {
+              const currencyObj = {
+                label: item,
+                itemKey: `${i}`,
+                key: `${i}`,
+                value: item,
+              };
+              allCurrencies.push(currencyObj);
+            }
+            setCurrencies(allCurrencies);
+          }
           setRegisterSettings(body);
         }
       });
@@ -117,6 +144,10 @@ const Register = ({ navigation }) => {
     if (value !== null) {
       setBirthDate(value);
       setDatepickerOpen(false);
+    } else {
+      if (Platform.OS === "ios") {
+        setDatepickerOpen(false);
+      }
     }
   };
 
@@ -279,21 +310,26 @@ const Register = ({ navigation }) => {
                         style={{ marginTop: -6 }}
                       />
                     </View>
-                    <Pressable
-                      onPress={() => setDatepickerOpen(!isDatepickerOpen)}
-                      style={styles.input}
-                    >
-                      <Typography
-                        name="small"
-                        style={styles.inputSecond}
-                        text={
-                          birthDate
-                            ? moment(birthDate).format("DD-MM-YYYY")
-                            : "Birth date"
-                        }
-                      />
-                    </Pressable>
+                    <View>
+                      <Pressable
+                        onPress={() => setDatepickerOpen(!isDatepickerOpen)}
+                        style={styles.input}
+                      >
+                        <Typography
+                          name="small"
+                          style={styles.inputSecond}
+                          text={
+                            birthDate
+                              ? moment(birthDate).format("DD-MM-YYYY")
+                              : "Birth date"
+                          }
+                        />
+                      </Pressable>
+                    </View>
                   </View>
+                  {/* {!birthDate && submitButtonClicked ? (
+                    <Error name="nano" text={"Required"} bigPadding={true} />
+                  ) : null} */}
                   <View style={styles.textFieldWrapperWithoutBorder}>
                     <View style={styles.iconWrapper}>
                       <SvgXml
@@ -310,9 +346,13 @@ const Register = ({ navigation }) => {
                         changeCountry={(countryCode) => {
                           changeCountryCode(countryCode);
                         }}
+                        customContryCodeList={countryCodeList}
                       />
                     </View>
                   </View>
+                  {/* {!countryCode && submitButtonClicked ? (
+                    <Error name="nano" text={"Required"} bigPadding={true} />
+                  ) : null} */}
                   <View
                     style={{
                       ...styles.textFieldWrapperWithoutBorder,
@@ -321,17 +361,17 @@ const Register = ({ navigation }) => {
                   >
                     <View style={styles.iconWrapper}>
                       <SvgXml
-                        xml={textFieldIcons["person"][0]}
+                        xml={textFieldIcons["currency"][0]}
                         height={40}
                         width={32}
                         style={{ marginTop: -13 }}
                       />
                     </View>
                     <Picker
-                      values={titleValues}
-                      placeholderText={title}
-                      value={title}
-                      onChange={(title) => setTitle(title)}
+                      values={currencies}
+                      placeholderText={currency}
+                      value={currency}
+                      onChange={(currency) => setCurrency(currency)}
                       styles={{ width: "100%" }}
                       hasIcon={true}
                     />

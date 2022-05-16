@@ -100,6 +100,10 @@ const PersonalDetails = () => {
     if (value !== null) {
       setBirthDate(value);
       setDatepickerOpen(false);
+    } else {
+      if (Platform.OS === "ios") {
+        setDatepickerOpen(false);
+      }
     }
   };
 

@@ -58,8 +58,6 @@ export default {
     const service = new Service("v2/users", apiConsts.HTTP_METHOD_POST);
 
     service.setPrepareRequest((request) => {
-      // request.convertToQueryParamsWithoutToken(options);
-
       return request;
     });
 

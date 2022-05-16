@@ -16,8 +16,6 @@ export default {
         resources: JSON.stringify(resources),
       };
 
-      console.log(options);
-
       request.setHeader(
         "Authorization",
         `OAuth oauth_token=${ServiceManager.getAccessToken()}`
