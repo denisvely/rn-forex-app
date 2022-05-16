@@ -64,4 +64,9 @@ export default StyleSheet.create({
     paddingBottom: 6,
     marginBottom: 10,
   },
+  noMessages: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

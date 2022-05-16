@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import CountryPicker from "react-native-country-picker-modal";
 
-const CountryPickerComponent = ({ selectedCountryCode, changeCountry }) => {
+const CountryPickerComponent = ({
+  selectedCountryCode,
+  changeCountry,
+  style,
+}) => {
   const [countryCode, setCountryCode] = useState(selectedCountryCode);
 
   const onSelect = (country) => {
@@ -11,6 +15,7 @@ const CountryPickerComponent = ({ selectedCountryCode, changeCountry }) => {
 
   return (
     <CountryPicker
+      theme={{ ...style }}
       {...{
         countryCode,
         withFilter: true,

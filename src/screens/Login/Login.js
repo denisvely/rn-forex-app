@@ -28,30 +28,24 @@ const SignInSchema = Yup.object().shape({
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [requestInProgress, setRequestProgress] = useState(false);
 
   const signIn = (values) => {
-    setRequestProgress(true);
     signInService
       .fetch({ username: values.email, password: values.password })
 
       .then(({ response }) => {
         const body = response.getBody();
         if (response.body.code === 400 || response.body.code === 401) {
-          if (response.data.type === "2FA_NotValid") {
-            // TODO => 2FA_NotValid
-            return;
-          } else {
-            Toast.show({
-              type: "success",
-              text1: `Invalid Username or Password`,
-              topOffset: 100,
-            });
-            return;
-          }
+          Toast.show({
+            type: "error",
+            text1: `Invalid Username or Password`,
+            topOffset: 100,
+            visibilityTime: 2000,
+            autoHide: true,
+          });
+          return;
         }
         login(dispatch, body);
-        setRequestProgress(false);
       });
   };
 

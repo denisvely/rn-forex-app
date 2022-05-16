@@ -2,7 +2,6 @@ import ServiceManager, { Service, apiConsts } from "utils/serviceManager";
 
 export default {
   login: () => {
-    // TODO => webIds
     const service = new Service(
       "v1/users/password/reset",
       apiConsts.HTTP_METHOD_PUT

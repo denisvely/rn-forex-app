@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { Loading, Typography } from "../../../../components";
 import MyMessagesService from "../service/MyMessagesService";
-import { deviceWidth } from "../../../../utils";
 import moment from "moment";
+import HTMLView from "react-native-htmlview";
 
 import styles from "../myMessagesStyles";
 
@@ -51,11 +51,7 @@ const MessageDetails = ({ route }) => {
               paddingBottom: 50,
             }}
           >
-            <Typography
-              style={styles.secondaryText}
-              name="small"
-              text={messageContent.content}
-            />
+            <HTMLView value={messageContent.content} />
           </ScrollView>
         </View>
       ) : (

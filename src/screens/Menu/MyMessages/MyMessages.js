@@ -20,19 +20,27 @@ const MyMessages = ({ navigation }) => {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [messages, setMessages] = useState(null);
   const [totalItems, setTotalItems] = useState(null);
+  const [isReady, setReady] = useState(false);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    getMessages
-      .fetch({ offset: offset, rowsPerPage: rowsPerPage })
-      .then(({ response }) => {
-        if (response.body.code !== 200) {
-          return;
-        }
-        const body = response.getBody();
-        setMessages(body.results);
-        setTotalItems(body.total);
-      });
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getMessages
+        .fetch({ offset: offset, rowsPerPage: rowsPerPage })
+        .then(({ response }) => {
+          if (response.body.code !== 200) {
+            return;
+          }
+          const body = response.getBody();
+          setMessages(body.results);
+          setTotalItems(body.total);
+          setReady(true);
+        });
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const renderMessage = (item) => {
     return (
@@ -64,7 +72,9 @@ const MyMessages = ({ navigation }) => {
           </View>
           <View style={styles.right}>
             <Typography
-              text={moment(item.activeFrom).format("DD-MM-YYYY HH:MM:SS")}
+              text={moment(item.activeFrom.dateTime).format(
+                "DD-MM-YYYY HH:MM:SS"
+              )}
               name="small"
               style={{
                 color: item.isRead
@@ -81,25 +91,31 @@ const MyMessages = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {messages ? (
-        <LazyFlatList
-          list={messages}
-          renderItem={({ item }) => renderMessage(item)}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            marginTop: 16,
-            width: deviceWidth - 32,
-            justifyContent: "flex-start",
-            alignItems: "center",
-            alignSelf: "center",
-            flexGrow: 1,
-            height: "100%",
-          }}
-          style={styles.flatListContainer}
-          listRef={flatListRef}
-        />
+      {isReady ? (
+        messages ? (
+          <LazyFlatList
+            list={messages}
+            renderItem={({ item }) => renderMessage(item)}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              marginTop: 16,
+              width: deviceWidth - 32,
+              justifyContent: "flex-start",
+              alignItems: "center",
+              alignSelf: "center",
+              flexGrow: 1,
+              height: "100%",
+            }}
+            style={styles.flatListContainer}
+            listRef={flatListRef}
+          />
+        ) : (
+          <View style={styles.noMessages}>
+            <Typography name="largeBold" text={"No messages found."} />
+          </View>
+        )
       ) : (
         <Loading size="large" />
       )}

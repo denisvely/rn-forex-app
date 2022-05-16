@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, TouchableOpacity } from "react-native";
 
@@ -7,12 +7,15 @@ import NotificationService from "./services/NotificationsService";
 import { deviceWidth } from "utils";
 import NotificationRow from "./components/NotificationRow/NotificationRow";
 import { getRealForexNotifications, getNotifications } from "store/realForex";
+import realForexServices from "../../services/realForexServices";
+
+const getForexNotifications = realForexServices.getRealForexNotifications();
 
 import styles from "./notificationsStyles";
 
 const clearAll = NotificationService.delAllForexNotifications();
 
-const Notifications = () => {
+const Notifications = ({ navigation }) => {
   const dispatch = useDispatch();
   const flatListRef = useRef();
   const notifications = useSelector((state) =>
@@ -29,6 +32,21 @@ const Notifications = () => {
         }
       });
   };
+
+  useEffect(() => {
+    getForexNotifications
+      .fetch()
+      .then(({ response }) => {
+        const notificationsData = response.body.data;
+        dispatch({
+          type: actionTypes.REAL_FOREX_NOTIFICATIONS,
+          payload: notificationsData,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [navigation]);
 
   return notifications ? (
     <View style={styles.container}>

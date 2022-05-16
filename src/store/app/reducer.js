@@ -15,6 +15,7 @@ const initialState = {
   game: null,
   dailyChanges: null,
   hash: null,
+  initialResources: {},
 };
 
 const appReducer = (state = initialState, action) => {

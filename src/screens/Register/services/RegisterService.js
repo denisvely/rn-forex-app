@@ -5,7 +5,20 @@ export default {
     const service = new Service("v2/users", apiConsts.HTTP_METHOD_POST);
 
     service.setPrepareRequest(
-      (request, { email, password, confirmPassword, firstName, lastName }) => {
+      (
+        request,
+        {
+          email,
+          password,
+          confirmPassword,
+          firstName,
+          lastName,
+          countryCode,
+          birthDay,
+          birthMonth,
+          birthYear,
+        }
+      ) => {
         let options = {};
 
         options["email"] = email;
@@ -18,12 +31,12 @@ export default {
         options["base64Photo"] = null;
         options["submit"] = "Sign up";
         options["error"] = "";
+        options["countryCode"] = countryCode;
+        options["birthDay"] = birthDay;
+        options["birthMonth"] = birthMonth;
+        options["birthYear"] = birthYear;
 
         // TODO
-        options["birthDay"] = "";
-        options["birthMonth"] = "";
-        options["birthYear"] = "";
-        options["countryCode"] = "DK";
         options["countryPhoneCode"] = "";
         options["currencyCode"] = "";
 
@@ -38,6 +51,17 @@ export default {
         return request;
       }
     );
+
+    return service;
+  },
+  getResources: () => {
+    const service = new Service("v2/users", apiConsts.HTTP_METHOD_POST);
+
+    service.setPrepareRequest((request) => {
+      // request.convertToQueryParamsWithoutToken(options);
+
+      return request;
+    });
 
     return service;
   },
