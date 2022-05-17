@@ -12,6 +12,7 @@ export { default as MyDocuments } from "./Menu/PersonalDetails/UploadDocuments/M
 export { default as MyMessages } from "./Menu/MyMessages/MyMessages";
 export { default as MessageDetails } from "./Menu/MyMessages/MessageDetails/MessageDetails";
 export { default as ContactUs } from "./Menu/ContactUs/ContactUs";
+export { default as TermsAndAgreements } from "./Menu/TermsAndAgreements/TermsAndAgreements";
 
 // Real Forex
 export { default as Quotes } from "./RealForex/QuotesRealForex/QuotesRealForex";

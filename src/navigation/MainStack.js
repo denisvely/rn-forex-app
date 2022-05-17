@@ -165,6 +165,7 @@ const MainStackNavigator = ({ navigation }) => {
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
+
       <MainStack.Screen
         name="ContactUs"
         component={ContactUs}
@@ -177,7 +178,6 @@ const MainStackNavigator = ({ navigation }) => {
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
-
       <MainStack.Screen
         name="Notifications"
         component={Notifications}

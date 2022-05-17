@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
@@ -22,6 +23,7 @@ import {
   Datepicker,
   CountryPicker,
   Loading,
+  SwitchComponent,
 } from "../../components";
 import RegisterService from "./services/RegisterService";
 import { register } from "store/app";
@@ -65,7 +67,6 @@ const SignUpSchema = Yup.object().shape({
     .min(6, "Too Short!")
     .max(50, "Too Long!")
     .required("Invalid password"),
-  // TODO
   phone: Yup.string().required("Required"),
   // phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
 });
@@ -76,13 +77,16 @@ const Register = ({ navigation }) => {
   const [requestInProgress, setRequestProgress] = useState(false);
   const [title, setTitle] = useState("");
   const [birthDate, setBirthDate] = useState(null);
+  const [birthDateError, setBirthDateError] = useState(false);
   const [isDatepickerOpen, setDatepickerOpen] = useState(false);
   const [countryCode, changeCountryCode] = useState(null);
   const [initialRegisterSettingsLoaded, setRegisterSettings] = useState(false);
-  const [submitButtonClicked, setButtonClicked] = useState(false);
+  const [countryCodeError, setCountryCodeError] = useState(false);
   const [countryCodeList, setCountryCodeList] = useState(null);
   const [currencies, setCurrencies] = useState(null);
   const [currency, setCurrency] = useState(null);
+  const [isTOSAccepted, setTOSState] = useState(false);
+  const [tosError, setTosError] = useState(false);
 
   useEffect(() => {
     initialResourcesService
@@ -92,7 +96,6 @@ const Register = ({ navigation }) => {
         if (response.body.code === 200 || response.body.code === 201) {
           const body = response.getBody();
           const myCountryCodeList = [];
-          console.log(body);
           body.countries.data.forEach((item, index) => {
             myCountryCodeList.push(item.countryCode);
           });
@@ -107,11 +110,12 @@ const Register = ({ navigation }) => {
                 label: item,
                 itemKey: `${i}`,
                 key: `${i}`,
-                value: item,
+                value: i,
               };
               allCurrencies.push(currencyObj);
             }
             setCurrencies(allCurrencies);
+            setCurrency(allCurrencies[0].value);
           }
           setRegisterSettings(body);
         }
@@ -132,6 +136,8 @@ const Register = ({ navigation }) => {
         birthDay: birthDate ? birthDate.getDate() : "",
         birthMonth: birthDate ? birthDate.getMonth() + 1 : "",
         birthYear: birthDate ? birthDate.getFullYear() : "",
+        currencyCode: currency,
+        isTosAccepted: isTOSAccepted,
       })
       .then(({ response }) => {
         const body = response.getBody();
@@ -327,9 +333,9 @@ const Register = ({ navigation }) => {
                       </Pressable>
                     </View>
                   </View>
-                  {/* {!birthDate && submitButtonClicked ? (
+                  {!birthDateError ? (
                     <Error name="nano" text={"Required"} bigPadding={true} />
-                  ) : null} */}
+                  ) : null}
                   <View style={styles.textFieldWrapperWithoutBorder}>
                     <View style={styles.iconWrapper}>
                       <SvgXml
@@ -350,9 +356,9 @@ const Register = ({ navigation }) => {
                       />
                     </View>
                   </View>
-                  {/* {!countryCode && submitButtonClicked ? (
+                  {!countryCodeError ? (
                     <Error name="nano" text={"Required"} bigPadding={true} />
-                  ) : null} */}
+                  ) : null}
                   <View
                     style={{
                       ...styles.textFieldWrapperWithoutBorder,
@@ -375,6 +381,44 @@ const Register = ({ navigation }) => {
                       styles={{ width: "100%" }}
                       hasIcon={true}
                     />
+                  </View>
+                  <View style={styles.tosWrapper}>
+                    <View style={styles.switchWrapper}>
+                      <SwitchComponent
+                        onValueChange={(value) => setTOSState(value)}
+                        value={isTOSAccepted}
+                        style={{
+                          transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
+                        }}
+                      />
+                    </View>
+                    <View style={styles.tosTextWrapper}>
+                      <TouchableOpacity
+                        style={styles.hrefButton}
+                        onPress={() =>
+                          navigation.navigate("TermsAndAgreements")
+                        }
+                      >
+                        <Typography name="normal" style={styles.tosText}>
+                          <Typography
+                            name="normal"
+                            text={"I have read and agree to "}
+                          />
+                          <Typography
+                            style={{ color: colors.blueColor }}
+                            name="normal"
+                            text={t(`menu.terms`)}
+                          />
+                        </Typography>
+                      </TouchableOpacity>
+                    </View>
+                    {!tosError ? (
+                      <Error
+                        name="nano"
+                        text={"You must agree with the Terms and Agreements."}
+                        bigPadding={true}
+                      />
+                    ) : null}
                   </View>
                 </ScrollView>
               </KeyboardAvoidingView>

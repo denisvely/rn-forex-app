@@ -17,6 +17,9 @@ export default {
           birthDay,
           birthMonth,
           birthYear,
+          currencyCode,
+          isTosAccepted,
+          phone,
         }
       ) => {
         let options = {};
@@ -28,22 +31,22 @@ export default {
         options["lastName"] = lastName;
         options["title"] = "";
         options["NonExpiringID"] = false;
-        options["base64Photo"] = null;
+        options["base64Photo"] = "";
         options["submit"] = "Sign up";
         options["error"] = "";
         options["countryCode"] = countryCode;
         options["birthDay"] = birthDay;
         options["birthMonth"] = birthMonth;
         options["birthYear"] = birthYear;
+        options["currencyCode"] = currencyCode;
+        options["tos"] = isTosAccepted ? "on" : "off";
+        options["countryPhoneCode"] = "";
+        options["phone"] = phone;
 
         // TODO
-        options["countryPhoneCode"] = "";
-        options["currencyCode"] = "";
 
-        options["phone"] = "";
         options["subscribeToPromoEmail"] = false;
         options["subscribeToPromoSms"] = false;
-        options["tos"] = "on";
         options["wantContact"] = "";
 
         request.convertToQueryParamsWithoutToken(options);

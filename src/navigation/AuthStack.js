@@ -1,12 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Login, Register, ForgotPassword } from "../screens";
+import { useTranslation } from "react-i18next";
+import {
+  Login,
+  Register,
+  ForgotPassword,
+  TermsAndAgreements,
+} from "../screens";
+import { HeaderX } from "../components";
 import { headerOptions } from "../constants";
 
 const AuthStack = createStackNavigator();
 
 const AuthNavigator = ({ route: { name = "Login" } }) => {
+  const { t } = useTranslation();
   return (
     <AuthStack.Navigator
       initialRouteName={name}
@@ -48,6 +56,18 @@ const AuthNavigator = ({ route: { name = "Login" } }) => {
           headerBackTitleVisible: false,
           headerBackVisible: false,
           headerLeft: null,
+        }}
+      />
+      <AuthStack.Screen
+        name="TermsAndAgreements"
+        component={TermsAndAgreements}
+        options={{
+          title: t(`menu.terms`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
         }}
       />
     </AuthStack.Navigator>

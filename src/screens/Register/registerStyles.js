@@ -49,11 +49,12 @@ export default StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     position: "absolute",
-    bottom: 24,
+    bottom: 0,
     height: 117,
-    paddingTop: 16,
     width: deviceWidth - 48,
+    backgroundColor: colors.white,
     zIndex: 10,
+    paddingBottom: 32,
   },
   submitBtn: {
     width: deviceWidth - 48,
@@ -124,5 +125,26 @@ export default StyleSheet.create({
     width: "100%",
     paddingBottom: 11,
     paddingHorizontal: 9,
+  },
+  tosWrapper: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  switchWrapper: {
+    marginLeft: -10,
+  },
+  tosTextWrapper: {
+    paddingLeft: 10,
+    width: "90%",
+  },
+  tosText: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  hrefButton: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
 });

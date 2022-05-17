@@ -105,6 +105,44 @@ export const login = (dispatch, token) => {
   });
 };
 
+export const register = (dispatch, token) => {
+  Storage.set("token", JSON.stringify(token));
+  ServiceManager.setToken(token);
+
+  userService
+    .getUser()
+    .fetch()
+    .then(({ response }) => {
+      if (response.body.code !== 200) {
+        return;
+      }
+      const body = response.getBody();
+      dispatch({
+        type: actionTypes.SET_USER,
+        payload: body,
+      });
+
+      serverSettingsService
+        .getServerSettings()
+        .fetch()
+        .then(({ response }) => {
+          if (response.body.code !== 200) {
+            return;
+          }
+          const body = response.getBody();
+          dispatch({
+            type: actionTypes.SET_SERVER_SETTINGS,
+            payload: { body: body, hash: body.user.hash },
+          });
+        });
+    });
+
+  dispatch({
+    type: actionTypes.LOGIN,
+    payload: token,
+  });
+};
+
 export const logout = (dispatch) => {
   ServiceManager.removeToken();
   Storage.removeToken().then(() => {
