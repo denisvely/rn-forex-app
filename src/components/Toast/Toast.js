@@ -109,6 +109,7 @@ const toastConfig = {
           paddingHorizontal: 16,
           paddingVertical: 16,
           borderRadius: 4,
+          zIndex: 9999,
         }}
       >
         <Typography

@@ -69,6 +69,15 @@ const ClosedPositionsRealForex = ({ navigation }) => {
     setIsPickerToDateShow(false);
   };
 
+  const getClosedPos = () => {
+    getClosedPositions(dispatch, {
+      fromDate: value,
+      toDate: toDate,
+      positionId: null,
+      tradableAssetId: null,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Datepicker
@@ -113,7 +122,11 @@ const ClosedPositionsRealForex = ({ navigation }) => {
           list={closedPositions}
           renderItem={({ item }) => {
             return (
-              <ClosedPositionsTradeBox item={item} navigation={navigation} />
+              <ClosedPositionsTradeBox
+                item={item}
+                navigation={navigation}
+                getPositions={getClosedPos}
+              />
             );
           }}
           keyExtractor={(item) => item.positionId}

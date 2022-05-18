@@ -81,7 +81,8 @@
     "forgotPassword": "Forgot Password",
     "approved": "Approved",
     "notApproved": "Expired / Not Approved",
-    "no-data": "No data"
+    "no-data": "No data",
+    "leverage": "Leverage"
   },
   "navigation": {
     "quotes": "Quotes",

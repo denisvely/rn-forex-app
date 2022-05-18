@@ -100,6 +100,7 @@ const QuantityInput = ({ value, setQuantity }) => {
 
   const onChange = (value) => {
     if (!value) {
+      setQuantity("");
       return;
     }
     const quantity =
@@ -111,7 +112,7 @@ const QuantityInput = ({ value, setQuantity }) => {
             settings
           )
         : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
-    setQuantity(quantity);
+    setQuantity(quantity.toString());
   };
 
   const onFocus = (event) => {
@@ -131,7 +132,7 @@ const QuantityInput = ({ value, setQuantity }) => {
             settings
           )
         : convertUnits(parseFloat(value), selectedAsset.id, true, settings);
-    setQuantity(quantity);
+    setQuantity(quantity.toString());
   };
 
   const quantityDropdownPick = (value) => {

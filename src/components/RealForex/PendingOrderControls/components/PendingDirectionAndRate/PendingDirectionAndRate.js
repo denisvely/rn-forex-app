@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import Typography from "../../../../Typography/Typography";
 import Spinner from "../../../../Spinner/Spinner";
-import { getSelectedAsset } from "store/realForex";
+import { getSelectedAsset, getRealForexPrices } from "store/realForex";
 
 import styles from "./pendingDirectionAndRateStyles";
 
@@ -17,6 +17,7 @@ const PendingDirectionAndRate = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
+  const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const min = parseFloat(Math.pow(10, -selectedAsset.accuracy)).toFixed(
     selectedAsset.accuracy
   );
@@ -49,6 +50,13 @@ const PendingDirectionAndRate = ({
               text={t("common-labels.sell")}
               style={!isBuy ? styles.btnTextActive : styles.btnText}
             />
+            <View style={styles.priceContainer}>
+              <Typography
+                name="normal"
+                text={realForexPrices[selectedAsset.id].bid}
+                style={styles.priceText}
+              />
+            </View>
           </View>
         </Pressable>
         <Pressable
@@ -70,6 +78,13 @@ const PendingDirectionAndRate = ({
               text={t("common-labels.buy")}
               style={isBuy ? styles.btnTextActive : styles.btnText}
             />
+            <View style={styles.priceContainer}>
+              <Typography
+                name="normal"
+                text={realForexPrices[selectedAsset.id].ask}
+                style={styles.priceText}
+              />
+            </View>
           </View>
         </Pressable>
       </View>

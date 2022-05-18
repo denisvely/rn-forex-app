@@ -5,14 +5,20 @@ import { SvgXml } from "react-native-svg";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
+import {
+  formatDeciamlWithComma,
+  convertUnits,
+} from "../../../store/realForex/helpers";
+import { formatCurrency } from "../../../components/FormatedCurrency/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
 import Typography from "../../Typography/Typography";
 import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";
 import {
   getRealForexPrices,
   getRealForexOptionsByType,
+  getRealForexTradingSettings,
 } from "../../../store/realForex";
+import { getUser, getSettings } from "../../../store/app";
 
 import styles from "./openPositionsTradeBoxStyles";
 import { colors } from "../../../constants";
@@ -28,6 +34,12 @@ const OpenPositionsTradeBox = ({
   const realForexOptionsByType = useSelector((state) =>
     getRealForexOptionsByType(state)
   );
+  const user = useSelector((state) => getUser(state));
+  const settings = useSelector((state) => getSettings(state));
+  const tradingSettings = useSelector((state) =>
+    getRealForexTradingSettings(state)
+  );
+
   const [isContentVisible, setContentVisible] = useState(false);
 
   if (item.optionType !== "HARealForex") {
@@ -144,12 +156,7 @@ const OpenPositionsTradeBox = ({
               text={t(`common-labels.takeProfit`)}
             />
             {parseFloat(item.takeProfitRate) == 0 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setCurrentTrade(item);
-                  toggleBottomSlidingPanel("tpAndSl");
-                }}
-              >
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -171,12 +178,7 @@ const OpenPositionsTradeBox = ({
               text={t(`common-labels.stopLoss`)}
             />
             {parseFloat(item.stopLossRate) == 0 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setCurrentTrade(item);
-                  toggleBottomSlidingPanel("tpAndSl");
-                }}
-              >
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -201,7 +203,7 @@ const OpenPositionsTradeBox = ({
               name="small"
               style={styles.tradeInfoValue}
               text={moment(item.orderDate.timestamp).format(
-                "YYYY-MM-DD HH:MM:ss"
+                "YYYY-MM-DD hh:mm:ss"
               )}
             />
           </View>
@@ -291,7 +293,20 @@ const OpenPositionsTradeBox = ({
             <FormattedTypographyWithCurrency
               name="small"
               style={styles.tradeInfoValue}
-              text={item.margin}
+              text={(
+                ((item.actionType === "Sell"
+                  ? realForexPrices[item.tradableAssetId].bid
+                  : realForexPrices[item.tradableAssetId].ask) *
+                  parseFloat(
+                    convertUnits(
+                      item.volume,
+                      item.tradableAssetId,
+                      !tradingSettings.IsVolumeInUnits,
+                      tradingSettings
+                    )
+                  )) /
+                (item.leverage * item.exchangeRate)
+              ).toFixed(2)}
             />
           </View>
           <View style={styles.tradeInfoRow}>

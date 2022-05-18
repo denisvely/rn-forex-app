@@ -229,7 +229,11 @@ const OrderInfo = ({
         <Typography
           style={styles.label}
           name="small"
-          text={t("common-labels.swap")}
+          text={
+            showLeverageInfo
+              ? t("common-labels.leverage")
+              : t("common-labels.swap")
+          }
         />
         <Typography
           style={styles.label}
@@ -246,7 +250,9 @@ const OrderInfo = ({
         <Typography
           style={styles.buy}
           name="small"
-          text={orderInfoData.leverageBuy}
+          text={
+            showLeverageInfo ? orderInfoData.leverageBuy : orderInfoData.swapBuy
+          }
         />
         <FormattedTypographyWithCurrency
           style={styles.buy}
@@ -263,7 +269,11 @@ const OrderInfo = ({
         <Typography
           style={styles.sell}
           name="small"
-          text={orderInfoData.leverageSell}
+          text={
+            showLeverageInfo
+              ? orderInfoData.leverageSell
+              : orderInfoData.swapSell
+          }
         />
         <FormattedTypographyWithCurrency
           style={styles.sell}

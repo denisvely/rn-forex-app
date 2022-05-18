@@ -170,7 +170,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
               }
 
               showForexNotification("success", notificationValues);
-              getClosedPositions(dispatch);
+              getPositions();
             }
           })
           .catch((err) => {

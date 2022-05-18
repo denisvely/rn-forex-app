@@ -4,9 +4,10 @@ import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
 import { View, Pressable, TouchableOpacity } from "react-native";
-import { Typography, Button } from "../../../../components";
+import { Typography } from "../../../../components";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
 import { Storage } from "../../../../utils";
+import { colors } from "../../../../constants";
 
 import styles from "../settingsStyles";
 
@@ -128,14 +129,16 @@ const ChartTimezone = () => {
               </Pressable>
             </View>
           </View>
-          <Button
-            text={t("common-labels.accept")}
-            type="primary"
-            font="mediumBold"
-            size="big"
-            style={styles.acceptBtn}
+          <TouchableOpacity
             onPress={() => changeTimezone()}
-          />
+            style={styles.acceptBtn}
+          >
+            <Typography
+              name="mediumBold"
+              text={t("common-labels.accept")}
+              style={{ color: colors.white }}
+            />
+          </TouchableOpacity>
         </View>
       ) : null}
     </View>

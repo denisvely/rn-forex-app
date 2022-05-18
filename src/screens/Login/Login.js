@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
@@ -36,12 +36,11 @@ const Login = ({ navigation }) => {
       .then(({ response }) => {
         const body = response.getBody();
         if (response.body.code === 400 || response.body.code === 401) {
+          debugger;
           Toast.show({
             type: "error",
             text1: `Invalid Username or Password`,
             topOffset: 100,
-            visibilityTime: 2000,
-            autoHide: true,
           });
           return;
         }

@@ -120,7 +120,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoValue}
               text={
                 item.OrderDate
-                  ? moment(item.OrderDate).format("YYYY-MM-DD HH:MM:ss")
+                  ? moment(item.OrderDate).format("YYYY-MM-DD hh:mm:ss")
                   : "-"
               }
             />
@@ -136,7 +136,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoValue}
               text={
                 item.ExpirationDate
-                  ? moment(item.ExpirationDate).format("YYYY-MM-DD HH:MM:ss")
+                  ? moment(item.ExpirationDate).format("YYYY-MM-DD hh:mm:ss")
                   : "GTC"
               }
             />
@@ -147,13 +147,11 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.id`)}
             />
-            <TouchableOpacity onPress={() => alert("open Position history")}>
-              <Typography
-                name="small"
-                style={styles.tradeInfoValueClickable}
-                text={`PO${item.ParentEntryId}`}
-              />
-            </TouchableOpacity>
+            <Typography
+              name="small"
+              style={styles.tradeInfoValue}
+              text={`PO${item.ParentEntryId}`}
+            />
           </View>
           <View style={styles.tradeInfoRow}>
             <Typography
@@ -202,7 +200,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               text={t(`common-labels.takeProfit`)}
             />
             {parseFloat(item.TakeProfitRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open TP")}>
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -224,7 +222,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               text={t(`common-labels.stopLoss`)}
             />
             {parseFloat(item.StopLossRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open SL")}>
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}

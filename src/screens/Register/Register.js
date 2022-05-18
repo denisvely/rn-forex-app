@@ -73,11 +73,9 @@ const Register = ({ navigation }) => {
   const [requestInProgress, setRequestProgress] = useState(false);
   const [title, setTitle] = useState("");
   const [birthDate, setBirthDate] = useState(null);
-  const [birthDateError, setBirthDateError] = useState(false);
   const [isDatepickerOpen, setDatepickerOpen] = useState(false);
   const [countryCode, changeCountryCode] = useState(null);
   const [initialRegisterSettingsLoaded, setRegisterSettings] = useState(false);
-  const [countryCodeError, setCountryCodeError] = useState(false);
   const [countryCodeList, setCountryCodeList] = useState(null);
   const [currencies, setCurrencies] = useState(null);
   const [currency, setCurrency] = useState(null);

@@ -5,11 +5,12 @@ import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
 import { View, Pressable, TouchableOpacity } from "react-native";
-import { Typography, SwitchComponent, Button } from "../../../../components";
+import { Typography, SwitchComponent } from "../../../../components";
 import { getUser, setUser } from "../../../../store/app";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
 import TradingModesService from "./services/TradingModesService";
 import userService from "../../../../services/userService";
+import { colors } from "../../../../constants";
 
 const changeForexMode = TradingModesService.changeForexMode();
 const changeHedgingForexMode = TradingModesService.changeHedgingForexMode();
@@ -229,14 +230,16 @@ const TradingModes = () => {
               />
             </View>
           </View>
-          <Button
-            text={t("common-labels.accept")}
-            type="primary"
-            font="mediumBold"
-            size="big"
-            style={styles.acceptBtn}
+          <TouchableOpacity
             onPress={() => changeModeId()}
-          />
+            style={styles.acceptBtn}
+          >
+            <Typography
+              name="mediumBold"
+              text={t("common-labels.accept")}
+              style={{ color: colors.white }}
+            />
+          </TouchableOpacity>
         </View>
       ) : null}
     </View>
