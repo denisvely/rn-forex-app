@@ -446,7 +446,10 @@ const Register = ({ navigation }) => {
                         onValueChange={(value) => setTOSState(value)}
                         value={isTOSAccepted}
                         style={{
-                          transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
+                          transform: [
+                            { scaleX: Platform.OS === "ios" ? 0.5 : 0.7 },
+                            { scaleY: Platform.OS === "ios" ? 0.5 : 0.7 },
+                          ],
                         }}
                       />
                     </View>

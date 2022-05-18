@@ -40,7 +40,7 @@ const ChartTimezone = () => {
         autoHide: true,
       });
     } else {
-      Storage.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+      Storage.set("timezone", "Europe/Athens");
       Toast.show({
         type: "platformInfoSuccess",
         props: {
