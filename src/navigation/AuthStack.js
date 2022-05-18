@@ -13,7 +13,7 @@ import { headerOptions } from "../constants";
 
 const AuthStack = createStackNavigator();
 
-const AuthNavigator = ({ route: { name = "Login" } }) => {
+const AuthNavigator = ({ route: { name = "Login" }, navigation }) => {
   const { t } = useTranslation();
   return (
     <AuthStack.Navigator

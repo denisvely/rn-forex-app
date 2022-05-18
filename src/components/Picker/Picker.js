@@ -31,7 +31,7 @@ const pickerStyle = {
     paddingRight: 30,
     width: "100%",
   },
-  placeholderColor: colors.fontPrimaryColor,
+  placeholderColor: "red",
   underline: { borderTopWidth: 0 },
   icon: {
     width: 32,

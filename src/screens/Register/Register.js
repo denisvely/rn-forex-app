@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { SvgXml } from "react-native-svg";
+import Toast from "react-native-toast-message";
 
 import {
   Button,
@@ -37,19 +38,11 @@ import styles from "./registerStyles";
 
 const signUpService = RegisterService.register();
 
-const formInitialValues = {
-  email: "",
-  password: "",
-  confirmPassword: "",
-  firstName: "",
-  lastName: "",
-  phone: "",
-};
-
 const titleValues = [
-  { label: "Mister", itemKey: 0, value: "mister" },
-  { label: "Miss", itemKey: 1, value: "miss" },
-  { label: "Mrs", itemKey: 2, value: "mrs" },
+  { label: "Select title", itemKey: 0, value: "" },
+  { label: "Mister", itemKey: 1, key: 1, value: "mister" },
+  { label: "Miss", itemKey: 2, key: 2, value: "miss" },
+  { label: "Mrs", itemKey: 3, key: 3, value: "mrs" },
 ];
 
 const phoneRegExp =
@@ -68,6 +61,9 @@ const SignUpSchema = Yup.object().shape({
     .max(50, "Too Long!")
     .required("Invalid password"),
   phone: Yup.string().required("Required"),
+  title: Yup.string().required("Required"),
+  birthDate: Yup.date().required("Required"),
+  countryCode: Yup.string().required("Required"),
   // phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
 });
 
@@ -88,12 +84,31 @@ const Register = ({ navigation }) => {
   const [isTOSAccepted, setTOSState] = useState(false);
   const [tosError, setTosError] = useState(false);
 
+  const formInitialValues = {
+    email: "qa@testqa.me",
+    password: "motorola",
+    confirmPassword: "motorola",
+    firstName: "gdfgdfgdf",
+    lastName: "gdfgfdgdf",
+    phone: "+44 654645645",
+    title: titleValues[0].value,
+    birthDate: "Birth date",
+    countryCode: countryCode,
+  };
+
   useEffect(() => {
     initialResourcesService
       .getResources()
       .fetch()
       .then(({ response }) => {
         if (response.body.code === 200 || response.body.code === 201) {
+          Toast.show({
+            type: "error",
+            text1: "tuka eeee",
+            topOffset: 100,
+            visibilityTime: 5000,
+            autoHide: true,
+          });
           const body = response.getBody();
           const myCountryCodeList = [];
           body.countries.data.forEach((item, index) => {
@@ -101,7 +116,7 @@ const Register = ({ navigation }) => {
           });
           setCountryCodeList(myCountryCodeList);
           if (body.location.data) {
-            changeCountryCode(body.location.data.country.code);
+            // changeCountryCode(body.location.data.country.code);
           }
           if (body.currencies.data) {
             const allCurrencies = [];
@@ -122,6 +137,12 @@ const Register = ({ navigation }) => {
       });
   }, []);
   const signUp = (userData) => {
+    if (!isTOSAccepted) {
+      setTosError(true);
+      return;
+    } else {
+      setTosError(false);
+    }
     setRequestProgress(true);
     signUpService
       .fetch({
@@ -130,7 +151,7 @@ const Register = ({ navigation }) => {
         confirmPassword: userData.confirmPassword,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        title: title,
+        title: userData.title,
         phone: userData.phone,
         countryCode: countryCode,
         birthDay: birthDate ? birthDate.getDate() : "",
@@ -140,9 +161,20 @@ const Register = ({ navigation }) => {
         isTosAccepted: isTOSAccepted,
       })
       .then(({ response }) => {
-        const body = response.getBody();
-        setRequestProgress(false);
-        register(dispatch, body);
+        if (response.body.code === 200 || response.body.code === 201) {
+          const body = response.getBody();
+          setRequestProgress(false);
+          register(dispatch, body);
+        } else {
+          Toast.show({
+            type: "error",
+            text1: response.body.data.text,
+            topOffset: 100,
+            visibilityTime: 4000000,
+            autoHide: true,
+          });
+          setRequestProgress(false);
+        }
       });
   };
 
@@ -165,10 +197,9 @@ const Register = ({ navigation }) => {
       {initialRegisterSettingsLoaded ? (
         <Formik
           initialValues={formInitialValues}
-          onSubmit={(values) => {
-            signUp(values);
-          }}
+          onSubmit={(values) => signUp(values)}
           validationSchema={SignUpSchema}
+          enableReinitialize={true}
         >
           {(props) => (
             <View style={styles.formWrapper}>
@@ -205,12 +236,22 @@ const Register = ({ navigation }) => {
                     <Picker
                       values={titleValues}
                       placeholderText={title}
-                      value={title}
-                      onChange={(title) => setTitle(title)}
+                      value={props.values.title}
+                      onChange={(title) => {
+                        setTitle(title);
+                        props.setFieldValue("title", title);
+                      }}
                       styles={{ width: "100%" }}
                       hasIcon={true}
                     />
                   </View>
+                  {props.errors.title && props.touched.title ? (
+                    <Error
+                      name="nano"
+                      text={props.errors.title}
+                      bigPadding={true}
+                    />
+                  ) : null}
                   <TextField
                     placeholder={t(`menu.firstName`)}
                     onChange={props.handleChange("firstName")}
@@ -303,10 +344,24 @@ const Register = ({ navigation }) => {
                   ) : null}
                   <Datepicker
                     modalState={isDatepickerOpen}
-                    toggleModal={onChangeBirthDate}
-                    datepickerDate={birthDate ? birthDate : new Date()}
+                    toggleModal={(date) => {
+                      onChangeBirthDate(date);
+                      props.setFieldValue("birthDate", date);
+                    }}
+                    datepickerDate={
+                      props.values.birthDate
+                        ? props.values.birthDate
+                        : new Date()
+                    }
                     maxDate={new Date()}
                   />
+                  {props.errors.phone && props.touched.phone ? (
+                    <Error
+                      name="nano"
+                      text={props.errors.phone}
+                      bigPadding={true}
+                    />
+                  ) : null}
                   <View style={styles.textFieldWrapperWithoutBorder}>
                     <View style={styles.iconWrapper}>
                       <SvgXml
@@ -333,7 +388,7 @@ const Register = ({ navigation }) => {
                       </Pressable>
                     </View>
                   </View>
-                  {!birthDateError ? (
+                  {props.errors.birthDate && props.touched.birthDate ? (
                     <Error name="nano" text={"Required"} bigPadding={true} />
                   ) : null}
                   <View style={styles.textFieldWrapperWithoutBorder}>
@@ -348,15 +403,20 @@ const Register = ({ navigation }) => {
                     <View style={styles.countryPickerWrapper}>
                       <CountryPicker
                         style={{ fontSize: 14 }}
-                        selectedCountryCode={countryCode}
+                        selectedCountryCode={
+                          props.values.countryCode
+                            ? countryCode
+                            : props.values.countryCode
+                        }
                         changeCountry={(countryCode) => {
+                          props.setFieldValue("countryCode", countryCode);
                           changeCountryCode(countryCode);
                         }}
                         customContryCodeList={countryCodeList}
                       />
                     </View>
                   </View>
-                  {!countryCodeError ? (
+                  {props.errors.countryCode ? (
                     <Error name="nano" text={"Required"} bigPadding={true} />
                   ) : null}
                   <View
@@ -412,14 +472,14 @@ const Register = ({ navigation }) => {
                         </Typography>
                       </TouchableOpacity>
                     </View>
-                    {!tosError ? (
-                      <Error
-                        name="nano"
-                        text={"You must agree with the Terms and Agreements."}
-                        bigPadding={true}
-                      />
-                    ) : null}
                   </View>
+                  {tosError ? (
+                    <Error
+                      name="nano"
+                      text={"You must agree with the Terms and Agreements."}
+                      bigPadding={true}
+                    />
+                  ) : null}
                 </ScrollView>
               </KeyboardAvoidingView>
               <View style={styles.buttonsWrapper}>

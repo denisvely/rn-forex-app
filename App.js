@@ -38,8 +38,8 @@ const App = () => {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <RootStackNavigator theme={theme} />
         <Toast />
+        <RootStackNavigator theme={theme} />
       </AppearanceProvider>
     </Provider>
   );
