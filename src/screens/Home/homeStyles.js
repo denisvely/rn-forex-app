@@ -23,4 +23,17 @@ export default StyleSheet.create({
   text: {
     color: colors.white,
   },
+  comingSoon: {
+    backgroundColor: colors.blueColor,
+    height: 25,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    borderRadius: 4,
+  },
+  textOpacity: {
+    color: colors.white,
+    opacity: 0.7,
+  },
 });

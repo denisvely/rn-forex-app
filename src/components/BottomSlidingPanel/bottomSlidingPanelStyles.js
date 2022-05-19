@@ -44,7 +44,7 @@ export default StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: "flex-start",
     alignItems: "center",
-    height: deviceHeight / 3 - 40,
+    height: deviceHeight / 3,
   },
   tradeButtons: {
     paddingVertical: 12,

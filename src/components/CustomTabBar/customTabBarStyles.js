@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { colors } from "../../constants";
 
 export default StyleSheet.create({
   navigatorContainerTransparent: {
-    height: 94,
+    height: Platform.OS === "ios" ? 94 : 74,
     width: "100%",
     flexDirection: "row",
     backgroundColor: colors.white,

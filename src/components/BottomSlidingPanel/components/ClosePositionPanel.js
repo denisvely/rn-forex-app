@@ -47,13 +47,6 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   const [partiallyCloseValue, setPartialllyClose] = useState(trade.volume);
   const [partiallyCloseVisible, setVisibility] = useState(false);
 
-  useEffect(() => {
-    return () => {
-      setVisibility(false);
-      setPartialllyClose(trade.volume);
-    };
-  }, [partiallyCloseVisible]);
-
   const closePositionRealForex = () => {
     if (
       partiallyCloseVisible &&
@@ -172,7 +165,6 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
               }
 
               showForexNotification("success", notificationValues);
-              getPositions();
             }
           })
           .catch((err) => {
@@ -187,6 +179,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
     <View style={styles.closePositionWrapper}>
       <Typography name="normal">
         <Typography
+          style={{ textAlign: "left" }}
           name="normal"
           text={"Are you sure you want to closed this position with "}
         />

@@ -14,7 +14,12 @@ import {
 
 import styles from "./pendingOrdersTradeBoxStyles";
 
-const PendingOrdersTradeBox = ({ item, navigation }) => {
+const PendingOrdersTradeBox = ({
+  item,
+  navigation,
+  setCurrentTrade,
+  toggleBottomSlidingPanel,
+}) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const realForexOptionsByType = useSelector((state) =>
@@ -262,7 +267,10 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
                 name="tinyBold"
                 style={styles.tradeButtonText}
                 text={t(`common-labels.delete`)}
-                onPress={() => alert("delete order")}
+                onPress={() => {
+                  setCurrentTrade(item);
+                  toggleBottomSlidingPanel("closePositionPending");
+                }}
               />
             </TouchableOpacity>
           </View>

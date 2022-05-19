@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -8,6 +8,7 @@ import {
   LazyFlatList,
   Typography,
   PendingOrdersTradeBox,
+  BottomSlidingPanel,
 } from "../../../components";
 
 import styles from "./pendingOrdersRealForexStyles";
@@ -17,6 +18,8 @@ const OpenPositionsRealForex = ({ navigation }) => {
   const pendingOrders = useSelector((state) =>
     getRealForexPendingOrders(state)
   );
+  const [slidingPanelType, setPanelType] = useState(null);
+  const [currentTrade, setCurrentTrade] = useState(null);
 
   return (
     <View style={styles.container}>
@@ -25,7 +28,12 @@ const OpenPositionsRealForex = ({ navigation }) => {
           list={pendingOrders}
           renderItem={({ item }) => {
             return (
-              <PendingOrdersTradeBox item={item} navigation={navigation} />
+              <PendingOrdersTradeBox
+                item={item}
+                navigation={navigation}
+                toggleBottomSlidingPanel={(type) => setPanelType(type)}
+                setCurrentTrade={(trade) => setCurrentTrade(trade)}
+              />
             );
           }}
           keyExtractor={(item) => item.OrderID}
@@ -46,6 +54,12 @@ const OpenPositionsRealForex = ({ navigation }) => {
           <Typography name="largeBold" text={"No trades found."} />
         </View>
       )}
+      <BottomSlidingPanel
+        panelType={slidingPanelType}
+        item={currentTrade}
+        setCurrentTrade={(trade) => setCurrentTrade(trade)}
+        toggleSlidingPanel={() => setPanelType(false)}
+      />
     </View>
   );
 };

@@ -50,6 +50,7 @@ export default StyleSheet.create({
     backgroundColor: colors.white,
     borderBottomColor: colors.inputBorder,
     borderBottomWidth: 1,
+    height: 100,
   },
   left: {
     justifyContent: "flex-start",
