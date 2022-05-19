@@ -58,7 +58,6 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "rn-sliding-up-panel": "^2.4.5",
-    "use-state-with-callback": "^3.0.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {

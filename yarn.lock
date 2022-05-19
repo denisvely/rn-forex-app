@@ -5077,7 +5077,7 @@
     "shell-quote" "^1.6.1"
     "ws" "^7"
 
-"react-dom@*", "react-dom@>=16.8.0", "react-dom@>=17.0.1", "react-dom@16.x.x", "react-dom@17.0.1":
+"react-dom@*", "react-dom@>=17.0.1", "react-dom@16.x.x", "react-dom@17.0.1":
   "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -6244,11 +6244,6 @@
   dependencies:
     "querystringify" "^2.1.1"
     "requires-port" "^1.0.0"
-
-"use-state-with-callback@^3.0.2":
-  "integrity" "sha512-gs6t5ilsbi2UvoYXdw8+dwQg6yT3QfO/sYhm5Wa3tfwcL6BSad85FiET8ZtTWid4gjul1T1TJ8ReV4Wk1B7UZg=="
-  "resolved" "https://registry.npmjs.org/use-state-with-callback/-/use-state-with-callback-3.0.2.tgz"
-  "version" "3.0.2"
 
 "use-subscription@^1.0.0":
   "integrity" "sha512-Xv2a1P/yReAjAbhylMfFplFKj9GssgTwN7RlcTxBujFQcloStWNDQdc4g4NRWH9xS4i/FDk04vQBptAXoF3VcA=="
