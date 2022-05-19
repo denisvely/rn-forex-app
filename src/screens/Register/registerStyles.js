@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 import { colors } from "constants";
 import { deviceWidth } from "../../utils";
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     width: deviceWidth - 48,
     backgroundColor: colors.white,
     zIndex: 10,
-    paddingBottom: 32,
+    paddingBottom: Platform.OS === "ios" ? 32 : 0,
   },
   submitBtn: {
     width: deviceWidth - 48,
@@ -101,6 +101,7 @@ export default StyleSheet.create({
     flex: 1,
     color: colors.fontPrimaryColor,
     width: deviceWidth - 48,
+    paddingLeft: 9,
   },
   inputSecond: {
     backgroundColor: colors.white,

@@ -83,12 +83,12 @@ const Register = ({ navigation }) => {
   const [tosError, setTosError] = useState(false);
 
   const formInitialValues = {
-    email: "qa@testqa.me",
-    password: "motorola",
-    confirmPassword: "motorola",
-    firstName: "gdfgdfgdf",
-    lastName: "gdfgfdgdf",
-    phone: "+44 654645645",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
     title: titleValues[0].value,
     birthDate: "Birth date",
     countryCode: countryCode,
@@ -347,19 +347,10 @@ const Register = ({ navigation }) => {
                       props.setFieldValue("birthDate", date);
                     }}
                     datepickerDate={
-                      props.values.birthDate
-                        ? props.values.birthDate
-                        : new Date()
+                      birthDate ? props.values.birthDate : new Date()
                     }
                     maxDate={new Date()}
                   />
-                  {props.errors.phone && props.touched.phone ? (
-                    <Error
-                      name="nano"
-                      text={props.errors.phone}
-                      bigPadding={true}
-                    />
-                  ) : null}
                   <View style={styles.textFieldWrapperWithoutBorder}>
                     <View style={styles.iconWrapper}>
                       <SvgXml
@@ -376,7 +367,6 @@ const Register = ({ navigation }) => {
                       >
                         <Typography
                           name="small"
-                          style={styles.inputSecond}
                           text={
                             birthDate
                               ? moment(birthDate).format("DD-MM-YYYY")
@@ -402,9 +392,7 @@ const Register = ({ navigation }) => {
                       <CountryPicker
                         style={{ fontSize: 14 }}
                         selectedCountryCode={
-                          props.values.countryCode
-                            ? countryCode
-                            : props.values.countryCode
+                          countryCode ? countryCode : props.values.countryCode
                         }
                         changeCountry={(countryCode) => {
                           props.setFieldValue("countryCode", countryCode);
