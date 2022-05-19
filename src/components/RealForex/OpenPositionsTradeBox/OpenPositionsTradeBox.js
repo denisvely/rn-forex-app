@@ -284,31 +284,33 @@ const OpenPositionsTradeBox = ({
               text={item.swap ? parseFloat(item.swap).toFixed(2) : "-"}
             />
           </View>
-          <View style={styles.tradeInfoRow}>
-            <Typography
-              name="small"
-              style={styles.tradeInfoKey}
-              text={t(`common-labels.margin`)}
-            />
-            <FormattedTypographyWithCurrency
-              name="small"
-              style={styles.tradeInfoValue}
-              text={(
-                ((item.actionType === "Sell"
-                  ? realForexPrices[item.tradableAssetId].bid
-                  : realForexPrices[item.tradableAssetId].ask) *
-                  parseFloat(
-                    convertUnits(
-                      item.volume,
-                      item.tradableAssetId,
-                      !tradingSettings.IsVolumeInUnits,
-                      tradingSettings
-                    )
-                  )) /
-                (item.leverage * item.exchangeRate)
-              ).toFixed(2)}
-            />
-          </View>
+          {user.forexModeId === 3 && user.forexMarginModeId === 1 ? null : (
+            <View style={styles.tradeInfoRow}>
+              <Typography
+                name="small"
+                style={styles.tradeInfoKey}
+                text={t(`common-labels.margin`)}
+              />
+              <FormattedTypographyWithCurrency
+                name="small"
+                style={styles.tradeInfoValue}
+                text={(
+                  ((item.actionType === "Sell"
+                    ? realForexPrices[item.tradableAssetId].bid
+                    : realForexPrices[item.tradableAssetId].ask) *
+                    parseFloat(
+                      convertUnits(
+                        item.volume,
+                        item.tradableAssetId,
+                        !tradingSettings.IsVolumeInUnits,
+                        tradingSettings
+                      )
+                    )) /
+                  (item.leverage * item.exchangeRate)
+                ).toFixed(2)}
+              />
+            </View>
+          )}
           <View style={styles.tradeInfoRow}>
             <Typography
               name="small"

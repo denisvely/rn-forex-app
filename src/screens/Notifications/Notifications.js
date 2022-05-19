@@ -6,10 +6,7 @@ import { LazyFlatList, Loading, Typography } from "components";
 import NotificationService from "./services/NotificationsService";
 import { deviceWidth } from "utils";
 import NotificationRow from "./components/NotificationRow/NotificationRow";
-import { getRealForexNotifications, getNotifications } from "store/realForex";
-import realForexServices from "../../services/realForexServices";
-
-const getForexNotifications = realForexServices.getRealForexNotifications();
+import { getNotifications, getRealForexNotifications } from "store/realForex";
 
 import styles from "./notificationsStyles";
 
@@ -34,18 +31,11 @@ const Notifications = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getForexNotifications
-      .fetch()
-      .then(({ response }) => {
-        const notificationsData = response.body.data;
-        dispatch({
-          type: actionTypes.REAL_FOREX_NOTIFICATIONS,
-          payload: notificationsData,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const unsubscribe = navigation.addListener("focus", () => {
+      getNotifications(dispatch);
+    });
+
+    return unsubscribe;
   }, [navigation]);
 
   return notifications ? (
