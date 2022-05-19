@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, TouchableHighlight } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { SvgXml } from "react-native-svg";
 import { useSelector, useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
+
 import Typography from "../../Typography/Typography";
 import { colors } from "../../../constants";
 import dropdownArrow from "../../../assets/svg/realForex/dropdownArrow";
@@ -17,6 +23,7 @@ import {
   formatDeciamlWithComma,
   convertUnits,
 } from "../../../store/realForex/helpers";
+
 import styles from "./quantityInputStyles";
 
 const QuantityInput = ({ value, setQuantity }) => {
@@ -115,14 +122,14 @@ const QuantityInput = ({ value, setQuantity }) => {
     setQuantity(quantity.toString());
   };
 
-  const onFocus = (event) => {
+  const onFocus = () => {
     setFocus(true);
     setDropdownVisibility(false);
-    let value = event.nativeEvent.text;
-
     if (!value) {
+      setQuantity("");
       return;
     }
+
     const quantity =
       value.indexOf(",") > -1
         ? convertUnits(
@@ -178,7 +185,6 @@ const QuantityInput = ({ value, setQuantity }) => {
           placeholderTextColor={colors.fontSecondaryColor}
           style={styles.quantityInput}
           onFocus={onFocus}
-          // keyboardType="number-pad"
         />
         {!isFocused ? (
           <TouchableHighlight
@@ -199,14 +205,14 @@ const QuantityInput = ({ value, setQuantity }) => {
           <View style={styles.quantityDropdown}>
             {dropdownValues.map((value, index) => {
               return (
-                <TouchableHighlight
+                <TouchableOpacity
                   key={`${index}`}
                   style={styles.value}
                   onPress={() => quantityDropdownPick(value)}
                   underlayColor={colors.containerBackground}
                 >
                   <Typography name="normal" text={value} />
-                </TouchableHighlight>
+                </TouchableOpacity>
               );
             })}
           </View>
