@@ -36,7 +36,6 @@ const Login = ({ navigation }) => {
       .then(({ response }) => {
         const body = response.getBody();
         if (response.body.code === 400 || response.body.code === 401) {
-          debugger;
           Toast.show({
             type: "error",
             text1: `Invalid Username or Password`,

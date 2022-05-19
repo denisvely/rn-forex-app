@@ -72,18 +72,24 @@ const Datepicker = ({
             </View>
           </View>
         </Modal>
-      ) : modalState ? (
-        <DateTimePicker
-          value={date ? date : datepickerDate}
-          display={"default"}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-          style={styles.datePicker}
-          maximumDate={maxDate}
-          minimumDate={minDate}
-        />
-      ) : null}
+      ) : (
+        React.useMemo(() => {
+          return (
+            modalState && (
+              <DateTimePicker
+                value={datepickerDate}
+                display={"default"}
+                mode={mode}
+                is24Hour={true}
+                onChange={onChange}
+                style={styles.datePicker}
+                maximumDate={maxDate}
+                minimumDate={minDate}
+              />
+            )
+          );
+        }, [modalState])
+      )}
     </>
   );
 };
