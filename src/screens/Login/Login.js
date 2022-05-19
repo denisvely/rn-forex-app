@@ -40,6 +40,8 @@ const Login = ({ navigation }) => {
             type: "error",
             text1: `Invalid Username or Password`,
             topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
           });
           return;
         }

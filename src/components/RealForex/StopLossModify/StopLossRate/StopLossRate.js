@@ -74,6 +74,8 @@ const StopLossRate = ({ state, setState }) => {
         type: "error",
         text1: `SL Distance must be higher than ${spinnerMin}`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
       recalculateSLRate(spinnerMin);
     } else {

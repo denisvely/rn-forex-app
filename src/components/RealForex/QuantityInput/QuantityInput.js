@@ -88,6 +88,8 @@ const QuantityInput = ({ value, setQuantity }) => {
         type: "error",
         text1: `The maximum quantity you can trade is ${max} units.'`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
     } else if (parseFloat(value) < parseFloat(min)) {
       setQuantity(formatDeciamlWithComma(parseFloat(min)));
@@ -95,6 +97,8 @@ const QuantityInput = ({ value, setQuantity }) => {
         type: "error",
         text1: `The minimum quantity you can trade is ${min}`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
     } else {
       setQuantity(quantity);

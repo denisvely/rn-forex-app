@@ -53,6 +53,8 @@ const ChangePassword = () => {
               type: "error",
               text1: `The passwords doesn't match.`,
               topOffset: 100,
+              visibilityTime: 3000,
+              autoHide: true,
             });
             return;
           } else {
@@ -68,12 +70,16 @@ const ChangePassword = () => {
                     type: "error",
                     text1: `Password wasn't changed. Try Again.`,
                     topOffset: 100,
+                    visibilityTime: 3000,
+                    autoHide: true,
                   });
                 } else {
                   Toast.show({
                     type: "success",
                     text1: `Password changed successfully.`,
                     topOffset: 100,
+                    visibilityTime: 3000,
+                    autoHide: true,
                   });
                 }
                 setDisabled(false);

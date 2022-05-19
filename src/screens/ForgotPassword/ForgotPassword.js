@@ -35,6 +35,8 @@ const ForgotPassword = ({ navigation }) => {
             type: "error",
             text1: `${body.text}`,
             topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
           });
           return;
         }
@@ -43,6 +45,8 @@ const ForgotPassword = ({ navigation }) => {
           type: "success",
           text1: `${body.text}`,
           topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
         });
         navigation.navigate("Login");
       }

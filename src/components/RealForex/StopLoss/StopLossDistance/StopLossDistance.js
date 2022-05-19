@@ -9,9 +9,7 @@ import {
   getCurrentTrade,
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
-import {
-  getSpreadValue,
-} from "../../../../store/realForex/helpers";
+import { getSpreadValue } from "../../../../store/realForex/helpers";
 
 const StopLossDistance = ({ state, setState }) => {
   const { t } = useTranslation();
@@ -68,6 +66,8 @@ const StopLossDistance = ({ state, setState }) => {
         type: "error",
         text1: `SL Distance must be higher than ${spinnerMin}`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
       recalculateSLDistance(spinnerMin);
     } else {

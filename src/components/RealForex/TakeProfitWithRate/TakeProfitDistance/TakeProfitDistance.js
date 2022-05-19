@@ -87,6 +87,8 @@ const TakeProfitDistance = ({ state, setState }) => {
         type: "error",
         text1: `TP Distance must be higher than ${spinnerMin}`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
 
       setTimeout(() => {}, 3000);

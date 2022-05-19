@@ -100,13 +100,6 @@ const Register = ({ navigation }) => {
       .fetch()
       .then(({ response }) => {
         if (response.body.code === 200 || response.body.code === 201) {
-          Toast.show({
-            type: "error",
-            text1: "tuka eeee",
-            topOffset: 100,
-            visibilityTime: 5000,
-            autoHide: true,
-          });
           const body = response.getBody();
           const myCountryCodeList = [];
           body.countries.data.forEach((item, index) => {
@@ -168,7 +161,7 @@ const Register = ({ navigation }) => {
             type: "error",
             text1: response.body.data.text,
             topOffset: 100,
-            visibilityTime: 4000000,
+            visibilityTime: 4000,
             autoHide: true,
           });
           setRequestProgress(false);

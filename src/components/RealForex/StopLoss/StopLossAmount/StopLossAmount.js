@@ -61,6 +61,8 @@ const StopLossAmount = ({ state, setState }) => {
               true,
               globalSettings
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
 
           recalculateSLAmount(spinnerMax);

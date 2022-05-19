@@ -90,6 +90,8 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
             assetSettings[trade.tradableAssetId].MinQuantity
           } units.`,
           topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
         });
         toggleSlidingPanel(false);
         return;

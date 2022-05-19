@@ -86,6 +86,8 @@ const TakeProfitAmount = ({ state, setState }) => {
               true,
               globalSettings
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
 
           recalculateTPAmount(state.takeProfitAmount);

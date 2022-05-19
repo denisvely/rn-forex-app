@@ -94,6 +94,8 @@ const UploadDocuments = ({ navigation }) => {
           type: "error",
           text1: "Please attach valid file.",
           topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
         });
       }
       const match = validFileExtensions.indexOf(result.mimeType);
@@ -103,6 +105,8 @@ const UploadDocuments = ({ navigation }) => {
           type: "error",
           text1: "This file type is not allowed.",
           topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
         });
       }
 
@@ -157,6 +161,8 @@ const UploadDocuments = ({ navigation }) => {
         type: "error",
         text1: t(`menu.selectTypeError`),
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
       return;
     } else if (!fileResponse) {
@@ -165,6 +171,8 @@ const UploadDocuments = ({ navigation }) => {
         type: "error",
         text1: t(`menu.attachValidFile`),
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
       return;
     }
@@ -175,6 +183,8 @@ const UploadDocuments = ({ navigation }) => {
           type: "error",
           text1: date.message,
           topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
         });
         return;
       }
@@ -196,6 +206,8 @@ const UploadDocuments = ({ navigation }) => {
             type: "error",
             text1: response.body.data.text,
             topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
           });
           return;
         }

@@ -128,6 +128,8 @@ const StopLossPrice = ({ state, setState }) => {
             text1: `SL Rate must be below ${parseFloat(max).toFixed(
               selectedAsset.accuracy
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
         }
       } else {
@@ -145,6 +147,8 @@ const StopLossPrice = ({ state, setState }) => {
             text1: `SL Rate must be higher than ${parseFloat(min).toFixed(
               selectedAsset.accuracy
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
         }
       }

@@ -171,12 +171,16 @@ const ContactUs = ({ navigation }) => {
                   type: "success",
                   text1: t(`menu.thankYou`),
                   topOffset: 100,
+                  visibilityTime: 3000,
+                  autoHide: true,
                 });
               } else {
                 Toast.show({
                   type: "success",
                   text1: t(`menu.tryAgain`),
                   topOffset: 100,
+                  visibilityTime: 3000,
+                  autoHide: true,
                 });
               }
               setDisabled(false);

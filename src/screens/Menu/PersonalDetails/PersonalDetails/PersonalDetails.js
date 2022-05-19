@@ -147,12 +147,16 @@ const PersonalDetails = () => {
                     type: "error",
                     text1: t(`menu.notSaved`),
                     topOffset: 100,
+                    visibilityTime: 3000,
+                    autoHide: true,
                   });
                 } else {
                   Toast.show({
                     type: "success",
                     text1: t(`menu.userUpdatedSuccessfully`),
                     topOffset: 100,
+                    visibilityTime: 3000,
+                    autoHide: true,
                   });
                   updateUserDetails();
                 }
