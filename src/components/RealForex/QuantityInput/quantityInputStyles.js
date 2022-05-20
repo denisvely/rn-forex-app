@@ -7,6 +7,7 @@ export default StyleSheet.create({
     marginTop: 16,
     paddingHorizontal: 24,
     zIndex: 9999,
+    width: "100%",
   },
   quantityInputWrapper: {
     marginTop: 8,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector} from "react-redux";
 
 import {
   Loading,
@@ -166,38 +166,45 @@ const ProfitLossTab = ({
       <>
         {isReady ? (
           <>
-            {user.forexModeId === 2 ? (
-              <QuantityInput
-                value={quantity}
-                setQuantity={(value) => setQuantity(value)}
-              />
-            ) : null}
-            <ScrollView
-              style={styles.scrollView}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                width: deviceWidth,
-                flexGrow: 1,
-                paddingBottom: 130,
-              }}
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              // style={{ flex: 1 }}
+              enabled
+              // keyboardVerticalOffset={deviceHeight / 4.5}
             >
-              <ProfitLossOrderControls
-                state={marketState}
-                setState={setMarketState}
-              />
-              {user.forexModeId === 2 ? (
-                <OrderInfo
-                  quantityValue={currentTrade.quantity}
-                  isMarket={true}
-                  orderInfoData={orderInfoData}
-                  setOrderInfoData={setOrderInfoData}
+              <ScrollView
+                style={styles.scrollView}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  flexDirection: "column",
+                  width: deviceWidth,
+                  flexGrow: 1,
+                  paddingBottom: 130,
+                }}
+              >
+                {user.forexModeId === 2 ? (
+                  <QuantityInput
+                    value={quantity}
+                    setQuantity={(value) => setQuantity(value)}
+                  />
+                ) : null}
+                <ProfitLossOrderControls
+                  state={marketState}
+                  setState={setMarketState}
                 />
-              ) : null}
-            </ScrollView>
+                {user.forexModeId === 2 ? (
+                  <OrderInfo
+                    quantityValue={currentTrade.quantity}
+                    isMarket={true}
+                    orderInfoData={orderInfoData}
+                    setOrderInfoData={setOrderInfoData}
+                  />
+                ) : null}
+              </ScrollView>
+            </KeyboardAvoidingView>
           </>
         ) : (
           <Loading size="large" />

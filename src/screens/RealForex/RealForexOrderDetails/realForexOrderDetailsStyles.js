@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { colors } from "../../../constants";
 import { deviceWidth } from "../../../utils";
 
@@ -17,7 +17,7 @@ export default StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
-    height: 120,
+    height: Platform.OS === "ios" ? 117 : 97,
     paddingHorizontal: 16,
     paddingTop: 24,
     backgroundColor: colors.white,

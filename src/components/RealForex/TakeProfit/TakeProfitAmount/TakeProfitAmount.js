@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,7 @@ const TakeProfitAmount = ({ state, setState }) => {
   const currentTrade = useSelector((state) => getCurrentTrade(state));
   const user = useSelector((state) => getUser(state));
   const globalSettings = useSelector((state) => getSettings(state));
+  const [isErrorActive, setErrorState] = useState(false);
   const spinnerMin = (
     parseFloat(
       parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
@@ -35,7 +36,7 @@ const TakeProfitAmount = ({ state, setState }) => {
         parseFloat(value) /
         ((currentTrade.quantity * 1) / selectedAsset.rate)
       ).toFixed(selectedAsset.accuracy);
-
+      
       setState((prevState) => ({
         ...prevState,
         takeProfitDistance: parseFloat(TPDistance),
@@ -48,6 +49,7 @@ const TakeProfitAmount = ({ state, setState }) => {
     if (value) {
       if (state.takeProfitAmount) {
         if (parseFloat(value) < parseFloat(spinnerMin)) {
+          setErrorState(true);
           Toast.show({
             type: "error",
             text1: `TP Amount must be higher than ${formatCurrency(
@@ -62,6 +64,8 @@ const TakeProfitAmount = ({ state, setState }) => {
 
           recalculateTPAmount(spinnerMin);
           return;
+        } else {
+          setErrorState(false);
         }
       } else {
         const TPAmount = (
@@ -103,6 +107,7 @@ const TakeProfitAmount = ({ state, setState }) => {
           />
         ) : null
       }
+      errorActive={isErrorActive}
       placeholder={t("common-labels.amount")}
       spinnerValue={state.takeProfitAmount}
       onSpinnerChange={(value) => onChange(value)}

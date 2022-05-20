@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
@@ -11,7 +11,6 @@ import {
   PendingOrderControls,
   QuantityInput,
   OrderInfo,
-  Typography,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
@@ -23,7 +22,7 @@ import {
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
 import { convertUnits } from "store/realForex/helpers";
-import { deviceWidth } from "../../../../utils";
+import { deviceWidth, deviceHeight } from "../../../../utils";
 import { processPendingOrder } from "../helpers";
 
 import styles from "../realForexOrderDetailsStyles";
@@ -289,50 +288,57 @@ const PendingTab = ({
     <View style={styles.container}>
       {isReady ? (
         <>
-          <QuantityInput
-            value={quantity}
-            setQuantity={(value) => setQuantity(value)}
-          />
-          <ScrollView
-            style={styles.scrollView}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              flexDirection: "column",
-              width: deviceWidth,
-              flexGrow: 1,
-              paddingBottom: 130,
-            }}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            // style={{ flex: 1 }}
+            enabled
+            // keyboardVerticalOffset={deviceHeight / 4.5}
           >
-            <PendingOrderControls
-              pendingState={pendingState}
-              setPendingState={setPendingState}
-            />
-            <OrderInfo
-              quantityValue={currentTrade.quantity}
-              isMarket={false}
-              orderInfoData={orderInfoData}
-              setOrderInfoData={setOrderInfoData}
-            />
-          </ScrollView>
+            <ScrollView
+              style={styles.scrollView}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                flexDirection: "column",
+                width: deviceWidth,
+                flexGrow: 1,
+                paddingBottom: 130,
+              }}
+            >
+              <QuantityInput
+                value={quantity}
+                setQuantity={(value) => setQuantity(value)}
+              />
+              <PendingOrderControls
+                pendingState={pendingState}
+                setPendingState={setPendingState}
+              />
+              <OrderInfo
+                quantityValue={currentTrade.quantity}
+                isMarket={false}
+                orderInfoData={orderInfoData}
+                setOrderInfoData={setOrderInfoData}
+              />
+            </ScrollView>
+            <View style={styles.buttonsWrapper}>
+              <Button
+                style={{
+                  opacity: tradeInProgress ? 0.3 : 1,
+                }}
+                text={t("common-labels.place")}
+                type="primary"
+                font="mediumBold"
+                size="big"
+                onPress={makeNewPendingOrder}
+              />
+            </View>
+          </KeyboardAvoidingView>
         </>
       ) : (
         <Loading size="large" />
       )}
-      <View style={styles.buttonsWrapper}>
-        <Button
-          style={{
-            opacity: tradeInProgress ? 0.3 : 1,
-          }}
-          text={t("common-labels.place")}
-          type="primary"
-          font="mediumBold"
-          size="big"
-          onPress={makeNewPendingOrder}
-        />
-      </View>
     </View>
   );
 };

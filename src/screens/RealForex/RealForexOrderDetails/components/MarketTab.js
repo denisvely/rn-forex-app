@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
@@ -64,8 +64,8 @@ const MarketTab = ({
   const initalMarketTPandSLState = {
     isBuyMarket: isDirectionBuy,
     TPActive: false,
-    takeProfitDistance: null,
-    takeProfitAmount: null,
+    takeProfitDistance: -10,
+    takeProfitAmount: -54354,
     SLActive: false,
     stopLossAmount: null,
     stopLossDistance: null,
@@ -165,36 +165,42 @@ const MarketTab = ({
         <>
           {isReady ? (
             <>
-              <QuantityInput
-                value={quantity}
-                setQuantity={(value) => setQuantity(value)}
-              />
-
-              <ScrollView
-                style={styles.scrollView}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  flexDirection: "column",
-                  width: deviceWidth,
-                  flexGrow: 1,
-                  paddingBottom: 130,
-                }}
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                // style={{ flex: 1 }}
+                enabled
+                // keyboardVerticalOffset={deviceHeight / 4.5}
               >
-                <MarketOrderControls
-                  marketState={marketState}
-                  setMarketState={setMarketState}
-                />
+                <ScrollView
+                  style={styles.scrollView}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                    flexDirection: "column",
+                    width: deviceWidth,
+                    flexGrow: 1,
+                    paddingBottom: 130,
+                  }}
+                >
+                  <QuantityInput
+                    value={quantity}
+                    setQuantity={(value) => setQuantity(value)}
+                  />
+                  <MarketOrderControls
+                    marketState={marketState}
+                    setMarketState={setMarketState}
+                  />
 
-                <OrderInfo
-                  quantityValue={currentTrade.quantity}
-                  isMarket={true}
-                  orderInfoData={orderInfoData}
-                  setOrderInfoData={setOrderInfoData}
-                />
-              </ScrollView>
+                  <OrderInfo
+                    quantityValue={currentTrade.quantity}
+                    isMarket={true}
+                    orderInfoData={orderInfoData}
+                    setOrderInfoData={setOrderInfoData}
+                  />
+                </ScrollView>
+              </KeyboardAvoidingView>
             </>
           ) : (
             <Loading size="large" />
