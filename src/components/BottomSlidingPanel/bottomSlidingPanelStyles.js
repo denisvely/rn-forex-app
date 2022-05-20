@@ -46,6 +46,12 @@ export default StyleSheet.create({
     alignItems: "center",
     height: deviceHeight / 3,
   },
+  closePositionWrapperPending: {
+    paddingHorizontal: 24,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: deviceHeight / 3 - 40,
+  },
   tradeButtons: {
     paddingVertical: 12,
     justifyContent: "space-between",

@@ -1,81 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 
 import Typography from "../../Typography/Typography";
 import Button from "../../Button/Button";
-import {
-  closeForexTradeNetting,
-  addRealForexTradeOrderV2Service,
-  getRealForexOptionsByType,
-  getRealForexPrices,
-  getRealForexAssetsSettings,
-  getRealForexTradingSettings,
-} from "../../../store/realForex";
 import realForexServices from "../../../services/realForexServices";
-import { getUser } from "../../../store/app";
-import {
-  convertUnits,
-  showForexNotification,
-} from "../../../store/realForex/helpers";
+import { showForexNotification } from "../../../store/realForex/helpers";
 
 import styles from "../bottomSlidingPanelStyles";
 
-const closePosition = realForexServices.closePosition();
+const closePendingOrder = realForexServices.closeForexPendingOrderV2();
 
 const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   if (!trade) {
     return null;
   }
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const user = useSelector((state) => getUser(state));
-  const settings = useSelector((state) => getRealForexTradingSettings(state));
-  const assetSettings = useSelector((state) =>
-    getRealForexAssetsSettings(state)
-  );
-  const realForexOptionsByType = useSelector((state) =>
-    getRealForexOptionsByType(state)
-  );
-  const realForexPrices = useSelector((state) => getRealForexPrices(state));
 
   const closePositionRealForex = () => {
-    closePosition
-      .fetch({ orderID: trade.orderID })
+    closePendingOrder
+      .fetch({ orderID: trade.OrderID })
       .then(({ response }) => {
-        if (
-          response.body.code == 400 &&
-          response.body.data.text == "Minimum Close Interval Error"
-        ) {
-          // TODO => forexHelper.settings.MinCloseInterval
-          Toast.show({
-            type: "error",
-            text1:
-              "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
-            text2: "Please try again in a few moments.",
-            topOffset: 100,
-            visibilityTime: 3000,
-            autoHide: true,
-          });
-        } else {
-          const notificationValues = {
-            title: !response.body.data ? "Market Closed" : "Position closed",
-            action: trade.actionType === "Buy" ? "Sell" : "Buy",
-            quantity: trade.volume,
-            option: trade.description,
-            strike: trade.marketRate,
+        if (response.body.code == 200 || response.body.code == 201) {
+          var notificationValues = {
+            // TODO
+            // title: forexHelper.pendingOrderEvent
+            //   ? helper.getTranslation(
+            //       "pending_order_filled",
+            //       "Pending Order Filled"
+            //     )
+            //   : helper.getTranslation(
+            //       "pending_order_cancelled",
+            //       "Pending Order Cancelled"
+            //     ),
+            title: "Pending Order Cancelled",
+            action: trade.IsBuy ? "Buy" : "Sell",
+            quantity: trade.Volume,
+            option: trade.Description,
+            strike: trade.TradeRate,
             takeProfit:
-              parseFloat(trade.takeProfitRate) === 0
+              parseFloat(trade.TakeProfitRate) === 0
                 ? null
-                : trade.takeProfitRate,
+                : trade.TakeProfitRate,
             stopLoss:
-              parseFloat(trade.stopLossRate) === 0 ? null : trade.stopLossRate,
-            pendingDate: trade.expirationDate,
+              parseFloat(trade.StopLossRate) === 0 ? null : trade.StopLossRate,
+            pendingDate: trade.ExpirationDate,
           };
-          if (response.body.data) {
-            notificationValues.strike = response.body.hash.ClosingPrice;
+          // TODO => !forexHelper.pendingOrderEvent
+          // if (trade.type !== "editTrade" && !forexHelper.pendingOrderEvent) {
+          if (trade.type !== "editTrade") {
+            if (trade.ExpirationDate !== null) {
+              var currDate = new Date();
+
+              if (currDate > new Date(trade.ExpirationDate)) {
+                notificationValues.title = "Pending Order Expired";
+              }
+            }
           }
 
           showForexNotification("success", notificationValues);
@@ -89,7 +70,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   };
 
   return trade ? (
-    <View style={styles.closePositionWrapper}>
+    <View style={styles.closePositionWrapperPending}>
       <Typography name="normal">
         <Typography
           name="normal"

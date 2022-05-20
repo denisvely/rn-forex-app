@@ -309,6 +309,28 @@ export default {
 
     return service;
   },
+  closeForexPendingOrderV2: () => {
+    const service = new Service(
+      "v2/games/forex/pendingorders/cancel/",
+      apiConsts.HTTP_METHOD_PUT
+    );
+
+    service.setPrepareRequest((request, { orderID }) => {
+      const options = {};
+
+      options["orderId"] = orderID;
+
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+      request.addParamToTheUrl(orderID);
+
+      return request;
+    });
+
+    return service;
+  },
   addRealForexTradeOrderV2: () => {
     const service = new Service(
       "v3/games/forex/orders",
