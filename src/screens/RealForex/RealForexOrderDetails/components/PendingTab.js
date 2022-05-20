@@ -99,8 +99,8 @@ const PendingTab = ({
 
     if (pendingState.pendingExpirationDate !== null) {
       var time = pendingState.pendingExpirationTime,
-        hours = Number(time.match(/^(\d+)/)[1]),
-        minutes = Number(time.match(/:(\d+)/)[1]),
+        hours = time.getHours(),
+        minutes = time.getMinutes(),
         currDateAndTime = new Date();
 
       var sHours = hours.toString(),
@@ -126,6 +126,7 @@ const PendingTab = ({
           visibilityTime: 5000,
           autoHide: true,
         });
+        setTradeProgress(false);
         return false;
       }
       currentTrade.pendingDate = expirationDate;
@@ -196,6 +197,7 @@ const PendingTab = ({
         visibilityTime: 5000,
         autoHide: true,
       });
+      setTradeProgress(false);
       return false;
     }
   };
