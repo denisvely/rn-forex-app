@@ -9,6 +9,7 @@ import {
   ProfitLossOrderControls,
   QuantityInput,
   OrderInfo,
+  Typography,
 } from "../../../../components";
 import {
   getRealForexTradingSettings,
@@ -18,7 +19,7 @@ import {
   getCurrentlyModifiedOrder,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
-import { convertUnits } from "store/realForex/helpers";
+import { convertUnits, remainingTime } from "store/realForex/helpers";
 import { deviceWidth } from "../../../../utils";
 import { processMarketOrder } from "../helpers";
 import { getUser } from "../../../../store/app";
@@ -182,10 +183,10 @@ const ProfitLossTab = ({
                   flexDirection: "column",
                   width: deviceWidth,
                   flexGrow: 1,
-                  paddingBottom: 130,
+                  paddingBottom: 200,
                 }}
               >
-                {user.forexModeId === 2 ? (
+                {user.forexModeId === 2 && !isMarketClosed ? (
                   <QuantityInput
                     value={quantity}
                     setQuantity={(value) => setQuantity(value)}
@@ -194,11 +195,28 @@ const ProfitLossTab = ({
                     isMarket={true}
                   />
                 ) : null}
+                {isMarketClosed ? (
+                  <View style={styles.marketClosedWrapper}>
+                    <Typography
+                      name="largeBold"
+                      text={t("common-labels.marketClosed")}
+                      style={{ textAlign: "left", alignSelf: "flex-start" }}
+                    />
+                    <View style={styles.remainingTimeText}>
+                      <Typography
+                        name="small"
+                        text={`This market opens at ${remainingTime(
+                          asset
+                        )}. You can place pending orders even when the market is closed.`}
+                      />
+                    </View>
+                  </View>
+                ) : null}
                 <ProfitLossOrderControls
                   state={marketState}
                   setState={setMarketState}
                 />
-                {user.forexModeId === 2 ? (
+                {user.forexModeId === 2 && !isMarketClosed ? (
                   <OrderInfo
                     quantityValue={currentTrade.quantity}
                     isMarket={true}
@@ -207,20 +225,20 @@ const ProfitLossTab = ({
                   />
                 ) : null}
               </ScrollView>
+              <View style={styles.buttonsWrapper}>
+                <Button
+                  text={t("common-labels.modify")}
+                  type="primary"
+                  font="mediumBold"
+                  size="big"
+                  onPress={makeModifyMarketOrder}
+                />
+              </View>
             </KeyboardAvoidingView>
           </>
         ) : (
           <Loading size="large" />
         )}
-        <View style={styles.buttonsWrapper}>
-          <Button
-            text={t("common-labels.modify")}
-            type="primary"
-            font="mediumBold"
-            size="big"
-            onPress={makeModifyMarketOrder}
-          />
-        </View>
       </>
     </View>
   );

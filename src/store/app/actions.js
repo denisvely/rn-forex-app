@@ -172,13 +172,6 @@ const getTokenWithRefresh = (token, dispatch) => {
     .updateRefreshToken()
     .fetch({ refreshToken: token.refreshToken })
     .then(async ({ response }) => {
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
-      console.log("new token updateRefreshToken");
       if (response.body && response.body.code === 400) {
         tokenService
           .getToken()

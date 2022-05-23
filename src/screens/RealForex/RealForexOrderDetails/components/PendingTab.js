@@ -284,7 +284,7 @@ const PendingTab = ({
         pendingExpirationTime: expDate,
       }));
     }
-  }, [currentlyModifiedOrder]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -292,9 +292,7 @@ const PendingTab = ({
         <>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            // style={{ flex: 1 }}
             enabled
-            // keyboardVerticalOffset={deviceHeight / 4.5}
           >
             <ScrollView
               style={styles.scrollView}
@@ -306,7 +304,7 @@ const PendingTab = ({
                 flexDirection: "column",
                 width: deviceWidth,
                 flexGrow: 1,
-                paddingBottom: 130,
+                paddingBottom: 200,
               }}
             >
               <QuantityInput

@@ -169,9 +169,7 @@ const MarketTab = ({
             <>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                // style={{ flex: 1 }}
                 enabled
-                // keyboardVerticalOffset={deviceHeight / 4.5}
               >
                 <ScrollView
                   style={styles.scrollView}
@@ -183,7 +181,7 @@ const MarketTab = ({
                     flexDirection: "column",
                     width: deviceWidth,
                     flexGrow: 1,
-                    paddingBottom: 130,
+                    paddingBottom: 200,
                   }}
                 >
                   <QuantityInput
@@ -205,61 +203,61 @@ const MarketTab = ({
                     setOrderInfoData={setOrderInfoData}
                   />
                 </ScrollView>
+                <View style={styles.buttonsWrapper}>
+                  <Button
+                    size="medium"
+                    type="buy"
+                    style={{
+                      ...styles.buyButton,
+                      opacity: tradeInProgress ? 0.3 : 1,
+                    }}
+                    disabled={tradeInProgress}
+                    onPress={() => makeNewMarketOrder(true)}
+                  >
+                    {() => (
+                      <View>
+                        <Typography
+                          style={styles.buyButtonText}
+                          name="small"
+                          text={t("common-labels.buy")}
+                        />
+                        <BuyPrice
+                          asset={realForexPrices[asset.id]}
+                          textColor={colors.white}
+                        />
+                      </View>
+                    )}
+                  </Button>
+                  <Button
+                    size="medium"
+                    type="sell"
+                    style={{
+                      ...styles.sellButton,
+                      opacity: tradeInProgress ? 0.3 : 1,
+                    }}
+                    disabled={tradeInProgress}
+                    onPress={() => makeNewMarketOrder(false)}
+                  >
+                    {() => (
+                      <View>
+                        <Typography
+                          style={styles.sellButtonText}
+                          name="small"
+                          text={t("common-labels.sell")}
+                        />
+                        <SellPrice
+                          asset={realForexPrices[asset.id]}
+                          textColor={colors.white}
+                        />
+                      </View>
+                    )}
+                  </Button>
+                </View>
               </KeyboardAvoidingView>
             </>
           ) : (
             <Loading size="large" />
           )}
-          <View style={styles.buttonsWrapper}>
-            <Button
-              size="medium"
-              type="buy"
-              style={{
-                ...styles.buyButton,
-                opacity: tradeInProgress ? 0.3 : 1,
-              }}
-              disabled={tradeInProgress}
-              onPress={() => makeNewMarketOrder(true)}
-            >
-              {() => (
-                <View>
-                  <Typography
-                    style={styles.buyButtonText}
-                    name="small"
-                    text={t("common-labels.buy")}
-                  />
-                  <BuyPrice
-                    asset={realForexPrices[asset.id]}
-                    textColor={colors.white}
-                  />
-                </View>
-              )}
-            </Button>
-            <Button
-              size="medium"
-              type="sell"
-              style={{
-                ...styles.sellButton,
-                opacity: tradeInProgress ? 0.3 : 1,
-              }}
-              disabled={tradeInProgress}
-              onPress={() => makeNewMarketOrder(false)}
-            >
-              {() => (
-                <View>
-                  <Typography
-                    style={styles.sellButtonText}
-                    name="small"
-                    text={t("common-labels.sell")}
-                  />
-                  <SellPrice
-                    asset={realForexPrices[asset.id]}
-                    textColor={colors.white}
-                  />
-                </View>
-              )}
-            </Button>
-          </View>
         </>
       )}
     </View>
