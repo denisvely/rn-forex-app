@@ -64,11 +64,13 @@ const MarketTab = ({
   const initalMarketTPandSLState = {
     isBuyMarket: isDirectionBuy,
     TPActive: false,
-    takeProfitDistance: -10,
-    takeProfitAmount: -54354,
+    takeProfitDistance: null,
+    takeProfitAmount: null,
+    takeProfitAmountMin: null,
     SLActive: false,
     stopLossAmount: null,
     stopLossDistance: null,
+    stopLossAmountMax: null,
   };
   const [marketState, setMarketState] = useState(initalMarketTPandSLState);
 
@@ -187,6 +189,9 @@ const MarketTab = ({
                   <QuantityInput
                     value={quantity}
                     setQuantity={(value) => setQuantity(value)}
+                    state={marketState}
+                    setState={setMarketState}
+                    isMarket={true}
                   />
                   <MarketOrderControls
                     marketState={marketState}

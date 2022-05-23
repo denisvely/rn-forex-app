@@ -73,9 +73,11 @@ const PendingTab = ({
     pendingTPActive: false,
     pendingTPDistance: null,
     pendingTPAmount: null,
+    pendingTPAmountMin: null,
     pendingSLActive: false,
     pendingSLDistance: null,
     pendingSLAmount: null,
+    pendingSLAmountMax: null,
     pendingExpirationDate: null,
     pendingExpirationTime: null,
   };
@@ -310,6 +312,9 @@ const PendingTab = ({
               <QuantityInput
                 value={quantity}
                 setQuantity={(value) => setQuantity(value)}
+                state={pendingState}
+                setState={setPendingState}
+                isMarket={false}
               />
               <PendingOrderControls
                 pendingState={pendingState}

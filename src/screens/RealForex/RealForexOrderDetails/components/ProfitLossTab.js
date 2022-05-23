@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 import {
   Loading,
@@ -189,6 +189,9 @@ const ProfitLossTab = ({
                   <QuantityInput
                     value={quantity}
                     setQuantity={(value) => setQuantity(value)}
+                    state={marketState}
+                    setState={setMarketState}
+                    isMarket={true}
                   />
                 ) : null}
                 <ProfitLossOrderControls

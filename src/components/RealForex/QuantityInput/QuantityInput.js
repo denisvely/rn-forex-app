@@ -18,20 +18,23 @@ import {
   getCurrentTrade,
   getRealForexTradingSettings,
   setCurrentTrade,
+  getRealForexPrices,
 } from "../../../store/realForex";
 import {
   formatDeciamlWithComma,
   convertUnits,
+  getSpreadValue,
 } from "../../../store/realForex/helpers";
 
 import styles from "./quantityInputStyles";
 
-const QuantityInput = ({ value, setQuantity }) => {
+const QuantityInput = ({ value, setQuantity, state, setState, isMarket }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
   const settings = useSelector((state) => getRealForexTradingSettings(state));
+  const realForexPrices = useSelector((state) => getRealForexPrices(state));
 
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const [dropdownValues, setDropdownValues] = useState([]);
@@ -102,7 +105,7 @@ const QuantityInput = ({ value, setQuantity }) => {
       });
     } else {
       setQuantity(quantity);
-      // TODO => TP & SL => forex.js - line 4244
+      updateTPandSL(value);
     }
     currentTrade.quantity = parseFloat(value);
     setDropdownVisibility(false);
@@ -161,8 +164,132 @@ const QuantityInput = ({ value, setQuantity }) => {
 
     setQuantity(value);
     setDropdownVisibility(false);
+    updateTPandSL(quantity);
 
     setCurrentTrade(dispatch, currentTrade);
+  };
+
+  const updateTPandSL = (value) => {
+    if (isMarket) {
+      if (state.TPActive) {
+        const TPAmountMin = (
+          parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy) *
+          convertUnits(parseFloat(value), selectedAsset.id, true, settings) *
+          parseFloat(1 / selectedAsset.rate)
+        ).toFixed(2);
+
+        if (parseFloat(state.takeProfitAmount) < parseFloat(TPAmountMin)) {
+          const TPDistance = (
+            parseFloat(value) /
+            ((currentTrade.quantity * 1) / selectedAsset.rate)
+          ).toFixed(selectedAsset.accuracy);
+
+          setState((prevState) => ({
+            ...prevState,
+            takeProfitAmount: parseFloat(TPAmountMin),
+            takeProfitDistance: parseFloat(TPDistance),
+            takeProfitAmountMin: parseFloat(TPAmountMin),
+          }));
+        }
+      }
+      if (state.SLActive) {
+        const SlAmountMax = (
+          -parseFloat(
+            (
+              parseFloat(
+                getSpreadValue(
+                  realForexPrices[selectedAsset.id].ask,
+                  realForexPrices[selectedAsset.id].bid,
+                  realForexPrices[selectedAsset.id].accuracy
+                ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
+              ) + parseFloat(selectedAsset.distance)
+            ).toFixed(selectedAsset.accuracy)
+          ) *
+          convertUnits(parseFloat(value), selectedAsset.id, true, settings) *
+          parseFloat(1 / selectedAsset.rate)
+        ).toFixed(2);
+
+        if (parseFloat(state.stopLossAmount) > parseFloat(SlAmountMax)) {
+          const SLDistance = Math.abs(
+            parseFloat(value) /
+              ((currentTrade.quantity * 1) / selectedAsset.rate)
+          ).toFixed(selectedAsset.accuracy);
+
+          setState((prevState) => ({
+            ...prevState,
+            stopLossAmount: parseFloat(SlAmountMax),
+            stopLossDistance: parseFloat(SLDistance),
+            stopLossAmountMax: parseFloat(SlAmountMax),
+          }));
+        }
+      }
+    } else {
+      if (state.pendingTPActive) {
+        const pendingTPAmountMin = (
+          parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy) *
+          convertUnits(parseFloat(value), selectedAsset.id, false, settings) *
+          parseFloat(1 / selectedAsset.rate)
+        ).toFixed(2);
+
+        if (
+          parseFloat(state.pendingTPAmount) < parseFloat(pendingTPAmountMin)
+        ) {
+          const pendingTPDistance = (
+            parseFloat(pendingTPAmountMin) /
+            ((convertUnits(
+              parseFloat(value),
+              selectedAsset.id,
+              true,
+              settings
+            ) *
+              1) /
+              selectedAsset.rate)
+          ).toFixed(selectedAsset.accuracy);
+
+          setState((prevState) => ({
+            ...prevState,
+            pendingTPAmount: parseFloat(pendingTPAmountMin),
+            pendingTPDistance: parseFloat(pendingTPDistance),
+            pendingTPAmountMin: parseFloat(pendingTPAmountMin),
+          }));
+        }
+      }
+
+      if (state.pendingSLActive) {
+        const pendingSLAmountMax = (
+          parseFloat(
+            getSpreadValue(
+              realForexPrices[selectedAsset.id].ask,
+              realForexPrices[selectedAsset.id].bid,
+              realForexPrices[selectedAsset.id].accuracy
+            ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
+          ) + parseFloat(selectedAsset.distance)
+        ).toFixed(selectedAsset.accuracy);
+
+        if (
+          parseFloat(state.pendingSLAmount) > parseFloat(pendingSLAmountMax)
+        ) {
+          const pendingSLDistance = Math.abs(
+            parseFloat(pendingSLAmountMax) /
+              ((convertUnits(
+                parseFloat(value),
+                selectedAsset.id,
+                true,
+                settings
+              ) *
+                1) /
+                selectedAsset.rate)
+          ).toFixed(selectedAsset.accuracy);
+
+          setState((prevState) => ({
+            ...prevState,
+            pendingSLAmount: parseFloat(pendingSLAmountMax),
+            pendingSLDistance: parseFloat(pendingSLDistance),
+            pendingSLAmountMax: parseFloat(pendingSLAmountMax),
+          }));
+        }
+      }
+    }
   };
 
   useEffect(() => {

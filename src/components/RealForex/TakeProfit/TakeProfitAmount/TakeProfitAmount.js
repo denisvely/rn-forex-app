@@ -36,7 +36,7 @@ const TakeProfitAmount = ({ state, setState }) => {
         parseFloat(value) /
         ((currentTrade.quantity * 1) / selectedAsset.rate)
       ).toFixed(selectedAsset.accuracy);
-      
+
       setState((prevState) => ({
         ...prevState,
         takeProfitDistance: parseFloat(TPDistance),
@@ -83,6 +83,7 @@ const TakeProfitAmount = ({ state, setState }) => {
           ...prevState,
           takeProfitDistance: parseFloat(TPDistance),
           takeProfitAmount: parseFloat(TPAmount),
+          takeProfitAmountMin: spinnerMin,
           TPActive: true,
         }));
       }

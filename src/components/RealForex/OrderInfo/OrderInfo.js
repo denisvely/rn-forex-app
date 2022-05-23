@@ -10,16 +10,16 @@ import {
   getRealForexPrices,
   getRealForexOpenPositions,
   getRealForexSwapRates,
+  getCurrentlyModifiedOrder,
 } from "../../../store/realForex";
 import {
   convertUnits,
   getGlobalSetting,
 } from "../../../store/realForex/helpers";
-import { getSettings } from "../../../store/app";
+import { getSettings, getUser } from "../../../store/app";
 
 import styles from "./orderInfoStyles";
 
-// TODO
 const showLeverageInfo = true;
 
 const OrderInfo = ({
@@ -39,6 +39,10 @@ const OrderInfo = ({
     getRealForexOpenPositions(state)
   );
   const globalSettings = useSelector((state) => getSettings(state));
+  const currentlyModifiedOrder = useSelector((state) =>
+    getCurrentlyModifiedOrder(state)
+  );
+  const user = useSelector((state) => getUser(state));
 
   const calculateMarginRequired = (newQuantity) => {
     const quantity =
@@ -126,7 +130,7 @@ const OrderInfo = ({
       return;
     }
 
-    if (isMarket) {
+    if (!currentlyModifiedOrder) {
       swapRates.swapBuy = (
         (quantity *
           (getGlobalSetting("DisplaySwapNumbers", globalSettings)
@@ -146,9 +150,131 @@ const OrderInfo = ({
         selectedAsset.rate
       ).toFixed(2);
     } else {
-      // TODO -> forex.js - line 5125
-    }
+      if (currentlyModifiedOrder.actionType == "Buy") {
+        var p = realForexPrices[selectedAsset.id].ask,
+          q0 = currentlyModifiedOrder.volume,
+          q1 = parseFloat(quantityValue);
 
+        if (user.forexModeId == 3) {
+          swapRates.swapBuy = (
+            (quantity *
+              (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                ? parseFloat(realForexSwapRates[selectedAsset.id].swapLong)
+                : (realForexPrices[selectedAsset.id].ask *
+                    parseFloat(realForexSwapRates[selectedAsset.id].swapLong)) /
+                  100)) /
+            selectedAsset.rate
+          ).toFixed(2);
+          swapRates.swapSell = 0.0;
+        } else {
+          swapRates.swapBuy = (
+            (q1 *
+              (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                ? parseFloat(realForexSwapRates[selectedAsset.id].swapLong)
+                : (realForexPrices[selectedAsset.id].ask *
+                    parseFloat(realForexSwapRates[selectedAsset.id].swapLong)) /
+                  100)) /
+            selectedAsset.rate
+          ).toFixed(2);
+
+          if (q1 < q0) {
+            var localSellSwap = (
+              (q0 *
+                (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                  ? parseFloat(realForexSwapRates[selectedAsset.id].swapLong)
+                  : (realForexPrices[selectedAsset.id].ask *
+                      parseFloat(
+                        realForexSwapRates[selectedAsset.id].swapLong
+                      )) /
+                    100)) /
+              selectedAsset.rate
+            ).toFixed(2);
+
+            swapRates.swapSell =
+              swapRates.swapBuy - localSellSwap > 0
+                ? (swapRates.swapBuy - localSellSwap).toFixed(2)
+                : 0.0;
+          } else if (q1 == q0) {
+            swapRates.swapSell = 0.0;
+          } else {
+            swapRates.swapSell = (
+              ((q1 - q0) *
+                (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                  ? parseFloat(realForexSwapRates[selectedAsset.id].swapShort)
+                  : (realForexPrices[selectedAsset.id].ask *
+                      parseFloat(
+                        realForexSwapRates[selectedAsset.id].swapShort
+                      )) /
+                    100)) /
+              selectedAsset.rate
+            ).toFixed(2);
+          }
+        }
+      } else {
+        var p = realForexPrices[selectedAsset.id].bid,
+          q0 = currentlyModifiedOrder.volume,
+          q1 = parseFloat(quantityValue);
+
+        if (user.forexModeId == 3) {
+          swapRates.swapBuy = 0.0;
+          swapRates.swapSell = (
+            (quantity *
+              (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                ? parseFloat(realForexSwapRates[selectedAsset.id].swapShort)
+                : (realForexPrices[selectedAsset.id].bid *
+                    parseFloat(
+                      realForexSwapRates[selectedAsset.id].swapShort
+                    )) /
+                  100)) /
+            selectedAsset.rate
+          ).toFixed(2);
+        } else {
+          swapRates.swapSell = (
+            (q1 *
+              (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                ? parseFloat(realForexSwapRates[selectedAsset.id].swapShort)
+                : (realForexPrices[selectedAsset.id].bid *
+                    parseFloat(
+                      realForexSwapRates[selectedAsset.id].swapShort
+                    )) /
+                  100)) /
+            selectedAsset.rate
+          ).toFixed(2);
+
+          if (q1 < q0) {
+            var localBuySwap = (
+              (q0 *
+                (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                  ? parseFloat(realForexSwapRates[selectedAsset.id].swapShort)
+                  : (realForexPrices[selectedAsset.id].bid *
+                      parseFloat(
+                        realForexSwapRates[selectedAsset.id].swapShort
+                      )) /
+                    100)) /
+              selectedAsset.rate
+            ).toFixed(2);
+            swapRates.swapBuy =
+              swapRates.swapSell - localBuySwap > 0
+                ? (swapRates.swapSell - localBuySwap).toFixed(2)
+                : 0.0;
+          } else if (q1 == q0) {
+            swapRates.swapBuy = 0.0;
+          } else {
+            swapRates.swapBuy = (
+              ((q1 - q0) *
+                (getGlobalSetting("DisplaySwapNumbers", globalSettings)
+                  ? parseFloat(realForexSwapRates[selectedAsset.id].swapLong)
+                  : (realForexPrices[selectedAsset.id].bid *
+                      parseFloat(
+                        realForexSwapRates[selectedAsset.id].swapLong
+                      )) /
+                    100)) /
+              selectedAsset.rate
+            ).toFixed(2);
+          }
+        }
+      }
+    }
     return swapRates;
   };
 
@@ -247,13 +373,19 @@ const OrderInfo = ({
           name="small"
           text={orderInfoData.marginBuy}
         />
-        <Typography
-          style={styles.buy}
-          name="small"
-          text={
-            showLeverageInfo ? orderInfoData.leverageBuy : orderInfoData.swapBuy
-          }
-        />
+        {showLeverageInfo ? (
+          <Typography
+            style={styles.buy}
+            name="small"
+            text={orderInfoData.leverageBuy}
+          />
+        ) : (
+          <FormattedTypographyWithCurrency
+            style={styles.buy}
+            name="small"
+            text={orderInfoData.swapBuy}
+          />
+        )}
         <FormattedTypographyWithCurrency
           style={styles.buy}
           name="small"
@@ -266,15 +398,19 @@ const OrderInfo = ({
           name="small"
           text={orderInfoData.marginSell}
         />
-        <Typography
-          style={styles.sell}
-          name="small"
-          text={
-            showLeverageInfo
-              ? orderInfoData.leverageSell
-              : orderInfoData.swapSell
-          }
-        />
+        {showLeverageInfo ? (
+          <Typography
+            style={styles.sell}
+            name="small"
+            text={orderInfoData.leverageSell}
+          />
+        ) : (
+          <FormattedTypographyWithCurrency
+            style={styles.sell}
+            name="small"
+            text={orderInfoData.swapSell}
+          />
+        )}
         <FormattedTypographyWithCurrency
           style={styles.sell}
           name="small"
