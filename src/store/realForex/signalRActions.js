@@ -9,80 +9,86 @@ export const signalRStop = () => {
   connection.stop();
 };
 
-export const signalRStart = (assetsPrices, dispatch) => {
-  connection.logging = false;
-  connection.qs = { token: ServiceManager.getAccessToken() };
+const signalRMiddleware =
+  ({ dispatch, getState }) =>
+  (next) =>
+  async (action) => {
+    if (action.type === "REAL_FOREX_PRICES_DONE") {
+      connection.logging = false;
+      connection.qs = {
+        token: ServiceManager.getAccessToken(),
+      };
 
-  const pricesHubProxy = connection.createHubProxy("pricesHub"),
-    eventsHubProxy = connection.createHubProxy("monitoringHub"),
-    mergeHubProxy = connection.createHubProxy("murgeHub");
+      const state = getState();
+      const assetsPrices = state.realForex.realForexPrices;
 
-  pricesHubProxy.on("onChangePrice", (allPrices) => {
-    realForexHubPrices(assetsPrices, allPrices, dispatch);
-  });
+      const pricesHubProxy = connection.createHubProxy("pricesHub"),
+        eventsHubProxy = connection.createHubProxy("monitoringHub"),
+        mergeHubProxy = connection.createHubProxy("murgeHub");
 
-  eventsHubProxy.on("forexPosition", (event) => {
-    if (event.Event === 2) {
-      realForexServices
-        .getRealForexOpenTrades(dispatch)
-        .fetch()
-        .then(({ response }) => {
-          const body = response.body.data;
-          dispatch({
-            type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
-            payload: body.forexOpenTrades.data,
-          });
-        });
-    }
-  });
-
-  eventsHubProxy.on("forexPendingOrder", (event) => {
-    realForexServices
-      .getRealForexPendingOrders(dispatch)
-      .fetch()
-      .then(({ response }) => {
-        const body = response.body.data;
-
-        dispatch({
-          type: actionTypes.REAL_FOREX_PENDING_ORDERS,
-          payload: body.results,
-        });
+      // event handlers, you can use these to dispatch actions to update your Redux store
+      pricesHubProxy.on("onChangePrice", (allPrices) => {
+        realForexHubPrices(assetsPrices, allPrices, dispatch);
       });
-  });
 
-  //connection-handling
-  connection.connectionSlow(() => {
-    console.log(
-      "We are currently experiencing difficulties with the connection."
-    );
-  });
+      eventsHubProxy.on("forexPosition", (event) => {
+        if (event.Event === 2) {
+          realForexServices
+            .getRealForexOpenTrades(dispatch)
+            .fetch()
+            .then(({ response }) => {
+              const body = response.body.data;
+              dispatch({
+                type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
+                payload: body.forexOpenTrades.data,
+              });
+            });
+        }
+      });
 
-  connection.start().fail(function () {
-    console.log("Could not connect");
-  });
+      eventsHubProxy.on("forexPendingOrder", (event) => {
+        realForexServices
+          .getRealForexPendingOrders(dispatch)
+          .fetch()
+          .then(({ response }) => {
+            const body = response.body.data;
 
-  connection.disconnected(function () {
-    console.log("Disconnected");
-    connection.start();
-  });
+            dispatch({
+              type: actionTypes.REAL_FOREX_PENDING_ORDERS,
+              payload: body.results,
+            });
+          });
+      });
 
-  connection.error((error) => {
-    const errorMessage = error.message;
-    let detailedError = "";
-    if (error.source && error.source._response) {
-      detailedError = error.source._response;
+      mergeHubProxy.on("forexTradingSettings", (response) => {
+        console.log(response);
+        // forexHelper.settings.MarginUsage = response.MarginUsage;
+        // forexHelper.settings.MinCloseInterval = response.MinCloseInterval;
+        // widgets.user.MarginCallLevel = response.MarginCallLevel;
+        // widgets.user.StopOutLevel = response.StopOutLevel;
+      });
+
+      //connection-handling
+      connection.connectionSlow(() => {
+        console.log(
+          "We are currently experiencing difficulties with the connection."
+        );
+      });
+
+      connection.start().fail(function () {
+        console.log("Could not connect");
+      });
+
+      connection.disconnected(function () {
+        console.log("Disconnected");
+        connection.start();
+      });
     }
-    if (
-      detailedError ===
-      "An SSL error has occurred and a secure connection to the server cannot be made."
-    ) {
-      console.log(
-        "When using react-native-signalr on ios with http remember to enable http in App Transport Security https://github.com/olofd/react-native-signalr/issues/14"
-      );
-    }
-    console.debug("SignalR error: " + errorMessage, detailedError);
-  });
-};
+
+    return next(action);
+  };
+
+export default signalRMiddleware;
 
 export const realForexHubPrices = (assetsPrices, allPrices, dispatch) => {
   let newPrices = [],

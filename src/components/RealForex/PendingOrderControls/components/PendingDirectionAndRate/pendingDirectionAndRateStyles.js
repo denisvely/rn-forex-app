@@ -78,4 +78,10 @@ export default StyleSheet.create({
   spinnerWrapper: {
     height: 58,
   },
+  priceContainer: {
+    marginLeft: 5,
+  },
+  priceText: {
+    color: colors.fontSecondaryColor,
+  },
 });

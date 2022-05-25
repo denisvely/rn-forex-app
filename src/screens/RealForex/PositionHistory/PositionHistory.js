@@ -88,11 +88,8 @@ const PositionHistory = ({ route, navigation }) => {
             <Typography
               name="tiny"
               text={moment(
-                convertUTCDateToLocalDate(
-                  new Date(item.DateCreated),
-                  "yyyy-mm-dd HH:MM:ss"
-                )
-              ).format("YYYY-MM-DD HH:MM:ss")}
+                convertUTCDateToLocalDate(new Date(item.DateCreated))
+              ).format("YYYY-MM-DD hh:mm:ss")}
               style={styles.centerAligned}
             />
           </View>

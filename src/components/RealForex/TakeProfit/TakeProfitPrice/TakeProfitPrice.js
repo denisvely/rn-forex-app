@@ -196,6 +196,8 @@ const TakeProfitPrice = ({state, setState}) => {
             text1: `TP Rate must be higher than ${parseFloat(min).toFixed(
               selectedAsset.accuracy
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
         }
       } else {
@@ -212,6 +214,8 @@ const TakeProfitPrice = ({state, setState}) => {
             text1: `TP Rate must be higher than ${parseFloat(max).toFixed(
               selectedAsset.accuracy
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
 >>>>>>> 5ac012d48f2e3878066180f81935fe8446fca961
         }

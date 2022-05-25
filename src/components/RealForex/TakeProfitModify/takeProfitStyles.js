@@ -3,7 +3,7 @@ import { colors } from "../../../constants";
 
 export default StyleSheet.create({
   inputsWrapper: {
-    marginVertical: 8,
+    marginVertical: 16,
     paddingHorizontal: 24,
     width: "100%",
   },
@@ -22,5 +22,19 @@ export default StyleSheet.create({
     color: colors.fontPrimaryColor,
     textAlign: "center",
     fontSize: 16,
+  },
+  takeProfitHeader: {
+    paddingVertical: 8.5,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 4,
+  },
+  takeProfitHeaderTitle: {
+    color: colors.fontPrimaryColor,
+  },
+  clearAllBtn: {
+    height: 13,
+    backgroundColor: "red",
   },
 });

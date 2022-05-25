@@ -4,13 +4,13 @@ import TakeProfitModify from "../TakeProfitModify/TakeProfitModify";
 import StopLossModify from "../StopLossModify/StopLossModify";
 import { deviceWidth } from "../../../utils";
 
-const MarketOrderControls = () => {
+const ProfitLossOrderControls = ({ state, setState }) => {
   return (
     <View style={{ width: deviceWidth }}>
-      <TakeProfitModify />
-      <StopLossModify />
+      <TakeProfitModify state={state} setState={setState} />
+      <StopLossModify state={state} setState={setState} />
     </View>
   );
 };
 
-export default MarketOrderControls;
+export default ProfitLossOrderControls;

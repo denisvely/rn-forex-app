@@ -80,7 +80,6 @@ class Service {
       // TODO: extract error from response
       this.serviceError(error);
     });
-
     if (this.prepareRequest) {
       request = this.prepareRequest(request, ...args);
     }

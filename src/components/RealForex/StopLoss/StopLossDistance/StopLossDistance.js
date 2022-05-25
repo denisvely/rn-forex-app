@@ -9,20 +9,15 @@ import {
   getCurrentTrade,
   getRealForexTradingSettings,
 } from "../../../../store/realForex";
-import {
-  getSpread,
-  convertUnits,
-  getSpreadValue,
-} from "../../../../store/realForex/helpers";
-import { colors } from "../../../../constants";
+import { getSpreadValue } from "../../../../store/realForex/helpers";
 
 const StopLossDistance = ({ state, setState }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [isErrorActive, setErrorState] = useState(false);
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
-  const settings = useSelector((state) => getRealForexTradingSettings(state));
   const spinnerMin = (
     parseFloat(
       getSpreadValue(
@@ -32,18 +27,6 @@ const StopLossDistance = ({ state, setState }) => {
       ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
     ) + parseFloat(selectedAsset.distance)
   ).toFixed(selectedAsset.accuracy);
-
-  const initSLDistance = () => {
-    selectedAsset.minSLDistance = (
-      parseFloat(
-        getSpreadValue(
-          realForexPrices[selectedAsset.id].ask,
-          realForexPrices[selectedAsset.id].bid,
-          realForexPrices[selectedAsset.id].accuracy
-        ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
-      ) + parseFloat(selectedAsset.distance)
-    ).toFixed(selectedAsset.accuracy);
-  };
 
   const onChange = (value) => {
     if (state.stopLossDistance !== null) {
@@ -56,61 +39,37 @@ const StopLossDistance = ({ state, setState }) => {
   const recalculateSLDistance = (SLDistance) => {
     if (SLDistance != "") {
       const SLAmount = (
-        (-parseFloat(SLDistance) *
-          convertUnits(
-            currentTrade.quantity,
-            selectedAsset.id,
-            true,
-            settings
-          ) *
-          1) /
+        (-parseFloat(SLDistance) * currentTrade.quantity * 1) /
         selectedAsset.rate
       ).toFixed(2);
-      if (currentTrade.isBuy) {
-        SLRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].ask) -
-            parseFloat(SLDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      } else {
-        SLRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].bid) +
-            parseFloat(SLDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      }
+
       setState((prevState) => ({
         ...prevState,
         stopLossDistance: parseFloat(SLDistance),
         stopLossAmount: parseFloat(SLAmount),
-        stopLossPrice: parseFloat(SLRate),
         SLActive: true,
-        isPriceFocused: false,
       }));
     } else {
       setState((prevState) => ({
         ...prevState,
         stopLossDistance: null,
         stopLossAmount: null,
-        stopLossPrice: null,
         SLActive: false,
-        isPriceFocused: false,
       }));
     }
   };
 
   const spinnerOnStop = (value) => {
     if (parseFloat(value) < parseFloat(spinnerMin)) {
-      setState((prevState) => ({
-        ...prevState,
-        stopLossDistance: parseFloat(spinnerMin),
-      }));
       setErrorState(true);
       Toast.show({
         type: "error",
         text1: `SL Distance must be higher than ${spinnerMin}`,
         topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
       });
-
-      setTimeout(() => {}, 3000);
+      recalculateSLDistance(spinnerMin);
     } else {
       if (value != "") {
         const SLDistance = parseFloat(
@@ -119,62 +78,31 @@ const StopLossDistance = ({ state, setState }) => {
         setState((prevState) => ({
           ...prevState,
           stopLossDistance: SLDistance,
-          isPriceFocused: false,
         }));
         setErrorState(false);
         Toast.hide();
+        recalculateSLDistance(SLDistance);
       }
     }
-    recalculateSLDistance(value);
   };
 
   const spinnerOnStart = () => {
-    let SLDistance = "";
-    if (currentTrade.isBuy) {
-      let SLRate =
-        parseFloat(realForexPrices[selectedAsset.id].ask) -
-        parseFloat(selectedAsset.distance) -
+    const SLAmount = parseFloat(
+      eval(
         parseFloat(
-          10 *
-            parseFloat(
-              getSpread(
-                realForexPrices[selectedAsset.id].ask,
-                realForexPrices[selectedAsset.id].bid,
-                realForexPrices[selectedAsset.id].accuracy
-              )
-            )
-        );
-      // SL Distance = Math.abs(SL Rate  - ASK Price)
-      SLDistance = parseFloat(
-        Math.abs(SLRate - parseFloat(realForexPrices[selectedAsset.id].ask))
-      );
-    } else {
-      let SLRate =
-        parseFloat(realForexPrices[selectedAsset.id].bid) +
-        parseFloat(selectedAsset.distance) +
-        parseFloat(
-          10 *
-            parseFloat(
-              getSpread(
-                realForexPrices[selectedAsset.id].ask,
-                realForexPrices[selectedAsset.id].bid,
-                realForexPrices[selectedAsset.id].accuracy
-              )
-            )
-        );
-      // SL Distance = Math.abs(SL Rate - BID Price)
-      SLDistance = parseFloat(
-        Math.abs(SLRate - parseFloat(realForexPrices[selectedAsset.id].bid))
-      );
-    }
-    recalculateSLDistance(SLDistance);
-  };
+          getSpreadValue(
+            realForexPrices[selectedAsset.id].ask,
+            realForexPrices[selectedAsset.id].bid,
+            realForexPrices[selectedAsset.id].accuracy
+          ) * Math.pow(10, -realForexPrices[selectedAsset.id].accuracy)
+        ) +
+          parseFloat(selectedAsset.initialDistance) +
+          Math.pow(10, -selectedAsset.accuracy)
+      )
+    ).toFixed(selectedAsset.accuracy);
 
-  useEffect(() => {
-    if (selectedAsset) {
-      initSLDistance();
-    }
-  }, [selectedAsset]);
+    recalculateSLDistance(SLAmount);
+  };
 
   useEffect(() => {
     if (!state.SLActive && isErrorActive) {
@@ -190,14 +118,7 @@ const StopLossDistance = ({ state, setState }) => {
       step={parseFloat(
         Math.pow(10, -selectedAsset.accuracy).toFixed(selectedAsset.accuracy)
       )}
-      style={{
-        backgroundColor:
-          state.SLActive && !state.isPriceFocused
-            ? colors.containerBackground
-            : colors.white,
-      }}
       errorActive={isErrorActive}
-      // min={spinnerMin}
       accuracy={selectedAsset.accuracy}
     />
   ) : null;

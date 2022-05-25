@@ -12,6 +12,11 @@ const TextField = ({
   onChange,
   hasIcon,
   secureTextEntry,
+  editable,
+  isTextArea = false,
+  onSubmitEditing,
+  keyboardType,
+  style,
 }) => {
   return (
     <View style={styles.textFieldWrapper}>
@@ -21,14 +26,18 @@ const TextField = ({
         </View>
       ) : null}
       <TextInput
+        numberOfLines={isTextArea ? 10 : 1}
+        multiline={isTextArea}
         autoCapitalize="none"
         autoCorrect={false}
         placeholder={placeholder}
         onChangeText={onChange}
         value={value}
-        keyboardType="email-address"
-        style={styles.input}
+        keyboardType={keyboardType}
+        style={{ ...styles.input, ...style }}
         secureTextEntry={secureTextEntry}
+        editable={editable}
+        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );

@@ -7,7 +7,6 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-// TODO => Stacks
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
 import InvalidTokenModal from "../components/InvalidTokenModal/InvalidTokenModal";

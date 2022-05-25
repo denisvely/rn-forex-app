@@ -5,11 +5,20 @@ import { SvgXml } from "react-native-svg";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-import { formatDeciamlWithComma } from "../../../store/realForex/helpers";
+import {
+  formatDeciamlWithComma,
+  convertUnits,
+} from "../../../store/realForex/helpers";
+import { formatCurrency } from "../../../components/FormatedCurrency/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
 import Typography from "../../Typography/Typography";
 import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";
-import { getRealForexPrices } from "../../../store/realForex";
+import {
+  getRealForexPrices,
+  getRealForexOptionsByType,
+  getRealForexTradingSettings,
+} from "../../../store/realForex";
+import { getUser, getSettings } from "../../../store/app";
 
 import styles from "./openPositionsTradeBoxStyles";
 import { colors } from "../../../constants";
@@ -22,6 +31,15 @@ const OpenPositionsTradeBox = ({
 }) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const realForexOptionsByType = useSelector((state) =>
+    getRealForexOptionsByType(state)
+  );
+  const user = useSelector((state) => getUser(state));
+  const settings = useSelector((state) => getSettings(state));
+  const tradingSettings = useSelector((state) =>
+    getRealForexTradingSettings(state)
+  );
+
   const [isContentVisible, setContentVisible] = useState(false);
 
   if (item.optionType !== "HARealForex") {
@@ -47,6 +65,43 @@ const OpenPositionsTradeBox = ({
       }
     }
   }
+
+  const checkAvailableForTrading = (id) => {
+    if (!realForexOptionsByType.All[id].rules.length) {
+      return false;
+    } else {
+      var currTime = new Date(),
+        availableForTrading = false;
+
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+        var dateFrom = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.from.dateTime
+          ),
+          dateTo = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.to.dateTime
+          );
+
+        if (currTime > dateFrom && dateFrom < dateTo) {
+          availableForTrading =
+            realForexOptionsByType.All[id].rules[i].availableForTrading;
+        }
+      }
+
+      return availableForTrading;
+    }
+  };
+
+  const modifyTrade = () => {
+    if (realForexOptionsByType.All[item.tradableAssetId]) {
+      navigation.navigate("RealForexOrderDetails", {
+        asset: realForexOptionsByType.All[item.tradableAssetId],
+        isBuy: item.actionType === "Buy" ? true : false,
+        isPending: false,
+        order: item,
+        isMarketClosed: !checkAvailableForTrading(item.tradableAssetId),
+      });
+    }
+  };
 
   return (
     <View style={styles.tradeBox}>
@@ -101,12 +156,7 @@ const OpenPositionsTradeBox = ({
               text={t(`common-labels.takeProfit`)}
             />
             {parseFloat(item.takeProfitRate) == 0 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setCurrentTrade(item);
-                  toggleBottomSlidingPanel("tpAndSl");
-                }}
-              >
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -128,12 +178,7 @@ const OpenPositionsTradeBox = ({
               text={t(`common-labels.stopLoss`)}
             />
             {parseFloat(item.stopLossRate) == 0 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setCurrentTrade(item);
-                  toggleBottomSlidingPanel("tpAndSl");
-                }}
-              >
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -158,7 +203,7 @@ const OpenPositionsTradeBox = ({
               name="small"
               style={styles.tradeInfoValue}
               text={moment(item.orderDate.timestamp).format(
-                "YYYY-MM-DD HH:MM:ss"
+                "YYYY-MM-DD hh:mm:ss"
               )}
             />
           </View>
@@ -239,18 +284,33 @@ const OpenPositionsTradeBox = ({
               text={item.swap ? parseFloat(item.swap).toFixed(2) : "-"}
             />
           </View>
-          <View style={styles.tradeInfoRow}>
-            <Typography
-              name="small"
-              style={styles.tradeInfoKey}
-              text={t(`common-labels.margin`)}
-            />
-            <FormattedTypographyWithCurrency
-              name="small"
-              style={styles.tradeInfoValue}
-              text={item.margin}
-            />
-          </View>
+          {user.forexModeId === 3 && user.forexMarginModeId === 1 ? null : (
+            <View style={styles.tradeInfoRow}>
+              <Typography
+                name="small"
+                style={styles.tradeInfoKey}
+                text={t(`common-labels.margin`)}
+              />
+              <FormattedTypographyWithCurrency
+                name="small"
+                style={styles.tradeInfoValue}
+                text={(
+                  ((item.actionType === "Sell"
+                    ? realForexPrices[item.tradableAssetId].bid
+                    : realForexPrices[item.tradableAssetId].ask) *
+                    parseFloat(
+                      convertUnits(
+                        item.volume,
+                        item.tradableAssetId,
+                        !tradingSettings.IsVolumeInUnits,
+                        tradingSettings
+                      )
+                    )) /
+                  (item.leverage * item.exchangeRate)
+                ).toFixed(2)}
+              />
+            </View>
+          )}
           <View style={styles.tradeInfoRow}>
             <Typography
               name="small"
@@ -268,17 +328,7 @@ const OpenPositionsTradeBox = ({
             />
           </View>
           <View style={styles.tradeButtons}>
-            <TouchableOpacity
-              style={styles.tradeButton}
-              onPress={() =>
-                navigation.navigate("RealForexOrderDetails", {
-                  asset: item,
-                  isBuy: item.actionType === "Buy" ? true : false,
-                  isPending: false,
-                  isModify: true,
-                })
-              }
-            >
+            <TouchableOpacity style={styles.tradeButton} onPress={modifyTrade}>
               <Typography
                 name="tinyBold"
                 style={styles.tradeButtonText}

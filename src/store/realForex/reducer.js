@@ -35,6 +35,7 @@ const initialState = {
   realForexTraderInsight: null,
   selectedAsset: null,
   currentTrade: {},
+  currentlyModifiedOrder: null,
 };
 
 const realForexReducer = (state = initialState, action) => {
@@ -124,7 +125,13 @@ const realForexReducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_TRADE: {
       return {
         ...stateClone,
-        selectedAsset: action.payload,
+        currentTrade: action.payload,
+      };
+    }
+    case actionTypes.SET_CURRENTLY_MODIFIED_ORDER: {
+      return {
+        ...stateClone,
+        currentlyModifiedOrder: action.payload,
       };
     }
 

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { View, TextInput } from "react-native";
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import { Button, TextField } from "components";
+import * as Yup from "yup";
+import { Button, TextField, Error } from "../../components";
 import { SvgXml } from "react-native-svg";
+import Toast from "react-native-toast-message";
 
 import LoginService from "./services/LoginService";
 import { login } from "store/app";
@@ -16,9 +18,16 @@ import styles from "./loginStyles";
 
 const signInService = LoginService.login();
 
+const SignInSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .min(6, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Invalid password"),
+});
+
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [loginMessage, setLogginMessage] = useState("");
 
   const signIn = (values) => {
     signInService
@@ -27,15 +36,15 @@ const Login = ({ navigation }) => {
       .then(({ response }) => {
         const body = response.getBody();
         if (response.body.code === 400 || response.body.code === 401) {
-          if (response.data.type === "2FA_NotValid") {
-            // TODO => 2FA_NotValid
-            return;
-          } else {
-            setLogginMessage("Invalid Username or Password");
-            return;
-          }
+          Toast.show({
+            type: "error",
+            text1: `Invalid Username or Password`,
+            topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+          return;
         }
-        setLogginMessage("You have been logged in.");
         login(dispatch, body);
       });
   };
@@ -51,6 +60,7 @@ const Login = ({ navigation }) => {
         onSubmit={(values) => {
           signIn(values);
         }}
+        validationSchema={SignInSchema}
       >
         {(props) => (
           <>
@@ -60,7 +70,11 @@ const Login = ({ navigation }) => {
               value={props.values.email}
               type="email"
               hasIcon={true}
+              keyboardType="email-address"
             />
+            {props.errors.email && props.touched.email ? (
+              <Error name="nano" text={props.errors.email} bigPadding={true} />
+            ) : null}
             <TextField
               placeholder="Password"
               onChange={props.handleChange("password")}
@@ -69,6 +83,13 @@ const Login = ({ navigation }) => {
               hasIcon={true}
               type="password"
             />
+            {props.errors.password && props.touched.password ? (
+              <Error
+                name="nano"
+                text={props.errors.password}
+                bigPadding={true}
+              />
+            ) : null}
             <View style={styles.forgotPassword}>
               <Button
                 textStyle={{ color: colors.buttonSecondary }}
@@ -79,22 +100,23 @@ const Login = ({ navigation }) => {
                 onPress={() => navigation.navigate("ForgotPassword")}
               />
             </View>
-
-            <Button
-              style={{ marginTop: 32 }}
-              text="Login"
-              type="primary"
-              font="mediumBold"
-              size="big"
+            <TouchableOpacity
               onPress={props.handleSubmit}
-            />
+              style={styles.loginBtn}
+            >
+              <Typography
+                name="mediumBold"
+                text={"Login"}
+                style={{ color: colors.white }}
+              />
+            </TouchableOpacity>
           </>
         )}
       </Formik>
-      <Typography name="tiny" text={loginMessage} />
       <View style={styles.bottomViewLogin}>
         <Typography name="tiny" text={"Don't you have an account?"} />
         <Button
+          textStyle={{ color: colors.blueColor }}
           size="small"
           text="Create one now!"
           type="secondary"

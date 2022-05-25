@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Switch} from 'react-native';
 import {colors} from 'constants';
 
-const SwitchComponent = ({style, value, onValueChange}) => {
+const SwitchComponent = ({style, value, onValueChange, disabled}) => {
 	return (
 		<Switch
 			style={style}
@@ -12,6 +12,7 @@ const SwitchComponent = ({style, value, onValueChange}) => {
 			ios_backgroundColor={colors.systemColorInactive}
 			onValueChange={onValueChange}
 			value={value}
+			disabled={disabled}
 		/>
 	);
 };

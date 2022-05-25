@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
@@ -18,58 +18,29 @@ import { formatCurrency } from "../../../FormatedCurrency/helpers";
 const TakeProfitAmount = ({ state, setState }) => {
   const { t } = useTranslation();
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
-  const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const currentTrade = useSelector((state) => getCurrentTrade(state));
-  const settings = useSelector((state) => getRealForexTradingSettings(state));
   const user = useSelector((state) => getUser(state));
   const globalSettings = useSelector((state) => getSettings(state));
+  const [isErrorActive, setErrorState] = useState(false);
   const spinnerMin = (
     parseFloat(
       parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
     ) *
-    convertUnits(
-      parseFloat(currentTrade.quantity),
-      selectedAsset.id,
-      true,
-      settings
-    ) *
+    currentTrade.quantity *
     parseFloat(1 / selectedAsset.rate)
   ).toFixed(2);
 
   const recalculateTPAmount = (value) => {
     if (value) {
-      let TPRate = "";
-      let TPDistance = (
+      const TPDistance = (
         parseFloat(value) /
-        ((convertUnits(
-          parseFloat(currentTrade.quantity),
-          selectedAsset.id,
-          true,
-          settings
-        ) *
-          1) /
-          selectedAsset.rate)
+        ((currentTrade.quantity * 1) / selectedAsset.rate)
       ).toFixed(selectedAsset.accuracy);
-
-      if (currentTrade.isBuy) {
-        TPRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].ask) +
-            parseFloat(TPDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      } else {
-        TPRate = parseFloat(
-          parseFloat(realForexPrices[selectedAsset.id].bid) -
-            parseFloat(TPDistance)
-        ).toFixed(realForexPrices[selectedAsset.id].accuracy);
-      }
 
       setState((prevState) => ({
         ...prevState,
         takeProfitDistance: parseFloat(TPDistance),
-        takeProfitPrice: parseFloat(TPRate),
         takeProfitAmount: parseFloat(value),
-        TPActive: true,
-        isPriceFocused: false,
       }));
     }
   };
@@ -78,6 +49,7 @@ const TakeProfitAmount = ({ state, setState }) => {
     if (value) {
       if (state.takeProfitAmount) {
         if (parseFloat(value) < parseFloat(spinnerMin)) {
+          setErrorState(true);
           Toast.show({
             type: "error",
             text1: `TP Amount must be higher than ${formatCurrency(
@@ -86,73 +58,42 @@ const TakeProfitAmount = ({ state, setState }) => {
               true,
               globalSettings
             )}`,
+            visibilityTime: 3000,
+            autoHide: true,
           });
 
-          recalculateTPAmount(state.takeProfitAmount);
+          recalculateTPAmount(spinnerMin);
           return;
+        } else {
+          setErrorState(false);
         }
-      }
-
-      let TPAmount;
-      if (currentTrade.isBuy) {
-        const TPRate =
-          parseFloat(realForexPrices[selectedAsset.id].ask) +
-          parseFloat(selectedAsset.distance) +
-          parseFloat(
-            10 *
-              parseFloat(
-                getSpread(
-                  realForexPrices[selectedAsset.id].ask,
-                  realForexPrices[selectedAsset.id].bid,
-                  realForexPrices[selectedAsset.id].accuracy
-                )
-              )
-          );
-        // TP Distance = Math.abs(TP Rate - ASK Price)
-        const TPDistance = Math.abs(
-          TPRate - parseFloat(realForexPrices[selectedAsset.id].ask)
-        );
-        TPAmount = (
-          parseFloat(TPDistance) *
-          convertUnits(
-            parseFloat(currentTrade.quantity),
-            selectedAsset.id,
-            true,
-            settings
-          ) *
-          parseFloat(1 / selectedAsset.rate)
-        ).toFixed(2);
       } else {
-        var TPRate =
-          parseFloat(realForexPrices[selectedAsset.id].bid) -
-          parseFloat(selectedAsset.distance) -
-          parseFloat(
-            10 *
-              parseFloat(
-                getSpread(
-                  realForexPrices[selectedAsset.id].ask,
-                  realForexPrices[selectedAsset.id].bid,
-                  realForexPrices[selectedAsset.id].accuracy
-                )
-              )
-          );
-        // TP Distance = Math.abs(TP Rate  - BID Price)
-        var TPDistance = Math.abs(
-          TPRate - parseFloat(realForexPrices[selectedAsset.id].bid)
-        );
-        TPAmount = (
-          parseFloat(TPDistance) *
-          convertUnits(
-            parseFloat(currentTrade.quantity),
-            selectedAsset.id,
-            true,
-            settings
-          ) *
+        const TPAmount = (
+          parseFloat(selectedAsset.distance) *
+          3 *
+          currentTrade.quantity *
           parseFloat(1 / selectedAsset.rate)
         ).toFixed(2);
-      }
 
-      recalculateTPAmount(TPAmount);
+        const TPDistance = (parseFloat(selectedAsset.distance) * 3).toFixed(
+          selectedAsset.accuracy
+        );
+
+        setState((prevState) => ({
+          ...prevState,
+          takeProfitDistance: parseFloat(TPDistance),
+          takeProfitAmount: parseFloat(TPAmount),
+          takeProfitAmountMin: spinnerMin,
+          TPActive: true,
+        }));
+      }
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        takeProfitDistance: null,
+        takeProfitAmount: null,
+        TPActive: false,
+      }));
     }
   };
 
@@ -188,18 +129,12 @@ const TakeProfitAmount = ({ state, setState }) => {
           />
         ) : null
       }
-      style={{
-        backgroundColor:
-          state.TPActive && !state.isPriceFocused
-            ? colors.containerBackground
-            : colors.white,
-      }}
+      errorActive={isErrorActive}
       placeholder={t("common-labels.amount")}
       spinnerValue={state.takeProfitAmount}
       onSpinnerChange={(value) => onChange(value)}
       step={0.01}
       accuracy={2}
-      // min={state.TPActive && parseFloat(spinnerMin)}
     />
   ) : null;
 >>>>>>> 5ac012d48f2e3878066180f81935fe8446fca961

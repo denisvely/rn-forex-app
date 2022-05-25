@@ -1,43 +1,43 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../components/Typography/Typography";
-import TakeProfitDistance from "./TakeProfitDistance/TakeProfitDistance";
+import TakeProfitRate from "./TakeProfitRate/TakeProfitRate";
 import TakeProfitAmount from "./TakeProfitAmount/TakeProfitAmount";
+import Typography from "../../Typography/Typography";
 
 import styles from "./takeProfitStyles";
 
-const TakeProfitPendingModify = ({
-  takeProfitPendingAmount,
-  onChangeTakeProfitPendingAmount,
-  takeProfitPendingDistance,
-  onChangeTakeProfitPendingDistance,
-}) => {
+const TakeProfitModify = ({ state, setState }) => {
   const { t } = useTranslation();
 
   return (
     <View style={styles.inputsWrapper}>
-      <Typography
-        style={styles.label}
-        name="normal"
-        text={t("common-labels.takeProfit")}
-      />
-      <TakeProfitAmount
-        spinnerValue={takeProfitPendingAmount}
-        onSpinnerChange={(orderType) =>
-          onChangeTakeProfitPendingAmount(orderType)
-        }
-        placeholder={t("common-labels.amount")}
-      />
-      <TakeProfitDistance
-        spinnerValue={takeProfitPendingDistance}
-        onSpinnerChange={(orderType) =>
-          onChangeTakeProfitPendingDistance(orderType)
-        }
-        placeholder={t("common-labels.distance")}
-      />
+      <View style={styles.takeProfitHeader}>
+        <Typography
+          text={t("common-labels.takeProfit")}
+          style={styles.takeProfitHeaderTitle}
+          name="normal"
+        />
+        <TouchableOpacity>
+          <Typography
+            style={styles.takeProfitHeaderTitle}
+            text={t("common-labels.clearAll")}
+            name="tiny"
+            onPress={() =>
+              setState((prevState) => ({
+                ...prevState,
+                TPActive: false,
+                takeProfitRate: null,
+                takeProfitAmount: null,
+              }))
+            }
+          />
+        </TouchableOpacity>
+      </View>
+      <TakeProfitRate state={state} setState={setState} />
+      <TakeProfitAmount state={state} setState={setState} />
     </View>
   );
 };
 
-export default TakeProfitPendingModify;
+export default TakeProfitModify;

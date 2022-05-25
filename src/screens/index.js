@@ -4,6 +4,16 @@ export { default as Register } from "./Register/Register";
 export { default as Home } from "./Home/Home";
 export { default as Menu } from "./Menu/Menu";
 export { default as Notifications } from "./Notifications/Notifications";
+export { default as Settings } from "./Menu/Settings/Settings";
+export { default as Funding } from "./Menu/Funding/Funding";
+export { default as BrowserScreen } from "./BrowserScreen/BrowserScreen";
+export { default as MyProfile } from "./Menu/PersonalDetails/MyProfile";
+export { default as MyDocuments } from "./Menu/PersonalDetails/UploadDocuments/MyDocuments/MyDocuments";
+export { default as MyMessages } from "./Menu/MyMessages/MyMessages";
+export { default as MessageDetails } from "./Menu/MyMessages/MessageDetails/MessageDetails";
+export { default as ContactUs } from "./Menu/ContactUs/ContactUs";
+export { default as TermsAndAgreements } from "./Menu/TermsAndAgreements/TermsAndAgreements";
+
 // Real Forex
 export { default as Quotes } from "./RealForex/QuotesRealForex/QuotesRealForex";
 export { default as OpenPositionsRealForex } from "./RealForex/OpenPositionsRealForex/OpenPositionsRealForex";

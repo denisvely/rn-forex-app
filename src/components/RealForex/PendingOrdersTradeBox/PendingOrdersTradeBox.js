@@ -14,7 +14,12 @@ import {
 
 import styles from "./pendingOrdersTradeBoxStyles";
 
-const PendingOrdersTradeBox = ({ item, navigation }) => {
+const PendingOrdersTradeBox = ({
+  item,
+  navigation,
+  setCurrentTrade,
+  toggleBottomSlidingPanel,
+}) => {
   const { t } = useTranslation();
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
   const realForexOptionsByType = useSelector((state) =>
@@ -29,6 +34,43 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
     parseFloat(price) * Math.pow(10, accuracy) -
       parseFloat(item.TradeRate) * Math.pow(10, accuracy)
   );
+
+  const checkAvailableForTrading = (id) => {
+    if (!realForexOptionsByType.All[id].rules.length) {
+      return false;
+    } else {
+      var currTime = new Date(),
+        availableForTrading = false;
+
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+        var dateFrom = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.from.dateTime
+          ),
+          dateTo = new Date(
+            realForexOptionsByType.All[id].rules[i].dates.to.dateTime
+          );
+
+        if (currTime > dateFrom && dateFrom < dateTo) {
+          availableForTrading =
+            realForexOptionsByType.All[id].rules[i].availableForTrading;
+        }
+      }
+
+      return availableForTrading;
+    }
+  };
+
+  const modifyTrade = () => {
+    if (realForexOptionsByType.All[item.TradableAssetId]) {
+      navigation.navigate("RealForexOrderDetails", {
+        asset: realForexOptionsByType.All[item.TradableAssetId],
+        isBuy: item.actionType === "Buy" ? true : false,
+        isPending: true,
+        order: item,
+        isMarketClosed: !checkAvailableForTrading(item.TradableAssetId),
+      });
+    }
+  };
 
   return (
     <View style={styles.tradeBox}>
@@ -83,7 +125,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoValue}
               text={
                 item.OrderDate
-                  ? moment(item.OrderDate).format("YYYY-MM-DD HH:MM:ss")
+                  ? moment(item.OrderDate).format("YYYY-MM-DD hh:mm:ss")
                   : "-"
               }
             />
@@ -99,7 +141,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoValue}
               text={
                 item.ExpirationDate
-                  ? moment(item.ExpirationDate).format("YYYY-MM-DD HH:MM:ss")
+                  ? moment(item.ExpirationDate).format("YYYY-MM-DD hh:mm:ss")
                   : "GTC"
               }
             />
@@ -110,13 +152,11 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               style={styles.tradeInfoKey}
               text={t(`common-labels.id`)}
             />
-            <TouchableOpacity onPress={() => alert("open Position history")}>
-              <Typography
-                name="small"
-                style={styles.tradeInfoValueClickable}
-                text={`PO${item.ParentEntryId}`}
-              />
-            </TouchableOpacity>
+            <Typography
+              name="small"
+              style={styles.tradeInfoValue}
+              text={`PO${item.ParentEntryId}`}
+            />
           </View>
           <View style={styles.tradeInfoRow}>
             <Typography
@@ -165,7 +205,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               text={t(`common-labels.takeProfit`)}
             />
             {parseFloat(item.TakeProfitRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open TP")}>
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -187,7 +227,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
               text={t(`common-labels.stopLoss`)}
             />
             {parseFloat(item.StopLossRate) == 0 ? (
-              <TouchableOpacity onPress={() => alert("open SL")}>
+              <TouchableOpacity onPress={modifyTrade}>
                 <Typography
                   name="small"
                   style={styles.tradeInfoValueClickable}
@@ -215,10 +255,7 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
             />
           </View>
           <View style={styles.tradeButtons}>
-            <TouchableOpacity
-              style={styles.tradeButton}
-              onPress={() => alert("open modify Order")}
-            >
+            <TouchableOpacity style={styles.tradeButton} onPress={modifyTrade}>
               <Typography
                 name="tinyBold"
                 style={styles.tradeButtonText}
@@ -230,7 +267,10 @@ const PendingOrdersTradeBox = ({ item, navigation }) => {
                 name="tinyBold"
                 style={styles.tradeButtonText}
                 text={t(`common-labels.delete`)}
-                onPress={() => alert("delete order")}
+                onPress={() => {
+                  setCurrentTrade(item);
+                  toggleBottomSlidingPanel("closePositionPending");
+                }}
               />
             </TouchableOpacity>
           </View>

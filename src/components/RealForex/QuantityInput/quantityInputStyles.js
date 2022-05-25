@@ -4,9 +4,10 @@ import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
   inputsWrapper: {
-    // marginVertical: 8,
+    marginTop: 16,
     paddingHorizontal: 24,
-    zIndex: 5,
+    zIndex: 9999,
+    width: "100%",
   },
   quantityInputWrapper: {
     marginTop: 8,
@@ -32,21 +33,19 @@ export default StyleSheet.create({
     zIndex: 2,
   },
   quantityDropdown: {
-    position: "absolute",
-    top: 58,
-    left: 0,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    height: 150,
     width: deviceWidth - 48,
-    zIndex: 2,
     backgroundColor: colors.white,
+    zIndex: 9999,
+    height: 150,
   },
   value: {
-    textAlign: "left",
     width: deviceWidth - 50,
     paddingHorizontal: 8,
     paddingVertical: 8,
+    flex: 1,
+    zIndex: 9999,
   },
 });

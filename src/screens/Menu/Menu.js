@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -72,13 +72,13 @@ const Menu = ({ navigation }) => {
           screenName={"Funding"}
           onPress={() => submit("Funding")}
         />
-        <ButtonWithIcons
+        {/* <ButtonWithIcons
           icon={demoAccount}
           text={t(`menu.demoAccount`)}
           navigation={navigation}
           screenName={"DemoAccount"}
           onPress={() => submit("DemoAccount")}
-        />
+        /> */}
         <ButtonWithIcons
           icon={myMessages}
           text={t(`menu.myMessages`)}
@@ -90,8 +90,8 @@ const Menu = ({ navigation }) => {
           icon={personalDetails}
           text={t(`menu.personalDetails`)}
           navigation={navigation}
-          screenName={"PersonalDetails"}
-          onPress={() => submit("PersonalDetails")}
+          screenName={"MyProfile"}
+          onPress={() => submit("MyProfile")}
         />
         <ButtonWithIcons
           icon={settings}

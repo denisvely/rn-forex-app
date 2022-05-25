@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import RealForexStack from "./RealForexStack";
 import SimplexStack from "./SimplexStack";
 import {
@@ -10,6 +11,14 @@ import {
   RealForexOrderChart,
   RealForexOrderDetails,
   PositionHistory,
+  Settings,
+  Funding,
+  BrowserScreen,
+  MyProfile,
+  MyDocuments,
+  MyMessages,
+  MessageDetails,
+  ContactUs,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -24,6 +33,7 @@ import { getApplication } from "../store/app";
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation }) => {
+  const { t } = useTranslation();
   const app = useSelector((state) => getApplication(state));
 
   return (
@@ -58,7 +68,110 @@ const MainStackNavigator = ({ navigation }) => {
         name="Menu"
         component={Menu}
         options={{
-          title: "Menu",
+          title: t(`navigation.Menu`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          title: t(`navigation.Settings`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Funding"
+        component={Funding}
+        options={{
+          title: t(`navigation.Funding`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="Deposit"
+        component={BrowserScreen}
+        options={{
+          title: t(`navigation.Deposit`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.arrowBackWithoutTitleNoMargin,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => (
+            <HeaderX
+              onPress={() => navigation.goBack()}
+              styles={{ marginLeft: 16 }}
+            />
+          ),
+        }}
+      />
+      <MainStack.Screen
+        name="MyProfile"
+        component={MyProfile}
+        options={{
+          title: t(`navigation.MyProfile`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MyDocuments"
+        component={MyDocuments}
+        options={{
+          title: t(`navigation.MyDocuments`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MyMessages"
+        component={MyMessages}
+        options={{
+          title: t(`navigation.MyMessages`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="MessageDetails"
+        component={MessageDetails}
+        options={{
+          title: t(`navigation.MessageDetails`),
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+
+      <MainStack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{
+          title: t(`navigation.ContactUs`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -69,7 +182,8 @@ const MainStackNavigator = ({ navigation }) => {
         name="Notifications"
         component={Notifications}
         options={{
-          title: "Notifications",
+          title: t(`navigation.Notifications`),
+          headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
@@ -128,7 +242,7 @@ const MainStackNavigator = ({ navigation }) => {
         component={PositionHistory}
         options={{
           tabBarLabel: "PositionHistory",
-          title: "Position History",
+          title: t(`navigation.PositionHistory`),
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,

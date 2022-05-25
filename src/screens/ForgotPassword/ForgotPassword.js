@@ -1,42 +1,57 @@
 import React, { useState } from "react";
-import { View, TextInput } from "react-native";
-import { useDispatch } from "react-redux";
+import { View } from "react-native";
 import { Formik } from "formik";
-import { Button, TextField } from "components";
+import * as Yup from "yup";
+import Toast from "react-native-toast-message";
+
+import { Button, TextField, Error } from "../../components";
 import { SvgXml } from "react-native-svg";
+import ForgotPasswordService from "./services/ForgotPasswordService";
 
-import LoginService from "./services/LoginService";
-import { login } from "store/app";
-
-import { colors } from "../../constants";
 import { Typography } from "../../components";
 import logo from "../../assets/svg/logo";
 
 import styles from "./forgotPasswordStyles";
 
-const signInService = LoginService.login();
+const resetPassword = ForgotPasswordService.login();
 
-const Login = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const [loginMessage, setLogginMessage] = useState("");
+const forgotPasswordSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+});
 
-  const signIn = (values) => {
-    signInService
-      .fetch({ username: values.email, password: values.password })
-      .then(({ response }) => {
-        const body = response.getBody();
-        if (response.body.code === 400 || response.body.code === 401) {
-          if (response.data.type === "2FA_NotValid") {
-            // TODO => 2FA_NotValid
-            return;
-          } else {
-            setLogginMessage("Invalid Username or Password");
-            return;
-          }
+const ForgotPassword = ({ navigation }) => {
+  const [requestInProgress, setRequestProgress] = useState(false);
+
+  const resetPass = (values) => {
+    setRequestProgress(true);
+    resetPassword.fetch({ email: values.email }).then(({ response }) => {
+      const body = response.getBody();
+      if (response.body.code === 400 || response.body.code === 401) {
+        if (body.type === "2FA_NotValid") {
+          // TODO => 2FA_NotValid
+          return;
+        } else {
+          Toast.show({
+            type: "error",
+            text1: `${body.text}`,
+            topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+          return;
         }
-        setLogginMessage("You have been logged in.");
-        login(dispatch, body);
-      });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: `${body.text}`,
+          topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        navigation.navigate("Login");
+      }
+      setRequestProgress(false);
+    });
   };
 
   return (
@@ -45,12 +60,17 @@ const Login = ({ navigation }) => {
         <SvgXml xml={logo} />
       </View>
 
-        <Typography name="tiny" text="Enter your email address and we will send you instructions for resetting your password." style={{ color: '#000000', fontSize: 16, marginBottom: 32 }} />
+      <Typography
+        name="tiny"
+        text="Enter your email address and we will send you instructions for resetting your password."
+        style={{ color: "#000000", fontSize: 16, marginBottom: 32 }}
+      />
 
       <Formik
-        initialValues={{ email: "qa@testqa.me", password: "123qwe!@#" }}
+        initialValues={{ email: "" }}
+        validationSchema={forgotPasswordSchema}
         onSubmit={(values) => {
-          signIn(values);
+          resetPass(values);
         }}
       >
         {(props) => (
@@ -61,9 +81,14 @@ const Login = ({ navigation }) => {
               value={props.values.email}
               type="email"
               hasIcon={true}
+              keyboardType="email-address"
             />
+            {props.errors.email && props.touched.email ? (
+              <Error name="nano" text={props.errors.email} bigPadding={true} />
+            ) : null}
 
             <Button
+              disabled={requestInProgress}
               style={{ marginTop: 32 }}
               text="Reset password"
               type="primary"
@@ -78,4 +103,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

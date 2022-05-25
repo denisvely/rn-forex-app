@@ -21,6 +21,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+    width: "100%",
   },
   notificationsHeaderTitle: {
     color: colors.fontPrimaryColor,

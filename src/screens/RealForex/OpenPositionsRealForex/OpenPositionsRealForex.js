@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { View } from "react-native";
+import { useSelector } from "react-redux";
 
 import { getRealForexOpenPositions } from "../../../store/realForex";
 import { deviceWidth } from "../../../utils";
@@ -14,7 +14,6 @@ import {
 import styles from "./openPositionsRealForexStyles";
 
 const OpenPositionsRealForex = ({ navigation }) => {
-  const dispatch = useDispatch();
   const [slidingPanelType, setPanelType] = useState(null);
   const [currentTrade, setCurrentTrade] = useState(null);
   const openPositionsRef = useRef();
@@ -24,13 +23,6 @@ const OpenPositionsRealForex = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.closeAll}>
-        <Typography
-          style={styles.closeAllLabel}
-          text={"Close All"}
-          name="nano"
-        />
-      </TouchableOpacity>
       {openPositions ? (
         <LazyFlatList
           list={openPositions}
@@ -53,7 +45,6 @@ const OpenPositionsRealForex = ({ navigation }) => {
             alignItems: "center",
             alignSelf: "center",
             paddingBottom: 100,
-            marginTop: 30,
           }}
           style={styles.flatListContainer}
           listRef={openPositionsRef}

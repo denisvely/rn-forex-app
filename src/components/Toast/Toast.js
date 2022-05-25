@@ -109,6 +109,7 @@ const toastConfig = {
           paddingHorizontal: 16,
           paddingVertical: 16,
           borderRadius: 4,
+          zIndex: 9999,
         }}
       >
         <Typography
@@ -128,6 +129,67 @@ const toastConfig = {
             style={{ color: colors.success }}
           />
         ) : null}
+        {props.text4 ? (
+          <Typography
+            name="normal"
+            text={props.text4}
+            style={{ color: colors.success }}
+          />
+        ) : null}
+      </View>
+    );
+  },
+  platformInfoSuccess: ({ props }) => {
+    return (
+      <View
+        style={{
+          width: deviceWidth - 48,
+          backgroundColor: colors.successLighten,
+          borderLeftColor: colors.successLighten,
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          paddingHorizontal: 16,
+          paddingVertical: 16,
+          borderRadius: 4,
+        }}
+      >
+        <Typography
+          name="normalBold"
+          text={props.text1}
+          style={{ color: colors.success }}
+        />
+        <Typography
+          name="small"
+          text={props.text2}
+          style={{ color: colors.success }}
+        />
+      </View>
+    );
+  },
+  platformInfoError: ({ props }) => {
+    return (
+      <View
+        style={{
+          width: deviceWidth - 48,
+          backgroundColor: colors.errorLighten,
+          borderLeftColor: colors.errorLighten,
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          paddingHorizontal: 16,
+          paddingVertical: 16,
+          borderRadius: 4,
+        }}
+      >
+        <Typography
+          name="normalBold"
+          text={props.text1}
+          style={{ color: colors.error }}
+        />
+        <Typography
+          name="small"
+          text={props.text2}
+          style={{ color: colors.error }}
+        />
       </View>
     );
   },

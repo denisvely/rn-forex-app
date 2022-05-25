@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import {colors} from "../../constants";
 import styles from "./spinnerStyles";
@@ -71,7 +72,7 @@ const Spinner = ({
       min={min}
       step={step}
       speed={1}
-      accelerationDelay={1500}
+      accelerationDelay={Platform.OS === "ios" ? 1500 : 750}
       placeholder={placeholder}
       colorLeft={colors.inputBorder}
       colorRight={colors.inputBorder}

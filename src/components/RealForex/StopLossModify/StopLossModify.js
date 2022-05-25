@@ -1,36 +1,41 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../components/Typography/Typography";
+import StopLossRate from "./StopLossRate/StopLossRate";
 import StopLossAmount from "./StopLossAmount/StopLossAmount";
-import StopLossDistance from "./StopLossDistance/StopLossDistance";
+
+import Typography from "../../../components/Typography/Typography";
 import styles from "./stopLossStyles";
 
-const StopLossModify = ({
-  stopLossPendingPendingAmount,
-  stopLossPendingDistance,
-  onChangeStopLossPendingAmount,
-  onChangeStopLossPendingDistance,
-}) => {
+const StopLossModify = ({ state, setState }) => {
   const { t } = useTranslation();
 
   return (
     <View style={styles.inputsWrapper}>
-      <Typography
-        style={styles.label}
-        name="normal"
-        text={t("common-labels.stopLoss")}
-      />
-      <StopLossAmount
-        spinnerValue={stopLossPendingPendingAmount}
-        onSpinnerChange={(value) => onChangeStopLossPendingAmount(value)}
-        placeholder={t("common-labels.amount")}
-      />
-      <StopLossDistance
-        spinnerValue={stopLossPendingDistance}
-        onSpinnerChange={(value) => onChangeStopLossPendingDistance(value)}
-        placeholder={t("common-labels.distance")}
-      />
+      <View style={styles.stopLossHeader}>
+        <Typography
+          text={t("common-labels.stopLoss")}
+          style={styles.stopLossHeaderTitle}
+          name="normal"
+        />
+        <TouchableOpacity>
+          <Typography
+            style={styles.stopLossHeaderTitle}
+            text={t("common-labels.clearAll")}
+            name="tiny"
+            onPress={() =>
+              setState((prevState) => ({
+                ...prevState,
+                SLActive: false,
+                stopLossDistance: null,
+                stopLossAmount: null,
+              }))
+            }
+          />
+        </TouchableOpacity>
+      </View>
+      <StopLossRate state={state} setState={setState} />
+      <StopLossAmount state={state} setState={setState} />
     </View>
   );
 };

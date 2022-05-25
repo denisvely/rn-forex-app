@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
-import { SvgXml } from "react-native-svg";
 import HeaderX from "../../components/HeaderX/HeaderX";
 import Typography from "../../components/Typography/Typography";
+import AssetIcon from "../../components/AssetIcon/AssetIcon";
 import { deviceWidth } from "../../utils";
 
-const HeaderAssetInfo = ({ assetName, assetIcon, navigation }) => {
+const HeaderAssetInfo = ({ asset, navigation }) => {
   return (
     <View
       style={{
@@ -19,13 +19,8 @@ const HeaderAssetInfo = ({ assetName, assetIcon, navigation }) => {
       }}
     >
       <HeaderX onPress={() => navigation.goBack()} />
-      <SvgXml
-        xml={assetIcon}
-        width="40"
-        height="40"
-        style={{ marginHorizontal: 12 }}
-      />
-      <Typography name="bigNormalBold" text={assetName} />
+      <AssetIcon asset={asset} style={{ marginHorizontal: 12 }} />
+      <Typography name="bigNormalBold" text={asset.name} />
     </View>
   );
 };

@@ -23,4 +23,18 @@ export default StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
   },
+  stopLossHeader: {
+    paddingVertical: 8.5,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 4,
+  },
+  notificationsHeaderTitle: {
+    color: colors.fontPrimaryColor,
+  },
+  clearAllBtn: {
+    height: 13,
+    backgroundColor: "red",
+  },
 });

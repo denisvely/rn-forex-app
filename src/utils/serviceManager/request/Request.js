@@ -51,7 +51,6 @@ class Request {
         encodeURIComponent(i) + "=" + encodeURIComponent(options[i])
       );
     }
-
     this.body = queryParams.join("&");
   }
 

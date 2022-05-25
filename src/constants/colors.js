@@ -31,4 +31,5 @@ export default {
   successLighten: "#D6F5F2",
   infoLighten: "#DFE3EC",
   info: "#55668B",
+  orange: "#F7931A",
 };

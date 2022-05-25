@@ -1,10 +1,9 @@
-import React, { useState, useRef, memo } from "react";
-import { View } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 
 import { getRealForexOptionsByType } from "../../../store/realForex";
 import {
-  LazyFlatList,
   AssetBox,
   AssetsFilter,
   Loading,
@@ -15,7 +14,10 @@ import { deviceWidth } from "../../../utils";
 import styles from "./quotesStyles";
 
 const Quotes = ({ navigation }) => {
-  const flatListRef = useRef();
+  const onViewRef = useRef((viewableItems) => {
+    // Use viewable items in state or as intended
+  });
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 100 });
   const realForexOptionsByType = useSelector((state) =>
     getRealForexOptionsByType(state)
   );
@@ -55,7 +57,7 @@ const Quotes = ({ navigation }) => {
       var currTime = new Date(),
         availableForTrading = false;
 
-      for (i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
+      for (let i = 0; i < realForexOptionsByType.All[id].rules.length; i++) {
         var dateFrom = new Date(
             realForexOptionsByType.All[id].rules[i].dates.from.dateTime
           ),
@@ -72,6 +74,13 @@ const Quotes = ({ navigation }) => {
       return availableForTrading;
     }
   };
+  const renderAssetBox = ({ item }) => (
+    <AssetBox
+      asset={item}
+      marketClosed={!checkAvailableForTrading(item.id)}
+      navigation={navigation}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -92,20 +101,16 @@ const Quotes = ({ navigation }) => {
       </View>
       <View style={{ zIndex: 1 }}>
         {realForexOptionsByType ? (
-          <LazyFlatList
-            removeClippedSubviews
-            list={Object.values(realForexOptionsByType[activeFilter])}
-            renderItem={({ item, index }) => {
-              return (
-                <AssetBox
-                  asset={item}
-                  index={index}
-                  marketClosed={!checkAvailableForTrading(item.id)}
-                  navigation={navigation}
-                />
-              );
-            }}
+          <FlatList
+            initialNumToRender={6}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={6}
+            windowSize={1}
+            horizontal={false}
+            onViewableItemsChanged={onViewRef.current}
+            data={Object.values(realForexOptionsByType[activeFilter])}
             keyExtractor={(item) => item.id}
+            viewabilityConfig={viewConfigRef.current}
             showsVerticalScrollIndicator={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
@@ -116,7 +121,7 @@ const Quotes = ({ navigation }) => {
               paddingBottom: 100,
             }}
             style={styles.flatListContainer}
-            listRef={flatListRef}
+            renderItem={renderAssetBox}
           />
         ) : (
           <Loading size="large" />
@@ -126,4 +131,4 @@ const Quotes = ({ navigation }) => {
   );
 };
 
-export default memo(Quotes);
+export default Quotes;

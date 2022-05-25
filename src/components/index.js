@@ -20,6 +20,11 @@ export { default as HeaderTitleLogo } from "./HeaderTitleLogo/HeaderTitleLogo";
 export { default as BottomSlidingPanel } from "./BottomSlidingPanel/BottomSlidingPanel";
 export { default as FormattedTypographyWithCurrency } from "./FormatedCurrency/FormattedTypographyWithCurrency";
 export { default as SwitchComponent } from "./Switch/SwitchComponent";
+export { default as AssetIcon } from "./AssetIcon/AssetIcon";
+export { default as Datepicker } from "./Datepicker/Datepicker";
+export { default as ExpirationDate } from "./ExpirationDate/ExpirationDate";
+export { default as CountryPicker } from "./CountryPicker/CountryPicker";
+export { default as Error } from "./Error/Error";
 
 // Real Forex
 export { default as AssetBox } from "./RealForex/AssetBox/AssetBox";
@@ -42,6 +47,7 @@ export { default as PartiallyClose } from "./RealForex/PartiallyClose/PartiallyC
 export { default as RealForexDirectionButtons } from "./RealForex/RealForexDirectionButtons/RealForexDirectionButtons";
 export { default as MarketOrderControls } from "./RealForex/MarketOrderControls/MarketOrderControls";
 export { default as PendingOrderControls } from "./RealForex/PendingOrderControls/PendingOrderControls";
+export { default as ProfitLossOrderControls } from "./RealForex/ProfitLossOrderControls/ProfitLossOrderControls";
 
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";

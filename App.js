@@ -33,7 +33,11 @@ const App = () => {
   return (
     <Provider store={Store}>
       <AppearanceProvider>
-        <StatusBar style="auto" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <RootStackNavigator theme={theme} />
         <Toast />
       </AppearanceProvider>

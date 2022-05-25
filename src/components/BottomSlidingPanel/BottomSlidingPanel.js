@@ -9,14 +9,14 @@ import StopLoss from "../../components/RealForex/StopLoss/StopLoss";
 import Button from "../../components/Button/Button";
 import styles from "./bottomSlidingPanelStyles";
 import ClosePositionPanel from "./components/ClosePositionPanel";
-
+import ClosePositionPanelPending from "./components/ClosePositionPanelPending";
 const velocity = 0.1;
 
 const types = {
-  ["tpAndSl"]: {
-    panelHeight: deviceHeight - 400,
-  },
   ["closePosition"]: {
+    panelHeight: deviceHeight / 3 + 40,
+  },
+  ["closePositionPending"]: {
     panelHeight: deviceHeight / 3,
   },
 };
@@ -78,22 +78,19 @@ const BottomSlidingPanel = ({
               <View style={styles.slidingLine}></View>
             </View>
             <View style={styles.containerInner}>
-              {panelType === "tpAndSl" ? (
-                <>
-                  <TakeProfit />
-                  <StopLoss />
-                  <Button
-                    text={t(`common-labels.modify`)}
-                    type="primary"
-                    font="mediumBold"
-                    size="almostBig"
-                  />
-                </>
+              {panelType === "closePositionPending" ? (
+                <ClosePositionPanelPending
+                  trade={item}
+                  toggleSlidingPanel={() => toggleSlidingPanel(false)}
+                />
               ) : null}
-              <ClosePositionPanel
-                trade={item}
-                toggleSlidingPanel={() => toggleSlidingPanel(false)}
-              />
+              {panelType === "closePosition" ? (
+                <ClosePositionPanel
+                  trade={item}
+                  toggleSlidingPanel={() => toggleSlidingPanel(false)}
+                />
+              ) : null}
+
               {children ? children : null}
             </View>
           </View>
