@@ -23,10 +23,10 @@ const ClosedPositionsRealForex = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isPickerFromDateShow, setIsPickerFromDateShow] = useState(false);
   const [isPickerToDateShow, setIsPickerToDateShow] = useState(false);
-  const [fromDate, setFromDate] = useState(new Date(Date.now()));
-  const [toDate, setToDate] = useState(
-    new Date(new Date().setMonth(new Date().getMonth() + 1))
+  const [fromDate, setFromDate] = useState(
+    new Date().setMonth(new Date().getMonth() - 1)
   );
+  const [toDate, setToDate] = useState(new Date(Date.now()));
   const closedPositionsRef = useRef();
   const closedPositions = useSelector((state) =>
     getRealForexClosedPositions(state)
