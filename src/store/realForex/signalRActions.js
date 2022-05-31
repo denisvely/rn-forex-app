@@ -1,4 +1,5 @@
 import signalr from "react-native-signalr";
+import moment from "moment";
 import * as actionTypes from "./actionTypes";
 import ServiceManager from "../../utils/serviceManager";
 import realForexServices from "../../services/realForexServices";

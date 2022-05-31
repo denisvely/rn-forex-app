@@ -76,6 +76,9 @@ export const login = (dispatch, token) => {
     .fetch()
     .then(({ response }) => {
       if (response.body.code !== 200) {
+        if (response.body.data.type === "AuthenticationRequired") {
+          logout(dispatch);
+        }
         return;
       }
       const body = response.getBody();

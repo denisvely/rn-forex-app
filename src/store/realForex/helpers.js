@@ -10,7 +10,7 @@ export const formatRealForexOptions = (options) => {
       forexOptions = reorderAssets(allOptions, i, allOptions.length - 1);
     }
   }
-
+  
   return forexOptions;
 };
 

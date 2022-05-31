@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import moment from "moment";
 
-import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
 
 const getForexOpenTrades = realForexServices.getRealForexOpenTrades();

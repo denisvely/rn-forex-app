@@ -37,7 +37,6 @@ const MarketTab = ({
   quantity,
   setQuantity,
   isReady,
-  isModify,
   isMarketClosed,
 }) => {
   const { t } = useTranslation();
@@ -96,7 +95,7 @@ const MarketTab = ({
         isBuy
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
-        volume,
+        parseFloat(volume),
         marketState.TPActive ? marketState.takeProfitAmount : "", // TakeProfit
         marketState.SLActive ? marketState.stopLossAmount : "", // StopLoss
         asset.Leverage || 100,
