@@ -43,6 +43,27 @@ const signalRMiddleware =
                 payload: body.forexOpenTrades.data,
               });
             });
+          realForexServices
+            .getRealForexClosedPositions(dispatch)
+            .fetch({
+              fromDate:
+                moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+                  "YYYY-MM-DD"
+                ) + "T00:00:01",
+              toDate:
+                moment(new Date().setMonth(new Date().getMonth())).format(
+                  "YYYY-MM-DD"
+                ) + "T23:59:59",
+              positionId: null,
+              tradableAssetId: 0,
+            })
+            .then(({ response }) => {
+              const body = response.body.data;
+              dispatch({
+                type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
+                payload: body.trades,
+              });
+            });
         }
       });
 
