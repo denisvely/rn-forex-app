@@ -4,7 +4,19 @@ import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
   searchWrapper: {
-    marginBottom: 16,
+    paddingHorizontal: 16,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "column",
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.white,
+    borderRadius: 4,
+    width: deviceWidth - 32,
+    zIndex: 9999,
+  },
+  inputWrapper: {
     paddingHorizontal: 16,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -27,21 +39,20 @@ export default StyleSheet.create({
     paddingLeft: 10,
   },
   foundAssets: {
-    position: "absolute",
-    top: 40,
-    left: 0,
+    width: "100%",
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    height: 200,
+    height: 150,
     width: deviceWidth - 32,
-    zIndex: 2,
+    zIndex: 9999,
   },
   asset: {
     textAlign: "left",
     width: deviceWidth - 32,
     paddingHorizontal: 8,
     paddingVertical: 8,
+    zIndex: 9999,
   },
   assetName: {
     textAlign: "left",
