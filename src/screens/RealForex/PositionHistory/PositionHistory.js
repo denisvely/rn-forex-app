@@ -89,7 +89,7 @@ const PositionHistory = ({ route, navigation }) => {
               name="tiny"
               text={moment(
                 convertUTCDateToLocalDate(new Date(item.DateCreated))
-              ).format("YYYY-MM-DD hh:mm:ss")}
+              ).format("YYYY-MM-DD HH:mm:ss")}
               style={styles.centerAligned}
             />
           </View>
@@ -177,7 +177,7 @@ const PositionHistory = ({ route, navigation }) => {
               list={posData}
               renderItem={({ item }) => renderPositionHistoryRow(item)}
               keyExtractor={(item) => item.OrderId}
-              showsVerticalScrollIndicator={true}
+              showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
                 paddingTop: 0,

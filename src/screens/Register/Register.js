@@ -107,7 +107,7 @@ const Register = ({ navigation }) => {
           });
           setCountryCodeList(myCountryCodeList);
           if (body.location.data) {
-            // changeCountryCode(body.location.data.country.code);
+            changeCountryCode(body.location.data.country.code);
           }
           if (body.currencies.data) {
             const allCurrencies = [];
@@ -134,6 +134,7 @@ const Register = ({ navigation }) => {
     } else {
       setTosError(false);
     }
+
     setRequestProgress(true);
     signUpService
       .fetch({
@@ -144,7 +145,7 @@ const Register = ({ navigation }) => {
         lastName: userData.lastName,
         title: userData.title,
         phone: userData.phone,
-        countryCode: countryCode,
+        countryCode: userData.countryCode ? userData.countryCode : countryCode,
         birthDay: birthDate ? birthDate.getDate() : "",
         birthMonth: birthDate ? birthDate.getMonth() + 1 : "",
         birthYear: birthDate ? birthDate.getFullYear() : "",
@@ -389,7 +390,6 @@ const Register = ({ navigation }) => {
                         }
                         changeCountry={(countryCode) => {
                           props.setFieldValue("countryCode", countryCode);
-                          changeCountryCode(countryCode);
                         }}
                         customContryCodeList={countryCodeList}
                       />

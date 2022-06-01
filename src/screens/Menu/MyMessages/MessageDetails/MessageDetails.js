@@ -4,6 +4,7 @@ import { Loading, Typography } from "../../../../components";
 import MyMessagesService from "../service/MyMessagesService";
 import moment from "moment";
 import HTMLView from "react-native-htmlview";
+import { convertUTCDateToLocalDate } from "../../../../store/realForex/helpers";
 
 import styles from "../myMessagesStyles";
 
@@ -33,9 +34,9 @@ const MessageDetails = ({ route }) => {
             </View>
             <View style={styles.right}>
               <Typography
-                text={moment(messageContent.activeFrom).format(
-                  "DD-MM-YYYY HH:MM:SS"
-                )}
+                text={moment(
+                  convertUTCDateToLocalDate(new Date(messageContent.activeFrom))
+                ).format("YYYY-MM-DD HH:mm:ss")}
                 style={styles.secondaryText}
                 name="small"
               />

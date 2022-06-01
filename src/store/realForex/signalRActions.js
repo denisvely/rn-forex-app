@@ -118,12 +118,15 @@ export const realForexHubPrices = (assetsPrices, allPrices, dispatch) => {
 
   if (assetsPrices === null && arrayForexPrices !== null) {
     arrayForexPrices.forEach(function (i, price) {
-      assetsPrices[price.T] = {};
-      assetsPrices[price.T].id = price.T;
-      assetsPrices[price.T].ask = price.A.toFixed(price.C);
-      assetsPrices[price.T].bid = price.B.toFixed(price.C);
-      assetsPrices[price.T].rate = price.R.toFixed(price.C);
-      assetsPrices[price.T].accuracy = price.C;
+      widget.assetsPrices[price.T] = {};
+      widget.assetsPrices[price.T].id = price.T;
+      widget.assetsPrices[price.T].ask = price.A.toFixed(price.C);
+      widget.assetsPrices[price.T].bid = price.B.toFixed(price.C);
+      widget.assetsPrices[price.T].marketAsk = price.a.toFixed(price.C);
+      widget.assetsPrices[price.T].marketBid = price.b.toFixed(price.C);
+      widget.assetsPrices[price.T].rate = price.R.toFixed(price.C);
+      widget.assetsPrices[price.T].accuracy = price.C;
+      widget.assetsPrices[price.T].delay = price.d;
     });
   } else if (arrayForexPrices != null && assetsPrices != null) {
     arrayForexPrices.forEach(function (priceNewValue, priceNewKey) {

@@ -83,7 +83,7 @@ export const processPendingOrder = (response, currTrade) => {
     response.body.data.parameters.forexType == "PendingOrder"
   ) {
     currTrade.title = `Pending Order Confirmed`;
-    currTrade.title = "Pending Order Confirmed";
+    currTrade.isError = false;
     showForexNotification("success", currTrade);
   } else if (
     response.body.data &&

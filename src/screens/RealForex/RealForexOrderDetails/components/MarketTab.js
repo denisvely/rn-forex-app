@@ -86,7 +86,7 @@ const MarketTab = ({
           )
         : convertUnits(parseFloat(quantity), asset.id, true, settings);
     const pip = calculatePipPrice();
-
+    
     addRealForexTradeOrderV2Service
       .fetch(
         currentTrade.tradableAssetId,
@@ -95,7 +95,7 @@ const MarketTab = ({
         isBuy
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
-        parseFloat(volume),
+        volume,
         marketState.TPActive ? marketState.takeProfitAmount : "", // TakeProfit
         marketState.SLActive ? marketState.stopLossAmount : "", // StopLoss
         asset.Leverage || 100,

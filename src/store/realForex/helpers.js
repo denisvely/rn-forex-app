@@ -10,7 +10,7 @@ export const formatRealForexOptions = (options) => {
       forexOptions = reorderAssets(allOptions, i, allOptions.length - 1);
     }
   }
-  
+
   return forexOptions;
 };
 
@@ -370,7 +370,7 @@ export const getGlobalSetting = (settingName, settings) => {
   return false;
 };
 
-export const showForexNotification = (outcome, values, removedFromTable) => {
+export const showForexNotification = (toastType, values) => {
   if (typeof values.quantity == "undefined" || isNaN(values.quantity)) {
     return;
   }
@@ -412,7 +412,7 @@ export const showForexNotification = (outcome, values, removedFromTable) => {
       }`;
 
       Toast.show({
-        type: "successForex",
+        type: toastType,
         props: {
           text1: values.title,
           text2: orderInfo,

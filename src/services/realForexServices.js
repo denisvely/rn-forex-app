@@ -367,7 +367,7 @@ export default {
         // // }
 
         // widgets.tradeOrderInProgress = true;
-
+        
         const options = {
           TradableAssetId: optionId,
           ForexRuleID: ruleId,
