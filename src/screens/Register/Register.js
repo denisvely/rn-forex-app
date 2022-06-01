@@ -197,9 +197,7 @@ const Register = ({ navigation }) => {
             <View style={styles.formWrapper}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}
                 enabled
-                keyboardVerticalOffset={deviceHeight / 4.5}
               >
                 <ScrollView
                   horizontal={false}
@@ -463,28 +461,28 @@ const Register = ({ navigation }) => {
                     />
                   ) : null}
                 </ScrollView>
-              </KeyboardAvoidingView>
-              <View style={styles.buttonsWrapper}>
-                <Button
-                  disabled={requestInProgress}
-                  text="Register"
-                  type="primary"
-                  font="mediumBold"
-                  size="big"
-                  onPress={props.handleSubmit}
-                />
-                <View style={styles.bottomViewLogin}>
-                  <Typography name="tiny" text={"Already have an account?"} />
+                <View style={styles.buttonsWrapper}>
                   <Button
-                    textStyle={{ color: colors.blueColor }}
-                    size="small"
-                    text="Login"
-                    type="secondary"
-                    font="small"
-                    onPress={() => navigation.push("Login")}
+                    disabled={requestInProgress}
+                    text="Register"
+                    type="primary"
+                    font="mediumBold"
+                    size="big"
+                    onPress={props.handleSubmit}
                   />
+                  <View style={styles.bottomViewLogin}>
+                    <Typography name="tiny" text={"Already have an account?"} />
+                    <Button
+                      textStyle={{ color: colors.blueColor }}
+                      size="small"
+                      text="Login"
+                      type="secondary"
+                      font="small"
+                      onPress={() => navigation.push("Login")}
+                    />
+                  </View>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
             </View>
           )}
         </Formik>

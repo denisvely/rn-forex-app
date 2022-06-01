@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { View } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  Text,
+} from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Toast from "react-native-toast-message";
@@ -21,6 +27,21 @@ const forgotPasswordSchema = Yup.object().shape({
 
 const ForgotPassword = ({ navigation }) => {
   const [requestInProgress, setRequestProgress] = useState(false);
+  const [isKeyboardShown, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const resetPass = (values) => {
     setRequestProgress(true);
@@ -56,15 +77,18 @@ const ForgotPassword = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoWrapper}>
-        <SvgXml xml={logo} />
-      </View>
+      {!isKeyboardShown ? (
+        <View style={styles.logoWrapper}>
+          <SvgXml xml={logo} />
+        </View>
+      ) : null}
 
       <Typography
         name="tiny"
         text="Enter your email address and we will send you instructions for resetting your password."
         style={{ color: "#000000", fontSize: 16, marginBottom: 32 }}
       />
+      <Text>{isKeyboardShown}</Text>
 
       <Formik
         initialValues={{ email: "" }}
@@ -75,27 +99,36 @@ const ForgotPassword = ({ navigation }) => {
       >
         {(props) => (
           <>
-            <TextField
-              placeholder="Email"
-              onChange={props.handleChange("email")}
-              value={props.values.email}
-              type="email"
-              hasIcon={true}
-              keyboardType="email-address"
-            />
-            {props.errors.email && props.touched.email ? (
-              <Error name="nano" text={props.errors.email} bigPadding={true} />
-            ) : null}
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              enabled
+            >
+              <TextField
+                placeholder="Email"
+                onChange={props.handleChange("email")}
+                value={props.values.email}
+                type="email"
+                hasIcon={true}
+                keyboardType="email-address"
+              />
+              {props.errors.email && props.touched.email ? (
+                <Error
+                  name="nano"
+                  text={props.errors.email}
+                  bigPadding={true}
+                />
+              ) : null}
 
-            <Button
-              disabled={requestInProgress}
-              style={{ marginTop: 32 }}
-              text="Reset password"
-              type="primary"
-              font="mediumBold"
-              size="big"
-              onPress={props.handleSubmit}
-            />
+              <Button
+                disabled={requestInProgress}
+                style={{ marginTop: 32 }}
+                text="Reset password"
+                type="primary"
+                font="mediumBold"
+                size="big"
+                onPress={props.handleSubmit}
+              />
+            </KeyboardAvoidingView>
           </>
         )}
       </Formik>
