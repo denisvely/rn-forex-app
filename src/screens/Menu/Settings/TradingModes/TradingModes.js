@@ -62,6 +62,16 @@ const TradingModes = () => {
       });
   };
   const changeModeId = () => {
+    if (user.forexModeId === userForexModeId) {
+      Toast.show({
+        type: "error",
+        text1: `You are already on that mode.`,
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+      return;
+    }
     changeForexMode
       .fetch({
         modeId: userForexModeId,
@@ -221,7 +231,7 @@ const TradingModes = () => {
                 onValueChange={(value) => changeHedgForexMode(value)}
                 value={isHedgnetActive}
                 style={styles.switch}
-                disabled={userForexModeId === 2}
+                disabled={user.forexModeId === 2}
               />
               <Typography name="normal" text={t(`menu.switchMarginNet`)} />
             </View>
