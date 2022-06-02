@@ -206,7 +206,7 @@ const PendingTab = ({
   const calculatePipPrice = () => {
     let quantity = asset.MinQuantity;
 
-    quantity = convertUnits(quantity, asset.id, true, settings);
+    quantity = convertUnits(currentTrade.quantity, asset.id, true, settings);
 
     var pip = (quantity * Math.pow(10, -asset.accuracy)) / asset.rate,
       formattedPip = pip.toFixed(5);

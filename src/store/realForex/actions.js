@@ -14,7 +14,6 @@ const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
-const closePositionRealForexNetting = realForexServices.closePositioNetting();
 const addForexTradeOrderV2 = realForexServices.addRealForexTradeOrderV2();
 
 export const loadInitialRealForexData = async (dispatch) => {
@@ -209,21 +208,6 @@ export const setCurrentTrade = async (dispatch, trade) => {
 
 export const setCurrentlyModifiedOrder = async (dispatch, order) => {
   dispatch({ type: actionTypes.SET_CURRENTLY_MODIFIED_ORDER, payload: order });
-};
-
-export const closeForexTradeNetting = (dispatch, orderId) => {
-  closePositionRealForexNetting
-    .fetch({ orderID: orderId })
-    .then(({ response }) => {
-      // TODO => ?
-      // dispatch({
-      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
-      //   payload: body,
-      // });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 export const addRealForexTradeOrderV2Service = (

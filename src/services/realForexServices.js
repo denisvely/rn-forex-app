@@ -287,7 +287,7 @@ export default {
   },
   closePositioNetting: () => {
     const service = new Service(
-      "v1/games/forex/orders/closeForexTrade",
+      "v1/games/forex/DoPrevalidationOnCloseTrade",
       apiConsts.HTTP_METHOD_GET
     );
 
@@ -367,7 +367,7 @@ export default {
         // // }
 
         // widgets.tradeOrderInProgress = true;
-        
+
         const options = {
           TradableAssetId: optionId,
           ForexRuleID: ruleId,
