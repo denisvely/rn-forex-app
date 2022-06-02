@@ -68,9 +68,6 @@ const TradingModes = () => {
       })
       .then(({ response }) => {
         if (response.body.code === 200) {
-          changeHedgingForexMode.fetch({
-            mode: isHedgnetActive ? 1 : 0,
-          });
           userService
             .getUser()
             .fetch()
@@ -79,6 +76,12 @@ const TradingModes = () => {
                 return;
               }
               const body = response.getBody();
+              if (body.forexModeId === 2) {
+                changeHedgingForexMode.fetch({
+                  mode: 0,
+                });
+                setHedgnet(false);
+              }
               setUser(dispatch, body);
               Toast.show({
                 type: "platformInfoSuccess",
