@@ -79,24 +79,34 @@ const ProfitLossTab = ({
         currentlyModifiedOrder.takeProfitAmount &&
         currentlyModifiedOrder.takeProfitRate
       ) {
-        setMarketState((prevState) => ({
-          ...prevState,
-          takeProfitRate: parseFloat(currentlyModifiedOrder.takeProfitAmount),
-          takeProfitAmount: parseFloat(currentlyModifiedOrder.takeProfitRate),
-          TPActive: true,
-        }));
+        if (
+          parseFloat(currentlyModifiedOrder.takeProfitAmount) > 0 &&
+          parseFloat(currentlyModifiedOrder.takeProfitRate) > 0
+        ) {
+          setMarketState((prevState) => ({
+            ...prevState,
+            takeProfitRate: parseFloat(currentlyModifiedOrder.takeProfitAmount),
+            takeProfitAmount: parseFloat(currentlyModifiedOrder.takeProfitRate),
+            TPActive: true,
+          }));
+        }
       }
 
       if (
         currentlyModifiedOrder.stopLossAmount &&
         currentlyModifiedOrder.stopLossRate
       ) {
-        setMarketState((prevState) => ({
-          ...prevState,
-          stopLossRate: parseFloat(currentlyModifiedOrder.stopLossAmount),
-          stopLossAmount: parseFloat(currentlyModifiedOrder.stopLossRate),
-          SLPActive: true,
-        }));
+        if (
+          parseFloat(currentlyModifiedOrder.stopLossAmount) > 0 &&
+          parseFloat(currentlyModifiedOrder.stopLossRate) > 0
+        ) {
+          setMarketState((prevState) => ({
+            ...prevState,
+            stopLossRate: parseFloat(currentlyModifiedOrder.stopLossAmount),
+            stopLossAmount: parseFloat(currentlyModifiedOrder.stopLossRate),
+            SLPActive: true,
+          }));
+        }
       }
     }
   }, [currentlyModifiedOrder]);
@@ -118,8 +128,8 @@ const ProfitLossTab = ({
       .fetch(
         currentTrade.tradableAssetId,
         realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
-        isBuy,
-        isBuy
+        currentlyModifiedOrder.actionType === "Buy" ? true : false,
+        currentlyModifiedOrder.actionType === "Buy"
           ? realForexPrices[currentTrade.tradableAssetId].ask
           : realForexPrices[currentTrade.tradableAssetId].bid,
         volume,
@@ -144,7 +154,8 @@ const ProfitLossTab = ({
         currTrade.type = response.body.data.type;
         currTrade.option =
           realForexOptionsByType.All[currTrade.tradableAssetId].name;
-        currTrade.isBuy = isBuy;
+        currTrade.isBuy =
+          currentlyModifiedOrder.actionType === "Buy" ? true : false;
 
         processMarketOrder(response, currTrade);
         navigation.navigate("quotes");
@@ -154,7 +165,7 @@ const ProfitLossTab = ({
   const calculatePipPrice = () => {
     let quantity = asset.MinQuantity;
 
-    quantity = convertUnits(quantity, asset.id, true, settings);
+    quantity = convertUnits(currentTrade.quantity, asset.id, true, settings);
 
     var pip = (quantity * Math.pow(10, -asset.accuracy)) / asset.rate,
       formattedPip = pip.toFixed(5);

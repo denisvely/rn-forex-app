@@ -8,14 +8,14 @@ export const processMarketOrder = (response, currTrade) => {
       response.body.data.parameters.forexType == "MarketOrder"
     ) {
       currTrade.title = "Position modified";
-      showForexNotification("success", currTrade);
+      showForexNotification("successForex", currTrade);
     } else if (
       (response.body.data.type == "TradeRoom_SuccessTradeModified" ||
         response.body.data.type == "EditOrder_Successful") &&
       response.body.data.parameters.forexType == "MarketOrder"
     ) {
       currTrade.title = "Position modified";
-      showForexNotification("success", currTrade);
+      showForexNotification("successForex", currTrade);
     } else {
       currTrade.title = response.body.data.parameters.PositionId
         ? "Position closed"
