@@ -35,29 +35,29 @@ const TradingModes = () => {
       })
       .then(({ response }) => {
         if (response.body.code === 200) {
+          setHedgnet(value);
           Toast.show({
             type: "platformInfoSuccess",
             props: {
               text1: `${t("menu.changeMarginMode")}`,
-              text2: `${response.body.data.type}`,
+              text2: `Hedging mode margin mode has been changed successfully.`,
             },
             topOffset: 100,
             visibilityTime: 5000,
             autoHide: true,
           });
-          setHedgnet(value);
         } else {
+          setHedgnet(!value);
           Toast.show({
             type: "platformInfoError",
             props: {
               text1: `${t("menu.changeMarginMode")}`,
-              text2: `${response.body.data.text}`,
+              text2: `There are open trades.`,
             },
             topOffset: 100,
             visibilityTime: 5000,
             autoHide: true,
           });
-          setHedgnet(!value);
         }
       });
   };
