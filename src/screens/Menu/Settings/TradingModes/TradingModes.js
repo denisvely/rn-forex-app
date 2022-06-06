@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
-import { View, Pressable, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Typography, SwitchComponent } from "../../../../components";
 import { getUser, setUser } from "../../../../store/app";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
@@ -156,7 +156,7 @@ const TradingModes = () => {
         <View style={styles.tradingModes}>
           <View style={styles.box}>
             <View style={styles.row}>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => setModeId(2)}
                 style={styles.directionButton}
               >
@@ -184,7 +184,7 @@ const TradingModes = () => {
                     }
                   />
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <Typography
               name="small"
@@ -195,7 +195,7 @@ const TradingModes = () => {
           <View style={styles.box}>
             <View style={styles.hedgingWrapper}>
               <View style={styles.row}>
-                <Pressable
+                <TouchableOpacity
                   onPress={() => setModeId(3)}
                   style={styles.directionButton}
                 >
@@ -218,7 +218,7 @@ const TradingModes = () => {
                       }
                     />
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
               <Typography
                 name="small"
