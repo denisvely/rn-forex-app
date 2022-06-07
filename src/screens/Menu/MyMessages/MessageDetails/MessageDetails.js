@@ -19,8 +19,7 @@ const MessageDetails = ({ route }) => {
       if (response.body.code !== 200) {
         return;
       }
-      const body = response.getBody();
-      setMessageContent(body);
+      setMessageContent(response.body.data);
     });
   }, []);
 
@@ -35,7 +34,9 @@ const MessageDetails = ({ route }) => {
             <View style={styles.right}>
               <Typography
                 text={moment(
-                  convertUTCDateToLocalDate(new Date(messageContent.activeFrom))
+                  convertUTCDateToLocalDate(
+                    new Date(messageContent.activeFrom.dateTime)
+                  )
                 ).format("YYYY-MM-DD HH:mm:ss")}
                 style={styles.secondaryText}
                 name="small"
