@@ -29,6 +29,7 @@ const TradingModes = () => {
 
   const changeHedgForexMode = (value) => {
     setHedgnet(value);
+    console.log(value);
     changeHedgingForexMode
       .fetch({
         mode: value ? 1 : 0,
@@ -43,7 +44,7 @@ const TradingModes = () => {
               text2: `Hedging mode margin mode has been changed successfully.`,
             },
             topOffset: 100,
-            visibilityTime: 5000,
+            visibilityTime: 3000,
             autoHide: true,
           });
         } else {
@@ -55,10 +56,13 @@ const TradingModes = () => {
               text2: `There are open trades.`,
             },
             topOffset: 100,
-            visibilityTime: 5000,
+            visibilityTime: 3000,
             autoHide: true,
           });
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   const changeModeId = () => {
@@ -67,8 +71,6 @@ const TradingModes = () => {
         type: "error",
         text1: `You are already on that mode.`,
         topOffset: 100,
-        visibilityTime: 5000,
-        autoHide: true,
       });
       return;
     }
@@ -104,7 +106,7 @@ const TradingModes = () => {
                   text2: `${t("menu.changeModeSuccess")}`,
                 },
                 topOffset: 100,
-                visibilityTime: 5000,
+                visibilityTime: 3000,
                 autoHide: true,
               });
             });
@@ -124,7 +126,7 @@ const TradingModes = () => {
               }`,
             },
             topOffset: 100,
-            visibilityTime: 5000,
+            visibilityTime: 3000,
             autoHide: true,
           });
         }

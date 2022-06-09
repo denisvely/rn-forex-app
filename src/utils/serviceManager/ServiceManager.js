@@ -156,9 +156,12 @@ class ServiceManager {
       method: request.getMethod(),
     };
     if (request.getMethod() === "POST" || request.getMethod() === "PUT") {
-      fetchConfig.data = request.getBody()
-        ? request.getBody()
-        : request.getUrlencodedParams();
+      fetchConfig.data =
+        request.getParamToTheUrl() || request.getParamToTheUrl() == 0
+          ? null
+          : request.getBody()
+          ? request.getBody()
+          : request.getUrlencodedParams();
     }
 
     return fetchConfig;
