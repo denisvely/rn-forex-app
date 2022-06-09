@@ -4,9 +4,6 @@ import { useTranslation } from "react-i18next";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import { deviceHeight } from "../../utils";
-import TakeProfit from "../../components/RealForex/TakeProfit/TakeProfit";
-import StopLoss from "../../components/RealForex/StopLoss/StopLoss";
-import Button from "../../components/Button/Button";
 import styles from "./bottomSlidingPanelStyles";
 import ClosePositionPanel from "./components/ClosePositionPanel";
 import ClosePositionPanelPending from "./components/ClosePositionPanelPending";
