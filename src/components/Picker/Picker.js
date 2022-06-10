@@ -42,14 +42,7 @@ const pickerStyle = {
   },
 };
 
-const Picker = ({
-  value = "",
-  placeholderText,
-  styles,
-  children,
-  onChange,
-  values,
-}) => {
+const Picker = ({ value = "", placeholderText, styles, onChange, values }) => {
   return values ? (
     <View style={{ width: "100%" }}>
       <RNPickerSelect
@@ -73,13 +66,11 @@ const Picker = ({
 };
 
 Picker.propTypes = {
-  name: PropTypes.string,
-  text: PropTypes.string,
-  style: PropTypes.object,
-  children: PropTypes.any,
-  onPress: PropTypes.func,
-  color: PropTypes.string,
-  linesNumber: PropTypes.number || null,
+  value: PropTypes.string,
+  placeholderText: PropTypes.string,
+  styles: PropTypes.object,
+  onChange: PropTypes.func,
+  values: PropTypes.array,
 };
 
 export default Picker;

@@ -34,9 +34,7 @@ const MessageDetails = ({ route }) => {
             <View style={styles.right}>
               <Typography
                 text={moment(
-                  convertUTCDateToLocalDate(
-                    new Date(messageContent.activeFrom.dateTime)
-                  )
+                  new Date(messageContent.activeFrom.dateTime)
                 ).format("YYYY-MM-DD HH:mm:ss")}
                 style={styles.secondaryText}
                 name="small"

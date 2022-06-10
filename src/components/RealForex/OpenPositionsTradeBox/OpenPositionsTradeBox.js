@@ -202,7 +202,7 @@ const OpenPositionsTradeBox = ({
               name="small"
               style={styles.tradeInfoValue}
               text={moment(item.orderDate.timestamp).format(
-                "YYYY-MM-DD hh:mm:ss"
+                "YYYY-MM-DD HH:mm:ss"
               )}
             />
           </View>

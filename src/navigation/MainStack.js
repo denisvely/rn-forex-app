@@ -27,6 +27,7 @@ import {
   NotificationsIcon,
   HeaderX,
   FavouritesIcon,
+  HeaderTitleLogo,
 } from "../components";
 import { getApplication } from "../store/app";
 
@@ -92,7 +93,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Funding"
         component={Funding}
         options={{
-          title: t(`navigation.Funding`),
+          headerTitle: () => <HeaderTitleLogo />,
           headerTitleAlign: "center",
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,

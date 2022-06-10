@@ -59,7 +59,8 @@ const SignUpSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .min(6, "Too Short!")
     .max(50, "Too Long!")
-    .required("Invalid password"),
+    .required("Invalid password")
+    .oneOf([Yup.ref("password")], "The passwords doesn't match."),
   phone: Yup.string().required("Required"),
   title: Yup.string().required("Required"),
   birthDate: Yup.date().required("Required"),

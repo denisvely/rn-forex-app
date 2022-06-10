@@ -72,9 +72,9 @@ const MyMessages = ({ navigation }) => {
           </View>
           <View style={styles.right}>
             <Typography
-              text={moment(
-                convertUTCDateToLocalDate(new Date(item.activeFrom.dateTime))
-              ).format("YYYY-MM-DD HH:mm:ss")}
+              text={moment(new Date(item.activeFrom.dateTime)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
               name="small"
               style={{
                 color: item.isRead

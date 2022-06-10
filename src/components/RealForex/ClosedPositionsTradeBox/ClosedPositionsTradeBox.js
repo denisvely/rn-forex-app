@@ -107,9 +107,9 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
             <Typography
               name="small"
               style={styles.tradeInfoValue}
-              text={moment(
-                convertUTCDateToLocalDate(new Date(item.orderDate))
-              ).format("YYYY-MM-DD HH:mm:ss")}
+              text={moment(new Date(item.orderDate)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
             />
           </View>
           <View style={styles.tradeInfoRow}>
@@ -121,9 +121,9 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
             <Typography
               name="small"
               style={styles.tradeInfoValue}
-              text={moment(
-                convertUTCDateToLocalDate(new Date(item.closeDate))
-              ).format("YYYY-MM-DD HH:mm:ss")}
+              text={moment(new Date(item.closeDate)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
             />
           </View>
           <View style={styles.tradeInfoRow}>
