@@ -46,6 +46,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
             stopLoss:
               parseFloat(trade.StopLossRate) === 0 ? null : trade.StopLossRate,
             pendingDate: trade.ExpirationDate,
+            isError: false,
           };
           // TODO => !forexHelper.pendingOrderEvent
           // if (trade.type !== "editTrade" && !forexHelper.pendingOrderEvent) {

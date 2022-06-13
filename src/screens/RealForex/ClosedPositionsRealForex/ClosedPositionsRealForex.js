@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { View, Pressable, Platform } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { View, Pressable } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
@@ -24,7 +24,7 @@ const ClosedPositionsRealForex = ({ navigation }) => {
   const [isPickerFromDateShow, setIsPickerFromDateShow] = useState(false);
   const [isPickerToDateShow, setIsPickerToDateShow] = useState(false);
   const [fromDate, setFromDate] = useState(
-    new Date().setMonth(new Date().getMonth() - 1)
+    new Date(new Date().setMonth(new Date().getMonth() - 1))
   );
   const [toDate, setToDate] = useState(new Date(Date.now()));
   const closedPositionsRef = useRef();

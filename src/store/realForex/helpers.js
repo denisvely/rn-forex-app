@@ -5,7 +5,7 @@ export const formatRealForexOptions = (options) => {
   let allOptions = options.slice();
   let forexOptions = allOptions;
 
-  for (var i = allOptions.length - 1; i >= 0; i--) {
+  for (let i = allOptions.length - 1; i >= 0; i--) {
     if (availableForTrading(allOptions[i])) {
       forexOptions = reorderAssets(allOptions, i, allOptions.length - 1);
     }
@@ -15,11 +15,11 @@ export const formatRealForexOptions = (options) => {
 };
 
 export const availableForTrading = (option) => {
-  var currTime = new Date(),
+  let currTime = new Date(),
     isAvailableForTrading = false;
 
   for (let i = 0; i < option.rules.length; i++) {
-    var dateFrom = new Date(option.rules[i].dates.from.dateTime),
+    let dateFrom = new Date(option.rules[i].dates.from.dateTime),
       dateTo = new Date(option.rules[i].dates.to.dateTime);
 
     if (currTime > dateFrom && currTime < dateTo) {
@@ -73,7 +73,7 @@ export const sortOptionsByType = (options) => {
 export const getRealForexTotalNotifications = (notifications) => {
   let totalNewNotifications = 0;
 
-  for (var j = 0; j < notifications.length; j++) {
+  for (let j = 0; j < notifications.length; j++) {
     if (!notifications[j].IsRead) {
       totalNewNotifications += 1;
     }
@@ -83,7 +83,7 @@ export const getRealForexTotalNotifications = (notifications) => {
 };
 
 export const returnStatusText = (id) => {
-  var statusTxt = "";
+  let statusTxt = "";
 
   switch (id) {
     case 1:
@@ -158,10 +158,10 @@ export const returnStatusText = (id) => {
 };
 
 export const convertUTCDateToLocalDate = (date) => {
-  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  let newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
+  let offset = date.getTimezoneOffset() / 60;
+  let hours = date.getHours();
 
   newDate.setHours(hours - offset);
 
@@ -169,45 +169,45 @@ export const convertUTCDateToLocalDate = (date) => {
 };
 
 export const dateDiffinSeconds = (d1, d2) => {
-  var t2 = d2.getTime();
-  var t1 = d1.getTime();
+  let t2 = d2.getTime();
+  let t1 = d1.getTime();
 
   return parseInt((t2 - t1) / 1000);
 };
 
 export const dateDiffinMinutes = (d1, d2) => {
-  var t2 = d2.getTime();
-  var t1 = d1.getTime();
+  let t2 = d2.getTime();
+  let t1 = d1.getTime();
 
   return parseInt((t2 - t1) / (60 * 1000));
 };
 
 export const dateDiffinHours = (d1, d2) => {
-  var t2 = d2.getTime();
-  var t1 = d1.getTime();
+  let t2 = d2.getTime();
+  let t1 = d1.getTime();
 
   return parseInt((t2 - t1) / (3600 * 1000));
 };
 
 export const dateDiffinDays = (d1, d2) => {
-  var t2 = d2.getTime();
-  var t1 = d1.getTime();
+  let t2 = d2.getTime();
+  let t1 = d1.getTime();
 
   return parseInt((t2 - t1) / (24 * 3600 * 1000));
 };
 
 export const dateDiffinWeeks = (d1, d2) => {
-  var t2 = d2.getTime();
-  var t1 = d1.getTime();
+  let t2 = d2.getTime();
+  let t1 = d1.getTime();
 
   return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
 };
 
 export const dateDiffinMonths = (d1, d2) => {
-  var d1Y = d1.getFullYear();
-  var d2Y = d2.getFullYear();
-  var d1M = d1.getMonth();
-  var d2M = d2.getMonth();
+  let d1Y = d1.getFullYear();
+  let d2Y = d2.getFullYear();
+  let d1M = d1.getMonth();
+  let d2M = d2.getMonth();
 
   return d2M + 12 * d2Y - (d1M + 12 * d1Y);
 };
@@ -217,11 +217,10 @@ export const dateDiffinYears = (d1, d2) => {
 };
 
 export const getDateDiff = (timestamp) => {
-  var widget = this,
-    returnText = "",
+  let returnText = "",
     notificationDate = convertUTCDateToLocalDate(new Date(timestamp));
 
-  const currDate = new Date();
+  const currDate = convertUTCDateToLocalDate(new Date());
 
   if (dateDiffinYears(notificationDate, currDate) > 0) {
     returnText = dateDiffinYears(notificationDate, currDate) + "y";
@@ -248,7 +247,7 @@ export const updateFavourites = (favouritesArray, forexOptionsByType) => {
   let result = false;
 
   if (favouritesArray.length > 0 && forexOptionsByType) {
-    for (var k = 0; k < favouritesArray.length; k++) {
+    for (let k = 0; k < favouritesArray.length; k++) {
       forexOptionsByType.Favourites.push(
         forexOptionsByType.All[favouritesArray[k]]
       );
@@ -360,7 +359,7 @@ export const getGlobalSetting = (settingName, settings) => {
   ///<summary>Gets the setting value if the setting. If the setting  type is boolean it return bool value, if it is not, returns the current value . </summary>
   /// <param name="settingName" type="string">The name of the boolean setting </param>
   if (settings && settings.application) {
-    var property = settings.application[settingName];
+    let property = settings.application[settingName];
     if (property && property.Value) {
       if (property.Value.toString().toLowerCase() == "true") return true;
       else if (property.Value.toString().toLowerCase() == "false") return false;
@@ -376,8 +375,8 @@ export const showForexNotification = (toastType, values) => {
   }
 
   if (values.type == "CountryNotAllowed") {
-    var text1 = "Trade Rejected";
-    var text2 = "Action is not allowed for this country.";
+    let text1 = "Trade Rejected";
+    let text2 = "Action is not allowed for this country.";
     Toast.show({
       type: "error",
       text1: text1,
@@ -428,7 +427,7 @@ export const showForexNotification = (toastType, values) => {
 };
 
 export const getSpreadValue = (askPrice, bidPrice, accuracy) => {
-  var stringifyAskPrice = askPrice.toString().split("."),
+  let stringifyAskPrice = askPrice.toString().split("."),
     stringifyBidPrice = bidPrice.toString().split("."),
     askPriceResult = stringifyAskPrice[0] + stringifyAskPrice[1],
     bidPriceResult = stringifyBidPrice[0] + stringifyBidPrice[1];
@@ -446,7 +445,7 @@ export const getSpreadValue = (askPrice, bidPrice, accuracy) => {
 };
 
 export const remainingTime = (asset) => {
-  var currTime = new Date(),
+  let currTime = new Date(),
     optionStart = new Date(asset.rules[0].dates.from.timestamp);
 
   if (optionStart.getTime() - currTime.getTime() < 0) {
@@ -461,7 +460,7 @@ export const remainingTime = (asset) => {
     }
   }
 
-  var timeDiff = optionStart.getTime() - currTime.getTime(),
+  let timeDiff = optionStart.getTime() - currTime.getTime(),
     diffMinutes = Math.ceil(timeDiff / (1000 * 60)),
     remainingMins = diffMinutes % 60,
     remainingHrs =

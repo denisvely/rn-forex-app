@@ -79,6 +79,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
             stopLoss:
               parseFloat(trade.stopLossRate) === 0 ? null : trade.stopLossRate,
             pendingDate: trade.expirationDate,
+            isError: false,
           };
           if (response.body.data) {
             notificationValues.strike = response.body.hash.ClosingPrice;
