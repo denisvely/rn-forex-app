@@ -9,9 +9,8 @@ import {
   FormattedTypographyWithCurrency,
   Loading,
 } from "../../../components";
-import { deviceWidth } from "../../../utils";
+import { deviceWidth, deviceHeight } from "../../../utils";
 import realForexServices from "../../../services/realForexServices";
-import { convertUTCDateToLocalDate } from "../../../store/realForex/helpers";
 import { colors } from "../../../constants";
 
 import styles from "./positionHistoryStyles";
@@ -87,9 +86,9 @@ const PositionHistory = ({ route, navigation }) => {
           <View style={styles.leftBody}>
             <Typography
               name="tiny"
-              text={moment(
-                new Date(item.DateCreated)
-              ).format("YYYY-MM-DD HH:mm:ss")}
+              text={moment(new Date(item.DateCreated)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
               style={styles.centerAligned}
             />
           </View>
@@ -171,7 +170,13 @@ const PositionHistory = ({ route, navigation }) => {
               )}
             </View>
           </View>
-          <View style={{ zIndex: 1 }}>
+          <View
+            style={{
+              zIndex: 1,
+              height: "100%",
+              paddingBottom: 48,
+            }}
+          >
             <LazyFlatList
               removeClippedSubviews
               list={posData}
