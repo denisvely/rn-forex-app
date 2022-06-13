@@ -39,7 +39,7 @@ import styles from "./registerStyles";
 const signUpService = RegisterService.register();
 
 const titleValues = [
-  { label: "Select title", itemKey: 0, value: "" },
+  { label: "Select title", itemKey: 0, key: 0, value: "" },
   { label: "Mister", itemKey: 1, key: 1, value: "mister" },
   { label: "Miss", itemKey: 2, key: 2, value: "miss" },
   { label: "Mrs", itemKey: 3, key: 3, value: "mrs" },

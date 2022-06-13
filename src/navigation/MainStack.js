@@ -46,7 +46,7 @@ const MainStackNavigator = ({ navigation }) => {
         name="Home"
         component={Home}
         options={{
-          title: "Home",
+          headerTitle: () => <HeaderTitleLogo />,
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,

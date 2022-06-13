@@ -29,7 +29,6 @@ const TradingModes = () => {
 
   const changeHedgForexMode = (value) => {
     setHedgnet(value);
-    console.log(value);
     changeHedgingForexMode
       .fetch({
         mode: value ? 1 : 0,
@@ -47,6 +46,16 @@ const TradingModes = () => {
             visibilityTime: 3000,
             autoHide: true,
           });
+          userService
+            .getUser()
+            .fetch()
+            .then(({ response }) => {
+              if (response.body.code !== 200) {
+                return;
+              }
+              const body = response.getBody();
+              setUser(dispatch, body);
+            });
         } else {
           setHedgnet(!value);
           Toast.show({
