@@ -20,7 +20,7 @@ import {
 } from "../screens";
 
 import { CustomTabBar } from "../components";
-import { loadInitialRealForexData } from "../store/realForex";
+import { loadInitialRealForexData, getBalance } from "../store/realForex";
 import { signalRStop } from "../store/realForex/signalRActions";
 
 const RealForexStack = createBottomTabNavigator();
@@ -31,8 +31,12 @@ const RealForexStackNavigator = ({ navigation }) => {
 
   useEffect(() => {
     loadInitialRealForexData(dispatch);
+    const getUserBalance = setInterval(() => {
+      getBalance(dispatch);
+    }, 15000);
     return () => {
       signalRStop();
+      clearInterval(getUserBalance);
     };
   }, []);
 

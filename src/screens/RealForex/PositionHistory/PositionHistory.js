@@ -9,7 +9,7 @@ import {
   FormattedTypographyWithCurrency,
   Loading,
 } from "../../../components";
-import { deviceWidth, deviceHeight } from "../../../utils";
+import { deviceWidth } from "../../../utils";
 import realForexServices from "../../../services/realForexServices";
 import { colors } from "../../../constants";
 

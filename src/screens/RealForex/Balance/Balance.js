@@ -1,21 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   Typography,
   FormattedTypographyWithCurrency,
 } from "../../../components";
-import { getRealForexBalance } from "../../../store/realForex";
+import { getRealForexBalance, getBalance } from "../../../store/realForex";
 import { colors } from "constants";
 
 import styles from "./balanceStyles";
 
-const Balance = ({ navigation }) => {
+const Balance = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const realForexBalance = useSelector((state) => getRealForexBalance(state));
+
+  useEffect(() => {
+    getBalance(dispatch);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -77,8 +82,8 @@ const Balance = ({ navigation }) => {
               text={t(`common-labels.margin`)}
             />
             <FormattedTypographyWithCurrency
-              name="smallBold"
-              text={realForexBalance.margin}
+              name="tinyBold"
+              text={realForexBalance.forexMargin}
               style={styles.balanceValue}
             />
           </View>
@@ -90,7 +95,7 @@ const Balance = ({ navigation }) => {
             text={t(`common-labels.equity`)}
           ></Typography>
           <FormattedTypographyWithCurrency
-            name="smallBold"
+            name="tinyBold"
             text={realForexBalance.equity}
             style={styles.balanceValue}
           />
@@ -102,7 +107,7 @@ const Balance = ({ navigation }) => {
             text={t(`common-labels.availableBalance`)}
           ></Typography>
           <FormattedTypographyWithCurrency
-            name="smallBold"
+            name="tinyBold"
             text={realForexBalance.availableBalance}
             style={styles.balanceValue}
           />

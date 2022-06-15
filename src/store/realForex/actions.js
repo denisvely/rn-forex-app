@@ -15,6 +15,7 @@ const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
 const addForexTradeOrderV2 = realForexServices.addRealForexTradeOrderV2();
+const getUserRealForexBalance = realForexServices.getUserFullBalance();
 
 export const loadInitialRealForexData = async (dispatch) => {
   getForexOpenTrades
@@ -135,6 +136,8 @@ export const loadInitialRealForexData = async (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
+
+  getBalance(dispatch);
   getNotifications(dispatch);
 };
 
@@ -259,6 +262,24 @@ export const addRealForexTradeOrderV2Service = (
     .then(({ response }) => {
       // Show Notification
       // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getBalance = (dispatch) => {
+  getUserRealForexBalance
+    .fetch()
+    .then(({ response }) => {
+      if (!response || !response.body || response.body.code != 200) {
+        return false;
+      }
+      console.log(response.body.data);
+      dispatch({
+        type: actionTypes.REAL_FOREX_USER_BALANCE,
+        payload: response.body.data,
+      });
     })
     .catch((err) => {
       console.log(err);

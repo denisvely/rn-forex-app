@@ -427,4 +427,22 @@ export default {
 
     return service;
   },
+
+  getUserFullBalance: () => {
+    const service = new Service(
+      "v2/users/current/balance",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      return request;
+    });
+
+    return service;
+  },
 };
