@@ -11,4 +11,9 @@ export default StyleSheet.create({
     width: "100%",
     marginTop: 16,
   },
+  itemDivider: {
+    height: 10,
+    backgroundColor: colors.white,
+    width: "100%",
+  },
 });

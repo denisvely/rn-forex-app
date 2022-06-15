@@ -74,6 +74,7 @@ const Quotes = ({ navigation }) => {
       return availableForTrading;
     }
   };
+
   const renderAssetBox = ({ item }) => (
     <AssetBox
       asset={item}
@@ -81,6 +82,17 @@ const Quotes = ({ navigation }) => {
       navigation={navigation}
     />
   );
+
+  // we set the height of item is fixed
+  const getItemLayout = (data, index) => ({
+    length: 84,
+    offset: 84 * index,
+    index,
+  });
+
+  const ItemDivider = () => {
+    return <View style={styles.itemDivider} />;
+  };
 
   return (
     <View style={styles.container}>
@@ -99,18 +111,12 @@ const Quotes = ({ navigation }) => {
           navigation={navigation}
         />
       </View>
-      <View style={{ zIndex: 1 }}>
+      <View style={{ zIndex: 1, height: "100%" }}>
         {realForexOptionsByType ? (
           <FlatList
-            initialNumToRender={6}
-            removeClippedSubviews={true}
-            maxToRenderPerBatch={6}
-            windowSize={1}
             horizontal={false}
-            onViewableItemsChanged={onViewRef.current}
             data={Object.values(realForexOptionsByType[activeFilter])}
             keyExtractor={(item) => item.id}
-            viewabilityConfig={viewConfigRef.current}
             showsVerticalScrollIndicator={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
@@ -122,9 +128,27 @@ const Quotes = ({ navigation }) => {
             }}
             style={styles.flatListContainer}
             renderItem={renderAssetBox}
+            getItemLayout={getItemLayout}
+            onViewableItemsChanged={onViewRef.current}
+            viewabilityConfig={viewConfigRef.current}
+            ItemSeparatorComponent={ItemDivider}
+            removeClippedSubviews={true} // Unmount components when outside of window
+            initialNumToRender={6} // Reduce initial render amount
+            maxToRenderPerBatch={6} // Reduce number in each render batch
+            updateCellsBatchingPeriod={100} // Increase time between renders
+            windowSize={7} // Reduce the window size
           />
         ) : (
-          <Loading size="large" />
+          <Loading
+            size="large"
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: deviceWidth,
+              height: "100%",
+            }}
+          />
         )}
       </View>
     </View>
