@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
-
+import { WebView } from 'react-native-webview';
 import chartSvg from "../../../assets/svg/chartSvg";
 import { RealForexTradeButtons, HeaderAssetInfo } from "../../../components";
 import { deviceWidth } from "../../../utils";
@@ -88,14 +88,20 @@ const RealForexOrderChart = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.chartContainer}>
-        <SvgXml xml={chartSvg} width={deviceWidth - 24} height="500" />
+      <SafeAreaView style={styles.container}>
+        <WebView
+            source={{ uri: 'https://advfeed.finte.co/tradingview/index.html' }}
+            allowFileAccessFromFileURLs={true}
+            originWhitelist={["*"]}
+        />
+      </SafeAreaView>
+      <View style={{height: 140}}>
+        <RealForexTradeButtons
+            asset={asset}
+            buyOnPress={() => onButtonPress(true)}
+            sellOnPress={() => onButtonPress(false)}
+        />
       </View>
-      <RealForexTradeButtons
-        asset={asset}
-        buyOnPress={() => onButtonPress(true)}
-        sellOnPress={() => onButtonPress(false)}
-      />
     </View>
   );
 };

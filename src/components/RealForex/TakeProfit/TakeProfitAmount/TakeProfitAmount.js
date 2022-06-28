@@ -23,18 +23,18 @@ const TakeProfitAmount = ({ state, setState }) => {
   const globalSettings = useSelector((state) => getSettings(state));
   const [isErrorActive, setErrorState] = useState(false);
   const spinnerMin = (
-    parseFloat(
-      parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
-    ) *
-    currentTrade.quantity *
-    parseFloat(1 / selectedAsset.rate)
+      parseFloat(
+          parseFloat(selectedAsset.distance).toFixed(selectedAsset.accuracy)
+      ) *
+      currentTrade.quantity *
+      parseFloat(1 / selectedAsset.rate)
   ).toFixed(2);
 
   const recalculateTPAmount = (value) => {
     if (value) {
       const TPDistance = (
-        parseFloat(value) /
-        ((currentTrade.quantity * 1) / selectedAsset.rate)
+          parseFloat(value) /
+          ((currentTrade.quantity * 1) / selectedAsset.rate)
       ).toFixed(selectedAsset.accuracy);
 
       setState((prevState) => ({
@@ -53,10 +53,10 @@ const TakeProfitAmount = ({ state, setState }) => {
           Toast.show({
             type: "error",
             text1: `TP Amount must be higher than ${formatCurrency(
-              user.currencySymbol,
-              parseFloat(spinnerMin).toFixed(2),
-              true,
-              globalSettings
+                user.currencySymbol,
+                parseFloat(spinnerMin).toFixed(2),
+                true,
+                globalSettings
             )}`,
             visibilityTime: 3000,
             autoHide: true,
@@ -69,14 +69,14 @@ const TakeProfitAmount = ({ state, setState }) => {
         }
       } else {
         const TPAmount = (
-          parseFloat(selectedAsset.distance) *
-          3 *
-          currentTrade.quantity *
-          parseFloat(1 / selectedAsset.rate)
+            parseFloat(selectedAsset.distance) *
+            3 *
+            currentTrade.quantity *
+            parseFloat(1 / selectedAsset.rate)
         ).toFixed(2);
 
         const TPDistance = (parseFloat(selectedAsset.distance) * 3).toFixed(
-          selectedAsset.accuracy
+            selectedAsset.accuracy
         );
 
         setState((prevState) => ({
@@ -97,47 +97,25 @@ const TakeProfitAmount = ({ state, setState }) => {
     }
   };
 
-<<<<<<< HEAD
-    return selectedAsset ? (
-        <Spinner
-            prepend={
-                state.TPActive ? (
-                    <Typography
-                        name="normal"
-                        text={user.currencySymbol}
-                        style={{position: "absolute", left: "35%", top: 18}}
-                    />
-                ) : null
-            }
-            placeholder={t("common-labels.amount")}
-            spinnerValue={state.takeProfitAmount}
-            onSpinnerChange={(value) => onChange(value)}
-            step={0.01}
-            accuracy={2}
-            min={state.TPActive ? parseFloat(spinnerMin) : 0}
-        />
-    ) : null;
-=======
   return selectedAsset ? (
-    <Spinner
-      prepend={
-        state.TPActive ? (
-          <Typography
-            name="normal"
-            text={user.currencySymbol}
-            style={{ position: "absolute", left: "35%", top: 18 }}
-          />
-        ) : null
-      }
-      errorActive={isErrorActive}
-      placeholder={t("common-labels.amount")}
-      spinnerValue={state.takeProfitAmount}
-      onSpinnerChange={(value) => onChange(value)}
-      step={0.01}
-      accuracy={2}
-    />
+      <Spinner
+          prepend={
+            state.TPActive ? (
+                <Typography
+                    name="normal"
+                    text={user.currencySymbol}
+                    style={{ position: "absolute", left: "35%", top: 18 }}
+                />
+            ) : null
+          }
+          errorActive={isErrorActive}
+          placeholder={t("common-labels.amount")}
+          spinnerValue={state.takeProfitAmount}
+          onSpinnerChange={(value) => onChange(value)}
+          step={0.01}
+          accuracy={2}
+      />
   ) : null;
->>>>>>> 5ac012d48f2e3878066180f81935fe8446fca961
 };
 
 export default TakeProfitAmount;

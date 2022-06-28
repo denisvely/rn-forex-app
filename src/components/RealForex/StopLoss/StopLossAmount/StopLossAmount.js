@@ -66,7 +66,6 @@ const StopLossAmount = ({ state, setState }) => {
           });
 
           recalculateSLAmount(spinnerMax);
-          return;
         }
       } else {
         const SLAmount = (
@@ -108,7 +107,7 @@ const StopLossAmount = ({ state, setState }) => {
       step={0.01}
       accuracy={2}
       min={parseFloat(-1000000)}
-      max={state.SLActive ? parseFloat(spinnerMax) : 0}
+      max={state.SLActive ? parseFloat(spinnerMax) : null}
     />
   ) : null;
 };

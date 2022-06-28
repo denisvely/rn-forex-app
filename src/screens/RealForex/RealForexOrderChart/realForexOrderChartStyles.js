@@ -8,7 +8,8 @@ export default StyleSheet.create({
     flex: 1,
   },
   chartContainer: {
-    width: deviceWidth - 24,
-    height: 500,
+    width: deviceWidth,
+    height: "100%",
+    marginBottom: 140
   },
 });

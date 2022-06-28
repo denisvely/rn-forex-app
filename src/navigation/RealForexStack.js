@@ -269,13 +269,13 @@ const RealForexStackNavigator = ({ navigation }) => {
 
   return (
     <>
-      {!!marginCallData.isMarginCallShown && (
-        <MarginCallModal
-          state={marginCallData}
-          setState={setState}
-          navigation={navigation}
-        />
-      )}
+      {/*{!!marginCallData.isMarginCallShown && (*/}
+      {/*  <MarginCallModal*/}
+      {/*    state={marginCallData}*/}
+      {/*    setState={setState}*/}
+      {/*    navigation={navigation}*/}
+      {/*  />*/}
+      {/*)}*/}
 
       <RealForexStack.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
