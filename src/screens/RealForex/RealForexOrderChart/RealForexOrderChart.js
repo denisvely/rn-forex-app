@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { View, SafeAreaView } from "react-native";
-import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
-import { WebView } from 'react-native-webview';
-import chartSvg from "../../../assets/svg/chartSvg";
-import { RealForexTradeButtons, HeaderAssetInfo } from "../../../components";
-import { deviceWidth } from "../../../utils";
+import { WebView } from "react-native-webview";
+import {
+  RealForexTradeButtons,
+  HeaderAssetInfo,
+  Loading,
+} from "../../../components";
 import { getUser } from "../../../store/app";
 import {
   getRealForexOpenPositions,
@@ -88,20 +89,28 @@ const RealForexOrderChart = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <WebView
-            source={{ uri: 'https://advfeed.finte.co/tradingview/index.html' }}
-            allowFileAccessFromFileURLs={true}
-            originWhitelist={["*"]}
-        />
-      </SafeAreaView>
-      <View style={{height: 140}}>
-        <RealForexTradeButtons
-            asset={asset}
-            buyOnPress={() => onButtonPress(true)}
-            sellOnPress={() => onButtonPress(false)}
-        />
-      </View>
+      {asset && asset.id ? (
+        <>
+          <SafeAreaView style={styles.container}>
+            <WebView
+              source={{
+                uri: `https://advfeed.finte.co/tradingview/index.html?taid=${asset.id}`,
+              }}
+              allowFileAccessFromFileURLs={true}
+              originWhitelist={["*"]}
+            />
+          </SafeAreaView>
+          <View style={{ height: 140 }}>
+            <RealForexTradeButtons
+              asset={asset}
+              buyOnPress={() => onButtonPress(true)}
+              sellOnPress={() => onButtonPress(false)}
+            />
+          </View>
+        </>
+      ) : (
+        <Loading size="large" />
+      )}
     </View>
   );
 };
