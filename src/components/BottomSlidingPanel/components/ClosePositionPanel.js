@@ -9,7 +9,6 @@ import Button from "../../Button/Button";
 import SwitchComponent from "../../Switch/SwitchComponent";
 import PartiallyClose from "../../RealForex/PartiallyClose/PartiallyClose";
 import {
-  closeForexTradeNetting,
   addRealForexTradeOrderV2Service,
   getRealForexOptionsByType,
   getRealForexPrices,
@@ -27,6 +26,7 @@ import {
 import styles from "../bottomSlidingPanelStyles";
 
 const closePosition = realForexServices.closePosition();
+const closePositionNetting = realForexServices.closePositioNetting();
 
 const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
   if (!trade) {
@@ -46,6 +46,52 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
 
   const [partiallyCloseValue, setPartialllyClose] = useState(trade.volume);
   const [partiallyCloseVisible, setVisibility] = useState(false);
+
+  const closePositionRequest = () => {
+    closePosition
+      .fetch({ orderID: trade.orderID })
+      .then(({ response }) => {
+        if (
+          response.body.code == 400 &&
+          response.body.data.text == "Minimum Close Interval Error"
+        ) {
+          // TODO => forexHelper.settings.MinCloseInterval
+          Toast.show({
+            type: "error",
+            text1:
+              "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
+            text2: "Please try again in a few moments.",
+            topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        } else {
+          const notificationValues = {
+            title: !response.body.data ? "Market Closed" : "Position closed",
+            action: trade.actionType === "Buy" ? "Sell" : "Buy",
+            quantity: trade.volume,
+            option: trade.description,
+            strike: trade.marketRate,
+            takeProfit:
+              parseFloat(trade.takeProfitRate) === 0
+                ? null
+                : trade.takeProfitRate,
+            stopLoss:
+              parseFloat(trade.stopLossRate) === 0 ? null : trade.stopLossRate,
+            pendingDate: trade.expirationDate,
+            isError: false,
+          };
+          if (response.body.data) {
+            notificationValues.strike = response.body.hash.ClosingPrice;
+          }
+
+          showForexNotification("successForex", notificationValues);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const closePositionRealForex = () => {
     if (
@@ -121,55 +167,20 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
       toggleSlidingPanel(false);
     } else {
       if (user.forexModeId === 3 && user.forexMarginModeId === 1) {
-        // TODO => Finish closeForexTradeNetting
-        closeForexTradeNetting(dispatch, trade.orderID);
-      } else {
-        closePosition
+        closePositionNetting
           .fetch({ orderID: trade.orderID })
           .then(({ response }) => {
-            if (
-              response.body.code == 400 &&
-              response.body.data.text == "Minimum Close Interval Error"
-            ) {
-              // TODO => forexHelper.settings.MinCloseInterval
-              Toast.show({
-                type: "error",
-                text1:
-                  "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
-                text2: "Please try again in a few moments.",
-                topOffset: 100,
-                visibilityTime: 3000,
-                autoHide: true,
-              });
+            if (response.body.data == 2) {
+              // TODO -> forex-stop-out - openPositions.js - line 251
             } else {
-              const notificationValues = {
-                title: !response.body.data
-                  ? "Market Closed"
-                  : "Position closed",
-                action: trade.actionType === "Buy" ? "Sell" : "Buy",
-                quantity: trade.volume,
-                option: trade.description,
-                strike: trade.marketRate,
-                takeProfit:
-                  parseFloat(trade.takeProfitRate) === 0
-                    ? null
-                    : trade.takeProfitRate,
-                stopLoss:
-                  parseFloat(trade.stopLossRate) === 0
-                    ? null
-                    : trade.stopLossRate,
-                pendingDate: trade.expirationDate,
-              };
-              if (response.body.data) {
-                notificationValues.strike = response.body.hash.ClosingPrice;
-              }
-
-              showForexNotification("success", notificationValues);
+              closePositionRequest();
             }
           })
           .catch((err) => {
             console.log(err);
           });
+      } else {
+        closePositionRequest();
       }
       toggleSlidingPanel(false);
     }

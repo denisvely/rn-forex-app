@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { View, TextInput, TouchableHighlight } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { SvgXml } from "react-native-svg";
 import Typography from "../../Typography/Typography";
 import LazyFlatList from "../../LazyFlatList/LazyFlatList";
@@ -22,31 +22,40 @@ const AssetsSearch = ({
     navigation.navigate("RealForexOrderChart", { asset });
   };
 
+  useEffect(() => {
+    return () => {
+      emptyFoundAssets();
+      onChange("");
+    };
+  }, []);
+
   return (
     <View style={styles.searchWrapper}>
-      <SvgXml
-        styles={styles.searchIcon}
-        xml={search}
-        width="20"
-        height="22"
-        fill={colors.iconsColor}
-      />
-      <TextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={onChange}
-        value={value}
-        placeholder="Search"
-        placeholderTextColor={colors.fontSecondaryColor}
-        style={styles.searchInput}
-      />
+      <View style={styles.inputWrapper}>
+        <SvgXml
+          styles={styles.searchIcon}
+          xml={search}
+          width="20"
+          height="22"
+          fill={colors.iconsColor}
+        />
+        <TextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={onChange}
+          value={value}
+          placeholder="Search"
+          placeholderTextColor={colors.fontSecondaryColor}
+          style={styles.searchInput}
+        />
+      </View>
       {assets.length > 0 ? (
         <View style={styles.foundAssets}>
           <LazyFlatList
             list={assets}
             renderItem={({ item, index }) => {
               return (
-                <TouchableHighlight
+                <TouchableOpacity
                   style={styles.asset}
                   onPress={() => tradeAsset(item)}
                   activeOpacity={0.1}
@@ -57,7 +66,7 @@ const AssetsSearch = ({
                     text={item.name}
                     style={styles.assetName}
                   />
-                </TouchableHighlight>
+                </TouchableOpacity>
               );
             }}
             keyExtractor={(item) => item.id}

@@ -1,15 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 
 import { LazyFlatList, Loading, Typography } from "../../../components";
 import { deviceWidth } from "../../../utils";
 import MyMessagesService from "./service/MyMessagesService";
+import { convertUTCDateToLocalDate } from "../../../store/realForex/helpers";
 
 import styles from "./myMessagesStyles";
 import { colors } from "../../../constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const getMessages = MyMessagesService.getMessages();
 
@@ -72,8 +72,8 @@ const MyMessages = ({ navigation }) => {
           </View>
           <View style={styles.right}>
             <Typography
-              text={moment(item.activeFrom.dateTime).format(
-                "DD-MM-YYYY HH:MM:SS"
+              text={moment(new Date(item.activeFrom.dateTime)).format(
+                "YYYY-MM-DD HH:mm:ss"
               )}
               name="small"
               style={{

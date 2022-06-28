@@ -1,4 +1,5 @@
 import signalr from "react-native-signalr";
+import moment from "moment";
 import * as actionTypes from "./actionTypes";
 import ServiceManager from "../../utils/serviceManager";
 import realForexServices from "../../services/realForexServices";
@@ -41,6 +42,27 @@ const signalRMiddleware =
               dispatch({
                 type: actionTypes.REAL_FOREX_OPEN_POSITIONS,
                 payload: body.forexOpenTrades.data,
+              });
+            });
+          realForexServices
+            .getRealForexClosedPositions(dispatch)
+            .fetch({
+              fromDate:
+                moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+                  "YYYY-MM-DD"
+                ) + "T00:00:01",
+              toDate:
+                moment(new Date().setMonth(new Date().getMonth())).format(
+                  "YYYY-MM-DD"
+                ) + "T23:59:59",
+              positionId: null,
+              tradableAssetId: 0,
+            })
+            .then(({ response }) => {
+              const body = response.body.data;
+              dispatch({
+                type: actionTypes.REAL_FOREX_CLOSED_POSITIONS,
+                payload: body.trades,
               });
             });
         }
@@ -100,8 +122,11 @@ export const realForexHubPrices = (assetsPrices, allPrices, dispatch) => {
       assetsPrices[price.T].id = price.T;
       assetsPrices[price.T].ask = price.A.toFixed(price.C);
       assetsPrices[price.T].bid = price.B.toFixed(price.C);
+      assetsPrices[price.T].marketAsk = price.a.toFixed(price.C);
+      assetsPrices[price.T].marketBid = price.b.toFixed(price.C);
       assetsPrices[price.T].rate = price.R.toFixed(price.C);
       assetsPrices[price.T].accuracy = price.C;
+      assetsPrices[price.T].delay = price.d;
     });
   } else if (arrayForexPrices != null && assetsPrices != null) {
     arrayForexPrices.forEach(function (priceNewValue, priceNewKey) {
@@ -138,6 +163,7 @@ export const realForexHubPrices = (assetsPrices, allPrices, dispatch) => {
     assetsPrices[value.T].marketBid = value.b.toFixed(value.C);
     assetsPrices[value.T].rate = value.R.toFixed(value.C);
     assetsPrices[value.T].accuracy = value.C;
+    assetsPrices[value.T].delay = value.d;
   });
 
   dispatch({

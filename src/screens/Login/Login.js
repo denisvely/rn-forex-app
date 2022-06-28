@@ -1,5 +1,10 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -64,52 +69,61 @@ const Login = ({ navigation }) => {
       >
         {(props) => (
           <>
-            <TextField
-              placeholder="Email"
-              onChange={props.handleChange("email")}
-              value={props.values.email}
-              type="email"
-              hasIcon={true}
-              keyboardType="email-address"
-            />
-            {props.errors.email && props.touched.email ? (
-              <Error name="nano" text={props.errors.email} bigPadding={true} />
-            ) : null}
-            <TextField
-              placeholder="Password"
-              onChange={props.handleChange("password")}
-              value={props.values.password}
-              secureTextEntry={true}
-              hasIcon={true}
-              type="password"
-            />
-            {props.errors.password && props.touched.password ? (
-              <Error
-                name="nano"
-                text={props.errors.password}
-                bigPadding={true}
-              />
-            ) : null}
-            <View style={styles.forgotPassword}>
-              <Button
-                textStyle={{ color: colors.buttonSecondary }}
-                text="Forgot password?"
-                type="text"
-                font="small"
-                size="small"
-                onPress={() => navigation.navigate("ForgotPassword")}
-              />
-            </View>
-            <TouchableOpacity
-              onPress={props.handleSubmit}
-              style={styles.loginBtn}
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              enabled
             >
-              <Typography
-                name="mediumBold"
-                text={"Login"}
-                style={{ color: colors.white }}
+              <TextField
+                placeholder="Email"
+                onChange={props.handleChange("email")}
+                value={props.values.email}
+                type="email"
+                hasIcon={true}
+                keyboardType="email-address"
               />
-            </TouchableOpacity>
+              {props.errors.email && props.touched.email ? (
+                <Error
+                  name="nano"
+                  text={props.errors.email}
+                  bigPadding={true}
+                />
+              ) : null}
+              <TextField
+                placeholder="Password"
+                onChange={props.handleChange("password")}
+                value={props.values.password}
+                secureTextEntry={true}
+                hasIcon={true}
+                type="password"
+              />
+              {props.errors.password && props.touched.password ? (
+                <Error
+                  name="nano"
+                  text={props.errors.password}
+                  bigPadding={true}
+                />
+              ) : null}
+              <View style={styles.forgotPassword}>
+                <Button
+                  textStyle={{ color: colors.blueColor }}
+                  text="Forgot password?"
+                  type="text"
+                  font="small"
+                  size="small"
+                  onPress={() => navigation.navigate("ForgotPassword")}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={props.handleSubmit}
+                style={styles.loginBtn}
+              >
+                <Typography
+                  name="mediumBold"
+                  text={"Login"}
+                  style={{ color: colors.white }}
+                />
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
           </>
         )}
       </Formik>

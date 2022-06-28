@@ -7,7 +7,7 @@ import moment from "moment";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
 import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";
 import Typography from "../../Typography/Typography";
-
+import { convertUTCDateToLocalDate } from "../../../store/realForex/helpers";
 import styles from "./closedPositionsTradeBoxStyles";
 
 const ClosedPositionsTradeBox = ({ item, navigation }) => {
@@ -107,7 +107,9 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
             <Typography
               name="small"
               style={styles.tradeInfoValue}
-              text={moment(item.orderDate).format("YYYY-MM-DD hh:mm:ss")}
+              text={moment(new Date(item.orderDate)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
             />
           </View>
           <View style={styles.tradeInfoRow}>
@@ -119,7 +121,9 @@ const ClosedPositionsTradeBox = ({ item, navigation }) => {
             <Typography
               name="small"
               style={styles.tradeInfoValue}
-              text={moment(item.closeDate).format("YYYY-MM-DD hh:mm:ss")}
+              text={moment(new Date(item.closeDate)).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
             />
           </View>
           <View style={styles.tradeInfoRow}>

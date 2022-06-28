@@ -39,7 +39,7 @@ import styles from "./registerStyles";
 const signUpService = RegisterService.register();
 
 const titleValues = [
-  { label: "Select title", itemKey: 0, value: "" },
+  { label: "Select title", itemKey: 0, key: 0, value: "" },
   { label: "Mister", itemKey: 1, key: 1, value: "mister" },
   { label: "Miss", itemKey: 2, key: 2, value: "miss" },
   { label: "Mrs", itemKey: 3, key: 3, value: "mrs" },
@@ -59,7 +59,8 @@ const SignUpSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .min(6, "Too Short!")
     .max(50, "Too Long!")
-    .required("Invalid password"),
+    .required("Invalid password")
+    .oneOf([Yup.ref("password")], "The passwords doesn't match."),
   phone: Yup.string().required("Required"),
   title: Yup.string().required("Required"),
   birthDate: Yup.date().required("Required"),
@@ -107,7 +108,7 @@ const Register = ({ navigation }) => {
           });
           setCountryCodeList(myCountryCodeList);
           if (body.location.data) {
-            // changeCountryCode(body.location.data.country.code);
+            changeCountryCode(body.location.data.country.code);
           }
           if (body.currencies.data) {
             const allCurrencies = [];
@@ -134,6 +135,7 @@ const Register = ({ navigation }) => {
     } else {
       setTosError(false);
     }
+
     setRequestProgress(true);
     signUpService
       .fetch({
@@ -144,7 +146,7 @@ const Register = ({ navigation }) => {
         lastName: userData.lastName,
         title: userData.title,
         phone: userData.phone,
-        countryCode: countryCode,
+        countryCode: userData.countryCode ? userData.countryCode : countryCode,
         birthDay: birthDate ? birthDate.getDate() : "",
         birthMonth: birthDate ? birthDate.getMonth() + 1 : "",
         birthYear: birthDate ? birthDate.getFullYear() : "",
@@ -196,9 +198,7 @@ const Register = ({ navigation }) => {
             <View style={styles.formWrapper}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}
                 enabled
-                keyboardVerticalOffset={deviceHeight / 4.5}
               >
                 <ScrollView
                   horizontal={false}
@@ -389,7 +389,6 @@ const Register = ({ navigation }) => {
                         }
                         changeCountry={(countryCode) => {
                           props.setFieldValue("countryCode", countryCode);
-                          changeCountryCode(countryCode);
                         }}
                         customContryCodeList={countryCodeList}
                       />
@@ -463,28 +462,28 @@ const Register = ({ navigation }) => {
                     />
                   ) : null}
                 </ScrollView>
-              </KeyboardAvoidingView>
-              <View style={styles.buttonsWrapper}>
-                <Button
-                  disabled={requestInProgress}
-                  text="Register"
-                  type="primary"
-                  font="mediumBold"
-                  size="big"
-                  onPress={props.handleSubmit}
-                />
-                <View style={styles.bottomViewLogin}>
-                  <Typography name="tiny" text={"Already have an account?"} />
+                <View style={styles.buttonsWrapper}>
                   <Button
-                    textStyle={{ color: colors.blueColor }}
-                    size="small"
-                    text="Login"
-                    type="secondary"
-                    font="small"
-                    onPress={() => navigation.push("Login")}
+                    disabled={requestInProgress}
+                    text="Register"
+                    type="primary"
+                    font="mediumBold"
+                    size="big"
+                    onPress={props.handleSubmit}
                   />
+                  <View style={styles.bottomViewLogin}>
+                    <Typography name="tiny" text={"Already have an account?"} />
+                    <Button
+                      textStyle={{ color: colors.blueColor }}
+                      size="small"
+                      text="Login"
+                      type="secondary"
+                      font="small"
+                      onPress={() => navigation.push("Login")}
+                    />
+                  </View>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
             </View>
           )}
         </Formik>

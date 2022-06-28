@@ -18,7 +18,7 @@ import {
   getRealForexOptionsByType,
   getRealForexTradingSettings,
 } from "../../../store/realForex";
-import { getUser, getSettings } from "../../../store/app";
+import { getUser } from "../../../store/app";
 
 import styles from "./openPositionsTradeBoxStyles";
 import { colors } from "../../../constants";
@@ -35,7 +35,6 @@ const OpenPositionsTradeBox = ({
     getRealForexOptionsByType(state)
   );
   const user = useSelector((state) => getUser(state));
-  const settings = useSelector((state) => getSettings(state));
   const tradingSettings = useSelector((state) =>
     getRealForexTradingSettings(state)
   );
@@ -203,7 +202,7 @@ const OpenPositionsTradeBox = ({
               name="small"
               style={styles.tradeInfoValue}
               text={moment(item.orderDate.timestamp).format(
-                "YYYY-MM-DD hh:mm:ss"
+                "YYYY-MM-DD HH:mm:ss"
               )}
             />
           </View>

@@ -69,12 +69,12 @@ const NotificationRow = ({ notification }) => {
                 name="small"
                 style={{
                   ...styles.notificationRowDirection,
-                  color: notification.isBuy
+                  color: notification.IsBuy
                     ? colors.buyColor
                     : colors.sellColor,
                 }}
                 text={
-                  notification.isBuy
+                  notification.IsBuy
                     ? t("common-labels.buy")
                     : t("common-labels.sell")
                 }

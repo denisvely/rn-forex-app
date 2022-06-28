@@ -8,18 +8,21 @@ export const processMarketOrder = (response, currTrade) => {
       response.body.data.parameters.forexType == "MarketOrder"
     ) {
       currTrade.title = "Position modified";
-      showForexNotification("success", currTrade);
+      currTrade.isError = false;
+      showForexNotification("successForex", currTrade);
     } else if (
       (response.body.data.type == "TradeRoom_SuccessTradeModified" ||
         response.body.data.type == "EditOrder_Successful") &&
       response.body.data.parameters.forexType == "MarketOrder"
     ) {
       currTrade.title = "Position modified";
-      showForexNotification("success", currTrade);
+      currTrade.isError = false;
+      showForexNotification("successForex", currTrade);
     } else {
       currTrade.title = response.body.data.parameters.PositionId
         ? "Position closed"
         : "Position opened";
+      currTrade.isError = false;
       showForexNotification("successForex", currTrade);
     }
   } else if (
@@ -83,15 +86,16 @@ export const processPendingOrder = (response, currTrade) => {
     response.body.data.parameters.forexType == "PendingOrder"
   ) {
     currTrade.title = `Pending Order Confirmed`;
-    currTrade.title = "Pending Order Confirmed";
-    showForexNotification("success", currTrade);
+    currTrade.isError = false;
+    showForexNotification("successForex", currTrade);
   } else if (
     response.body.data &&
     response.body.data.type == "EditOrder_Successful" &&
     response.body.data.parameters.forexType == "PendingOrder"
   ) {
     currTrade.title = "Pending Order Modified";
-    showForexNotification("success", currTrade);
+    currTrade.isError = false;
+    showForexNotification("successForex", currTrade);
   } else {
     if (response.body.data.type === "TradeOrder_InsufficientBalance") {
       currTrade.title = "Insufficient balance";

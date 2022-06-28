@@ -11,7 +11,6 @@ export default StyleSheet.create({
     height: 84,
     borderRadius: 2,
     backgroundColor: colors.white,
-    marginBottom: 10,
   },
   assetBoxMarketClosed: {
     width: deviceWidth - 32,
@@ -21,7 +20,6 @@ export default StyleSheet.create({
     height: 84,
     borderRadius: 2,
     backgroundColor: colors.tabsBackground,
-    marginBottom: 10,
     opacity: 0.5,
     position: "relative",
   },

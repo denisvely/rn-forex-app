@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
 import Toast from "react-native-toast-message";
 
-import { View, Pressable, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Typography, SwitchComponent } from "../../../../components";
 import { getUser, setUser } from "../../../../store/app";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
@@ -35,41 +35,16 @@ const TradingModes = () => {
       })
       .then(({ response }) => {
         if (response.body.code === 200) {
+          setHedgnet(value);
           Toast.show({
             type: "platformInfoSuccess",
             props: {
               text1: `${t("menu.changeMarginMode")}`,
-              text2: `${response.body.data.type}`,
+              text2: `Hedging mode margin mode has been changed successfully.`,
             },
             topOffset: 100,
-            visibilityTime: 5000,
+            visibilityTime: 3000,
             autoHide: true,
-          });
-          setHedgnet(value);
-        } else {
-          Toast.show({
-            type: "platformInfoError",
-            props: {
-              text1: `${t("menu.changeMarginMode")}`,
-              text2: `${response.body.data.text}`,
-            },
-            topOffset: 100,
-            visibilityTime: 5000,
-            autoHide: true,
-          });
-          setHedgnet(!value);
-        }
-      });
-  };
-  const changeModeId = () => {
-    changeForexMode
-      .fetch({
-        modeId: userForexModeId,
-      })
-      .then(({ response }) => {
-        if (response.body.code === 200) {
-          changeHedgingForexMode.fetch({
-            mode: isHedgnetActive ? 1 : 0,
           });
           userService
             .getUser()
@@ -79,6 +54,55 @@ const TradingModes = () => {
                 return;
               }
               const body = response.getBody();
+              setUser(dispatch, body);
+            });
+        } else {
+          setHedgnet(!value);
+          Toast.show({
+            type: "platformInfoError",
+            props: {
+              text1: `${t("menu.changeMarginMode")}`,
+              text2: `There are open trades.`,
+            },
+            topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const changeModeId = () => {
+    if (user.forexModeId === userForexModeId) {
+      Toast.show({
+        type: "error",
+        text1: `You are already on that mode.`,
+        topOffset: 100,
+      });
+      return;
+    }
+    changeForexMode
+      .fetch({
+        modeId: userForexModeId,
+      })
+      .then(({ response }) => {
+        if (response.body.code === 200) {
+          userService
+            .getUser()
+            .fetch()
+            .then(({ response }) => {
+              if (response.body.code !== 200) {
+                return;
+              }
+              const body = response.getBody();
+              if (body.forexModeId === 2) {
+                changeHedgingForexMode.fetch({
+                  mode: 0,
+                });
+                setHedgnet(false);
+              }
               setUser(dispatch, body);
               Toast.show({
                 type: "platformInfoSuccess",
@@ -91,7 +115,7 @@ const TradingModes = () => {
                   text2: `${t("menu.changeModeSuccess")}`,
                 },
                 topOffset: 100,
-                visibilityTime: 5000,
+                visibilityTime: 3000,
                 autoHide: true,
               });
             });
@@ -111,7 +135,7 @@ const TradingModes = () => {
               }`,
             },
             topOffset: 100,
-            visibilityTime: 5000,
+            visibilityTime: 3000,
             autoHide: true,
           });
         }
@@ -143,7 +167,7 @@ const TradingModes = () => {
         <View style={styles.tradingModes}>
           <View style={styles.box}>
             <View style={styles.row}>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => setModeId(2)}
                 style={styles.directionButton}
               >
@@ -171,7 +195,7 @@ const TradingModes = () => {
                     }
                   />
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <Typography
               name="small"
@@ -182,7 +206,7 @@ const TradingModes = () => {
           <View style={styles.box}>
             <View style={styles.hedgingWrapper}>
               <View style={styles.row}>
-                <Pressable
+                <TouchableOpacity
                   onPress={() => setModeId(3)}
                   style={styles.directionButton}
                 >
@@ -205,7 +229,7 @@ const TradingModes = () => {
                       }
                     />
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
               <Typography
                 name="small"
@@ -218,7 +242,7 @@ const TradingModes = () => {
                 onValueChange={(value) => changeHedgForexMode(value)}
                 value={isHedgnetActive}
                 style={styles.switch}
-                disabled={userForexModeId === 2}
+                disabled={user.forexModeId === 2}
               />
               <Typography name="normal" text={t(`menu.switchMarginNet`)} />
             </View>

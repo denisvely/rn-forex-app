@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
@@ -34,26 +34,28 @@ const Menu = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.accountInfo}>
-        <View>
-          <Typography
-            name="mediumBold"
-            style={styles.accountInfoText}
-            text={`${user?.firstName} ${user?.lastName}`}
-          ></Typography>
-          <Typography
-            name="tinyBold"
-            style={styles.accountInfoText}
-            text={user?.email}
-          ></Typography>
+      <TouchableOpacity onPress={() => submit("MyProfile")}>
+        <View style={styles.accountInfo}>
+          <View>
+            <Typography
+              name="mediumBold"
+              style={styles.accountInfoText}
+              text={`${user?.firstName} ${user?.lastName}`}
+            ></Typography>
+            <Typography
+              name="tinyBold"
+              style={styles.accountInfoText}
+              text={user?.email}
+            ></Typography>
+          </View>
+          <SvgXml
+            style={styles.accountInfoBG}
+            xml={accountInfoBackground}
+            width="93"
+            height="93"
+          />
         </View>
-        <SvgXml
-          style={styles.accountInfoBG}
-          xml={accountInfoBackground}
-          width="93"
-          height="93"
-        />
-      </View>
+      </TouchableOpacity>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}

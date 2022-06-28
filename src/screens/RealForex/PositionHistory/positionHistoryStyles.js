@@ -50,7 +50,7 @@ export default StyleSheet.create({
     backgroundColor: colors.white,
     borderBottomColor: colors.inputBorder,
     borderBottomWidth: 1,
-    height: 100,
+    height: 110,
   },
   left: {
     justifyContent: "flex-start",
@@ -152,6 +152,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
+    paddingBottom: 20,
   },
   leftAvg: {
     justifyContent: "center",

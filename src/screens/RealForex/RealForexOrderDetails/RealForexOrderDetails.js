@@ -288,7 +288,6 @@ const RealForexOrderDetails = ({ route, navigation }) => {
                 quantity={quantity}
                 setQuantity={setQuantity}
                 isReady={isReady}
-                isModify={order ? true : false}
                 isMarketClosed={isMarketClosed}
               />
             ) : null

@@ -89,7 +89,6 @@ const realForexReducer = (state = initialState, action) => {
         realForexOptions: formatRealForexOptions(action.payload.options.data),
         realForexOptionsByType: sortOptionsByType(action.payload.options.data),
         hash: action.payload.options.hash,
-        realForexBalance: action.payload.balanceRealForex.data,
       };
     }
     case actionTypes.REAL_FOREX_NOTIFICATIONS: {
@@ -132,6 +131,12 @@ const realForexReducer = (state = initialState, action) => {
       return {
         ...stateClone,
         currentlyModifiedOrder: action.payload,
+      };
+    }
+    case actionTypes.REAL_FOREX_USER_BALANCE: {
+      return {
+        ...stateClone,
+        realForexBalance: action.payload,
       };
     }
 

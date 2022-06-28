@@ -20,6 +20,7 @@ export default StyleSheet.create({
   forgotPassword: {
     justifyContent: "center",
     alignItems: "flex-end",
+    alignSelf: "flex-end",
     width: "100%",
   },
   bottomViewLogin: {

@@ -2,7 +2,6 @@ import ServiceManager, {
   Service,
   apiConsts,
 } from "../../../../../utils/serviceManager";
-import { Storage } from "../../../../../utils";
 
 export default {
   changeForexMode: () => {

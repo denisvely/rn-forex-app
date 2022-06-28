@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import moment from "moment";
 
-import { signalRStart } from "./signalRActions";
 import realForexServices from "../../services/realForexServices";
 
 const getForexOpenTrades = realForexServices.getRealForexOpenTrades();
@@ -15,8 +14,8 @@ const getForexOptions = realForexServices.getRealForexOptions();
 const getForexNotifications = realForexServices.getRealForexNotifications();
 const getForexAssetsOrder = realForexServices.getRealForexAssetsOrder();
 const getForexTraderInsight = realForexServices.getRealForexTraderInsight();
-const closePositionRealForexNetting = realForexServices.closePositioNetting();
 const addForexTradeOrderV2 = realForexServices.addRealForexTradeOrderV2();
+const getUserRealForexBalance = realForexServices.getUserFullBalance();
 
 export const loadInitialRealForexData = async (dispatch) => {
   getForexOpenTrades
@@ -137,6 +136,8 @@ export const loadInitialRealForexData = async (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
+
+  getBalance(dispatch);
   getNotifications(dispatch);
 };
 
@@ -212,21 +213,6 @@ export const setCurrentlyModifiedOrder = async (dispatch, order) => {
   dispatch({ type: actionTypes.SET_CURRENTLY_MODIFIED_ORDER, payload: order });
 };
 
-export const closeForexTradeNetting = (dispatch, orderId) => {
-  closePositionRealForexNetting
-    .fetch({ orderID: orderId })
-    .then(({ response }) => {
-      // TODO => ?
-      // dispatch({
-      //   type: actionTypes.REAL_FOREX_CLOSE_POSITION,
-      //   payload: body,
-      // });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 export const addRealForexTradeOrderV2Service = (
   dispatch,
   optionId,
@@ -276,6 +262,24 @@ export const addRealForexTradeOrderV2Service = (
     .then(({ response }) => {
       // Show Notification
       // TODO => Handle Response from eventsHubProxy.on("forexPosition", (event) => {
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getBalance = (dispatch) => {
+  getUserRealForexBalance
+    .fetch()
+    .then(({ response }) => {
+      if (!response || !response.body || response.body.code != 200) {
+        return false;
+      }
+      console.log(response.body.data);
+      dispatch({
+        type: actionTypes.REAL_FOREX_USER_BALANCE,
+        payload: response.body.data,
+      });
     })
     .catch((err) => {
       console.log(err);
