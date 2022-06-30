@@ -254,17 +254,18 @@ const RealForexStackNavigator = ({ navigation }) => {
     }));
   };
 
-  useEffect(() => {
-    if (
-      realForexPrices &&
-      openPositions &&
-      openPositions.length > 0 &&
-      realForexBalance &&
-      tradingSettings
-    ) {
-      checkMarginOnUpdateTradesPrices();
-    }
-  }, [openPositions, realForexBalance, tradingSettings]);
+  // TODO!
+  // useEffect(() => {
+  //   if (
+  //     realForexPrices &&
+  //     openPositions &&
+  //     openPositions.length > 0 &&
+  //     realForexBalance &&
+  //     tradingSettings
+  //   ) {
+  //     checkMarginOnUpdateTradesPrices();
+  //   }
+  // }, [openPositions, realForexBalance, tradingSettings]);
 
   useEffect(() => {
     loadInitialRealForexData(dispatch);
