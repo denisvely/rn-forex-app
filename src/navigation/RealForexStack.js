@@ -77,7 +77,7 @@ const RealForexStackNavigator = ({ navigation }) => {
               ) *
                 parseFloat(item.volume) *
                 (1 / item.exchangeRate)
-            ).toFixed(2);
+            );
           } else {
             totalProfit += parseFloat(
               parseFloat(
@@ -85,7 +85,7 @@ const RealForexStackNavigator = ({ navigation }) => {
               ) *
                 parseFloat(item.volume) *
                 (1 / item.exchangeRate)
-            ).toFixed(2);
+            );
           }
         }
       }
@@ -101,7 +101,7 @@ const RealForexStackNavigator = ({ navigation }) => {
 
               let totalBuyMargin = 0;
               let totalSellMargin = 0;
-              let currResult = (
+              let currResult =
                 ((openPositions[k].actionType === "Sell"
                   ? realForexPrices[openPositions[k].tradableAssetId].bid
                   : realForexPrices[openPositions[k].tradableAssetId].ask) *
@@ -113,8 +113,7 @@ const RealForexStackNavigator = ({ navigation }) => {
                       tradingSettings
                     )
                   )) /
-                (openPositions[k].leverage * openPositions[k].exchangeRate)
-              ).toFixed(2);
+                (openPositions[k].leverage * openPositions[k].exchangeRate);
 
               if (openPositions[k].actionType === "Sell") {
                 if (!isNaN(currResult)) {
@@ -131,7 +130,7 @@ const RealForexStackNavigator = ({ navigation }) => {
                   openPositions[k].tradableAssetId ===
                   openPositions[l].tradableAssetId
                 ) {
-                  currResult = (
+                  currResult =
                     ((openPositions[l].actionType === "Sell"
                       ? realForexPrices[openPositions[l].tradableAssetId].bid
                       : realForexPrices[openPositions[l].tradableAssetId].ask) *
@@ -143,8 +142,7 @@ const RealForexStackNavigator = ({ navigation }) => {
                           tradingSettings
                         )
                       )) /
-                    (openPositions[l].leverage * openPositions[l].exchangeRate)
-                  ).toFixed(2);
+                    (openPositions[l].leverage * openPositions[l].exchangeRate);
 
                   if (openPositions[l].actionType === "Sell") {
                     if (!isNaN(currResult)) {
@@ -163,7 +161,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           }
         }
       } else {
-        totalMargin += (
+        totalMargin +=
           ((item.actionType === "Sell"
             ? realForexPrices[item.tradableAssetId].bid
             : realForexPrices[item.tradableAssetId].ask) *
@@ -175,14 +173,11 @@ const RealForexStackNavigator = ({ navigation }) => {
                 tradingSettings
               )
             )) /
-          (item.leverage * item.exchangeRate)
-        ).toFixed(2);
+          (item.leverage * item.exchangeRate);
       }
 
       if (realForexBalance) {
-        equity = (
-          parseFloat(realForexBalance.balance) + parseFloat(totalProfit)
-        ).toFixed(2);
+        equity = parseFloat(realForexBalance.balance) + parseFloat(totalProfit);
 
         if (
           parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
@@ -198,6 +193,7 @@ const RealForexStackNavigator = ({ navigation }) => {
               ...prevState,
               isMarginCall90Shown: true,
               isMarginCall70Shown: true,
+              percent: 90,
             }));
           } else if (
             parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
@@ -209,9 +205,14 @@ const RealForexStackNavigator = ({ navigation }) => {
               ...prevState,
               isMarginCall90Shown: false,
               isMarginCall70Shown: true,
+              percent: 70,
             }));
           } else {
             var percent = 50;
+            setState((prevState) => ({
+              ...prevState,
+              percent: 50,
+            }));
           }
 
           if (!marginCallData.isMarginCallShown) {
@@ -219,7 +220,7 @@ const RealForexStackNavigator = ({ navigation }) => {
 
             var showMarginPopUp = setInterval(function () {
               marginCallNotification(percent);
-            }, 60000);
+            }, 15000);
           }
         } else {
           let now = new Date();
@@ -258,11 +259,12 @@ const RealForexStackNavigator = ({ navigation }) => {
       realForexPrices &&
       openPositions &&
       openPositions.length > 0 &&
-      realForexBalance
+      realForexBalance &&
+      tradingSettings
     ) {
       checkMarginOnUpdateTradesPrices();
     }
-  }, [realForexPrices, openPositions]);
+  }, [openPositions, realForexBalance, tradingSettings]);
 
   useEffect(() => {
     loadInitialRealForexData(dispatch);
@@ -277,13 +279,13 @@ const RealForexStackNavigator = ({ navigation }) => {
 
   return (
     <>
-      {/*{!!marginCallData.isMarginCallShown && (*/}
-      {/*  <MarginCallModal*/}
-      {/*    state={marginCallData}*/}
-      {/*    setState={setState}*/}
-      {/*    navigation={navigation}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {/* {!!marginCallData.isMarginCallShown && (
+        <MarginCallModal
+          state={marginCallData}
+          setState={setState}
+          navigation={navigation}
+        />
+      )} */}
 
       <RealForexStack.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}

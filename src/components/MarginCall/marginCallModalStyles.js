@@ -23,4 +23,11 @@ export default StyleSheet.create({
   text: {
     textAlign: "left",
   },
+  tradeButtons: {
+    width: "100%",
+    paddingVertical: 12,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
 });

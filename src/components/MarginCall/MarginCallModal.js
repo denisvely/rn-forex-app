@@ -62,14 +62,29 @@ const MarginCallModal = ({ percent, setState, navigation }) => {
               />
             </View>
           )}
-          <Button
-            type="primary"
-            text={"Fund"}
-            size="small"
-            style={styles.button}
-            textStyle={{ textTransform: "uppercase" }}
-            onPress={() => marginCallButtonOnPress()}
-          />
+          <View style={styles.tradeButtons}>
+            <Button
+              type="primary"
+              text={"Fund"}
+              size="small"
+              style={styles.button}
+              textStyle={{ textTransform: "uppercase" }}
+              onPress={() => marginCallButtonOnPress()}
+            />
+            <Button
+              type="primary"
+              text={"Close"}
+              size="small"
+              style={styles.button}
+              textStyle={{ textTransform: "uppercase" }}
+              onPress={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  isMarginCallShown: false,
+                }))
+              }
+            />
+          </View>
         </View>
       </View>
     </Modal>
