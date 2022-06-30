@@ -40,11 +40,6 @@ const pickerStyle = {
 const Picker = ({ value = "", placeholderText, styles, onChange, values }) => {
   const pickerRef = useRef(false);
 
-  const onIconClick = (ref) => {
-    console.log(ref);
-    debugger;
-  };
-
   return values ? (
     <View style={{ width: "100%" }}>
       <RNPickerSelect

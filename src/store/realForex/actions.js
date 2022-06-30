@@ -275,7 +275,6 @@ export const getBalance = (dispatch) => {
       if (!response || !response.body || response.body.code != 200) {
         return false;
       }
-      console.log(response.body.data);
       dispatch({
         type: actionTypes.REAL_FOREX_USER_BALANCE,
         payload: response.body.data,

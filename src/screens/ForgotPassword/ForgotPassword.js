@@ -88,7 +88,6 @@ const ForgotPassword = ({ navigation }) => {
         text="Enter your email address and we will send you instructions for resetting your password."
         style={{ color: "#000000", fontSize: 16, marginBottom: 32 }}
       />
-      <Text>{isKeyboardShown}</Text>
 
       <Formik
         initialValues={{ email: "" }}

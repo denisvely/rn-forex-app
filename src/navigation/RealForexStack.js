@@ -179,59 +179,62 @@ const RealForexStackNavigator = ({ navigation }) => {
         ).toFixed(2);
       }
 
-      equity = (
-        parseFloat(realForexBalance.balance) + parseFloat(totalProfit)
-      ).toFixed(2);
+      if (realForexBalance) {
+        equity = (
+          parseFloat(realForexBalance.balance) + parseFloat(totalProfit)
+        ).toFixed(2);
 
-      if (
-        parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >= 50
-      ) {
         if (
           parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
-            90 &&
-          !marginCallData.isMarginCall90Shown
+          50
         ) {
-          var percent = 90;
-          setState((prevState) => ({
-            ...prevState,
-            isMarginCall90Shown: true,
-            isMarginCall70Shown: true,
-          }));
-        } else if (
-          parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
-            70 &&
-          !marginCallData.isMarginCall70Shown
-        ) {
-          var percent = 70;
-          setState((prevState) => ({
-            ...prevState,
-            isMarginCall90Shown: false,
-            isMarginCall70Shown: true,
-          }));
-        } else {
-          var percent = 50;
-        }
-
-        if (!marginCallData.isMarginCallShown) {
-          marginCallNotification(percent);
-
-          var showMarginPopUp = setInterval(function () {
-            marginCallNotification(percent);
-          }, 60000);
-        }
-      } else {
-        let now = new Date();
-
-        if (marginCallData.isMarginCallShown) {
           if (
-            now.getTime() - marginCallData.marginCallShownDate.getTime() >
-            60000
+            parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
+              90 &&
+            !marginCallData.isMarginCall90Shown
           ) {
+            var percent = 90;
             setState((prevState) => ({
               ...prevState,
-              isMarginCallShown: false,
+              isMarginCall90Shown: true,
+              isMarginCall70Shown: true,
             }));
-            clearInterval(showMarginPopUp);
+          } else if (
+            parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
+              70 &&
+            !marginCallData.isMarginCall70Shown
+          ) {
+            var percent = 70;
+            setState((prevState) => ({
+              ...prevState,
+              isMarginCall90Shown: false,
+              isMarginCall70Shown: true,
+            }));
+          } else {
+            var percent = 50;
+          }
+
+          if (!marginCallData.isMarginCallShown) {
+            marginCallNotification(percent);
+
+            var showMarginPopUp = setInterval(function () {
+              marginCallNotification(percent);
+            }, 60000);
+          }
+        } else {
+          let now = new Date();
+
+          if (marginCallData.isMarginCallShown) {
+            if (
+              now.getTime() - marginCallData.marginCallShownDate.getTime() >
+              60000
+            ) {
+              setState((prevState) => ({
+                ...prevState,
+                isMarginCallShown: false,
+              }));
+              clearInterval(showMarginPopUp);
+            }
           }
         }
       }
@@ -251,7 +254,12 @@ const RealForexStackNavigator = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (realForexPrices && openPositions && openPositions.length > 0) {
+    if (
+      realForexPrices &&
+      openPositions &&
+      openPositions.length > 0 &&
+      realForexBalance
+    ) {
       checkMarginOnUpdateTradesPrices();
     }
   }, [realForexPrices, openPositions]);
