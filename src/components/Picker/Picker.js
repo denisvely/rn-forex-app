@@ -24,7 +24,7 @@ const pickerStyle = {
     paddingRight: 30,
     height: 44,
     paddingVertical: 11,
-    // paddingHorizontal: 9,
+    paddingHorizontal: 9,
     marginBottom: 16,
     paddingRight: 30,
     width: "100%",

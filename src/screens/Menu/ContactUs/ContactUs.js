@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   View,
+  Platform,
   ScrollView,
   Keyboard,
   Linking,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
@@ -190,70 +192,77 @@ const ContactUs = ({ navigation }) => {
       >
         {(props) => (
           <View style={styles.formWrapper}>
-            <ScrollView
-              horizontal={false}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                width: deviceWidth - 48,
-
-                marginTop: 16,
-              }}
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              enabled
+              keyboardVerticalOffset={-50}
             >
-              <TextField
-                placeholder={t(`menu.name`)}
-                onChange={props.handleChange("name")}
-                value={props.values.name}
-                onSubmitEditing={Keyboard.dismiss}
-              />
-              {props.errors.name && props.touched.name ? (
-                <Error name="nano" text={props.errors.name} />
-              ) : null}
-              <TextField
-                placeholder={t(`menu.email`)}
-                onChange={props.handleChange("email")}
-                value={props.values.email}
-                keyboardType="email-address"
-              />
-              {props.errors.email && props.touched.email ? (
-                <Error name="nano" text={props.errors.email} />
-              ) : null}
-              <TextField
-                placeholder={t(`menu.phone`)}
-                onChange={props.handleChange("phone")}
-                value={props.values.phone}
-                keyboardType="phone-pad"
-              />
-              {props.errors.phone && props.touched.phone ? (
-                <Error name="nano" text={props.errors.phone} />
-              ) : null}
-              <Picker
-                values={subjects}
-                placeholderText={subject}
-                value={subject}
-                onChange={(subject) => setSubject(subject)}
-              />
-              <TextField
-                isTextArea={true}
-                placeholder={t(`menu.message`)}
-                onChange={props.handleChange("message")}
-                value={props.values.message}
-                style={styles.message}
-              />
-              {props.errors.message && props.touched.message ? (
-                <Error name="nano" text={props.errors.message} />
-              ) : null}
-            </ScrollView>
-            <View style={styles.buttonsWrapper}>
-              <Button
-                text={t("common-labels.save")}
-                type="primary"
-                font="mediumBold"
-                size="big"
-                onPress={props.handleSubmit}
-                disabled={disabled}
-              />
-            </View>
+              <ScrollView
+                horizontal={false}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  width: deviceWidth - 48,
+                  flexGrow: 1,
+                  paddingBottom: 150,
+                  marginTop: 16,
+                }}
+              >
+                <TextField
+                  placeholder={t(`menu.name`)}
+                  onChange={props.handleChange("name")}
+                  value={props.values.name}
+                  onSubmitEditing={Keyboard.dismiss}
+                />
+                {props.errors.name && props.touched.name ? (
+                  <Error name="nano" text={props.errors.name} />
+                ) : null}
+                <TextField
+                  placeholder={t(`menu.email`)}
+                  onChange={props.handleChange("email")}
+                  value={props.values.email}
+                  keyboardType="email-address"
+                />
+                {props.errors.email && props.touched.email ? (
+                  <Error name="nano" text={props.errors.email} />
+                ) : null}
+                <TextField
+                  placeholder={t(`menu.phone`)}
+                  onChange={props.handleChange("phone")}
+                  value={props.values.phone}
+                  keyboardType="phone-pad"
+                />
+                {props.errors.phone && props.touched.phone ? (
+                  <Error name="nano" text={props.errors.phone} />
+                ) : null}
+                <Picker
+                  values={subjects}
+                  placeholderText={subject}
+                  value={subject}
+                  onChange={(subject) => setSubject(subject)}
+                />
+                <TextField
+                  isTextArea={true}
+                  placeholder={t(`menu.message`)}
+                  onChange={props.handleChange("message")}
+                  value={props.values.message}
+                  style={styles.message}
+                />
+                {props.errors.message && props.touched.message ? (
+                  <Error name="nano" text={props.errors.message} />
+                ) : null}
+              </ScrollView>
+              <View style={styles.buttonsWrapper}>
+                <Button
+                  text={t("common-labels.save")}
+                  type="primary"
+                  font="mediumBold"
+                  size="big"
+                  onPress={props.handleSubmit}
+                  disabled={disabled}
+                />
+              </View>
+            </KeyboardAvoidingView>
           </View>
         )}
       </Formik>

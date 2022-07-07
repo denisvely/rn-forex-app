@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { colors } from "constants";
 import { deviceWidth } from "../../../utils";
 
@@ -23,17 +23,17 @@ export default StyleSheet.create({
     flex: 1,
   },
   buttonsWrapper: {
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
     width: "100%",
     position: "absolute",
     bottom: 0,
-    height: 120,
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    backgroundColor: colors.white,
+    height: 70,
     width: deviceWidth - 48,
+    backgroundColor: colors.white,
+    zIndex: 10,
+    paddingBottom: Platform.OS === "ios" ? 32 : 0,
   },
   message: {
     height: 70,
