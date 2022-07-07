@@ -73,20 +73,20 @@ const PersonalDetails = () => {
         }
         const body = response.getBody();
         setUser(dispatch, body);
-
-        if (user.birthYear && user.birthMonth && user.birthDay) {
+        if (body.birthYear && body.birthMonth && body.birthDay) {
           const date = new Date(
-            `${user.birthYear}-${user.birthMonth}-${user.birthDay}`
+            `${body.birthYear}/${body.birthMonth}/${body.birthDay}`
           );
+
           setBirthDate(date);
         }
-        const phoneSplitted = user.phone.split("-");
+        const phoneSplitted = body.phone.split("-");
         if (phoneSplitted.length > 0) {
           setPhoneCountryPrefix(phoneSplitted[0]);
           setPhoneCountryCode["DE"];
           setPhone(phoneSplitted[2]);
         } else {
-          setPhone(user.phone);
+          setPhone(body.phone);
         }
         setReady(true);
       });

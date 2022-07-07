@@ -32,7 +32,10 @@ const PendingDirectionAndRate = ({
     <View style={styles.container}>
       <View style={styles.directionButtonsWrapper}>
         <Pressable
-          onPress={() => changeDirection(false)}
+          onPress={() => {
+            changeDirection(false);
+            onRateValueChange(realForexPrices[selectedAsset.id].bid);
+          }}
           style={styles.directionButton}
         >
           <View style={styles.btnContainer}>
@@ -60,7 +63,10 @@ const PendingDirectionAndRate = ({
           </View>
         </Pressable>
         <Pressable
-          onPress={() => changeDirection(true)}
+          onPress={() => {
+            changeDirection(true);
+            onRateValueChange(realForexPrices[selectedAsset.id].ask);
+          }}
           style={styles.directionButton}
         >
           <View style={styles.btnContainer}>

@@ -47,7 +47,13 @@ const Balance = () => {
           <FormattedTypographyWithCurrency
             name="smallBold"
             text={realForexBalance.profit}
-            style={styles.profit}
+            style={{
+              ...styles.profit,
+              color:
+                realForexBalance.profit > 0
+                  ? colors.buyColor
+                  : colors.sellColor,
+            }}
           />
         </View>
       </View>
