@@ -60,7 +60,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
             }
           }
 
-          showForexNotification("success", notificationValues);
+          showForexNotification("successForex", notificationValues);
         }
       })
       .catch((err) => {
