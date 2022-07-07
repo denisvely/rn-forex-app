@@ -49,6 +49,7 @@ export { default as MarketOrderControls } from "./RealForex/MarketOrderControls/
 export { default as PendingOrderControls } from "./RealForex/PendingOrderControls/PendingOrderControls";
 export { default as ProfitLossOrderControls } from "./RealForex/ProfitLossOrderControls/ProfitLossOrderControls";
 export { default as MarginCallModal } from "./MarginCall/MarginCallModal";
+export { default as StopOutModal } from "./StopOutModal/StopOutModal";
 // Simplex
 export { default as AssetBoxSimplex } from "./Simplex/AssetBox/AssetBox";
 export { default as AssetsFilterSimplex } from "./Simplex/AssetsFilter/AssetsFilter";

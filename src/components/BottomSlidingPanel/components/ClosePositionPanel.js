@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import Toast from "react-native-toast-message";
 import Typography from "../../Typography/Typography";
 import Button from "../../Button/Button";
 import SwitchComponent from "../../Switch/SwitchComponent";
+import StopOutModal from "../../StopOutModal/StopOutModal";
 import PartiallyClose from "../../RealForex/PartiallyClose/PartiallyClose";
 import {
   addRealForexTradeOrderV2Service,
@@ -14,7 +15,6 @@ import {
   getRealForexPrices,
   getRealForexAssetsSettings,
   getRealForexTradingSettings,
-  getClosedPositions,
 } from "../../../store/realForex";
 import realForexServices from "../../../services/realForexServices";
 import { getUser } from "../../../store/app";
@@ -46,6 +46,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
 
   const [partiallyCloseValue, setPartialllyClose] = useState(trade.volume);
   const [partiallyCloseVisible, setVisibility] = useState(false);
+  const [stopOutModalVisible, setStopOutModalVisibility] = useState(false);
 
   const closePositionRequest = () => {
     closePosition
@@ -86,6 +87,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           }
 
           showForexNotification("successForex", notificationValues);
+          toggleSlidingPanel(false);
         }
       })
       .catch((err) => {
@@ -171,9 +173,10 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           .fetch({ orderID: trade.orderID })
           .then(({ response }) => {
             if (response.body.data == 2) {
-              // TODO -> forex-stop-out - openPositions.js - line 251
+              setStopOutModalVisibility(true);
             } else {
               closePositionRequest();
+              toggleSlidingPanel(false);
             }
           })
           .catch((err) => {
@@ -181,8 +184,8 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           });
       } else {
         closePositionRequest();
+        toggleSlidingPanel(false);
       }
-      toggleSlidingPanel(false);
     }
   };
 
@@ -229,6 +232,11 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           onPress={() => toggleSlidingPanel(false)}
         />
       </View>
+      <StopOutModal
+        isVisible={stopOutModalVisible}
+        setState={setStopOutModalVisibility}
+        closePos={closePositionRequest}
+      />
     </View>
   ) : null;
 };
