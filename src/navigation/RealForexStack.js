@@ -58,191 +58,188 @@ const RealForexStackNavigator = ({ navigation }) => {
   const [marginCallData, setState] = useState(initialMarginData);
 
   const checkMarginOnUpdateTradesPrices = () => {
-    let totalProfit = 0,
+    var totalProfit = 0,
       totalMargin = 0,
       equity = 0;
+
+    openPositions.forEach((item, index) => {
+      // add result
+      if (typeof realForexPrices != "undefined" && realForexPrices != null) {
+        if (realForexPrices[item.tradableAssetId] != undefined) {
+          if (item.actionType == "Sell") {
+            totalProfit += parseFloat(
+              (parseFloat(item.rate) -
+                parseFloat(realForexPrices[item.tradableAssetId].ask)) *
+                parseFloat(item.pip) *
+                Math.pow(10, parseFloat(item.accuracy))
+            );
+          } else {
+            totalProfit += parseFloat(
+              (parseFloat(realForexPrices[item.tradableAssetId].bid) -
+                parseFloat(item.rate)) *
+                parseFloat(item.pip) *
+                Math.pow(10, parseFloat(item.accuracy))
+            );
+          }
+        }
+      }
+    });
 
     openPositions.forEach((item, index) => {
       // add swap
       if (item.swap !== "" && !isNaN(item.swap)) {
         totalProfit += parseFloat(item.swap);
       }
+    });
 
-      // add result
-      if (typeof realForexPrices != "undefined" && realForexPrices != null) {
-        if (realForexPrices[item.tradableAssetId] != undefined) {
-          if (item.actionType == "Sell") {
-            totalProfit += parseFloat(
-              parseFloat(
-                item.rate - realForexPrices[item.tradableAssetId].ask
-              ) *
-                parseFloat(item.volume) *
-                (1 / item.exchangeRate)
-            );
-          } else {
-            totalProfit += parseFloat(
-              parseFloat(
-                realForexPrices[item.tradableAssetId].bid - item.rate
-              ) *
-                parseFloat(item.volume) *
-                (1 / item.exchangeRate)
-            );
-          }
-        }
-      }
+    if (user.forexModeId === 3 && user.forexMarginModeId === 1) {
+      let checkedAssets = [];
+      for (let k = 0; k < openPositions.length; k++) {
+        if (openPositions[k].optionType === "HARealForex") {
+          if (checkedAssets.indexOf(openPositions[k].tradableAssetId) === -1) {
+            checkedAssets.push(openPositions[k].tradableAssetId);
 
-      if (user.forexModeId === 3 && user.forexMarginModeId === 1) {
-        let checkedAssets = [];
-        for (let k = 0; k < openPositions.length; k++) {
-          if (openPositions[k].optionType === "HARealForex") {
-            if (
-              checkedAssets.indexOf(openPositions[k].tradableAssetId) === -1
-            ) {
-              checkedAssets.push(openPositions[k].tradableAssetId);
+            let totalBuyMargin = 0;
+            let totalSellMargin = 0;
+            let currResult =
+              ((openPositions[k].actionType === "Sell"
+                ? realForexPrices[openPositions[k].tradableAssetId].bid
+                : realForexPrices[openPositions[k].tradableAssetId].ask) *
+                parseFloat(
+                  convertUnits(
+                    openPositions[k].volume,
+                    openPositions[k].tradableAssetId,
+                    !tradingSettings.IsVolumeInUnits,
+                    tradingSettings
+                  )
+                )) /
+              (openPositions[k].leverage * openPositions[k].exchangeRate);
 
-              let totalBuyMargin = 0;
-              let totalSellMargin = 0;
-              let currResult =
-                ((openPositions[k].actionType === "Sell"
-                  ? realForexPrices[openPositions[k].tradableAssetId].bid
-                  : realForexPrices[openPositions[k].tradableAssetId].ask) *
-                  parseFloat(
-                    convertUnits(
-                      openPositions[k].volume,
-                      openPositions[k].tradableAssetId,
-                      !tradingSettings.IsVolumeInUnits,
-                      tradingSettings
-                    )
-                  )) /
-                (openPositions[k].leverage * openPositions[k].exchangeRate);
-
-              if (openPositions[k].actionType === "Sell") {
-                if (!isNaN(currResult)) {
-                  totalSellMargin += parseFloat(currResult);
-                }
-              } else {
-                if (!isNaN(currResult)) {
-                  totalBuyMargin += parseFloat(currResult);
-                }
+            if (openPositions[k].actionType === "Sell") {
+              if (!isNaN(currResult)) {
+                totalSellMargin += parseFloat(currResult);
               }
+            } else {
+              if (!isNaN(currResult)) {
+                totalBuyMargin += parseFloat(currResult);
+              }
+            }
 
-              for (let l = k + 1; l < openPositions.length; l++) {
-                if (
-                  openPositions[k].tradableAssetId ===
-                  openPositions[l].tradableAssetId
-                ) {
-                  currResult =
-                    ((openPositions[l].actionType === "Sell"
-                      ? realForexPrices[openPositions[l].tradableAssetId].bid
-                      : realForexPrices[openPositions[l].tradableAssetId].ask) *
-                      parseFloat(
-                        convertUnits(
-                          openPositions[l].volume,
-                          openPositions[l].tradableAssetId,
-                          !tradingSettings.IsVolumeInUnits,
-                          tradingSettings
-                        )
-                      )) /
-                    (openPositions[l].leverage * openPositions[l].exchangeRate);
+            for (let l = k + 1; l < openPositions.length; l++) {
+              if (
+                openPositions[k].tradableAssetId ===
+                openPositions[l].tradableAssetId
+              ) {
+                currResult =
+                  ((openPositions[l].actionType === "Sell"
+                    ? realForexPrices[openPositions[l].tradableAssetId].bid
+                    : realForexPrices[openPositions[l].tradableAssetId].ask) *
+                    parseFloat(
+                      convertUnits(
+                        openPositions[l].volume,
+                        openPositions[l].tradableAssetId,
+                        !tradingSettings.IsVolumeInUnits,
+                        tradingSettings
+                      )
+                    )) /
+                  (openPositions[l].leverage * openPositions[l].exchangeRate);
 
-                  if (openPositions[l].actionType === "Sell") {
-                    if (!isNaN(currResult)) {
-                      totalSellMargin += parseFloat(currResult);
-                    }
-                  } else {
-                    if (!isNaN(currResult)) {
-                      totalBuyMargin += parseFloat(currResult);
-                    }
+                if (openPositions[l].actionType === "Sell") {
+                  if (!isNaN(currResult)) {
+                    totalSellMargin += parseFloat(currResult);
+                  }
+                } else {
+                  if (!isNaN(currResult)) {
+                    totalBuyMargin += parseFloat(currResult);
                   }
                 }
               }
-
-              totalMargin += Math.abs(totalBuyMargin - totalSellMargin);
             }
+
+            totalMargin += Math.abs(totalBuyMargin - totalSellMargin);
           }
         }
-      } else {
-        totalMargin +=
-          ((item.actionType === "Sell"
-            ? realForexPrices[item.tradableAssetId].bid
-            : realForexPrices[item.tradableAssetId].ask) *
-            parseFloat(
-              convertUnits(
-                item.volume,
-                item.tradableAssetId,
-                !tradingSettings.IsVolumeInUnits,
-                tradingSettings
-              )
-            )) /
-          (item.leverage * item.exchangeRate);
       }
+    } else {
+      totalMargin +=
+        ((item.actionType === "Sell"
+          ? realForexPrices[item.tradableAssetId].bid
+          : realForexPrices[item.tradableAssetId].ask) *
+          parseFloat(
+            convertUnits(
+              item.volume,
+              item.tradableAssetId,
+              !tradingSettings.IsVolumeInUnits,
+              tradingSettings
+            )
+          )) /
+        (item.leverage * item.exchangeRate);
+    }
 
-      if (realForexBalance) {
-        equity = parseFloat(realForexBalance.balance) + parseFloat(totalProfit);
+    if (realForexBalance) {
+      equity = parseFloat(realForexBalance.balance) + parseFloat(totalProfit);
 
+      if (
+        parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >= 50
+      ) {
         if (
           parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
-          50
+            90 &&
+          !marginCallData.isMarginCall90Shown
         ) {
-          if (
-            parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
-              90 &&
-            !marginCallData.isMarginCall90Shown
-          ) {
-            var percent = 90;
-            setState((prevState) => ({
-              ...prevState,
-              isMarginCall90Shown: true,
-              isMarginCall70Shown: true,
-              isMarginCallShown: false,
-              percent: 90,
-            }));
-          } else if (
-            parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
-              70 &&
-            !marginCallData.isMarginCall70Shown
-          ) {
-            var percent = 70;
-            setState((prevState) => ({
-              ...prevState,
-              isMarginCall90Shown: false,
-              isMarginCall70Shown: true,
-              isMarginCallShown: false,
-              percent: 70,
-            }));
-          } else {
-            var percent = 50;
-            setState((prevState) => ({
-              ...prevState,
-              percent: 50,
-            }));
-          }
-
-          if (!marginCallData.isMarginCallShown) {
-            marginCallNotification(percent);
-
-            var showMarginPopUp = setInterval(function () {
-              marginCallNotification(percent);
-            }, 60000);
-          }
+          var percent = 90;
+          setState((prevState) => ({
+            ...prevState,
+            isMarginCall90Shown: true,
+            isMarginCall70Shown: true,
+            isMarginCallShown: false,
+            percent: 90,
+          }));
+        } else if (
+          parseFloat((totalMargin * parseFloat(user.MarginUsage)) / equity) >=
+            70 &&
+          !marginCallData.isMarginCall70Shown
+        ) {
+          var percent = 70;
+          setState((prevState) => ({
+            ...prevState,
+            isMarginCall90Shown: false,
+            isMarginCall70Shown: true,
+            isMarginCallShown: false,
+            percent: 70,
+          }));
         } else {
-          let now = new Date();
+          var percent = 50;
+          setState((prevState) => ({
+            ...prevState,
+            percent: 50,
+          }));
+        }
 
-          if (marginCallData.isMarginCallShown) {
-            if (
-              now.getTime() - marginCallData.marginCallShownDate.getTime() >
-              60000
-            ) {
-              setState((prevState) => ({
-                ...prevState,
-                isMarginCallShown: false,
-              }));
-              clearInterval(showMarginPopUp);
-            }
+        if (!marginCallData.isMarginCallShown) {
+          marginCallNotification(percent);
+
+          var showMarginPopUp = setInterval(function () {
+            marginCallNotification(percent);
+          }, 60000);
+        }
+      } else {
+        let now = new Date();
+
+        if (marginCallData.isMarginCallShown) {
+          if (
+            now.getTime() - marginCallData.marginCallShownDate.getTime() >
+            60000
+          ) {
+            setState((prevState) => ({
+              ...prevState,
+              isMarginCallShown: false,
+            }));
+            clearInterval(showMarginPopUp);
           }
         }
       }
-    });
+    }
   };
 
   const marginCallNotification = (percent) => {
