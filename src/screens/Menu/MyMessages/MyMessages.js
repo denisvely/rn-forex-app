@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, FlatList } from "react-native";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 
@@ -14,7 +14,6 @@ import { colors } from "../../../constants";
 const getMessages = MyMessagesService.getMessages();
 
 const MyMessages = ({ navigation }) => {
-  const flatListRef = useRef();
   const { t } = useTranslation();
   const [offset, setOffset] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -93,9 +92,9 @@ const MyMessages = ({ navigation }) => {
     <View style={styles.container}>
       {isReady ? (
         messages ? (
-          <LazyFlatList
-            list={messages}
-            renderItem={({ item }) => renderMessage(item)}
+          <FlatList
+            horizontal={false}
+            data={messages}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -105,11 +104,15 @@ const MyMessages = ({ navigation }) => {
               justifyContent: "flex-start",
               alignItems: "center",
               alignSelf: "center",
-              flexGrow: 1,
-              height: "100%",
+              paddingBottom: 50,
             }}
             style={styles.flatListContainer}
-            listRef={flatListRef}
+            renderItem={({ item }) => renderMessage(item)}
+            removeClippedSubviews={true} // Unmount components when outside of window
+            initialNumToRender={6} // Reduce initial render amount
+            maxToRenderPerBatch={6} // Reduce number in each render batch
+            updateCellsBatchingPeriod={100} // Increase time between renders
+            windowSize={7} // Reduce the window size
           />
         ) : (
           <View style={styles.noMessages}>
