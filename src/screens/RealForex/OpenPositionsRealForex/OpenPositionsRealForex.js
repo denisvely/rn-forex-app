@@ -23,7 +23,7 @@ const OpenPositionsRealForex = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {openPositions ? (
+      {openPositions && openPositions.length > 0 ? (
         <LazyFlatList
           list={openPositions}
           renderItem={({ item }) => {

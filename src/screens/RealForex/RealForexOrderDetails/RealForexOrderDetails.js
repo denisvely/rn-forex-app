@@ -249,12 +249,13 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             navigation={props.navigation}
             isPending={isPending}
             order={order}
+            isHedging={user.forexModeId === 3}
           />
         )}
         initialRouteName={isPending ? "Pending" : "Market"}
         style={{ backgroundColor: colors.white }}
       >
-        <Tab.Screen name="Market">
+        <Tab.Screen name="Market" options={{ swipeEnabled: false }}>
           {() =>
             !isPending ? (
               order ? (
@@ -293,17 +294,19 @@ const RealForexOrderDetails = ({ route, navigation }) => {
             ) : null
           }
         </Tab.Screen>
-        <Tab.Screen name="Pending">
-          {() => (
-            <PendingTab
-              asset={asset}
-              isDirectionBuy={isBuy}
-              navigation={navigation}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              isReady={isReady}
-            />
-          )}
+        <Tab.Screen name="Pending" options={{ swipeEnabled: false }}>
+          {() =>
+            order && !isPending && user.forexModeId === 3 ? null : (
+              <PendingTab
+                asset={asset}
+                isDirectionBuy={isBuy}
+                navigation={navigation}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                isReady={isReady}
+              />
+            )
+          }
         </Tab.Screen>
       </Tab.Navigator>
     </>

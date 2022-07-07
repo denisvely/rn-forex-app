@@ -68,8 +68,8 @@ const PendingTab = ({
   const initalPendingState = {
     isBuyPending: isDirectionBuy,
     pendingPrice: isDirectionBuy
-      ? parseFloat(realForexPrices[asset.id].ask)
-      : parseFloat(realForexPrices[asset.id].bid),
+      ? parseFloat(realForexPrices[asset.id].bid)
+      : parseFloat(realForexPrices[asset.id].ask),
     pendingTPActive: false,
     pendingTPDistance: null,
     pendingTPAmount: null,

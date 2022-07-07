@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button } from "../../../../../components";
 import PropTypes from "prop-types";
+import { deviceWidth } from "../../../../../utils";
 
 import styles from "./orderTabBarStyles";
 
@@ -18,7 +19,14 @@ const innerRoutes = [
   },
 ];
 
-const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
+const OrderTabBar = ({
+  state,
+  descriptors,
+  navigation,
+  order,
+  isPending,
+  isHedging,
+}) => {
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
@@ -48,7 +56,13 @@ const OrderTabBar = ({ state, descriptors, navigation, order, isPending }) => {
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={styles.orderTypeButtonActive}
+                  pressableStyle={{
+                    ...styles.orderTypeButtonActive,
+                    width:
+                      !isPending && order && isHedging
+                        ? "100%"
+                        : deviceWidth / 2 - 40,
+                  }}
                   onPress={onPress}
                 />
               ) : (

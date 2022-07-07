@@ -14,7 +14,7 @@ const MarginCallModal = ({ percent, setState, navigation }) => {
   const marginCallButtonOnPress = () => {
     setState((prevState) => ({
       ...prevState,
-      isMarginCallShown: false,
+      marginCallModalVisibile: false,
     }));
     navigation.navigate("Funding");
   };
@@ -80,7 +80,7 @@ const MarginCallModal = ({ percent, setState, navigation }) => {
               onPress={() =>
                 setState((prevState) => ({
                   ...prevState,
-                  isMarginCallShown: false,
+                  marginCallModalVisibile: false,
                 }))
               }
             />

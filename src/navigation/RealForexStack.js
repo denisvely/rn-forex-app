@@ -53,6 +53,7 @@ const RealForexStackNavigator = ({ navigation }) => {
     isMarginCall90Shown: false,
     marginCallShownDate: null,
     percent: null,
+    marginCallModalVisibile: false,
   };
   const [marginCallData, setState] = useState(initialMarginData);
 
@@ -193,6 +194,7 @@ const RealForexStackNavigator = ({ navigation }) => {
               ...prevState,
               isMarginCall90Shown: true,
               isMarginCall70Shown: true,
+              isMarginCallShown: false,
               percent: 90,
             }));
           } else if (
@@ -205,6 +207,7 @@ const RealForexStackNavigator = ({ navigation }) => {
               ...prevState,
               isMarginCall90Shown: false,
               isMarginCall70Shown: true,
+              isMarginCallShown: false,
               percent: 70,
             }));
           } else {
@@ -220,7 +223,7 @@ const RealForexStackNavigator = ({ navigation }) => {
 
             var showMarginPopUp = setInterval(function () {
               marginCallNotification(percent);
-            }, 15000);
+            }, 60000);
           }
         } else {
           let now = new Date();
@@ -250,22 +253,23 @@ const RealForexStackNavigator = ({ navigation }) => {
     setState((prevState) => ({
       ...prevState,
       isMarginCallShown: true,
+      marginCallModalVisibile: true,
+      percent: percent,
       marginCallShownDate: new Date(),
     }));
   };
 
-  // TODO!
-  // useEffect(() => {
-  //   if (
-  //     realForexPrices &&
-  //     openPositions &&
-  //     openPositions.length > 0 &&
-  //     realForexBalance &&
-  //     tradingSettings
-  //   ) {
-  //     checkMarginOnUpdateTradesPrices();
-  //   }
-  // }, [openPositions, realForexBalance, tradingSettings]);
+  useEffect(() => {
+    if (
+      realForexPrices &&
+      openPositions &&
+      openPositions.length > 0 &&
+      realForexBalance &&
+      tradingSettings
+    ) {
+      checkMarginOnUpdateTradesPrices();
+    }
+  }, [openPositions, realForexBalance, tradingSettings]);
 
   useEffect(() => {
     loadInitialRealForexData(dispatch);
@@ -280,13 +284,13 @@ const RealForexStackNavigator = ({ navigation }) => {
 
   return (
     <>
-      {/* {!!marginCallData.isMarginCallShown && (
+      {!!marginCallData.marginCallModalVisibile && (
         <MarginCallModal
-          state={marginCallData}
+          percent={marginCallData.percent}
           setState={setState}
           navigation={navigation}
         />
-      )} */}
+      )}
 
       <RealForexStack.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
