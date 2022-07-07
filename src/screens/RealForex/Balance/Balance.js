@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Typography,
   FormattedTypographyWithCurrency,
+  Loading,
 } from "../../../components";
 import {
   getRealForexBalance,
@@ -33,6 +34,7 @@ const Balance = () => {
   const openPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
   );
+  const [isReady, setReady] = useState(false);
   const initalBalanceData = {
     balance: null,
     profit: null,
@@ -208,106 +210,117 @@ const Balance = () => {
         equity: realForexBalance.equity,
         availableBalance: realForexBalance.availableBalance,
       }));
+      setReady(true);
     }
   }, [realForexBalance]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.balanceContainer}>
-        <View style={{ marginRight: 16 }}>
-          <Typography
-            name="tiny"
-            text={t(`common-labels.balance`)}
-            style={styles.balanceLabel}
-          ></Typography>
-          <FormattedTypographyWithCurrency
-            name="largeBold"
-            text={userRealForexBalance.balance}
-            numberWithCommas={false}
-            style={styles.balanceBig}
-          />
-        </View>
-        <View>
-          <Typography
-            name="tiny"
-            text={t(`common-labels.profit`)}
-            style={styles.balanceLabel}
-          ></Typography>
-          <FormattedTypographyWithCurrency
-            name="smallBold"
-            text={userRealForexBalance.profit}
-            style={{
-              ...styles.profit,
-              color:
-                userRealForexBalance.profit > 0
-                  ? colors.buyColor
-                  : colors.sellColor,
-            }}
-          />
-        </View>
-      </View>
-      <View style={styles.marginContainer}>
-        <View style={styles.marginInfoWrapper}>
-          <View style={styles.circleProgress}>
-            <AnimatedCircularProgress
-              size={40}
-              width={8}
-              fill={parseInt(userRealForexBalance.marginPercent)}
-              rotation={360}
-              tintColor={colors.blueColor}
-              tintColorSecondary={colors.blueColor}
-              backgroundColor="rgba(124, 124, 125, 0.3)"
-            >
-              {(fill) => (
-                <View style={styles.circleChilds}>
-                  <Typography
-                    name="nanoBold"
-                    color={null}
-                    text={`${parseInt(userRealForexBalance.marginPercent)}%`}
-                    style={styles.circleStats}
-                  />
-                </View>
-              )}
-            </AnimatedCircularProgress>
+      {isReady ? (
+        <>
+          <View style={styles.balanceContainer}>
+            <View style={{ marginRight: 16 }}>
+              <Typography
+                name="tiny"
+                text={t(`common-labels.balance`)}
+                style={styles.balanceLabel}
+              ></Typography>
+              <FormattedTypographyWithCurrency
+                name="largeBold"
+                text={userRealForexBalance.balance}
+                numberWithCommas={false}
+                style={styles.balanceBig}
+              />
+            </View>
+            <View>
+              <Typography
+                name="tiny"
+                text={t(`common-labels.profit`)}
+                style={styles.balanceLabel}
+              ></Typography>
+              <FormattedTypographyWithCurrency
+                name="smallBold"
+                text={userRealForexBalance.profit}
+                style={{
+                  ...styles.profit,
+                  color:
+                    userRealForexBalance.profit > 0
+                      ? colors.buyColor
+                      : colors.sellColor,
+                }}
+              />
+            </View>
           </View>
-          <View style={styles.marginInfo}>
-            <Typography
-              name="tiny"
-              style={styles.balanceLabel}
-              text={t(`common-labels.margin`)}
-            />
-            <FormattedTypographyWithCurrency
-              name="tinyBold"
-              text={userRealForexBalance.forexMargin}
-              style={styles.balanceValue}
-            />
+          <View style={styles.marginContainer}>
+            <View style={styles.marginInfoWrapper}>
+              <View style={styles.circleProgress}>
+                <AnimatedCircularProgress
+                  size={40}
+                  width={8}
+                  fill={parseInt(userRealForexBalance.marginPercent)}
+                  rotation={360}
+                  tintColor={colors.blueColor}
+                  tintColorSecondary={colors.blueColor}
+                  backgroundColor="rgba(124, 124, 125, 0.3)"
+                >
+                  {(fill) => (
+                    <View style={styles.circleChilds}>
+                      <Typography
+                        name="nanoBold"
+                        color={null}
+                        text={`${parseInt(
+                          userRealForexBalance.marginPercent
+                        )}%`}
+                        style={styles.circleStats}
+                      />
+                    </View>
+                  )}
+                </AnimatedCircularProgress>
+              </View>
+              <View style={styles.marginInfo}>
+                <Typography
+                  name="tiny"
+                  style={styles.balanceLabel}
+                  text={t(`common-labels.margin`)}
+                />
+                <FormattedTypographyWithCurrency
+                  name="tinyBold"
+                  text={userRealForexBalance.forexMargin}
+                  style={styles.balanceValue}
+                />
+              </View>
+            </View>
+            <View style={styles.equityWrapper}>
+              <Typography
+                name="tiny"
+                style={styles.balanceLabel}
+                text={t(`common-labels.equity`)}
+              ></Typography>
+              <FormattedTypographyWithCurrency
+                name="tinyBold"
+                text={userRealForexBalance.equity}
+                style={styles.balanceValue}
+              />
+            </View>
+            <View style={styles.equityWrapper}>
+              <Typography
+                name="tiny"
+                style={styles.balanceLabel}
+                text={t(`common-labels.availableBalance`)}
+              ></Typography>
+              <FormattedTypographyWithCurrency
+                name="tinyBold"
+                text={userRealForexBalance.availableBalance}
+                style={styles.balanceValue}
+              />
+            </View>
           </View>
+        </>
+      ) : (
+        <View style={styles.loadingContainer}>
+          <Loading size="large" />
         </View>
-        <View style={styles.equityWrapper}>
-          <Typography
-            name="tiny"
-            style={styles.balanceLabel}
-            text={t(`common-labels.equity`)}
-          ></Typography>
-          <FormattedTypographyWithCurrency
-            name="tinyBold"
-            text={userRealForexBalance.equity}
-            style={styles.balanceValue}
-          />
-        </View>
-        <View style={styles.equityWrapper}>
-          <Typography
-            name="tiny"
-            style={styles.balanceLabel}
-            text={t(`common-labels.availableBalance`)}
-          ></Typography>
-          <FormattedTypographyWithCurrency
-            name="tinyBold"
-            text={userRealForexBalance.availableBalance}
-            style={styles.balanceValue}
-          />
-        </View>
-      </View>
+      )}
     </View>
   );
 };

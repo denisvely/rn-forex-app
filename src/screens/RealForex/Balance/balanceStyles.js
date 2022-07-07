@@ -71,4 +71,10 @@ export default StyleSheet.create({
   balanceValue: {
     color: colors.fontPrimaryColor,
   },
+  loadingContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flex: 1,
+  },
 });
