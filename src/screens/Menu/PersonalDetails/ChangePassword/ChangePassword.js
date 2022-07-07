@@ -28,7 +28,8 @@ const ChangePasswordSchema = Yup.object().shape({
   repeatPassword: Yup.string()
     .min(6, "Too Short!")
     .max(50, "Too Long!")
-    .required("Invalid password"),
+    .required("Invalid password")
+    .oneOf([Yup.ref("newPassword")], "The passwords doesn't match."),
 });
 
 const ChangePassword = () => {
@@ -68,9 +69,9 @@ const ChangePassword = () => {
                 if (response.body.code !== 200) {
                   Toast.show({
                     type: "error",
-                    text1: `Password wasn't changed. Try Again.`,
+                    text1: response.body.data.text,
                     topOffset: 100,
-                    visibilityTime: 3000,
+                    visibilityTime: 5000,
                     autoHide: true,
                   });
                 } else {
@@ -78,7 +79,7 @@ const ChangePassword = () => {
                     type: "success",
                     text1: `Password changed successfully.`,
                     topOffset: 100,
-                    visibilityTime: 3000,
+                    visibilityTime: 5000,
                     autoHide: true,
                   });
                 }
