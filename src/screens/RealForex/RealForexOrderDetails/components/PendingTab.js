@@ -21,8 +21,11 @@ import {
   getSelectedAsset,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
-import { convertUnits } from "store/realForex/helpers";
-import { deviceWidth, deviceHeight } from "../../../../utils";
+import {
+  convertUnits,
+  convertUTCDateToLocalDate,
+} from "store/realForex/helpers";
+import { deviceWidth } from "../../../../utils";
 import { processPendingOrder } from "../helpers";
 
 import styles from "../realForexOrderDetailsStyles";
@@ -118,8 +121,9 @@ const PendingTab = ({
         sMinutes +
         ":00";
       currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 5);
-      
-      if (new Date(expirationDate) < currDateAndTime) {
+      if (
+        new Date(expirationDate) < convertUTCDateToLocalDate(currDateAndTime)
+      ) {
         Toast.show({
           type: "error",
           text1: "Please choose a future date.",
