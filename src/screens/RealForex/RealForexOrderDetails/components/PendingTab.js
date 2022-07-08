@@ -71,8 +71,8 @@ const PendingTab = ({
   const initalPendingState = {
     isBuyPending: isDirectionBuy,
     pendingPrice: isDirectionBuy
-      ? parseFloat(realForexPrices[asset.id].bid)
-      : parseFloat(realForexPrices[asset.id].ask),
+      ? parseFloat(realForexPrices[asset.id].ask)
+      : parseFloat(realForexPrices[asset.id].bid),
     pendingTPActive: false,
     pendingTPDistance: null,
     pendingTPAmount: null,
@@ -165,7 +165,7 @@ const PendingTab = ({
         )
         .then(({ response }) => {
           let currTrade = currentTrade;
-
+          currTrade.strike = pendingState.pendingPrice;
           currTrade.isBuy = pendingState.isBuyPending;
           currTrade.type = response.body.data.type;
           currTrade.option =
