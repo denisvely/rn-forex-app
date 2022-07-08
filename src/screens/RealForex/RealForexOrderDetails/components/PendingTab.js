@@ -32,6 +32,8 @@ import styles from "../realForexOrderDetailsStyles";
 
 const addRealForexTradeOrderV2Service =
   realForexServices.addRealForexTradeOrderV2();
+const modifyPendingOrderV2Service =
+  realForexServices.editRealForexPendingOrderV2();
 
 const PendingTab = ({
   asset,
@@ -85,6 +87,125 @@ const PendingTab = ({
     pendingExpirationTime: null,
   };
   const [pendingState, setPendingState] = useState(initalPendingState);
+
+  // Modify
+  const modifyPendingOrder = () => {
+    setTradeProgress(true);
+    // Pending Order
+    const volume =
+      quantity.indexOf(",") > -1
+        ? convertUnits(
+            parseFloat(quantity.replace(/,/g, "")),
+            asset.id,
+            true,
+            settings
+          )
+        : convertUnits(parseFloat(quantity), asset.id, true, settings);
+    const pip = calculatePipPrice();
+    let expirationDate;
+
+    if (pendingState.pendingExpirationDate !== null) {
+      var time = pendingState.pendingExpirationTime,
+        hours = time.getHours(),
+        minutes = time.getMinutes(),
+        currDateAndTime = new Date();
+
+      var sHours = hours.toString(),
+        sMinutes = minutes.toString();
+
+      if (hours < 10) sHours = "0" + sHours;
+      if (minutes < 10) sMinutes = "0" + sMinutes;
+
+      expirationDate =
+        moment(pendingState.pendingExpirationDate).format("YYYY-MM-DD") +
+        "T" +
+        sHours +
+        ":" +
+        sMinutes +
+        ":00";
+      currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 5);
+      if (
+        new Date(expirationDate) < convertUTCDateToLocalDate(currDateAndTime)
+      ) {
+        Toast.show({
+          type: "error",
+          text1: "Please choose a future date.",
+          topOffset: 100,
+          visibilityTime: 5000,
+          autoHide: true,
+        });
+        setTradeProgress(false);
+        return false;
+      }
+      currentTrade.pendingDate = expirationDate;
+    }
+
+    if (pendingState.pendingPrice != 0 && !isNaN(pendingState.pendingPrice)) {
+      modifyPendingOrderV2Service
+        .fetch(
+          currentTrade.tradableAssetId,
+          realForexOptionsByType.All[currentTrade.tradableAssetId].rules[0].id,
+          pendingState.isBuyPending,
+          pendingState.isBuyPending
+            ? realForexPrices[currentTrade.tradableAssetId].ask
+            : realForexPrices[currentTrade.tradableAssetId].bid,
+          volume,
+          pendingState.pendingTPActive ? pendingState.pendingTPAmount : "", // pendingTakeProfit
+          pendingState.pendingSLActive ? pendingState.pendingSLAmount : "", // pendingStopLoss
+          asset.Leverage || 100,
+          pendingState.pendingTPActive ? pendingState.pendingTPDistance : "", // pendingTakeProfitDistance
+          pendingState.pendingSLActive ? pendingState.pendingSLDistance : "", // pendingStopLossDistance
+          parseFloat(pip) == 0 ? 0.00001 : pip,
+          parseFloat(pendingState.pendingPrice),
+          false,
+          currentlyModifiedOrder != "" ? currentlyModifiedOrder.OrderID : "", //
+          pendingState.pendingExpirationDate ? currentTrade.pendingDate : "", // expirationDate
+          "", // pendingTakeProfitRate
+          "" // pendingStopLossRate;
+        )
+        .then(({ response }) => {
+          let currTrade = currentTrade;
+          currTrade.strike = pendingState.pendingPrice;
+          currTrade.isBuy = pendingState.isBuyPending;
+          currTrade.type = response.body.data.type;
+          currTrade.option =
+            realForexOptionsByType.All[currTrade.tradableAssetId].name;
+          if (pendingState.pendingTPActive) {
+            currentTrade.takeProfit = (
+              parseFloat(pendingState.pendingTPDistance) +
+              parseFloat(
+                pendingState.isBuyPending
+                  ? realForexPrices[currentTrade.tradableAssetId].ask
+                  : realForexPrices[currentTrade.tradableAssetId].bid
+              )
+            ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
+          }
+          if (pendingState.pendingSLActive) {
+            currentTrade.stopLoss = Math.abs(
+              parseFloat(pendingState.pendingSLDistance) -
+                parseFloat(
+                  pendingState.isBuyPending
+                    ? realForexPrices[currentTrade.tradableAssetId].ask
+                    : realForexPrices[currentTrade.tradableAssetId].bid
+                )
+            ).toFixed(realForexPrices[currentTrade.tradableAssetId].accuracy);
+          }
+          processPendingOrder(response, currTrade);
+          setTradeProgress(false);
+          navigation.navigate("quotes");
+        });
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Please choose rate.",
+        topOffset: 100,
+        visibilityTime: 5000,
+        autoHide: true,
+      });
+      setTradeProgress(false);
+      return false;
+    }
+  };
 
   const makeNewPendingOrder = () => {
     setTradeProgress(true);
@@ -338,7 +459,11 @@ const PendingTab = ({
                 type="primary"
                 font="mediumBold"
                 size="big"
-                onPress={makeNewPendingOrder}
+                onPress={
+                  currentlyModifiedOrder !== null
+                    ? modifyPendingOrder
+                    : makeNewPendingOrder
+                }
               />
             </View>
           </KeyboardAvoidingView>

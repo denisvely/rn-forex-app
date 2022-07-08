@@ -283,3 +283,10 @@ export const getBalance = (dispatch) => {
       console.log(err);
     });
 };
+
+export const startSignalR = (dispatch) => {
+  // Start SignalR
+  dispatch({
+    type: actionTypes.REAL_FOREX_PRICES_DONE,
+  });
+};

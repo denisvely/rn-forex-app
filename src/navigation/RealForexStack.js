@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppState } from "react-native";
 
 import {
   HeaderLeft,
@@ -27,6 +27,7 @@ import {
   getRealForexPrices,
   getRealForexTradingSettings,
   getRealForexOpenPositions,
+  startSignalR,
 } from "../store/realForex";
 import { convertUnits } from "../store/realForex/helpers";
 import { signalRStop } from "../store/realForex/signalRActions";
@@ -46,6 +47,7 @@ const RealForexStackNavigator = ({ navigation }) => {
   const openPositions = useSelector((state) =>
     getRealForexOpenPositions(state)
   );
+  const appState = useRef(AppState.currentState);
 
   const initialMarginData = {
     isMarginCallShown: false,
@@ -256,6 +258,22 @@ const RealForexStackNavigator = ({ navigation }) => {
     }));
   };
 
+  const _handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      startSignalR(dispatch);
+    } else if (
+      appState.current.match(/inactive|active/) &&
+      nextAppState === "background"
+    ) {
+      signalRStop();
+    }
+
+    appState.current = nextAppState;
+  };
+
   useEffect(() => {
     if (
       realForexPrices &&
@@ -269,6 +287,10 @@ const RealForexStackNavigator = ({ navigation }) => {
   }, [openPositions, realForexBalance, tradingSettings]);
 
   useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
     loadInitialRealForexData(dispatch);
     const getUserBalance = setInterval(() => {
       getBalance(dispatch);
@@ -276,6 +298,7 @@ const RealForexStackNavigator = ({ navigation }) => {
     return () => {
       signalRStop();
       clearInterval(getUserBalance);
+      subscription.removeEventListener("change", _handleAppStateChange);
     };
   }, []);
 
