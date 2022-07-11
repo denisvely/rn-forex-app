@@ -163,19 +163,21 @@ const RealForexStackNavigator = ({ navigation }) => {
         }
       }
     } else {
-      totalMargin +=
-        ((item.actionType === "Sell"
-          ? realForexPrices[item.tradableAssetId].bid
-          : realForexPrices[item.tradableAssetId].ask) *
-          parseFloat(
-            convertUnits(
-              item.volume,
-              item.tradableAssetId,
-              !tradingSettings.IsVolumeInUnits,
-              tradingSettings
-            )
-          )) /
-        (item.leverage * item.exchangeRate);
+      openPositions.forEach((item, index) => {
+        totalMargin +=
+          ((item.actionType === "Sell"
+            ? realForexPrices[item.tradableAssetId].bid
+            : realForexPrices[item.tradableAssetId].ask) *
+            parseFloat(
+              convertUnits(
+                item.volume,
+                item.tradableAssetId,
+                !tradingSettings.IsVolumeInUnits,
+                tradingSettings
+              )
+            )) /
+          (item.leverage * item.exchangeRate);
+      });
     }
 
     if (realForexBalance) {
