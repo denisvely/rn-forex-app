@@ -56,11 +56,9 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
           response.body.code == 400 &&
           response.body.data.text == "Minimum Close Interval Error"
         ) {
-          // TODO => forexHelper.settings.MinCloseInterval
           Toast.show({
             type: "error",
-            text1:
-              "The minimum time between two orders in the same instrument must be at least {minCloseInterval} seconds.",
+            text1: `The minimum time between two orders in the same instrument must be at least ${settings.MinCloseInterval} seconds.`,
             text2: "Please try again in a few moments.",
             topOffset: 100,
             visibilityTime: 3000,

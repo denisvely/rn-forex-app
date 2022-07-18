@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import HeaderX from "../../components/HeaderX/HeaderX";
 import Typography from "../../components/Typography/Typography";

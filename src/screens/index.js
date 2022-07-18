@@ -31,3 +31,5 @@ export { default as OpenPositionsSimplex } from "./Simplex/OpenPositionsSimplex/
 export { default as PendingOrdersSimplex } from "./Simplex/PendingOrdersSimplex/PendingOrdersSimplex";
 export { default as ClosedPositionsSimplex } from "./Simplex/ClosedPositionsSimplex/ClosedPositionsSimplex";
 export { default as SimplexBalance } from "./Simplex/Balance/Balance";
+export { default as SimplexOrderChart } from "./Simplex/SimplexOrderChart/SimplexOrderChart";
+export { default as SimplexOrderDetails } from "./Simplex/SimplexOrderDetails/SimplexOrderDetails";

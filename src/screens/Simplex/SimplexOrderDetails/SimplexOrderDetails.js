@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import {
-  RealForexTradeButtons,
-  MarketPendingButtons,
-  QuantityInput,
-  TakeProfit,
-  StopLoss,
-} from "../../../components";
+import { MarketPendingButtons, HeaderAssetInfo } from "../../../components";
+import SimplexDirectionsButtons from "./components/SimplexDirectionsButtons/SimplexDirectionsButtons";
 
 import styles from "./simplexOrderDetailsStyles";
 
 const SimplexOrderDetails = ({ route, navigation }) => {
   const { t } = useTranslation();
   const asset = route.params.asset;
-  const isBuy = route.params.isBuy;
-
   const [isMarket, setOrderType] = useState(true);
-  const [quantity, onChangeQuantity] = useState(null);
-  const [stopLossAmount, onChangeStopLossAmount] = useState(null);
-  const [stopLossDistance, onChangeStopLossDistance] = useState(null);
+  const [tradeDirection, setDirection] = useState(null);
 
   useEffect(() => {
-    navigation.setOptions({
-      title: `${asset.name}`,
-    });
-
-    return () => {
+    if (asset) {
       navigation.setOptions({
-        title: ``,
+        headerLeft: () => (
+          <HeaderAssetInfo asset={asset} navigation={navigation} />
+        ),
       });
-    };
+      // makeOrder();
+
+      // return () => {
+      //   setCurrentlyModifiedOrder(dispatch, null);
+      // };
+    }
   }, [route.params.asset]);
 
   return (
@@ -39,13 +33,14 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         isMarket={isMarket}
         setOrderType={(orderType) => setOrderType(orderType)}
       />
-      <QuantityInput
-        value={quantity}
-        onChange={(text) => onChangeQuantity(text)}
+      <SimplexDirectionsButtons
+        tradeDirection={tradeDirection}
+        setDirection={(direction) => {
+          debugger;
+
+          setDirection(direction);
+        }}
       />
-      <TakeProfit />
-      <StopLoss />
-      <RealForexTradeButtons asset={asset} />
     </View>
   );
 };

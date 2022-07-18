@@ -19,6 +19,8 @@ import {
   MyMessages,
   MessageDetails,
   ContactUs,
+  SimplexOrderDetails,
+  SimplexOrderChart,
 } from "../screens";
 import { headerOptions } from "../constants";
 import {
@@ -249,6 +251,43 @@ const MainStackNavigator = ({ navigation }) => {
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
           headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+        }}
+      />
+      <MainStack.Screen
+        name="SimplexOrderChart"
+        component={SimplexOrderChart}
+        options={{
+          tabBarLabel: "SimplexOrderChart",
+          title: "",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<FavouritesIcon navigation={navigation} />}
+            />
+          ),
+        }}
+      />
+      <MainStack.Screen
+        name="SimplexOrderDetails"
+        component={SimplexOrderDetails}
+        options={{
+          tabBarLabel: "SimplexOrderDetails",
+          title: "",
+          headerTitleAlign: "center",
+          ...headerOptions.headerTitleStyle,
+          ...headerOptions.leftAndRightPadding,
+          ...headerOptions.whiteBackgroundHeader,
+          headerLeft: () => <HeaderX onPress={() => navigation.goBack()} />,
+          headerRight: () => (
+            <HeaderRight
+              navigation={navigation}
+              firstComponent={<FavouritesIcon navigation={navigation} />}
+            />
+          ),
         }}
       />
     </MainStack.Navigator>

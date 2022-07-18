@@ -1,16 +1,27 @@
 import React from "react";
-import { View, Pressable } from "react-native";
-import { useSelector } from "react-redux";
+import { View, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { SvgXml } from "react-native-svg";
+import { useTranslation } from "react-i18next";
+
 import { getSimplexPrices } from "../../../store/simplex";
 import Typography from "../../../components/Typography/Typography";
 import AssetIcon from "../../../components/AssetIcon/AssetIcon";
 import BuyPriceSimplex from "../../../components/Simplex/BuyPrice/BuyPrice";
-import styles from "./assetBoxStyles";
 import { getApplication } from "../../../store/app";
+import arrowDown from "../../../assets/svg/Simplex/arrowDown";
+import arrowUp from "../../../assets/svg/Simplex/arrowUp";
+import { remainingTime } from "../../../store/realForex/helpers";
+import { setSelectedAsset } from "../../../store/simplex";
 
-const AssetBox = ({ asset, navigation }) => {
+import styles from "./assetBoxStyles";
+import { colors } from "../../../constants";
+
+const AssetBox = ({ asset, navigation, marketClosed }) => {
   const simplexPrices = useSelector((state) => getSimplexPrices(state));
   const app = useSelector((state) => getApplication(state));
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const calculateSpread = (askPrice, bidPrice, openPrice) => {
     return (
@@ -25,52 +36,122 @@ const AssetBox = ({ asset, navigation }) => {
     );
   };
 
-  const navigateChart = () => {
-    navigation.navigate("RealForexOrderChart", { asset });
-  };
-
   return (
     simplexPrices && (
-      <View style={styles.assetBox}>
-        <Pressable style={styles.assetBoxButton} onPress={navigateChart}>
-          <View style={styles.left}>
-            <AssetIcon asset={asset} style={styles.assetIcon} />
-            <View>
-              <Typography text={asset.name} style={styles.assetName} />
+      <View
+        style={marketClosed ? styles.assetBoxMarketClosed : styles.assetBox}
+      >
+        {marketClosed ? (
+          <TouchableOpacity style={styles.assetBoxButton} activeOpacity={0.5}>
+            <View
+              style={{
+                ...styles.left,
+                borderRightColor: colors.systemColorInactive,
+              }}
+            >
+              <AssetIcon asset={asset} style={styles.assetIcon} />
+              <View>
+                <Typography
+                  name="bigNormalBold"
+                  text={asset.name}
+                  style={styles.assetName}
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.right}>
-            <Typography
-              style={{
-                fontFamily: "Gilroy-Regular",
-                fontSize: 14,
-                lineHeight: 16,
-                color: "#777777",
-              }}
-              text={"Price"}
-            />
-            <BuyPriceSimplex asset={asset} />
-            <Typography
-              style={{
-                fontFamily: "Gilroy-Regular",
-                fontSize: 14,
-                lineHeight: 16,
-                color: "#777777",
-                marginTop: 8,
-              }}
-              text={"Daily change"}
-            />
-            <Typography
-              name="small"
-              text={calculateSpread(
-                simplexPrices[asset.id].ask,
-                simplexPrices[asset.id].bid,
-                app.dailyChanges ? app.dailyChanges[asset.id].OpenPrice : 0
-              )}
-              style={styles.profit}
-            />
-          </View>
-        </Pressable>
+            <View style={styles.right}>
+              <View style={styles.marketClosedInfo}>
+                <Typography
+                  name="normal"
+                  text={t(`common-labels.marketClosed`)}
+                  style={{ marginBottom: 8 }}
+                />
+                <Typography
+                  name="nano"
+                  text={`This market opens at ${remainingTime(
+                    asset
+                  )}. You can place pending orders even when the market is closed.`}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.assetBoxButton}
+            activeOpacity={0.5}
+            onPress={() => {
+              setSelectedAsset(dispatch, asset);
+              navigation.navigate("SimplexOrderDetails", { asset });
+            }}
+          >
+            <View style={styles.left}>
+              <AssetIcon asset={asset} style={styles.assetIcon} />
+              <View>
+                <Typography
+                  name="bigNormalBold"
+                  text={asset.name}
+                  style={styles.assetName}
+                />
+              </View>
+            </View>
+            <View style={styles.right}>
+              <Typography
+                name="smallRegular"
+                style={{
+                  color: colors.fontSecondaryColor,
+                }}
+                text={"Price"}
+              />
+              <BuyPriceSimplex asset={asset} />
+              <Typography
+                name="smallRegular"
+                style={{
+                  color: colors.fontSecondaryColor,
+                }}
+                text={"Daily change"}
+              />
+              <View style={styles.dailyChangeWrapper}>
+                <SvgXml
+                  xml={
+                    parseFloat(
+                      calculateSpread(
+                        simplexPrices[asset.id].ask,
+                        simplexPrices[asset.id].bid,
+                        app.dailyChanges
+                          ? app.dailyChanges[asset.id].OpenPrice
+                          : 0
+                      ).replace("%", "")
+                    ) < 0
+                      ? arrowDown
+                      : arrowUp
+                  }
+                  width={20}
+                  height={22}
+                />
+                <Typography
+                  name="small"
+                  text={calculateSpread(
+                    simplexPrices[asset.id].ask,
+                    simplexPrices[asset.id].bid,
+                    app.dailyChanges ? app.dailyChanges[asset.id].OpenPrice : 0
+                  )}
+                  style={
+                    parseFloat(
+                      calculateSpread(
+                        simplexPrices[asset.id].ask,
+                        simplexPrices[asset.id].bid,
+                        app.dailyChanges
+                          ? app.dailyChanges[asset.id].OpenPrice
+                          : 0
+                      ).replace("%", "")
+                    ) < 0
+                      ? styles.negative
+                      : styles.profit
+                  }
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     )
   );

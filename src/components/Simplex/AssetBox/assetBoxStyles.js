@@ -11,7 +11,17 @@ export default StyleSheet.create({
     height: 120,
     borderRadius: 2,
     backgroundColor: colors.white,
-    marginBottom: 10,
+  },
+  assetBoxMarketClosed: {
+    width: deviceWidth - 32,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    height: 120,
+    borderRadius: 2,
+    backgroundColor: colors.tabsBackground,
+    opacity: 0.5,
+    paddingRight: 10,
   },
   assetBoxButton: {
     justifyContent: "space-between",
@@ -31,30 +41,33 @@ export default StyleSheet.create({
     paddingRight: 8,
     borderRightWidth: 1,
     borderStyle: "solid",
-    borderRightColor: "#F2F2F2",
+    borderRightColor: colors.tabsBackground,
   },
   right: {
     justifyContent: "center",
     alignItems: "flex-start",
     flexDirection: "column",
     width: deviceWidth - 169,
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   assetIcon: {
     marginBottom: 8,
   },
   assetName: {
-    color: colors.fontPrimaryColor,
-    fontFamily: 'Gilroy-SemiBold',
-    fontSize: 18,
     lineHeight: 21,
-    textAlign: 'center'
+    textAlign: "center",
   },
   profit: {
-    color: '#27A34F',
-    fontFamily: 'Gilroy-SemiBold',
+    color: colors.buyColor,
+    fontFamily: "Gilroy-SemiBold",
     fontSize: 16,
-    lineHeight: 19
+    lineHeight: 19,
+  },
+  negative: {
+    color: colors.sellColor,
+    fontFamily: "Gilroy-SemiBold",
+    fontSize: 16,
+    lineHeight: 19,
   },
   buy: {
     color: colors.buyColor,
@@ -63,5 +76,19 @@ export default StyleSheet.create({
   sell: {
     color: colors.sellColor,
     textAlign: "right",
+  },
+  dailyChangeWrapper: {
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flexDirection: "row",
+  },
+  marketClosedInfo: {
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    height: 84,
+    borderRadius: 2,
+    paddingRight: 13,
   },
 });

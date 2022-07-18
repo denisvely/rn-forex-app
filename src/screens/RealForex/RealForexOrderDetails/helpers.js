@@ -30,21 +30,17 @@ export const processMarketOrder = (response, currTrade) => {
     response.body.code == 400 &&
     response.body.data.type == "TradeOrder_MinOpenInterval"
   ) {
-    // TODO
-    // $(window).trigger(
-    //   widgets.events.showTradingLimitsPopup,
-    //   response.body.data.text
-    // );
+    currTrade.title = "Trading Limits";
+    currTrade.isError = true;
+    currTrade.text = response.body.data.text;
   } else if (
     response.body &&
     response.body.code == 400 &&
     response.body.data.type == "TradeOrder_MinCloseIntervalError"
   ) {
-    // TODO
-    // $(window).trigger(
-    //   widgets.events.showTradingLimitsPopup,
-    //   forexHelper.settings.MinCloseInterval
-    // );
+    currTrade.title = "Trading Limits";
+    currTrade.isError = true;
+    currTrade.text = response.body.data.text;
   } else {
     if (response.body.data.type === "TradeOrder_InsufficientBalance") {
       currTrade.title = "Insufficient balance";

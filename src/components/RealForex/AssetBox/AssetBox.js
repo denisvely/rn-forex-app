@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
 
 import { getRealForexPrices } from "../../../store/realForex";
 import Typography from "../../../components/Typography/Typography";

@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import { SvgXml } from "react-native-svg";
-import chartSvg from "../../../assets/svg/chartSvg";
 import { RealForexTradeButtons, Typography } from "../../../components";
-import { deviceWidth } from "../../../utils";
 import styles from "./simplexOrderChartStyles";
 
 const SimplexOrderChart = ({ route, navigation }) => {
@@ -29,27 +26,6 @@ const SimplexOrderChart = ({ route, navigation }) => {
           text={"+920.254 (9.77%)"}
         />
       </View>
-      <SvgXml
-        styles={styles.chartSvg}
-        xml={chartSvg}
-        width={deviceWidth - 24}
-        height="500"
-      />
-      <RealForexTradeButtons
-        asset={asset}
-        buyOnPress={() => {
-          navigation.navigate("SimplexOrderDetails", {
-            asset: asset,
-            isBuy: true,
-          });
-        }}
-        sellOnPress={() => {
-          navigation.navigate("SimplexOrderDetails", {
-            asset: asset,
-            isBuy: false,
-          });
-        }}
-      />
     </View>
   );
 };

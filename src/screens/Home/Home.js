@@ -57,7 +57,13 @@ const Home = ({ navigation }) => {
           />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={{ ...styles.box }}>
+      <TouchableOpacity
+        style={{ ...styles.box }}
+        onPress={() => {
+          navigation.push("SimplexStack");
+          setGame(dispatch, "EasyForex");
+        }}
+      >
         <Image
           style={{
             ...styles.box,
