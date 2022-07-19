@@ -8,7 +8,6 @@ import {
   getSelectedAsset,
   getRealForexPrices,
   getCurrentTrade,
-  getRealForexTradingSettings,
 } from "../../../../store/realForex";
 import { getUser, getSettings } from "../../../../store/app";
 import { getSpreadValue } from "../../../../store/realForex/helpers";

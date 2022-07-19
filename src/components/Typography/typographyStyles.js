@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 const defaultFont = "Gilroy-Medium";
 const defaultBold = "Gilroy-Bold";
 const defaultSemiBold = "Gilroy-SemiBold";
-const defaultRegular = "Gilroy-Regular";
 
 export default StyleSheet.create({
   nano: {

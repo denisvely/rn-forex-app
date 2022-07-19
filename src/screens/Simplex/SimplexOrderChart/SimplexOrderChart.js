@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
-import { RealForexTradeButtons, Typography } from "../../../components";
+import { View, SafeAreaView } from "react-native";
+import { WebView } from "react-native-webview";
+
+import { HeaderAssetInfo, Loading } from "../../../components";
+
 import styles from "./simplexOrderChartStyles";
 
 const SimplexOrderChart = ({ route, navigation }) => {
@@ -8,24 +11,29 @@ const SimplexOrderChart = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `${asset.name}`,
+      headerLeft: () => (
+        <HeaderAssetInfo asset={asset} navigation={navigation} />
+      ),
     });
-    return () => {
-      navigation.setOptions({
-        title: ``,
-      });
-    };
   }, [route.params.asset]);
+
   return (
     <View style={styles.container}>
-      <View style={styles.priceContainer}>
-        <Typography name="large" text={"$1,132.82"} />
-        <Typography
-          name="normal"
-          style={styles.profit}
-          text={"+920.254 (9.77%)"}
-        />
-      </View>
+      {asset && asset.id ? (
+        <>
+          <SafeAreaView style={styles.container}>
+            <WebView
+              source={{
+                uri: `https://advfeed-uat.testqa.me/tradingview/indexw.html?taid=${asset.id}`,
+              }}
+              allowFileAccessFromFileURLs={true}
+              originWhitelist={["*"]}
+            />
+          </SafeAreaView>
+        </>
+      ) : (
+        <Loading size="large" />
+      )}
     </View>
   );
 };

@@ -79,4 +79,9 @@ export default StyleSheet.create({
   orderId: {
     color: colors.fontSecondaryColor,
   },
+  controllersWrapper: {
+    height: "100%",
+    flex: 1,
+    width: "100%",
+  },
 });

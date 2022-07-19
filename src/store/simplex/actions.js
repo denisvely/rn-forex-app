@@ -18,12 +18,10 @@ export const loadInitialSimplexData = (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data.forexOpenTrades.data;
-      if (body.length > 0) {
-        dispatch({
-          type: actionTypes.SIMPLEX_OPEN_POSITIONS,
-          payload: body,
-        });
-      }
+      dispatch({
+        type: actionTypes.SIMPLEX_OPEN_POSITIONS,
+        payload: body,
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -32,12 +30,10 @@ export const loadInitialSimplexData = (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data.results;
-      if (body.length > 0) {
-        dispatch({
-          type: actionTypes.SIMPLEX_PENDING_ORDERS,
-          payload: body,
-        });
-      }
+      dispatch({
+        type: actionTypes.SIMPLEX_PENDING_ORDERS,
+        payload: body,
+      });
     })
     .catch((err) => {
       console.log(err);

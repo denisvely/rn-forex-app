@@ -4,8 +4,7 @@ export const getSimplexTradingSettings = (state) =>
   get(state, "simplex.simplexTradingSettings");
 export const getSimplexAssetsSettings = (state) =>
   get(state, "simplex.simplexAssetsSettings");
-export const getSimplexPrices = (state) =>
-  get(state, "simplex.simplexPrices");
+export const getSimplexPrices = (state) => get(state, "simplex.simplexPrices");
 export const getSimplexClosedPositions = (state) =>
   get(state, "simplex.simplexClosedPositions");
 export const getSimplexOpenPositions = (state) =>
@@ -24,3 +23,7 @@ export const getSimplexDailyChange = (state) =>
   get(state, "simplex.simplexDailyChange");
 export const getSimplexTotalNewNotifications = (state) =>
   get(state, "simplex.simplexTotalNewNotifications");
+export const getSelectedAsset = (state) => get(state, "simplex.selectedAsset");
+export const getCurrentTrade = (state) => get(state, "simplex.currentTrade");
+export const getCurrentlyModifiedOrder = (state) =>
+  get(state, "simplex.currentlyModifiedOrder");

@@ -271,3 +271,14 @@ export const getFormattedPrice = (asset, dailyChange) => {
 
   return { priceMedium, priceBig };
 };
+
+export const getCurrencyFactor = () => {
+  /// <summary>Return currency factor</summary>
+  var currencyFactor;
+  if (widgets.isLogged()) {
+    currencyFactor = widgets.user.currencyFactor;
+  } else {
+    currencyFactor = parseFloat(widgets.settings.environment.CurrencyFactor);
+  }
+  return currencyFactor;
+};

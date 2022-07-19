@@ -185,5 +185,14 @@
     "Commodities": "Commodities",
     "Futures": "Futures",
     "Favourites": "Favourites"
+  },
+  "easyForex": {
+    "investAmount": "Invest amount",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "commission": "Commission",
+    "tradeValue": "Trade value",
+    "pointValue": "Point value"
   }
 }

@@ -9,7 +9,6 @@ import {
   formatDeciamlWithComma,
   convertUnits,
 } from "../../../store/realForex/helpers";
-import { formatCurrency } from "../../../components/FormatedCurrency/helpers";
 import collapseDots from "../../../assets/svg/realForex/collapseDots";
 import Typography from "../../Typography/Typography";
 import FormattedTypographyWithCurrency from "../../FormatedCurrency/FormattedTypographyWithCurrency";

@@ -1,14 +1,16 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../../../../../constants";
-import { deviceWidth } from "../../../../../utils";
+import { colors } from "../../../../constants";
+import { deviceWidth } from "../../../../utils";
 
 export default StyleSheet.create({
   container: {
     backgroundColor: colors.white,
-    marginTop: 24,
+    flex: 1,
+    paddingHorizontal: 24,
   },
   orderTypeButtonsWrapper: {
     backgroundColor: colors.tabsBackground,
+    marginTop: 24,
     height: 48,
     width: deviceWidth - 48,
     borderRadius: 4,
@@ -20,12 +22,12 @@ export default StyleSheet.create({
     paddingHorizontal: 8,
   },
   orderTypeButton: {
-    width: deviceWidth / 2 - 40,
+    width: deviceWidth / 3 - 40,
     borderRadius: 4,
   },
   orderTypeButtonActive: {
     backgroundColor: colors.white,
-    width: deviceWidth / 2 - 40,
+    width: deviceWidth / 3 - 40,
     borderRadius: 4,
   },
   inputsWrapper: {

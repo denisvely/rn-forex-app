@@ -30,6 +30,7 @@ import {
   HeaderX,
   FavouritesIcon,
   HeaderTitleLogo,
+  ChartIcon,
 } from "../components";
 import { getApplication } from "../store/app";
 
@@ -286,6 +287,7 @@ const MainStackNavigator = ({ navigation }) => {
             <HeaderRight
               navigation={navigation}
               firstComponent={<FavouritesIcon navigation={navigation} />}
+              secondComponent={<ChartIcon navigation={navigation} />}
             />
           ),
         }}
