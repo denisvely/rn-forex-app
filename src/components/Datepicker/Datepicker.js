@@ -49,6 +49,7 @@ const Datepicker = ({
                 style={styles.datePicker}
                 maximumDate={maxDate}
                 minimumDate={minDate}
+                disabled={disabled}
               />
 
               <View style={styles.buttonsWrapper}>

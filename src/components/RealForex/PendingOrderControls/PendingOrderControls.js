@@ -35,8 +35,8 @@ const PendingOrderControls = ({ pendingState, setPendingState }) => {
         setPendingState={setPendingState}
       />
       <ExpirationDate
-        pendingState={pendingState}
-        setPendingState={setPendingState}
+        state={pendingState}
+        setState={setPendingState}
       />
     </View>
   );

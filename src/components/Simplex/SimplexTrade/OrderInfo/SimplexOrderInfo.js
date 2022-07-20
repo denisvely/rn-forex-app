@@ -8,11 +8,11 @@ import styles from "./orderInfoStyles";
 
 const showLeverageInfo = true;
 
-const OrderInfo = ({ orderInfoData, setOrderInfoData }) => {
+const OrderInfo = ({ orderInfoData, setOrderInfoData, disabled }) => {
   const { t } = useTranslation();
 
   return orderInfoData ? (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, opacity: disabled ? 0.2 : 1 }}>
       <View>
         <Typography
           style={styles.label}

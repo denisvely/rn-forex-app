@@ -90,7 +90,7 @@ export const loadInitialSimplexData = (dispatch) => {
         payload: body,
       });
       // Start SignalR
-      signalRStart(body, dispatch);
+      // signalRStart(body, dispatch);
     })
     .catch((err) => {
       console.log(err);

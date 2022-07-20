@@ -6,7 +6,6 @@ export default StyleSheet.create({
   container: {
     width: deviceWidth - 48,
     marginTop: 8,
-    paddingHorizontal: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

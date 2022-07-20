@@ -6,6 +6,7 @@ export default StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
+    height: "100%",
   },
   scrollViewContainer: {
     width: deviceWidth - 48,
@@ -83,5 +84,17 @@ export default StyleSheet.create({
     height: "100%",
     flex: 1,
     width: "100%",
+  },
+  buttonsWrapper: {
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+    height: Platform.OS === "ios" ? 117 : 97,
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    backgroundColor: colors.white,
   },
 });

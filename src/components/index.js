@@ -61,3 +61,5 @@ export { default as InvestAmount } from "./Simplex/SimplexTrade/InvestmentList/I
 export { default as MarketPendingButtons } from "./Simplex/SimplexTrade/MarketPendingButtons/MarketPendingButtons";
 export { default as RiskSensivityButtons } from "./Simplex/SimplexTrade/RiskSensivityButtons/RiskSensivityButtons";
 export { default as SimplexOrderInfo } from "./Simplex/SimplexTrade/OrderInfo/SimplexOrderInfo";
+export { default as ExpirationDateSimplex } from "./Simplex/SimplexTrade/ExpirationDateSimplex/ExpirationDateSimplex";
+export { default as TakeProfitSimplex } from "./Simplex/SimplexTrade/TakeProfit/TakeProfitSimplex";

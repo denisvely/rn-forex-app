@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -9,10 +9,12 @@ import {
   InvestAmount,
   RiskSensivityButtons,
   SimplexOrderInfo,
+  ExpirationDateSimplex,
+  Loading,
+  Button,
+  TakeProfitSimplex,
 } from "../../../components";
 import SimplexDirectionsButtons from "./components/SimplexDirectionsButtons/SimplexDirectionsButtons";
-
-import styles from "./simplexOrderDetailsStyles";
 import {
   setSelectedAsset,
   getSimplexOptionsByType,
@@ -21,7 +23,11 @@ import {
   getSimplexPrices,
 } from "../../../store/simplex";
 import simplexServices from "../../../services/simplexServices";
-import { getUser } from "../../../store/app";
+import { getUser, getSettings } from "../../../store/app";
+import { deviceWidth } from "../../../utils";
+import { getGlobalSetting } from "../../../store/realForex/helpers";
+
+import styles from "./simplexOrderDetailsStyles";
 
 const SimplexOrderDetails = ({ route, navigation }) => {
   const { t } = useTranslation();
@@ -36,6 +42,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     getSimplexTradingSettings(state)
   );
   const user = useSelector((state) => getUser(state));
+  const globalSettings = useSelector((state) => getSettings(state));
   const simplexPrices = useSelector((state) => getSimplexPrices(state));
 
   // State
@@ -51,6 +58,22 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     pointValue: null,
   };
   const [orderInfoData, setOrderInfoData] = useState(initialOrderInfo);
+  const initialExpDateAndTime = {
+    expirationDate: null,
+    expirationTime: null,
+  };
+  const [expirationData, setExpData] = useState(initialExpDateAndTime);
+  const [tradeInProgress, setTradeProgress] = useState(false);
+  const [assetSettings, setCurrentAssetSettings] = useState(null);
+  const [stopLoss, setStopLoss] = useState(null);
+  const [stopLossDDL, setStopLossDDL] = useState(null);
+  const [takeProfit, setTakeProfit] = useState(null);
+  const [takeProfitDDL, setTakeProfitDDL] = useState(null);
+
+  const makeSimplexOrder = () => {
+    setTradeProgress(true);
+    // TODO
+  };
 
   const makeOrder = () => {
     setSelectedAsset(dispatch, asset);
@@ -74,17 +97,16 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       parseFloat(simplexTradingSettings.MinInvest * user.currencyFactor)
     ) {
       listValue.push(minAmount);
-      tradeParams.stopLoss = minAmount;
+      setStopLoss(minAmount);
     } else {
       listValue.push(parseFloat(minAmount * 0.5));
       listValue.push(minAmount);
-      tradeParams.stopLoss = minAmount * 0.5;
+      setStopLoss(minAmount * 0.5);
     }
 
-    tradeParams.amount = minAmount;
-    tradeParams.takeProfit = minAmount;
+    setTakeProfit(minAmount);
 
-    for (var k = 1; k < 4; k++) {
+    for (let k = 1; k < 4; k++) {
       if (
         minAmount * (5 * (k === 3 ? 4 : k)) <=
         simplexTradingSettings.MaxInvest * user.currencyFactor
@@ -92,24 +114,12 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         listValue.push(minAmount * (5 * (k === 3 ? 4 : k)));
       }
     }
-    // Set default investment value
-    setInvestmentSelected(minAmount);
-    // Set investment values list
-    setInvestmentDropdownData(listValue);
+
     setReadyState(true);
 
-    tradeParams.risk = defaultLeverage[1];
-
     // TODO
-    // widget.elementsCache.takeProfitSelected.html(helper.formatCurrency(helper.getCurrencySymbol(), minAmount, false));
-    // widget.elementsCache.stopLossSelected.html(helper.formatCurrency(helper.getCurrencySymbol(), minAmount * 0.5, false));
     // widget.buildTakeProfitDDL();
     // widget.buildStopLossDDL();
-
-    setOrderInfoData((prevState) => ({
-      ...prevState,
-      tradeValue: (tradeParams.risk * tradeParams.amount).toFixed(2),
-    }));
 
     let currentAssetSettings = {};
 
@@ -124,28 +134,27 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
           currentAssetSettings = body;
           currentAssetSettings.pipPrice = currentAssetSettings.USDExchangeRate;
-          calculateCommission(true, currentAssetSettings, tradeParams);
+          setCurrentAssetSettings(currentAssetSettings);
+          // Set investment values list
+          setInvestmentDropdownData(listValue);
+          // Set default investment value
+          setInvestmentSelected(minAmount);
         }
       });
   };
 
-  const calculateCommission = (
-    updatePip,
-    currentAssetSettings,
-    tradeParams
-  ) => {
+  const calculateCommission = (updatePip, currentAssetSettings) => {
     if (typeof currentAssetSettings.TradableAssetId == "undefined") {
       return;
     }
-
-    var commision = 0,
+    let commision = 0,
       pointValue = 0,
       accuracy =
         simplexOptionsByType.All[currentAssetSettings.TradableAssetId].accuracy;
 
     if (
-      tradeParams.amount *
-        tradeParams.risk *
+      investmentSelected *
+        investmentDropdownData[risk] *
         (currentAssetSettings.PercentageSimple / 100) <=
       currentAssetSettings.MinCommissionSimple *
         currentAssetSettings.USDExchangeRate
@@ -155,8 +164,8 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         currentAssetSettings.USDExchangeRate;
     } else {
       if (
-        tradeParams.amount *
-          tradeParams.risk *
+        investmentSelected *
+          investmentDropdownData[risk] *
           (currentAssetSettings.PercentageSimple / 100) >=
         currentAssetSettings.MaxCommissionSimple *
           currentAssetSettings.USDExchangeRate
@@ -166,16 +175,16 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           currentAssetSettings.USDExchangeRate;
       } else {
         commision =
-          tradeParams.amount *
-          tradeParams.risk *
+          investmentSelected *
+          investmentDropdownData[risk] *
           (currentAssetSettings.PercentageSimple / 100);
       }
     }
 
     if (updatePip) {
       currentAssetSettings.pipPrice =
-        (tradeParams.amount *
-          parseInt(tradeParams.risk) *
+        (investmentSelected *
+          parseInt(investmentDropdownData[risk]) *
           Math.pow(10, -accuracy)) /
         (
           (parseFloat(
@@ -201,7 +210,26 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       ...prevState,
       commission: commision,
       pointValue: pointValue,
+      tradeValue: (investmentDropdownData[risk] * investmentSelected).toFixed(
+        2
+      ),
     }));
+  };
+
+  const updateOrderDetails = () => {
+    if (risk === 1) {
+      //low
+      setTakeProfit(Math.ceil(investmentSelected / 2));
+      setStopLoss(Math.ceil(widget.tradeParams.amount / 4));
+    } else if (risk === 2) {
+      //medium
+      setTakeProfit(investmentSelected);
+      setStopLoss(investmentSelected / 2);
+    } else {
+      //high
+      setTakeProfit(investmentSelected * 2);
+      setStopLoss(investmentSelected);
+    }
   };
 
   useEffect(() => {
@@ -219,6 +247,14 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     }
   }, [route.params.asset]);
 
+  useEffect(() => {
+    if (investmentSelected && assetSettings && investmentDropdownData) {
+      // Update order details on invest amount change
+      calculateCommission(true, assetSettings);
+      updateOrderDetails();
+    }
+  }, [investmentSelected]);
+
   return isReady ? (
     <View style={styles.container}>
       <MarketPendingButtons
@@ -232,25 +268,73 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         }}
       />
       <View style={styles.controllersWrapper}>
-        <InvestAmount
-          disabled={tradeDirection === null}
-          investmentSelected={investmentSelected}
-          setInvestmentSelected={setInvestmentSelected}
-          investmentDropdownData={investmentDropdownData}
-          setInvestmentDropdownData={setInvestmentDropdownData}
-        />
-        <RiskSensivityButtons
-          disabled={tradeDirection === null}
-          risk={risk}
-          setRisk={(risk) => setRisk(risk)}
-        />
-        <SimplexOrderInfo
-          orderInfoData={orderInfoData}
-          setOrderInfoData={setOrderInfoData}
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+        >
+          <ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              width: deviceWidth,
+              flexGrow: 1,
+              paddingBottom: 150,
+            }}
+          >
+            <InvestAmount
+              disabled={tradeDirection === null}
+              investmentSelected={investmentSelected}
+              setInvestmentSelected={setInvestmentSelected}
+              investmentDropdownData={investmentDropdownData}
+            />
+            <RiskSensivityButtons
+              disabled={tradeDirection === null}
+              risk={risk}
+              setRisk={(risk) => setRisk(risk)}
+            />
+            <TakeProfitSimplex
+              disabled={tradeDirection === null}
+              value={takeProfit}
+              setValue={setTakeProfit}
+              takeProfitDDL={takeProfitDDL}
+            />
+            {globalSettings &&
+            getGlobalSetting("SimpleForexExpiry", globalSettings) ? (
+              <ExpirationDateSimplex
+                disabled={tradeDirection === null}
+                state={expirationData}
+                setState={setExpData}
+              />
+            ) : null}
+            <SimplexOrderInfo
+              disabled={tradeDirection === null}
+              orderInfoData={orderInfoData}
+              setOrderInfoData={setOrderInfoData}
+            />
+          </ScrollView>
+          <View style={styles.buttonsWrapper}>
+            <Button
+              disabled={tradeDirection === null}
+              style={{
+                opacity: tradeInProgress ? 0.3 : 1,
+              }}
+              text={t("easyForex.invest")}
+              type="primary"
+              font="mediumBold"
+              size="big"
+              onPress={makeSimplexOrder}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </View>
-  ) : null;
+  ) : (
+    <Loading size="large" />
+  );
 };
 
 export default SimplexOrderDetails;

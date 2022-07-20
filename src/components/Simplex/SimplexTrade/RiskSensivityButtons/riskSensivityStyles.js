@@ -8,9 +8,16 @@ export default StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
   },
+  riskSensivityWrapper: {
+    marginTop: 16,
+    height: 48,
+    width: deviceWidth - 48,
+    height: 78,
+    alignSelf: "center",
+  },
   orderTypeButtonsWrapper: {
     backgroundColor: colors.tabsBackground,
-    marginTop: 24,
+    marginTop: 8,
     height: 48,
     width: deviceWidth - 48,
     borderRadius: 4,

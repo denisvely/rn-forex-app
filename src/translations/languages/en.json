@@ -193,6 +193,8 @@
     "low": "Low",
     "commission": "Commission",
     "tradeValue": "Trade value",
-    "pointValue": "Point value"
+    "pointValue": "Point value",
+    "setRiskSensivity": "Set risk sensitivity",
+    "invest": "Invest"
   }
 }
