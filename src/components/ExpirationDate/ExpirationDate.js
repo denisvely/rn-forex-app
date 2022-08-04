@@ -42,7 +42,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         modalState={isPickerExpDateShow}
         toggleModal={onChangeExpDate}
         datepickerDate={
-          pendingState.pendingExpirationDate
+          pendingState && pendingState.pendingExpirationDate
             ? pendingState.pendingExpirationDate
             : new Date(Date.now())
         }
@@ -68,7 +68,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         <Typography
           name="small"
           text={
-            pendingState.pendingExpirationDate
+            pendingState && pendingState.pendingExpirationDate
               ? moment(pendingState.pendingExpirationDate).format("DD-MM-YYYY")
               : "GTC"
           }
@@ -80,7 +80,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         modalState={isPickerExpTimeShow}
         toggleModal={onChangeExpTime}
         datepickerDate={
-          pendingState.pendingExpirationTime
+          pendingState && pendingState.pendingExpirationTime
             ? pendingState.pendingExpirationTime
             : new Date(Date.now())
         }
@@ -106,7 +106,7 @@ const ExpirationDate = ({ pendingState, setPendingState }) => {
         <Typography
           name="small"
           text={
-            pendingState.pendingExpirationTime
+            pendingState && pendingState.pendingExpirationTime
               ? moment(pendingState.pendingExpirationTime).format("HH:mm")
               : ""
           }

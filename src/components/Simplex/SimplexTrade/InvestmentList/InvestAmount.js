@@ -126,6 +126,7 @@ const InvestAmount = ({
       <View style={styles.quantityInputWrapper}>
         <TextInput
           editable={disabled ? false : true}
+          keyboardType="numeric"
           selectTextOnFocus={disabled ? false : true}
           autoCapitalize="none"
           autoCorrect={false}
@@ -139,6 +140,8 @@ const InvestAmount = ({
                   false,
                   settings
                 )
+              : investmentSelected
+              ? investmentSelected
               : ""
           }
           placeholder="Quantity"

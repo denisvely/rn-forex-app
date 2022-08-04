@@ -5,7 +5,7 @@ import { deviceWidth } from "utils";
 export default StyleSheet.create({
   container: {
     width: deviceWidth - 48,
-    marginTop: 8,
+    marginTop: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

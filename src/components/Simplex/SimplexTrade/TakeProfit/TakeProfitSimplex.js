@@ -14,6 +14,7 @@ import {
   FormattedTypographyWithCurrency,
 } from "../../../../components";
 import { getSettings, getUser } from "../../../../store/app";
+import { getSimplexTradingSettings } from "../../../../store/simplex";
 import { colors } from "../../../../constants";
 import dropdownArrow from "../../../../assets/svg/realForex/dropdownArrow";
 import {
@@ -23,19 +24,86 @@ import {
 
 import styles from "./takeProfitSimplexStyles";
 
-const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
+const TakeProfitSimplex = ({
+  value,
+  setValue,
+  disabled,
+  investmentSelected,
+}) => {
   const { t } = useTranslation();
   const [isFocused, setFocus] = useState(false);
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
+  const [takeProfitDDL, setTakeProfitDDL] = useState(null);
   const user = useSelector((state) => getUser(state));
   const settings = useSelector((state) => getSettings(state));
+  const simplexTradingSettings = useSelector((state) =>
+    getSimplexTradingSettings(state)
+  );
 
   const onEndEditing = (event) => {
     setFocus(false);
     let amount = event.nativeEvent.text;
 
+    if (
+      parseInt(amount) <
+        (parseInt(simplexTradingSettings.SimpleForexMinTakeProfit) *
+          investmentSelected) /
+          100 ||
+      amount == ""
+    ) {
+      Toast.show({
+        type: "error",
+        text1: `The minimum take profit amount is ${
+          (parseInt(simplexTradingSettings.SimpleForexMinTakeProfit) *
+            investmentSelected) /
+          100
+        }`,
+        topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+      setValue(
+        (parseInt(simplexTradingSettings.SimpleForexMinTakeProfit) *
+          investmentSelected) /
+          100
+      );
+      return;
+    }
+
+    if (
+      parseInt(amount) >
+      (parseInt(simplexTradingSettings.SimpleForexMaxTakeProfit) *
+        investmentSelected) /
+        100
+    ) {
+      Toast.show({
+        type: "error",
+        text1: `The maximum take profit amount is ${
+          (parseInt(simplexTradingSettings.SimpleForexMaxTakeProfit) *
+            investmentSelected) /
+          100
+        }`,
+        topOffset: 100,
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+      setValue(
+        (parseInt(simplexTradingSettings.SimpleForexMaxTakeProfit) *
+          investmentSelected) /
+          100
+      );
+      return;
+    }
+
     setValue(parseInt(amount));
     setDropdownVisibility(false);
+
+    // TODO
+    // if (widget.currentAssetSettings.modifyOrder) {
+    //   widget.checkModifiedOrder();
+    // } else if (widget.currentAssetSettings.modifyPosition) {
+    //   widget.checkModifiedPosition();
+    // }
   };
 
   const onChange = (value) => {
@@ -55,7 +123,7 @@ const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
       return;
     }
 
-    setValue(`${value}`);
+    setValue(value.toString());
   };
 
   const openDropdown = () => {
@@ -69,6 +137,38 @@ const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
     setDropdownVisibility(false);
   };
 
+  const buildTakeProfitDDL = () => {
+    const ddl = [];
+    let delta =
+      (parseInt(simplexTradingSettings.SimpleForexMaxTakeProfit) +
+        parseInt(simplexTradingSettings.SimpleForexMinTakeProfit)) /
+      5;
+    delta = delta - (delta % 10);
+
+    ddl.push(
+      (parseInt(simplexTradingSettings.SimpleForexMinTakeProfit) *
+        investmentSelected) /
+        100
+    );
+
+    ddl.push((investmentSelected * delta) / 100);
+    ddl.push((investmentSelected * 2 * delta) / 100);
+    ddl.push((investmentSelected * 3 * delta) / 100);
+    ddl.push(
+      (parseInt(simplexTradingSettings.SimpleForexMaxTakeProfit) *
+        investmentSelected) /
+        100
+    );
+
+    setTakeProfitDDL(ddl);
+  };
+
+  useEffect(() => {
+    if (simplexTradingSettings && investmentSelected) {
+      buildTakeProfitDDL();
+    }
+  }, [investmentSelected]);
+
   return (
     <View style={{ ...styles.inputsWrapper, opacity: disabled ? 0.2 : 1 }}>
       <Typography
@@ -78,6 +178,7 @@ const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
       />
       <View style={styles.quantityInputWrapper}>
         <TextInput
+          keyboardType="numeric"
           editable={disabled ? false : true}
           selectTextOnFocus={disabled ? false : true}
           autoCapitalize="none"
@@ -87,6 +188,8 @@ const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
           value={
             value && !isFocused
               ? formatCurrency(getCurrencySymbol(user), value, false, settings)
+              : value
+              ? value
               : ""
           }
           placeholder={t("common-labels.takeProfit")}
@@ -120,7 +223,11 @@ const TakeProfitSimplex = ({ value, setValue, takeProfitDDL, disabled }) => {
                   onPress={() => takeProfitDropdownPick(value)}
                   underlayColor={colors.containerBackground}
                 >
-                  <FormattedTypographyWithCurrency name="normal" text={value} />
+                  <FormattedTypographyWithCurrency
+                    name="small"
+                    text={value}
+                    style={{ lineHeight: 15 }}
+                  />
                 </TouchableOpacity>
               );
             })}

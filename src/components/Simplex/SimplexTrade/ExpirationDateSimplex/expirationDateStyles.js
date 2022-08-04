@@ -5,7 +5,7 @@ import { deviceWidth } from "../../../../utils";
 export default StyleSheet.create({
   expirationInputsWrapper: {
     backgroundColor: colors.white,
-    marginTop: 8,
+    marginTop: 16,
     paddingHorizontal: 24,
   },
   scrollViewContainer: {
@@ -30,7 +30,6 @@ export default StyleSheet.create({
     paddingHorizontal: 24,
   },
   expirationHeader: {
-    paddingVertical: 8.5,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",

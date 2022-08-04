@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   orderTypeButtonsWrapper: {
     backgroundColor: colors.white,
-    marginTop: 16,
+    marginVertical: 16,
     height: 48,
     width: deviceWidth - 48,
     justifyContent: "space-between",

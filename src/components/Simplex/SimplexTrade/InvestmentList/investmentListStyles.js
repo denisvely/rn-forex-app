@@ -4,15 +4,11 @@ import { deviceWidth } from "utils";
 
 export default StyleSheet.create({
   inputsWrapper: {
-    marginTop: 16,
     paddingHorizontal: 24,
     zIndex: 9999,
     width: "100%",
   },
   quantityInputWrapper: {
-    marginTop: 8,
-  },
-  label: {
     marginTop: 8,
   },
   quantityInput: {

@@ -271,4 +271,86 @@ export default {
 
     return service;
   },
+  getForexPipPrice: () => {
+    const service = new Service(
+      "v1/games/forex/orders/pipPrice",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request, { taid, ask }) => {
+      let options = {};
+      options["TradableAssetId"] = taid;
+      options["rate"] = ask;
+      options["optionType"] = 18;
+
+      request.setHeader(
+        "authorization",
+        `oauth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      request.setQueryParameters(options);
+
+      return request;
+    });
+
+    return service;
+  },
+  addForexTradeOrder: () => {
+    const service = new Service(
+      "v1/games/forex/orders",
+      apiConsts.HTTP_METHOD_POST
+    );
+
+    service.setPrepareRequest(
+      (
+        request,
+        optionId,
+        ruleId,
+        isBuy,
+        rate,
+        volume,
+        takeProfit,
+        stopLoss,
+        leverage,
+        takeProfitRate,
+        stopLostRate,
+        pip,
+        pendingPrice,
+        slippage,
+        type,
+        expirationDate
+      ) => {
+        const options = {
+          TradableAssetId: optionId,
+          ForexRuleID: ruleId,
+          Rate: rate,
+          Volume: volume,
+          TakeProfit: takeProfit,
+          StopLoss: stopLoss,
+          IsBuy: isBuy,
+          Leverage: leverage,
+          TakeProfitRate: takeProfitRate,
+          StopLostRate: stopLostRate,
+          Pip: pip,
+          PendingPrice: pendingPrice || 0,
+          Slippage: slippage || false,
+          OptionType: type,
+          ExpirationDate: expirationDate,
+        };
+
+        // widgets.api.setTradeStarted(options);
+
+        request.setHeader(
+          "Authorization",
+          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+        );
+
+        request.convertToQueryParamsWithoutToken(options);
+
+        return request;
+      }
+    );
+
+    return service;
+  },
 };

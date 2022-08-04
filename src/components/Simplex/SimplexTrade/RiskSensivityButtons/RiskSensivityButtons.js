@@ -24,9 +24,9 @@ const MarketPendingButtons = ({ risk, setRisk, disabled }) => {
           text={t("easyForex.low")}
           size="tabButton"
           pressableStyle={
-            risk === 1 ? styles.orderTypeButtonActive : styles.orderTypeButton
+            risk === 0 ? styles.orderTypeButtonActive : styles.orderTypeButton
           }
-          onPress={() => setRisk(1)}
+          onPress={() => setRisk(0)}
         />
         <Button
           disabled={disabled}
@@ -34,9 +34,9 @@ const MarketPendingButtons = ({ risk, setRisk, disabled }) => {
           text={t("easyForex.medium")}
           size="tabButton"
           pressableStyle={
-            risk === 2 ? styles.orderTypeButtonActive : styles.orderTypeButton
+            risk === 1 ? styles.orderTypeButtonActive : styles.orderTypeButton
           }
-          onPress={() => setRisk(2)}
+          onPress={() => setRisk(1)}
         />
         <Button
           disabled={disabled}
@@ -44,9 +44,9 @@ const MarketPendingButtons = ({ risk, setRisk, disabled }) => {
           text={t("easyForex.high")}
           size="tabButton"
           pressableStyle={
-            risk === 3 ? styles.orderTypeButtonActive : styles.orderTypeButton
+            risk === 2 ? styles.orderTypeButtonActive : styles.orderTypeButton
           }
-          onPress={() => setRisk(3)}
+          onPress={() => setRisk(2)}
         />
       </View>
     </View>
