@@ -338,6 +338,8 @@ export default {
           ExpirationDate: expirationDate,
         };
 
+        console.log(options);
+
         // widgets.api.setTradeStarted(options);
 
         request.setHeader(

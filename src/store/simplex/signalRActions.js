@@ -69,13 +69,13 @@ export const signalRStart = (assetsPrices, dispatch) => {
     simplexHubPrices(assetsPrices, allPrices, dispatch);
   });
 
-  connection.start().fail(function () {
+  connection.start({ withCredentials: false }).fail(function () {
     console.log("Could not connect");
   });
 
   connection.disconnected(function () {
     console.log("Disconnected");
-    // connection.start();
+    connection.start({ withCredentials: false });
   });
 
   connection.error((error) => {
@@ -160,9 +160,12 @@ export const simplexHubPrices = (assetsPrices, allPrices, dispatch) => {
 
   newPrices.forEach(function (value, key) {
     assetsPrices[value.T] = {};
+    assetsPrices[value.T].TAID = value.T;
     assetsPrices[value.T].id = value.T;
     assetsPrices[value.T].ask = value.A.toFixed(value.C);
     assetsPrices[value.T].bid = value.B.toFixed(value.C);
+    assetsPrices[value.T].marketAsk = value.a.toFixed(value.C);
+    assetsPrices[value.T].marketBid = value.b.toFixed(value.C);
     assetsPrices[value.T].rate = value.R.toFixed(value.C);
     assetsPrices[value.T].accuracy = value.C;
   });

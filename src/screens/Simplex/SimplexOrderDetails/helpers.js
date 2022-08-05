@@ -1,5 +1,4 @@
 import Toast from "react-native-toast-message";
-import { showForexNotification } from "../../../store/realForex/helpers";
 
 export const checkInvestmentValues = (
   amount,
@@ -109,34 +108,34 @@ export const processMarketOrder = (response, currTrade) => {
     if (response.data.type === "EditOrder_Successful") {
       currTrade.title = "Position modified";
       currTrade.isError = false;
-      showForexNotification("successForex", currTrade);
+      showNotification("success", currTrade);
     } else {
       currTrade.title = currTrade.isMarket
         ? "Position opened"
-        : "nding order created";
+        : "Pending order created";
       currTrade.isError = false;
-      showForexNotification("successForex", currTrade);
+      showNotification("success", currTrade);
     }
   } else {
     if (response.data.type === "Fraud_User_Suspended") {
       currTrade.title = "User suspended";
       currTrade.isError = true;
-      showForexNotification("error", currTrade);
+      showNotification("error", currTrade);
     } else if (response.data.type === "TradeOrder_PriceOutOfDate") {
       currTrade.title = "Missing price";
       currTrade.isError = true;
-      showForexNotification("error", currTrade);
+      showNotification("error", currTrade);
     } else if (
       response.data.type === "TradeOrder_QuantityValidationError" ||
       response.data.type === "LimitationException_MaxOpenTradesAmountForex"
     ) {
       currTrade.title = "Failed limitation";
       currTrade.isError = true;
-      showForexNotification("error", currTrade);
+      showNotification("error", currTrade);
     } else if (response.data.type === "TradeOrder_InsufficientBalance") {
       currTrade.title = "Insufficient balance";
       currTrade.isError = true;
-      showForexNotification("error", currTrade);
+      showNotification("error", currTrade);
     } else if (response.data.type == "TradeOrder_MinOpenIntervalSimplexError") {
       // TODO
       // $(window).trigger(
@@ -148,7 +147,44 @@ export const processMarketOrder = (response, currTrade) => {
         ? "Position failed"
         : "Pending order failed";
       currTrade.isError = true;
-      showForexNotification("error", currTrade);
+      showNotification("error", currTrade);
     }
+  }
+};
+
+export const showNotification = (toastType, values) => {
+  if (!toastType || !values) {
+    return;
+  }
+  if (values.isError) {
+    Toast.show({
+      type: "error",
+      text1: values.title,
+      topOffset: 100,
+      visibilityTime: 5000,
+      autoHide: true,
+    });
+  } else {
+  }
+
+  if (values.type == "CountryNotAllowed") {
+    let text1 = "Trade Rejected";
+    let text2 = "Action is not allowed for this country.";
+    Toast.show({
+      type: "error",
+      text1: text1,
+      text2: text2,
+      topOffset: 100,
+      visibilityTime: 5000,
+      autoHide: true,
+    });
+  } else {
+    Toast.show({
+      type: "success",
+      text1: values.title,
+      topOffset: 100,
+      visibilityTime: 3000,
+      autoHide: true,
+    });
   }
 };

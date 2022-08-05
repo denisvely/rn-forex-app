@@ -56,6 +56,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
   const [investmentSelected, setInvestmentSelected] = useState(null);
   const [investmentDropdownData, setInvestmentDropdownData] = useState(null);
   const [risk, setRisk] = useState(1);
+  const [riskLeverage, setRiskLeverage] = useState(null);
   const initialOrderInfo = {
     commission: "0.00",
     tradeValue: null,
@@ -93,7 +94,6 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       taPipValue,
       takeProfitPips,
       stopLossPips,
-      expirationDate,
       selectedOption;
 
     Object.values(simplexOptionsByType["All"]).forEach((option, i) => {
@@ -125,7 +125,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       // TODO
       // calculatedPip =
       //   widget.tradeParams.pip /
-      //   (risk * investmentSelected);
+      //   (riskLeverage[risk] * investmentSelected);
     } else {
       const pipPrice = await simplexServices
         .getForexPipPrice(dispatch)
@@ -144,7 +144,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       }
     }
 
-    pip = risk * investmentSelected * calculatedPip;
+    pip = riskLeverage[risk] * investmentSelected * calculatedPip;
     taPipValue = parseFloat(
       1 / Math.pow(10, simplexPrices[selectedOption.id].accuracy)
     ).toFixed(simplexPrices[selectedOption.id].accuracy);
@@ -155,7 +155,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       simplexPrices[selectedOption.id].accuracy
     );
 
-    if (tradeDirection === "down") {
+    if (tradeDirection === "up") {
       realTPRate = parseFloat(
         parseFloat(assetSettings.modifyPosition ? order.rate : apiRate) +
           parseFloat(takeProfitPips * taPipValue)
@@ -185,7 +185,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         investmentSelected,
         takeProfit,
         stopLoss,
-        risk,
+        riskLeverage[risk],
         realTPRate,
         realSLRate,
         pip,
@@ -195,12 +195,12 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         expirationData.expirationDate ? expirationData.expirationDate : ""
       )
       .then(({ response }) => {
-        console.log(response.body.data.type);
+        console.log(response);
         let currTrade = {};
         currTrade.type = response.body.data.type;
         currTrade.isMarket = isMarket;
         currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
-        currTrade.isBuy = tradeDirection === "up";
+        currTrade.isBuy = tradeDirection === "up" ? true : false;
         setTradeProgress(false);
         processMarketOrder(response.body, currTrade);
         navigation.navigate("quotes");
@@ -211,7 +211,6 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     setSelectedAsset(dispatch, asset);
     const currentTAID = asset.id;
 
-    let tradeParams = {};
     let listValue = [];
     let minAmount =
       parseFloat(simplexTradingSettings.DefaultInvestAmountForex) *
@@ -224,6 +223,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         simplexOptionsByType.All[currentTAID].leverage.split(",");
     }
 
+    setRiskLeverage(defaultLeverage);
     if (
       parseFloat(minAmount * 0.5) <
       parseFloat(simplexTradingSettings.MinInvest * user.currencyFactor)
@@ -284,7 +284,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
     if (
       investmentSelected *
-        investmentDropdownData[risk] *
+        riskLeverage[risk] *
         (currentAssetSettings.PercentageSimple / 100) <=
       currentAssetSettings.MinCommissionSimple *
         currentAssetSettings.USDExchangeRate
@@ -295,7 +295,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     } else {
       if (
         investmentSelected *
-          investmentDropdownData[risk] *
+          riskLeverage[risk] *
           (currentAssetSettings.PercentageSimple / 100) >=
         currentAssetSettings.MaxCommissionSimple *
           currentAssetSettings.USDExchangeRate
@@ -306,7 +306,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       } else {
         commision =
           investmentSelected *
-          investmentDropdownData[risk] *
+          riskLeverage[risk] *
           (currentAssetSettings.PercentageSimple / 100);
       }
     }
@@ -314,7 +314,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     if (updatePip) {
       currentAssetSettings.pipPrice =
         (investmentSelected *
-          parseInt(investmentDropdownData[risk]) *
+          parseInt(riskLeverage[risk]) *
           Math.pow(10, -accuracy)) /
         (
           (parseFloat(
@@ -340,18 +340,16 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       ...prevState,
       commission: commision,
       pointValue: pointValue,
-      tradeValue: (investmentDropdownData[risk] * investmentSelected).toFixed(
-        2
-      ),
+      tradeValue: (riskLeverage[risk] * investmentSelected).toFixed(2),
     }));
   };
 
   const updateOrderDetails = () => {
-    if (risk === 1) {
+    if (risk === 0) {
       //low
       setTakeProfit(Math.ceil(investmentSelected / 2));
       setStopLoss(Math.ceil(investmentSelected / 4));
-    } else if (risk === 2) {
+    } else if (risk === 1) {
       //medium
       setTakeProfit(investmentSelected);
       setStopLoss(investmentSelected / 2);
