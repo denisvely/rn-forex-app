@@ -1,4 +1,5 @@
 import Toast from "react-native-toast-message";
+import moment from "moment";
 
 export const checkInvestmentValues = (
   amount,
@@ -186,5 +187,77 @@ export const showNotification = (toastType, values) => {
       visibilityTime: 3000,
       autoHide: true,
     });
+  }
+};
+
+export const remainingTime = (asset) => {
+  let currTime = new Date(),
+    optionStart = new Date(asset.rules[0].dates.from.timestamp);
+
+  if (optionStart.getTime() - currTime.getTime() < 0) {
+    for (let i = 0; i < asset.rules.length; i++) {
+      if (!asset.rules[i].availableForTrading) {
+        optionStart = new Date(asset.rules[i].dates.from.timestamp);
+
+        if (optionStart.getTime() - currTime.getTime() > 0) {
+          break;
+        }
+      }
+    }
+  }
+
+  let timeDiff = optionStart.getTime() - currTime.getTime(),
+    diffMinutes = Math.ceil(timeDiff / (1000 * 60)),
+    remainingMins = diffMinutes % 60,
+    remainingHrs =
+      Math.floor(diffMinutes / 60) > 24
+        ? Math.floor(diffMinutes / 60) % 24
+        : Math.floor(diffMinutes / 60),
+    remainingDays = Math.floor(Math.floor(diffMinutes / 60) / 24);
+
+  return (
+    moment(optionStart).format("HH:MM") +
+    "(in " +
+    (remainingDays > 0
+      ? remainingDays == 1
+        ? "1day "
+        : remainingDays + "days "
+      : "") +
+    (remainingHrs > 0
+      ? remainingHrs == 1
+        ? "1hr "
+        : remainingHrs + "hrs "
+      : "") +
+    (remainingMins + "min)")
+  );
+};
+
+export const checkAvailableForTrading = (
+  id,
+  expirationDate,
+  simplexOptionsByType
+) => {
+  if (!simplexOptionsByType.All[id].rules.length) {
+    return false;
+  } else {
+    var currTime =
+        expirationDate == null ? new Date() : new Date(expirationDate),
+      availableForTrading = false;
+
+    for (i = 0; i < simplexOptionsByType.All[id].rules.length; i++) {
+      var dateFrom = new Date(
+          simplexOptionsByType.All[id].rules[i].dates.from.dateTime
+        ),
+        dateTo = new Date(
+          simplexOptionsByType.All[id].rules[i].dates.to.dateTime
+        );
+
+      if (currTime > dateFrom && currTime < dateTo) {
+        availableForTrading =
+          simplexOptionsByType.All[id].rules[i].availableForTrading;
+      }
+    }
+
+    return availableForTrading;
   }
 };

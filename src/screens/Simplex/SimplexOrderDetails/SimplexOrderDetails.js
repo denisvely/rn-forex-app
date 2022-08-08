@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
+import Toast from "react-native-toast-message";
 
 import {
   MarketPendingButtons,
@@ -27,17 +29,24 @@ import simplexServices from "../../../services/simplexServices";
 import { getUser, getSettings } from "../../../store/app";
 import { deviceWidth } from "../../../utils";
 import { getGlobalSetting } from "../../../store/realForex/helpers";
-import { checkInvestmentValues, processMarketOrder } from "./helpers";
+import {
+  checkInvestmentValues,
+  processMarketOrder,
+  checkAvailableForTrading,
+} from "./helpers";
 
 import styles from "./simplexOrderDetailsStyles";
 
 const addForexTradeOrder = simplexServices.addForexTradeOrder();
+const modifySimplexPosition = simplexServices.modifySimplexPosition();
+let isFirstLoad = true;
 
 const SimplexOrderDetails = ({ route, navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const asset = route.params.asset;
   const order = route.params.order;
+  const isPending = route.params.isPending;
 
   const simplexOptionsByType = useSelector((state) =>
     getSimplexOptionsByType(state)
@@ -73,6 +82,8 @@ const SimplexOrderDetails = ({ route, navigation }) => {
   const [stopLoss, setStopLoss] = useState(null);
   const [takeProfit, setTakeProfit] = useState(null);
   const [targetPrice, setTargetPrice] = useState(null);
+  const [isModify, setIsModify] = useState(null);
+  const [isSubmitInactive, setSubmitStatus] = useState(false);
 
   const makeSimplexOrder = async () => {
     setTradeProgress(true);
@@ -94,7 +105,8 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       taPipValue,
       takeProfitPips,
       stopLossPips,
-      selectedOption;
+      selectedOption,
+      expString = null;
 
     Object.values(simplexOptionsByType["All"]).forEach((option, i) => {
       if (option.id == asset.id) {
@@ -121,11 +133,8 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       2
     ).toFixed(simplexPrices[selectedOption.id].accuracy);
 
-    if (assetSettings.modifyPosition) {
-      // TODO
-      // calculatedPip =
-      //   widget.tradeParams.pip /
-      //   (riskLeverage[risk] * investmentSelected);
+    if (order) {
+      calculatedPip = order.pip / (riskLeverage[risk] * investmentSelected);
     } else {
       const pipPrice = await simplexServices
         .getForexPipPrice(dispatch)
@@ -175,36 +184,107 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
     }
 
-    // TODO - Modify Order, Modify Position - easyForex.js - line 791
-    addForexTradeOrder
-      .fetch(
-        selectedOption.id,
-        ruleId,
-        tradeDirection === "up",
-        apiRate,
-        investmentSelected,
-        takeProfit,
-        stopLoss,
-        riskLeverage[risk],
-        realTPRate,
-        realSLRate,
-        pip,
-        isMarket ? targetPrice : null,
-        null,
-        18,
-        expirationData.expirationDate ? expirationData.expirationDate : ""
-      )
-      .then(({ response }) => {
-        console.log(response);
-        let currTrade = {};
-        currTrade.type = response.body.data.type;
-        currTrade.isMarket = isMarket;
-        currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
-        currTrade.isBuy = tradeDirection === "up" ? true : false;
+    if (expirationData.expirationDate) {
+      if (!expirationData.expirationTime) {
+        Toast.show({
+          type: "error",
+          text1: `Set expiry time.`,
+          topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
         setTradeProgress(false);
-        processMarketOrder(response.body, currTrade);
-        navigation.navigate("quotes");
-      });
+        return false;
+      }
+      let currDateAndTime = new Date();
+      currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 4);
+
+      if (new Date(expirationData.expirationDate) < currDateAndTime) {
+        Toast.show({
+          type: "error",
+          text1: `Please choose a future date.`,
+          topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        setTradeProgress(false);
+        return false;
+      }
+      if (
+        !checkAvailableForTrading(
+          selectedOption.id,
+          expirationData.expirationDate,
+          simplexOptionsByType
+        )
+      ) {
+        Toast.show({
+          type: "error",
+          text1: `Selected date is out of working hours.`,
+          topOffset: 100,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        setTradeProgress(false);
+        return false;
+      }
+
+      expString = `${moment(expirationData.expirationDate).format(
+        "YYYY-MM-DD"
+      )}T${moment(expirationData.expirationTime).format("HH:mm")}`;
+    }
+
+    // TODO - Modify Order, Modify Position - easyForex.js - line 791
+    if (order && isPending) {
+    } else if (order && !isPending) {
+      modifySimplexPosition
+        .fetch(
+          order.orderID,
+          takeProfit,
+          stopLoss,
+          realTPRate,
+          realSLRate,
+          expString ? expString : ""
+        )
+        .then(({ response }) => {
+          let currTrade = {};
+          currTrade.type = response.body.data.type;
+          currTrade.isMarket = isMarket;
+          currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
+          currTrade.isBuy = tradeDirection === "up" ? true : false;
+          setTradeProgress(false);
+          processMarketOrder(response.body, currTrade);
+          navigation.navigate("quotes");
+        });
+    } else {
+      addForexTradeOrder
+        .fetch(
+          selectedOption.id,
+          ruleId,
+          tradeDirection === "up",
+          apiRate,
+          investmentSelected,
+          takeProfit,
+          stopLoss,
+          riskLeverage[risk],
+          realTPRate,
+          realSLRate,
+          pip,
+          isMarket ? targetPrice : null,
+          null,
+          18,
+          expString ? expString : ""
+        )
+        .then(({ response }) => {
+          let currTrade = {};
+          currTrade.type = response.body.data.type;
+          currTrade.isMarket = isMarket;
+          currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
+          currTrade.isBuy = tradeDirection === "up" ? true : false;
+          setTradeProgress(false);
+          processMarketOrder(response.body, currTrade);
+          navigation.navigate("quotes");
+        });
+    }
   };
 
   const makeOrder = () => {
@@ -268,7 +348,47 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           // Set default investment value
           setInvestmentSelected(minAmount);
 
-          // TODO => if (order) {
+          if (order) {
+            setSubmitStatus(true);
+            // Pending
+            if (isPending) {
+              //  TODO
+            } else {
+              // Set Modify Position data
+              // Set direction
+              setDirection(
+                order.actionType.toLowerCase() == "buy" ? "up" : "down"
+              );
+              // Set risk
+              switch (order.leverage.toString()) {
+                case defaultLeverage[0]:
+                  setRisk(0);
+                  break;
+                case defaultLeverage[1]:
+                  setRisk(1);
+                  break;
+                case defaultLeverage[2]:
+                  setRisk(2);
+                  break;
+              }
+              // Set amount
+              setInvestmentSelected(order.volume);
+              // Set TP
+              setTakeProfit(order.takeProfitAmount);
+              // Set SL
+              setStopLoss(order.stopLossAmount);
+              // Set Expiration date and time
+              if (order.expirationDate != null) {
+                var expDate = new Date(order.expirationDate.timestamp);
+                setExpData((prevState) => ({
+                  ...prevState,
+                  expirationDate: expDate,
+                  expirationTime: expDate,
+                }));
+              }
+            }
+            setIsModify(true);
+          }
         }
       });
   };
@@ -379,17 +499,31 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     if (investmentSelected && assetSettings && investmentDropdownData) {
       // Update order details on invest amount change
       calculateCommission(true, assetSettings);
-      updateOrderDetails();
+      if (!order) {
+        updateOrderDetails();
+      }
     }
   }, [investmentSelected, risk]);
+
+  useEffect(() => {
+    if (isModify && order && isSubmitInactive) {
+      if (isFirstLoad) {
+        isFirstLoad = false;
+      } else {
+        setSubmitStatus(false);
+      }
+    }
+  }, [takeProfit, stopLoss, expirationData]);
 
   return isReady ? (
     <View style={styles.container}>
       <MarketPendingButtons
         isMarket={isMarket}
+        isModify={isModify}
         setOrderType={(orderType) => setOrderType(orderType)}
       />
       <SimplexDirectionsButtons
+        disabled={isModify}
         tradeDirection={tradeDirection}
         setDirection={(direction) => {
           setDirection(direction);
@@ -414,13 +548,13 @@ const SimplexOrderDetails = ({ route, navigation }) => {
             }}
           >
             <InvestAmount
-              disabled={tradeDirection === null}
+              disabled={tradeDirection === null || isModify}
               investmentSelected={investmentSelected}
               setInvestmentSelected={setInvestmentSelected}
               investmentDropdownData={investmentDropdownData}
             />
             <RiskSensivityButtons
-              disabled={tradeDirection === null}
+              disabled={tradeDirection === null || isModify}
               risk={risk}
               setRisk={(risk) => setRisk(risk)}
             />
@@ -437,7 +571,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
               investmentSelected={investmentSelected}
             />
             {globalSettings &&
-            !getGlobalSetting("SimpleForexExpiry", globalSettings) ? (
+            getGlobalSetting("SimpleForexExpiry", globalSettings) ? (
               <ExpirationDateSimplex
                 disabled={tradeDirection === null}
                 state={expirationData}
@@ -452,11 +586,17 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           </ScrollView>
           <View style={styles.buttonsWrapper}>
             <Button
-              disabled={tradeDirection === null}
+              disabled={tradeDirection === null || isSubmitInactive}
               style={{
                 opacity: tradeInProgress ? 0.3 : 1,
               }}
-              text={isMarket ? t("easyForex.invest") : t("common-labels.place")}
+              text={
+                isModify
+                  ? t("easyForex.modify")
+                  : isMarket
+                  ? t("easyForex.invest")
+                  : t("common-labels.place")
+              }
               type="primary"
               font="mediumBold"
               size="big"

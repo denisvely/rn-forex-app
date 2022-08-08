@@ -163,7 +163,7 @@ const StopLossSimplex = ({ value, setValue, disabled, investmentSelected }) => {
   }, [investmentSelected]);
 
   return (
-    <View style={{ ...styles.inputsWrapper, opacity: disabled ? 0.2 : 1 }}>
+    <View style={{ ...styles.inputsWrapper, opacity: disabled ? 0.5 : 1 }}>
       <Typography
         style={styles.label}
         name="normal"

@@ -10,7 +10,7 @@ const MarketPendingButtons = ({ risk, setRisk, disabled }) => {
 
   return (
     <View
-      style={{ ...styles.riskSensivityWrapper, opacity: disabled ? 0.2 : 1 }}
+      style={{ ...styles.riskSensivityWrapper, opacity: disabled ? 0.5 : 1 }}
     >
       <Typography text={t("easyForex.setRiskSensivity")} />
       <View

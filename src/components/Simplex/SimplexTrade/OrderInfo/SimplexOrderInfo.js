@@ -12,7 +12,7 @@ const OrderInfo = ({ orderInfoData, setOrderInfoData, disabled }) => {
   const { t } = useTranslation();
 
   return orderInfoData ? (
-    <View style={{ ...styles.container, opacity: disabled ? 0.2 : 1 }}>
+    <View style={{ ...styles.container, opacity: disabled ? 0.5 : 1 }}>
       <View>
         <Typography
           style={styles.label}

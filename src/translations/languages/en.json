@@ -82,7 +82,8 @@
     "approved": "Approved",
     "notApproved": "Expired / Not Approved",
     "no-data": "No data",
-    "leverage": "Leverage"
+    "leverage": "Leverage",
+    "ok": "OK"
   },
   "navigation": {
     "quotes": "Quotes",
@@ -195,6 +196,7 @@
     "tradeValue": "Trade value",
     "pointValue": "Point value",
     "setRiskSensivity": "Set risk sensitivity",
-    "invest": "Invest"
+    "invest": "Invest",
+    "modify": "Modify"
   }
 }

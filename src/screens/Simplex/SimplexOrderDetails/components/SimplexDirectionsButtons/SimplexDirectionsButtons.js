@@ -6,16 +6,24 @@ import { colors } from "../../../../../constants";
 
 import styles from "./simplexDirectionsButtonsStyles";
 
-const SimplexDirectionsButtons = ({ tradeDirection, setDirection }) => {
+const SimplexDirectionsButtons = ({
+  tradeDirection,
+  setDirection,
+  disabled,
+}) => {
   const { t } = useTranslation();
   return (
-    <View style={styles.orderTypeButtonsWrapper}>
+    <View
+      style={{ ...styles.orderTypeButtonsWrapper, opacity: disabled ? 0.5 : 1 }}
+    >
       <TouchableOpacity
         activeOpacity={0.5}
-        style={
-          tradeDirection === "up" ? styles.upButtonActive : styles.upButton
-        }
-        onPress={() => setDirection("up")}
+        style={{
+          ...(tradeDirection === "up"
+            ? styles.upButtonActive
+            : styles.upButton),
+        }}
+        onPress={() => !disabled && setDirection("up")}
       >
         <Typography
           name="smallBold"
@@ -33,7 +41,7 @@ const SimplexDirectionsButtons = ({ tradeDirection, setDirection }) => {
             ? styles.downButtonActive
             : styles.downButton
         }
-        onPress={() => setDirection("down")}
+        onPress={() => !disabled && setDirection("down")}
       >
         <Typography
           name="smallBold"

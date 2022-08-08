@@ -21,6 +21,17 @@ export default StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 8,
   },
+  labelWrapper: {
+    backgroundColor: colors.white,
+    marginTop: 8,
+    height: 24,
+    width: deviceWidth - 48,
+    borderRadius: 4,
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "center",
+    flexDirection: "row",
+  },
   orderTypeButton: {
     width: deviceWidth / 2 - 40,
     borderRadius: 4,

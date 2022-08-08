@@ -338,9 +338,44 @@ export default {
           ExpirationDate: expirationDate,
         };
 
-        console.log(options);
+        request.setHeader(
+          "Authorization",
+          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+        );
 
-        // widgets.api.setTradeStarted(options);
+        request.convertToQueryParamsWithoutToken(options);
+
+        return request;
+      }
+    );
+
+    return service;
+  },
+  modifySimplexPosition: () => {
+    const service = new Service(
+      "v1/games/simplex/orders/edit",
+      apiConsts.HTTP_METHOD_POST
+    );
+
+    service.setPrepareRequest(
+      (
+        request,
+        orderId,
+        takeProfit,
+        stopLoss,
+        takeProfitRate,
+        stopLossRate,
+        expDate
+      ) => {
+        var options = {
+          OrderId: orderId,
+          TakeProfit: takeProfit,
+          TakeProfitRate: takeProfitRate,
+          StopLoss: stopLoss,
+          StopLostRate: stopLossRate,
+          ExpirationDate: expDate,
+          optionType: 18,
+        };
 
         request.setHeader(
           "Authorization",
