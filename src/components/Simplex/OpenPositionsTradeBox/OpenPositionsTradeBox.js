@@ -109,7 +109,6 @@ const OpenPositionsSimplexTradeBox = ({ item, navigation, cancelPosition }) => {
           isPending: false,
           isModify: true,
           order: item,
-          isMarketClosed: !checkAvailableForTrading(item.tradableAssetId),
         });
       }
     }

@@ -12,6 +12,7 @@ const getSimplexPrices = simplexServices.getSimplexPrices();
 const getSimplexOptions = simplexServices.getSimplexOptions();
 const getSimplexNotifications = simplexServices.getSimplexNotifications();
 const getSimplexAssetsOrder = simplexServices.getSimplexAssetsOrder();
+const getUserFullBalance = simplexServices.getUserFullBalance();
 
 export const loadInitialSimplexData = (dispatch) => {
   getSimplexOpenTrades
@@ -131,6 +132,8 @@ export const loadInitialSimplexData = (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
+
+  getBalance(dispatch);
 };
 
 export const setSelectedAsset = async (dispatch, asset) => {
@@ -143,4 +146,21 @@ export const setCurrentTrade = async (dispatch, trade) => {
 
 export const setCurrentlyModifiedOrder = async (dispatch, order) => {
   dispatch({ type: actionTypes.SET_CURRENTLY_MODIFIED_ORDER, payload: order });
+};
+
+export const getBalance = (dispatch) => {
+  getUserFullBalance
+    .fetch()
+    .then(({ response }) => {
+      if (!response || !response.body || response.body.code != 200) {
+        return false;
+      }
+      dispatch({
+        type: actionTypes.SIMPLEX_USER_BALANCE,
+        payload: response.body.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

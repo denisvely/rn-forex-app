@@ -107,7 +107,9 @@ export const checkInvestmentValues = (
 export const processMarketOrder = (response, currTrade) => {
   if (response && response.code == 200) {
     if (response.data.type === "EditOrder_Successful") {
-      currTrade.title = "Position modified";
+      currTrade.title = currTrade.isMarket
+        ? "Position modified"
+        : "Pending order modified";
       currTrade.isError = false;
       showNotification("success", currTrade);
     } else {

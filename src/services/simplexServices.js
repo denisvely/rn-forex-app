@@ -390,4 +390,79 @@ export default {
 
     return service;
   },
+  editForexTradeOrder: () => {
+    const service = new Service(
+      "v3/games/forex/pendingorders/edit/",
+      apiConsts.HTTP_METHOD_PUT
+    );
+
+    service.setPrepareRequest(
+      (
+        request,
+        optionId,
+        ruleId,
+        isBuy,
+        rate,
+        volume,
+        takeProfit,
+        stopLoss,
+        leverage,
+        takeProfitRate,
+        stopLostRate,
+        pip,
+        pendingPrice,
+        slippage,
+        expirationDate,
+        orderId
+      ) => {
+        var options = {
+          TradableAssetId: optionId,
+          ForexRuleID: ruleId,
+          Rate: rate,
+          Volume: volume,
+          TakeProfit: takeProfit,
+          StopLoss: stopLoss,
+          IsBuy: isBuy,
+          Leverage: leverage,
+          TakeProfitRate: takeProfitRate,
+          StopLostRate: stopLostRate,
+          Pip: pip,
+          PendingPrice: pendingPrice || 0,
+          Slippage: slippage || false,
+          OptionType: 18,
+          ExpirationDate: expirationDate,
+          orderId: orderId,
+        };
+
+        request.setHeader(
+          "Authorization",
+          `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+        );
+
+        request.convertToQueryParamsWithoutToken(options);
+        request.addParamToTheUrl(orderId);
+
+        return request;
+      }
+    );
+
+    return service;
+  },
+  getUserFullBalance: () => {
+    const service = new Service(
+      "v2/users/current/balance",
+      apiConsts.HTTP_METHOD_GET
+    );
+
+    service.setPrepareRequest((request) => {
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+
+      return request;
+    });
+
+    return service;
+  },
 };

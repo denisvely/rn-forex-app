@@ -118,6 +118,12 @@ const simplexReducer = (state = initialState, action) => {
         currentlyModifiedOrder: action.payload,
       };
     }
+    case actionTypes.SIMPLEX_USER_BALANCE: {
+      return {
+        ...stateClone,
+        simplexBalance: action.payload,
+      };
+    }
 
     default:
       return state;

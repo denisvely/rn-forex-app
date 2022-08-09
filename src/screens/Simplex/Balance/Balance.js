@@ -1,57 +1,55 @@
-import React from "react";
-import {View} from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import {Typography} from "../../../components";
-import {getSimplexBalance} from "../../../store/simplex";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  Typography,
+  FormattedTypographyWithCurrency,
+  Loading,
+} from "../../../components";
+import { getSimplexBalance, getBalance } from "../../../store/simplex";
+import { colors } from "constants";
+
 import styles from "./balanceStyles";
 
-const Balance = ({navigation}) => {
-    const simplexBalance = useSelector((state) => getSimplexBalance(state));
+const Balance = ({ navigation }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const simplexBalance = useSelector((state) => getSimplexBalance(state));
 
-    return (
-        <View style={styles.container}>
-            <View>
-                <Typography name="tiny" text={"Balance"}></Typography>
-                <Typography
-                    name="largeBold"
-                    text={simplexBalance.balance}
-                    style={styles.balance}
-                ></Typography>
+  useEffect(() => {
+    getBalance(dispatch);
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {simplexBalance ? (
+        <>
+          <View style={styles.balanceContainer}>
+            <View style={{ marginRight: 16 }}>
+              <Typography
+                name="tiny"
+                text={t(`common-labels.balance`)}
+                style={styles.balanceLabel}
+              ></Typography>
+              <FormattedTypographyWithCurrency
+                name="largeBold"
+                text={simplexBalance.balance}
+                numberWithCommas={false}
+                style={styles.balanceBig}
+              />
             </View>
-            <View>
-                <Typography name="tiny" text={"Profit"}></Typography>
-                <Typography
-                    name="largeBold"
-                    text={simplexBalance.profit}
-                    style={styles.balance}
-                ></Typography>
-            </View>
-            <View>
-                <Typography name="tiny" text={"Margin"}></Typography>
-                <Typography
-                    name="largeBold"
-                    text={simplexBalance.margin}
-                    style={styles.balance}
-                ></Typography>
-            </View>
-            <View>
-                <Typography name="tiny" text={"Equity"}></Typography>
-                <Typography
-                    name="largeBold"
-                    text={simplexBalance.equity}
-                    style={styles.balance}
-                ></Typography>
-            </View>
-            <View>
-                <Typography name="tiny" text={"Available balance"}></Typography>
-                <Typography
-                    name="largeBold"
-                    text={simplexBalance.availableBalance}
-                    style={styles.balance}
-                ></Typography>
-            </View>
+          </View>
+        </>
+      ) : (
+        <View style={styles.loadingContainer}>
+          <Loading size="large" />
         </View>
-    );
+      )}
+    </View>
+  );
 };
 
 export default Balance;

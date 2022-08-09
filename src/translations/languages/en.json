@@ -197,6 +197,7 @@
     "pointValue": "Point value",
     "setRiskSensivity": "Set risk sensitivity",
     "invest": "Invest",
-    "modify": "Modify"
+    "modify": "Modify",
+    "targetPrice": "Target Price"
   }
 }

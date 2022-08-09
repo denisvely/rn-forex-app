@@ -64,3 +64,4 @@ export { default as SimplexOrderInfo } from "./Simplex/SimplexTrade/OrderInfo/Si
 export { default as ExpirationDateSimplex } from "./Simplex/SimplexTrade/ExpirationDateSimplex/ExpirationDateSimplex";
 export { default as TakeProfitSimplex } from "./Simplex/SimplexTrade/TakeProfit/TakeProfitSimplex";
 export { default as StopLossSimplex } from "./Simplex/SimplexTrade/StopLossSimplex/StopLossSimplex";
+export { default as TargetPrice } from "./Simplex/SimplexTrade/TargetPrice/TargetPrice";
