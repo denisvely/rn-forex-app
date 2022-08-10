@@ -44,7 +44,7 @@ export const signalRStart = (assetsPrices, dispatch) => {
         toDate: moment(new Date()).format("YYYY-MM-DD") + "T23:59:59",
       })
       .then(({ response }) => {
-        const body = response.body.data.trades;
+        const body = response.body.data ? response.body.data.trades : [];
         dispatch({
           type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
           payload: body,

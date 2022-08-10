@@ -75,27 +75,20 @@ const Home = ({ navigation }) => {
           source={require("../../../assets/simplex.png")}
         />
         <View>
-          <View style={styles.comingSoon}>
-            <Typography
-              name="smallBold"
-              text="Coming soon"
-              style={{ ...styles.text }}
-            />
-          </View>
           <Typography
             name="tinyBold"
             text={t("common-labels.simplex")}
             style={{
-              ...styles.textOpacity,
+              ...styles.text,
               fontSize: 24,
               lineHeight: 28,
-              marginTop: 4,
+              marginTop: 48,
             }}
           />
           <Typography
             name="small"
             text="Simplified and easy to use Forex platform"
-            style={{ ...styles.textOpacity, marginTop: 3, lineHeight: 19 }}
+            style={{ ...styles.text, marginTop: 3, lineHeight: 19 }}
           />
         </View>
       </TouchableOpacity>
