@@ -198,22 +198,24 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         <Typography name="normalBold" text={trade.description} />
         <Typography name="normal" text={"?"} />
       </Typography>
-      <View style={styles.partiallyCloseWrapper}>
-        <View style={styles.onOffWrapper}>
-          <Typography name="normal" text={"Partially close"} />
-          <SwitchComponent
-            onValueChange={(value) => setVisibility(value)}
-            value={partiallyCloseVisible}
-          />
+      {user.forexModeId === 2 ? (
+        <View style={styles.partiallyCloseWrapper}>
+          <View style={styles.onOffWrapper}>
+            <Typography name="normal" text={"Partially close"} />
+            <SwitchComponent
+              onValueChange={(value) => setVisibility(value)}
+              value={partiallyCloseVisible}
+            />
+          </View>
+          {partiallyCloseVisible ? (
+            <PartiallyClose
+              spinnerValue={partiallyCloseValue}
+              onSpinnerChange={(value) => setPartialllyClose(value)}
+              placeholder={t("common-labels.amount")}
+            />
+          ) : null}
         </View>
-        {partiallyCloseVisible ? (
-          <PartiallyClose
-            spinnerValue={partiallyCloseValue}
-            onSpinnerChange={(value) => setPartialllyClose(value)}
-            placeholder={t("common-labels.amount")}
-          />
-        ) : null}
-      </View>
+      ) : null}
       <View style={styles.tradeButtons}>
         <Button
           text={t(`common-labels.yes`)}

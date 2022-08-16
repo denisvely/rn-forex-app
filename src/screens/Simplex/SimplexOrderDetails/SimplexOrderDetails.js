@@ -168,7 +168,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
     if (tradeDirection === "up") {
       realTPRate = parseFloat(
-        parseFloat(assetSettings.modifyPosition ? order.rate : apiRate) +
+        parseFloat(order ? order.rate : apiRate) +
           parseFloat(takeProfitPips * taPipValue)
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
       realSLRate = parseFloat(
@@ -201,7 +201,11 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       let currDateAndTime = new Date();
       currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 4);
 
-      if (new Date(expirationData.expirationDate) < currDateAndTime) {
+      const expDate = `${moment(expirationData.expirationDate).format(
+        "YYYY-MM-DD"
+      )}T${moment(expirationData.expirationTime).format("HH:mm:ss")}`;
+
+      if (new Date(expDate) < currDateAndTime) {
         Toast.show({
           type: "error",
           text1: `Please choose a future date.`,
@@ -215,7 +219,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       if (
         !checkAvailableForTrading(
           selectedOption.id,
-          expirationData.expirationDate,
+          new Date(expDate),
           simplexOptionsByType
         )
       ) {
@@ -258,7 +262,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         .then(({ response }) => {
           let currTrade = {};
           currTrade.type = response.body.data.type;
-          currTrade.isMarket = isMarket;
+          currTrade.isMarket = false;
           currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
           currTrade.isBuy = tradeDirection === "up" ? true : false;
           setTradeProgress(false);
@@ -278,7 +282,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         .then(({ response }) => {
           let currTrade = {};
           currTrade.type = response.body.data.type;
-          currTrade.isMarket = isMarket;
+          currTrade.isMarket = true;
           currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
           currTrade.isBuy = tradeDirection === "up" ? true : false;
           setTradeProgress(false);
@@ -307,7 +311,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
         .then(({ response }) => {
           let currTrade = {};
           currTrade.type = response.body.data.type;
-          currTrade.isMarket = false;
+          currTrade.isMarket = isMarket;
           currTrade.option = simplexOptionsByType.All[selectedOption.id].name;
           currTrade.isBuy = tradeDirection === "up" ? true : false;
           setTradeProgress(false);
@@ -372,6 +376,11 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
           currentAssetSettings = body;
           currentAssetSettings.pipPrice = currentAssetSettings.USDExchangeRate;
+          if (order && !isPending) {
+            currentAssetSettings.modifyPosition = true;
+          } else if (order && isPending) {
+            currentAssetSettings.modifyOrder = true;
+          }
           setCurrentAssetSettings(currentAssetSettings);
           // Set investment values list
           setInvestmentDropdownData(listValue);

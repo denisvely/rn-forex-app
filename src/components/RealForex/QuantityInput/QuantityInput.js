@@ -316,6 +316,7 @@ const QuantityInput = ({ value, setQuantity, state, setState, isMarket }) => {
           placeholderTextColor={colors.fontSecondaryColor}
           style={styles.quantityInput}
           onFocus={onFocus}
+          keyboardType="numeric"
         />
         {!isFocused ? (
           <TouchableHighlight

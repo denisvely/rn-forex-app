@@ -6,7 +6,6 @@ import { deviceWidth } from "../../../utils";
 import PendingDirectionAndRate from "./components/PendingDirectionAndRate/PendingDirectionAndRate";
 import { ExpirationDate } from "../../../components";
 
-
 const PendingOrderControls = ({ pendingState, setPendingState }) => {
   return (
     <View style={{ width: deviceWidth }}>
@@ -35,8 +34,8 @@ const PendingOrderControls = ({ pendingState, setPendingState }) => {
         setPendingState={setPendingState}
       />
       <ExpirationDate
-        state={pendingState}
-        setState={setPendingState}
+        pendingState={pendingState}
+        setPendingState={setPendingState}
       />
     </View>
   );

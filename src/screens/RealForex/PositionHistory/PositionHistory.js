@@ -96,7 +96,7 @@ const PositionHistory = ({ route, navigation }) => {
             <View>
               <Typography
                 name="small"
-                text={t("common-labels.averageClosePrice")}
+                text={t("common-labels.executionPrice")}
                 style={styles.secondaryLabel}
               />
               <Typography name="small" text={item.ExecutionPrice} />
