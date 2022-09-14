@@ -5,12 +5,12 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  getRealForexOptionsByType,
+  getSimplexOptionsByType,
   getSelectedAsset,
   getAssetsOrder,
-} from "../../store/realForex";
+} from "../../store/simplex";
 
-import realForexServices from "../../services/realForexServices";
+import simplexServices from "../../services/simplexServices";
 
 import favouritesListStyles from "./favouritesSimplexIconStyles";
 
@@ -27,31 +27,32 @@ const favouriteSvgActive = `<svg width="22" height="21" viewBox="0 0 22 21" fill
 
 `;
 
-const updateOrder = realForexServices.updateAssetOrder();
+const updateOrder = simplexServices.updateAssetOrder();
 
 const FavouritesSimplexIcon = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isFav, setFav] = useState(false);
-  const realForexOptionsByType = useSelector((state) =>
-    getRealForexOptionsByType(state)
+  const simplexOptionsByType = useSelector((state) =>
+    getSimplexOptionsByType(state)
   );
   const selectedAsset = useSelector((state) => getSelectedAsset(state));
 
   const checkIfFavourite = (id) => {
-    for (let i = 0; i < realForexOptionsByType.Favourites.length; i++) {
-      if (parseInt(realForexOptionsByType.Favourites[i].id) == id) {
+    for (let i = 0; i < simplexOptionsByType.Favourites.length; i++) {
+      if (parseInt(simplexOptionsByType.Favourites[i].id) == id) {
         return true;
       }
     }
+    console.log(simplexOptionsByType.Favourites);
 
     return false;
   };
 
   useEffect(() => {
-    if (realForexOptionsByType && selectedAsset) {
+    if (simplexOptionsByType && selectedAsset) {
       setFav(checkIfFavourite(selectedAsset.id));
     }
-  }, [realForexOptionsByType]);
+  }, [simplexOptionsByType]);
 
   const addRemoveFavourite = () => {
     updateOrder
@@ -59,7 +60,7 @@ const FavouritesSimplexIcon = ({ navigation }) => {
         id: selectedAsset.id,
         posFrom: 0,
         posTo: 0,
-        game: 24,
+        game: 18,
         fav: !isFav,
       })
 

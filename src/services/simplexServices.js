@@ -465,4 +465,30 @@ export default {
 
     return service;
   },
+  updateAssetOrder: () => {
+    const service = new Service(
+      "v1/tradingsetting/rearrangement?optionType=18",
+      apiConsts.HTTP_METHOD_POST
+    );
+
+    service.setPrepareRequest((request, { id, posFrom, posTo, game, fav }) => {
+      let options = {};
+
+      options["TAID"] = id;
+      options["positionFrom"] = posFrom;
+      options["positionTo"] = posTo;
+      options["optionType"] = game;
+      options["IsFavorite"] = fav;
+
+      request.setHeader(
+        "Authorization",
+        `OAuth oauth_token=${ServiceManager.getAccessToken()}`
+      );
+      request.convertToQueryParamsWithoutToken(options);
+
+      return request;
+    });
+
+    return service;
+  },
 };

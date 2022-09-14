@@ -31,6 +31,7 @@ import {
   FavouritesIcon,
   HeaderTitleLogo,
   ChartIcon,
+  FavouritesSimplexIcon,
 } from "../components";
 import { getApplication } from "../store/app";
 
@@ -267,7 +268,7 @@ const MainStackNavigator = ({ navigation }) => {
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
-              firstComponent={<FavouritesIcon navigation={navigation} />}
+              firstComponent={<FavouritesSimplexIcon navigation={navigation} />}
             />
           ),
         }}
@@ -286,7 +287,7 @@ const MainStackNavigator = ({ navigation }) => {
           headerRight: () => (
             <HeaderRight
               navigation={navigation}
-              firstComponent={<FavouritesIcon navigation={navigation} />}
+              firstComponent={<FavouritesSimplexIcon navigation={navigation} />}
               secondComponent={<ChartIcon navigation={navigation} />}
             />
           ),

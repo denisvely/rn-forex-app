@@ -104,18 +104,7 @@ export const loadInitialSimplexData = (dispatch) => {
         type: actionTypes.SIMPLEX_OPTIONS_AND_BALANCE,
         payload: body,
       });
-      getSimplexAssetsOrder
-        .fetch()
-        .then(({ response }) => {
-          const body = response.body.data.Favorite;
-          dispatch({
-            type: actionTypes.SIMPLEX_ASSETS_ORDER,
-            payload: body,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      getAssetsOrder(dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -158,6 +147,21 @@ export const getBalance = (dispatch) => {
       dispatch({
         type: actionTypes.SIMPLEX_USER_BALANCE,
         payload: response.body.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getAssetsOrder = (dispatch) => {
+  getSimplexAssetsOrder
+    .fetch()
+    .then(({ response }) => {
+      const body = response.body.data.Favorite;
+      dispatch({
+        type: actionTypes.SIMPLEX_ASSETS_ORDER,
+        payload: body,
       });
     })
     .catch((err) => {

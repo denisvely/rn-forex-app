@@ -25,7 +25,7 @@ const initialState = {
     Stocks: {},
     Commodities: {},
     Futures: {},
-    Favorites: [],
+    Favourites: [],
   },
   simplexNotifications: null,
   simplexTotalNewNotifications: null,
