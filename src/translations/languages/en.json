@@ -198,6 +198,7 @@
     "setRiskSensivity": "Set risk sensitivity",
     "invest": "Invest",
     "modify": "Modify",
-    "targetPrice": "Target Price"
+    "targetPrice": "Target Price",
+    "reinvest": "Reinvest"
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import SlidingUpPanel from "rn-sliding-up-panel";
 

@@ -94,7 +94,7 @@ const RealForexOrderChart = ({ route, navigation }) => {
           <SafeAreaView style={styles.container}>
             <WebView
               source={{
-                uri: `https://advfeed-uat.testqa.me/tradingview/indexw.html?taid=${asset.id}`,
+                uri: `https://advfeed.finte.co/tradingview/indexw.html?taid=${asset.id}`,
               }}
               allowFileAccessFromFileURLs={true}
               originWhitelist={["*"]}

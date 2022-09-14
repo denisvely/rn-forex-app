@@ -49,6 +49,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
   const asset = route.params.asset;
   const order = route.params.order;
   const isPending = route.params.isPending;
+  const isReinvest = route.params.isReinvest;
 
   const simplexOptionsByType = useSelector((state) =>
     getSimplexOptionsByType(state)
@@ -603,12 +604,12 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     <View style={styles.container}>
       <MarketPendingButtons
         isMarket={isMarket}
-        isModify={isModify}
+        isModify={isModify && !isReinvest}
         isPending={isPending}
         setOrderType={(orderType) => setOrderType(orderType)}
       />
       <SimplexDirectionsButtons
-        disabled={isModify}
+        disabled={isModify && !isReinvest}
         tradeDirection={tradeDirection}
         setDirection={(direction) => {
           setDirection(direction);
@@ -641,13 +642,13 @@ const SimplexOrderDetails = ({ route, navigation }) => {
               />
             ) : null}
             <InvestAmount
-              disabled={tradeDirection === null || isModify}
+              disabled={tradeDirection === null || (isModify && !isReinvest)}
               investmentSelected={investmentSelected}
               setInvestmentSelected={setInvestmentSelected}
               investmentDropdownData={investmentDropdownData}
             />
             <RiskSensivityButtons
-              disabled={tradeDirection === null || isModify}
+              disabled={tradeDirection === null || (isModify && !isReinvest)}
               risk={risk}
               setRisk={(risk) => setRisk(risk)}
             />
@@ -684,7 +685,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
                 opacity: tradeInProgress ? 0.3 : 1,
               }}
               text={
-                isModify
+                isModify && !isReinvest
                   ? t("easyForex.modify")
                   : isMarket
                   ? t("easyForex.invest")
