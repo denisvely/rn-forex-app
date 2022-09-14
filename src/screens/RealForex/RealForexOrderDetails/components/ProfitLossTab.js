@@ -7,8 +7,6 @@ import {
   Loading,
   Button,
   ProfitLossOrderControls,
-  QuantityInput,
-  OrderInfo,
   Typography,
   BuyPrice,
   SellPrice,
@@ -22,7 +20,7 @@ import {
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
 import { convertUnits, remainingTime } from "store/realForex/helpers";
-import { deviceWidth } from "../../../../utils";
+import { deviceHeight, deviceWidth } from "../../../../utils";
 import { processMarketOrder } from "../helpers";
 import { getUser } from "../../../../store/app";
 import { colors } from "../../../../constants";
@@ -208,15 +206,6 @@ const ProfitLossTab = ({
                   paddingBottom: 200,
                 }}
               >
-                {user.forexModeId === 2 && !isMarketClosed ? (
-                  <QuantityInput
-                    value={quantity}
-                    setQuantity={(value) => setQuantity(value)}
-                    state={marketState}
-                    setState={setMarketState}
-                    isMarket={true}
-                  />
-                ) : null}
                 {isMarketClosed ? (
                   <View style={styles.marketClosedWrapper}>
                     <Typography
@@ -238,74 +227,17 @@ const ProfitLossTab = ({
                   state={marketState}
                   setState={setMarketState}
                 />
-                {user.forexModeId === 2 && !isMarketClosed ? (
-                  <OrderInfo
-                    quantityValue={currentTrade.quantity}
-                    isMarket={true}
-                    orderInfoData={orderInfoData}
-                    setOrderInfoData={setOrderInfoData}
-                  />
-                ) : null}
               </ScrollView>
               <>
-                {user.forexModeId === 2 ? (
-                  <View style={styles.buttonsWrapper}>
-                    <Button
-                      size="medium"
-                      type="buy"
-                      style={{
-                        ...styles.buyButton,
-                      }}
-                      onPress={() => makeNewMarketOrder(true)}
-                    >
-                      {() => (
-                        <View>
-                          <Typography
-                            style={styles.buyButtonText}
-                            name="small"
-                            text={t("common-labels.buy")}
-                          />
-                          <BuyPrice
-                            asset={realForexPrices[asset.id]}
-                            textColor={colors.white}
-                          />
-                        </View>
-                      )}
-                    </Button>
-                    <Button
-                      size="medium"
-                      type="sell"
-                      style={{
-                        ...styles.sellButton,
-                      }}
-                      onPress={() => makeNewMarketOrder(false)}
-                    >
-                      {() => (
-                        <View>
-                          <Typography
-                            style={styles.sellButtonText}
-                            name="small"
-                            text={t("common-labels.sell")}
-                          />
-                          <SellPrice
-                            asset={realForexPrices[asset.id]}
-                            textColor={colors.white}
-                          />
-                        </View>
-                      )}
-                    </Button>
-                  </View>
-                ) : (
-                  <View style={styles.buttonsWrapper}>
-                    <Button
-                      text={t("common-labels.modify")}
-                      type="primary"
-                      font="mediumBold"
-                      size="big"
-                      onPress={makeModifyMarketOrder}
-                    />
-                  </View>
-                )}
+                <View style={styles.buttonsWrapper}>
+                  <Button
+                    text={t("common-labels.modify")}
+                    type="primary"
+                    font="mediumBold"
+                    size="big"
+                    onPress={makeModifyMarketOrder}
+                  />
+                </View>
               </>
             </KeyboardAvoidingView>
           </>

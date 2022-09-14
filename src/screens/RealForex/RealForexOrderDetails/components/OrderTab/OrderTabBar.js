@@ -8,17 +8,6 @@ import { deviceWidth } from "../../../../../utils";
 
 import styles from "./orderTabBarStyles";
 
-const innerRoutes = [
-  {
-    key: "market",
-    name: "Market",
-  },
-  {
-    key: "pending",
-    name: "Pending",
-  },
-];
-
 const OrderTabBar = ({
   state,
   descriptors,
@@ -28,6 +17,46 @@ const OrderTabBar = ({
   isHedging,
 }) => {
   const { t } = useTranslation();
+  const innerRoutes = !order
+    ? [
+        {
+          key: "market",
+          name: "Market",
+        },
+        {
+          key: "pending",
+          name: "Pending",
+        },
+      ]
+    : isPending
+    ? [
+        {
+          key: "pending",
+          name: "Pending",
+        },
+      ]
+    : isHedging
+    ? [
+        {
+          key: "profitloss",
+          name: "ProfitLoss",
+        },
+      ]
+    : [
+        {
+          key: "market",
+          name: "Market",
+        },
+        {
+          key: "profitloss",
+          name: "ProfitLoss",
+        },
+        {
+          key: "pending",
+          name: "Pending",
+        },
+      ];
+
   return (
     <View style={styles.container}>
       <View style={styles.orderTypeButtonsWrapper}>
@@ -56,13 +85,13 @@ const OrderTabBar = ({
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={{
-                    ...styles.orderTypeButtonActive,
-                    width:
-                      !isPending && order && isHedging
-                        ? "100%"
-                        : deviceWidth / 2 - 40,
-                  }}
+                  pressableStyle={
+                    (isPending && order) || (order && isHedging)
+                      ? styles.orderTypeButtonFullActive
+                      : !isPending && order && !isHedging
+                      ? styles.orderTypeButtonThreeActive
+                      : styles.orderTypeButtonActive
+                  }
                   onPress={onPress}
                 />
               ) : (
@@ -70,7 +99,13 @@ const OrderTabBar = ({
                   type="text"
                   text={t(`common-labels.${route.name}`)}
                   size="tabButton"
-                  pressableStyle={styles.orderTypeButton}
+                  pressableStyle={
+                    !isPending && order && isHedging
+                      ? styles.orderTypeButtonFull
+                      : !isPending && order && !isHedging
+                      ? styles.orderTypeButtonThree
+                      : styles.orderTypeButton
+                  }
                   onPress={onPress}
                 />
               )}

@@ -23,10 +23,28 @@ export default StyleSheet.create({
     width: deviceWidth / 2 - 40,
     borderRadius: 4,
   },
+  orderTypeButtonFull: {
+    width: "100%",
+    borderRadius: 4,
+  },
+  orderTypeButtonThree: {
+    borderRadius: 4,
+    width: deviceWidth / 3 - 24,
+  },
   orderTypeButtonActive: {
     backgroundColor: colors.white,
     width: deviceWidth / 2 - 40,
     borderRadius: 4,
+  },
+  orderTypeButtonFullActive: {
+    backgroundColor: colors.white,
+    width: "100%",
+    borderRadius: 4,
+  },
+  orderTypeButtonThreeActive: {
+    backgroundColor: colors.white,
+    borderRadius: 4,
+    width: deviceWidth / 3 - 24,
   },
   inputsWrapper: {
     marginVertical: 8,

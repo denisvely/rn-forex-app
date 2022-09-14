@@ -397,7 +397,11 @@ const PendingTab = ({
       }
       setPendingState((prevState) => ({
         ...prevState,
-        pendingPrice: currentlyModifiedOrder.TradeRate,
+        pendingPrice: currentlyModifiedOrder.TradeRate
+          ? currentlyModifiedOrder.TradeRate
+          : isDirectionBuy
+          ? parseFloat(realForexPrices[asset.id].ask)
+          : parseFloat(realForexPrices[asset.id].bid),
         isBuyPending: isDirectionBuy,
         pendingTPDistance: TPDistance,
         pendingTPAmount: TPAmount,

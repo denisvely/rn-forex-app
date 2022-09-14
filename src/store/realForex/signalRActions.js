@@ -97,13 +97,13 @@ const signalRMiddleware =
         );
       });
 
-      connection.start({ withCredentials: false }).fail(function () {
+      connection.start().fail(function () {
         console.log("Could not connect");
       });
 
       connection.disconnected(function () {
         console.log("Disconnected");
-        connection.start({ withCredentials: false });
+        connection.start();
       });
     }
 

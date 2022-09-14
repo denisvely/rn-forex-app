@@ -18,10 +18,11 @@ import {
   getCurrentTrade,
   getRealForexPrices,
   getRealForexOptionsByType,
+  getCurrentlyModifiedOrder,
 } from "../../../../store/realForex";
 import realForexServices from "../../../../services/realForexServices";
 import { convertUnits, remainingTime } from "store/realForex/helpers";
-import { deviceWidth } from "../../../../utils";
+import { deviceWidth, deviceHeight } from "../../../../utils";
 import { processMarketOrder } from "../helpers";
 import { colors } from "../../../../constants";
 
@@ -45,6 +46,9 @@ const MarketTab = ({
     getRealForexOptionsByType(state)
   );
   const realForexPrices = useSelector((state) => getRealForexPrices(state));
+  const currentlyModifiedOrder = useSelector((state) =>
+    getCurrentlyModifiedOrder(state)
+  );
   const currentTrade = useSelector((state) => getCurrentTrade(state));
   const [tradeInProgress, setTradeProgress] = useState(false);
 
@@ -189,6 +193,7 @@ const MarketTab = ({
                     width: deviceWidth,
                     flexGrow: 1,
                     paddingBottom: 200,
+                    height: currentlyModifiedOrder && deviceHeight - 170,
                   }}
                 >
                   <QuantityInput
@@ -198,10 +203,12 @@ const MarketTab = ({
                     setState={setMarketState}
                     isMarket={true}
                   />
-                  <MarketOrderControls
-                    marketState={marketState}
-                    setMarketState={setMarketState}
-                  />
+                  {!currentlyModifiedOrder ? (
+                    <MarketOrderControls
+                      marketState={marketState}
+                      setMarketState={setMarketState}
+                    />
+                  ) : null}
 
                   <OrderInfo
                     quantityValue={currentTrade.quantity}
