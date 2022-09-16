@@ -41,7 +41,6 @@ import styles from "./simplexOrderDetailsStyles";
 const addForexTradeOrder = simplexServices.addForexTradeOrder();
 const modifySimplexPosition = simplexServices.modifySimplexPosition();
 const editForexTradeOrder = simplexServices.editForexTradeOrder();
-let isFirstLoad = true;
 
 const SimplexOrderDetails = ({ route, navigation }) => {
   const { t } = useTranslation();
@@ -387,7 +386,6 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           setInvestmentDropdownData(listValue);
           // Set default investment value
           setInvestmentSelected(minAmount);
-
           if (order) {
             setSubmitStatus(true);
             // Pending
@@ -418,6 +416,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
                   simplexPrices[currentTAID].accuracy
                 )
               );
+              setIsModify(true);
               // Set Expiration date and time
               if (order.ExpirationDate != null) {
                 var expDate = new Date(order.ExpirationDate.timestamp);
@@ -451,6 +450,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
               setTakeProfit(order.takeProfitAmount);
               // Set SL
               setStopLoss(order.stopLossAmount);
+              setIsModify(true);
               // Set Expiration date and time
               if (order.expirationDate != null) {
                 var expDate = new Date(order.expirationDate.timestamp);
@@ -461,7 +461,6 @@ const SimplexOrderDetails = ({ route, navigation }) => {
                 }));
               }
             }
-            setIsModify(true);
           }
         }
       });
@@ -581,11 +580,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
   useEffect(() => {
     if (isModify && order && isSubmitInactive) {
-      if (isFirstLoad) {
-        isFirstLoad = false;
-      } else {
-        setSubmitStatus(false);
-      }
+      setSubmitStatus(false);
     }
   }, [takeProfit, stopLoss, expirationData, targetPrice]);
 
