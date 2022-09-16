@@ -167,7 +167,7 @@ export const showNotification = (toastType, values) => {
       visibilityTime: 5000,
       autoHide: true,
     });
-  } else {
+    return;
   }
 
   if (values.type == "CountryNotAllowed") {

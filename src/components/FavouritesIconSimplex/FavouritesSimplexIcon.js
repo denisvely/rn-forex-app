@@ -43,7 +43,6 @@ const FavouritesSimplexIcon = ({ navigation }) => {
         return true;
       }
     }
-    console.log(simplexOptionsByType.Favourites);
 
     return false;
   };
