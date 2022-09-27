@@ -39,24 +39,12 @@ export const loadInitialSimplexData = (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
-  getSimplexClosedPositions
-    .fetch({
-      fromDate:
-        moment(new Date().setMonth(new Date().getMonth() - 1)).format(
-          "YYYY-MM-DD"
-        ) + "T00:00:01",
-      toDate: moment(new Date()).format("YYYY-MM-DD") + "T23:59:59",
-    })
-    .then(({ response }) => {
-      const body = response.body.data.trades;
-      dispatch({
-        type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
-        payload: body,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  getClosedPositions(dispatch, {
+    fromDate: null,
+    toDate: null,
+    positionId: null,
+    tradableAssetId: null,
+  });
   getSimplexTradingSettings
     .fetch()
     .then(({ response }) => {
@@ -161,6 +149,37 @@ export const getAssetsOrder = (dispatch) => {
       const body = response.body.data.Favorite;
       dispatch({
         type: actionTypes.SIMPLEX_ASSETS_ORDER,
+        payload: body,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getClosedPositions = (
+  dispatch,
+  { fromDate, toDate, positionId, tradableAssetId }
+) => {
+  getSimplexClosedPositions
+    .fetch({
+      fromDate: fromDate
+        ? moment(fromDate).format("YYYY-MM-DD") + "T00:00:01"
+        : moment(new Date().setMonth(new Date().getMonth() - 1)).format(
+            "YYYY-MM-DD"
+          ) + "T00:00:01",
+      toDate: toDate
+        ? moment(toDate).format("YYYY-MM-DD") + "T23:59:59"
+        : moment(new Date().setMonth(new Date().getMonth())).format(
+            "YYYY-MM-DD"
+          ) + "T23:59:59",
+      positionId: positionId ? positionId : null,
+      tradableAssetId: tradableAssetId ? tradableAssetId : 0,
+    })
+    .then(({ response }) => {
+      const body = response.body.data.trades;
+      dispatch({
+        type: actionTypes.SIMPLEX_CLOSED_POSITIONS,
         payload: body,
       });
     })

@@ -20,17 +20,19 @@ export default StyleSheet.create({
     height: 30,
     width: "100%",
     paddingHorizontal: 16,
-  },
-  closePositionFilter: {
-    height: 30,
-    width: "100%",
+    zIndex: 9999,
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: colors.tabsBackground,
   },
+  closePositionFilter: {
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   dateString: {
     marginHorizontal: 5,
-    marginTop: 5
   },
 });

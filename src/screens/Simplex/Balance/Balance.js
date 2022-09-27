@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { useIsFocused } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -10,17 +10,19 @@ import {
   Loading,
 } from "../../../components";
 import { getSimplexBalance, getBalance } from "../../../store/simplex";
-import { colors } from "constants";
 
 import styles from "./balanceStyles";
 
-const Balance = ({ navigation }) => {
+const Balance = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const simplexBalance = useSelector((state) => getSimplexBalance(state));
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    getBalance(dispatch);
+    if (isFocused) {
+      getBalance(dispatch);
+    }
   }, []);
 
   return (
