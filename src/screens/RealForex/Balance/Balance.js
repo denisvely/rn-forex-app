@@ -46,6 +46,9 @@ const Balance = () => {
   const [userRealForexBalance, setBalance] = useState(initalBalanceData);
 
   const recalculateMarginValues = () => {
+    if (!realForexPrices) {
+      return;
+    }
     let totalProfit = 0,
       totalMargin = 0,
       equity = 0;
@@ -171,14 +174,14 @@ const Balance = () => {
         if (!isNaN(totalProfit)) {
           setBalance((prevState) => ({
             ...prevState,
-            profit: totalProfit,
+            profit: totalProfit.toFixed(2),
           }));
         }
         setBalance((prevState) => ({
           ...prevState,
-          forexMargin: totalMargin,
-          equity: equity,
-          availableBalance: equity - totalMargin,
+          forexMargin: totalMargin.toFixed(2),
+          equity: equity.toFixed(2),
+          availableBalance: (equity - totalMargin).toFixed(2),
           marginPercent: isNaN(
             parseInt((totalMargin * parseFloat(user.MarginUsage)) / equity)
           )
@@ -190,16 +193,16 @@ const Balance = () => {
   };
 
   useEffect(() => {
-    if (realForexPrices) {
+    const updateBalance = setInterval(() => {
       recalculateMarginValues();
-    }
-  }, [realForexPrices]);
-
-  useEffect(() => {
-    getBalance(dispatch);
+    }, 1000);
+    return () => {
+      clearInterval(updateBalance);
+    };
   }, []);
 
   useEffect(() => {
+    getBalance(dispatch);
     if (realForexBalance) {
       setBalance((prevState) => ({
         ...prevState,
@@ -211,6 +214,15 @@ const Balance = () => {
         availableBalance: realForexBalance.availableBalance,
       }));
       setReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (realForexBalance) {
+      setBalance((prevState) => ({
+        ...prevState,
+        balance: realForexBalance.balance,
+      }));
     }
   }, [realForexBalance]);
 
@@ -263,7 +275,7 @@ const Balance = () => {
                   tintColorSecondary={colors.blueColor}
                   backgroundColor="rgba(124, 124, 125, 0.3)"
                 >
-                  {(fill) => (
+                  {() => (
                     <View style={styles.circleChilds}>
                       <Typography
                         name="nanoBold"

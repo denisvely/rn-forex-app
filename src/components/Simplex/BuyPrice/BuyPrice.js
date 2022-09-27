@@ -23,30 +23,36 @@ const BuyPrice = ({ asset, textColor = colors.white }) => {
     ).toFixed(simplexPrices[id].accuracy);
   };
 
-  useEffect(() => {
-    if (simplexPrices) {
-      if (!lastPrice) {
-        setLastPrice(parseFloat(getPrice(asset.id)).toFixed(asset.accuracy));
-        return;
-      }
-
-      let averagePrice = (
-        (parseFloat(simplexPrices[asset.id].bid) +
-          parseFloat(simplexPrices[asset.id].ask)) /
-        2
-      ).toFixed(asset.accuracy);
-
-      if (parseFloat(lastPrice) == parseFloat(averagePrice)) {
-        return;
-      } else if (parseFloat(lastPrice) < parseFloat(averagePrice)) {
-        setIsUp(true);
-      } else {
-        setIsUp(false);
-      }
-
+  const recalculateDirection = () => {
+    if (!lastPrice) {
       setLastPrice(parseFloat(getPrice(asset.id)).toFixed(asset.accuracy));
+      return;
     }
-  }, [simplexPrices]);
+
+    let averagePrice = (
+      (parseFloat(simplexPrices[asset.id].bid) +
+        parseFloat(simplexPrices[asset.id].ask)) /
+      2
+    ).toFixed(asset.accuracy);
+
+
+    if (parseFloat(lastPrice) == parseFloat(averagePrice)) {
+      return;
+    } else if (parseFloat(lastPrice) < parseFloat(averagePrice)) {
+      setIsUp(true);
+    } else {
+      setIsUp(false);
+    }
+
+    setLastPrice(parseFloat(getPrice(asset.id)).toFixed(asset.accuracy));
+  };
+
+  useEffect(() => {
+    if (!simplexPrices) {
+      return;
+    }
+    recalculateDirection();
+  }, [simplexPrices[asset.id]]);
 
   return (
     <>
