@@ -406,7 +406,9 @@ export const showForexNotification = (toastType, values) => {
       }`;
       const expirationDate = `${values.pendingDate ? "EXP" : ""} ${
         values.pendingDate
-          ? moment(values.pendingDate).format("YYYY/MM/DD HH:MM")
+          ? `${values.pendingDate.split("T")[0]} ${
+              values.pendingDate.split("T")[1]
+            }`
           : ""
       }`;
 

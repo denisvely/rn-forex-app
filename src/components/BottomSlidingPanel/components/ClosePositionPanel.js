@@ -198,7 +198,7 @@ const ClosePositionPanel = ({ trade, toggleSlidingPanel }) => {
         <Typography name="normalBold" text={trade.description} />
         <Typography name="normal" text={"?"} />
       </Typography>
-      {user.forexModeId === 2 ? (
+      {user.forexModeId === 3 ? (
         <View style={styles.partiallyCloseWrapper}>
           <View style={styles.onOffWrapper}>
             <Typography name="normal" text={"Partially close"} />

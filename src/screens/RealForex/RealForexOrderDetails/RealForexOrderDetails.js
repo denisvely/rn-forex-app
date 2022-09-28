@@ -64,6 +64,8 @@ const RealForexOrderDetails = ({ route, navigation }) => {
     if (order) {
       if (isPending) {
         order.isPending = true;
+      } else {
+        order.isPending = false;
       }
       setCurrentlyModifiedOrder(dispatch, order);
     }

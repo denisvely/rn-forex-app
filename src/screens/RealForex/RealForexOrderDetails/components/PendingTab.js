@@ -121,8 +121,7 @@ const PendingTab = ({
         "T" +
         sHours +
         ":" +
-        sMinutes +
-        ":00";
+        sMinutes;
       currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 5);
       if (
         new Date(expirationDate) < convertUTCDateToLocalDate(currDateAndTime)
@@ -158,7 +157,11 @@ const PendingTab = ({
           parseFloat(pip) == 0 ? 0.00001 : pip,
           parseFloat(pendingState.pendingPrice),
           false,
-          currentlyModifiedOrder != "" ? currentlyModifiedOrder.OrderID : "", //
+          currentlyModifiedOrder
+            ? currentlyModifiedOrder.OrderID
+              ? currentlyModifiedOrder.OrderID
+              : currentlyModifiedOrder.orderID
+            : "", //
           pendingState.pendingExpirationDate ? currentTrade.pendingDate : "", // expirationDate
           "", // pendingTakeProfitRate
           "" // pendingStopLossRate;
@@ -464,7 +467,8 @@ const PendingTab = ({
                 font="mediumBold"
                 size="big"
                 onPress={
-                  currentlyModifiedOrder !== null
+                  currentlyModifiedOrder !== null &&
+                  currentlyModifiedOrder.isPending
                     ? modifyPendingOrder
                     : makeNewPendingOrder
                 }
