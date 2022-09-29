@@ -55,16 +55,15 @@ export default {
 
     return service;
   },
-  cancelOpenPosition: (positionId) => {
+  cancelOpenPosition: () => {
     const service = new Service(
       "v1/games/forex/orders/closeForexTrade",
       apiConsts.HTTP_METHOD_GET
     );
 
-    let options = {};
-    options.orderId = positionId;
-
-    service.setPrepareRequest((request) => {
+    service.setPrepareRequest((request, { positionId }) => {
+      let options = {};
+      options.orderId = positionId;
       request.setHeader(
         "Authorization",
         `OAuth oauth_token=${ServiceManager.getAccessToken()}`
@@ -79,15 +78,17 @@ export default {
   },
   cancelPendingOrder: (orderId) => {
     const service = new Service(
-      `v1/games/forex/pendingorders/cancel/${orderId}/18`,
+      `v1/games/forex/pendingorders/cancel/`,
       apiConsts.HTTP_METHOD_PUT
     );
 
-    service.setPrepareRequest((request) => {
+    service.setPrepareRequest((request, { orderId }) => {
       request.setHeader(
         "Authorization",
         `OAuth oauth_token=${ServiceManager.getAccessToken()}`
       );
+
+      request.addParamToTheUrl(`${orderId}/18`);
 
       return request;
     });

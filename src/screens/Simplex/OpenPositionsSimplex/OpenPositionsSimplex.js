@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import Toast from "react-native-toast-message";
 
 import { getSimplexOpenPositions } from "../../../store/simplex";
 import { deviceWidth } from "../../../utils";
@@ -13,14 +14,32 @@ import {
 import simplexServices from "../../../services/simplexServices";
 import styles from "./openPositionsSimplexStyles";
 
+const closePosition = simplexServices.cancelOpenPosition();
+
 const OpenPositionsSimplex = ({ navigation }) => {
   const dispatch = useDispatch();
   const [slidingPanelType, setPanelType] = useState(null);
   const [currentTrade, setCurrentTrade] = useState(null);
   const openPositionsRef = useRef();
   const openPositions = useSelector((state) => getSimplexOpenPositions(state));
+
   const cancelSimplexOpenPosition = (id) => {
-    simplexServices.cancelOpenPosition(id).fetch();
+    closePosition
+      .fetch({ positionId: id })
+      .then(({ response }) => {
+        if (response.code == 200) {
+          Toast.show({
+            type: "success",
+            text1: "Position closed",
+            topOffset: 100,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

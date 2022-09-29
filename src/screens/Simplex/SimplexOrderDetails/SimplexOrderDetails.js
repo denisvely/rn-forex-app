@@ -135,7 +135,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
       2
     ).toFixed(simplexPrices[selectedOption.id].accuracy);
 
-    if (order && !isPending) {
+    if (order && !isPending && !isReinvest) {
       calculatedPip = order.pip / (riskLeverage[risk] * investmentSelected);
     } else {
       const pipPrice = await simplexServices
@@ -240,7 +240,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
     }
 
     // TODO - Modify Order, Modify Position - easyForex.js - line 791
-    if (order && isPending) {
+    if (order && isPending && !isReinvest) {
       editForexTradeOrder
         .fetch(
           selectedOption.id,
@@ -269,7 +269,7 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           processMarketOrder(response.body, currTrade);
           navigation.navigate("quotes");
         });
-    } else if (order && !isPending) {
+    } else if (order && !isPending && !isReinvest) {
       modifySimplexPosition
         .fetch(
           order.orderID,
@@ -387,7 +387,10 @@ const SimplexOrderDetails = ({ route, navigation }) => {
           // Set default investment value
           setInvestmentSelected(minAmount);
           if (order) {
-            setSubmitStatus(true);
+            if (!isReinvest) {
+              setSubmitStatus(true);
+            }
+
             // Pending
             if (isPending) {
               setOrderType(false);
