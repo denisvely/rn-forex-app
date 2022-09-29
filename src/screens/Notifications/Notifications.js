@@ -69,6 +69,7 @@ const Notifications = ({ navigation }) => {
             width: deviceWidth,
             justifyContent: "center",
             alignItems: "center",
+            paddingBottom: 100,
           }}
           style={styles.flatListContainer}
           listRef={flatListRef}

@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { colors } from "constants";
-import { deviceHeight, deviceWidth } from "utils";
 
 export default StyleSheet.create({
   container: {
@@ -15,7 +14,7 @@ export default StyleSheet.create({
   },
   notificationsHeader: {
     backgroundColor: "#F3F3F3",
-    height: 30,
+    height: 35,
     paddingHorizontal: 16,
     paddingVertical: 8.5,
     justifyContent: "space-between",

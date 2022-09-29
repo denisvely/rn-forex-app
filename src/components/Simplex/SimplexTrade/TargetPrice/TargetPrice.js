@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { View } from "react-native";
-import Toast from "react-native-toast-message";
 
 import { Typography } from "../../../../components";
 import Spinner from "../../../Spinner/Spinner";
@@ -34,6 +33,7 @@ const TargetPrice = ({ targetPrice, setTargetPrice, asset, disabled }) => {
       />
       <View style={styles.quantityInputWrapper}>
         <Spinner
+          disabled={disabled}
           placeholder={t("easyForex.targetPrice")}
           spinnerValue={targetPrice}
           onSpinnerChange={(value) => onChange(value)}
