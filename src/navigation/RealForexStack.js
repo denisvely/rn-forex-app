@@ -320,6 +320,7 @@ const RealForexStackNavigator = ({ navigation }) => {
         screenOptions={{
           animationEnabled: true,
           headerShown: true,
+          unmountOnBlur: true,
         }}
       >
         <RealForexStack.Screen
@@ -331,6 +332,7 @@ const RealForexStackNavigator = ({ navigation }) => {
             ...headerOptions.headerTitleStyle,
             ...headerOptions.leftAndRightPadding,
             ...headerOptions.whiteBackgroundHeader,
+            unmountOnBlur: true,
             headerLeft: () => (
               <HeaderLeft navigation={navigation} showDrawer={true} />
             ),
@@ -354,6 +356,7 @@ const RealForexStackNavigator = ({ navigation }) => {
             ...headerOptions.headerTitleStyle,
             ...headerOptions.leftAndRightPadding,
             ...headerOptions.whiteBackgroundHeader,
+            unmountOnBlur: true,
             headerLeft: () => (
               <HeaderLeft navigation={navigation} showDrawer={true} />
             ),
@@ -373,6 +376,7 @@ const RealForexStackNavigator = ({ navigation }) => {
           options={{
             tabBarLabel: "pendingOrders",
             title: t("navigation.pendingOrders"),
+            unmountOnBlur: true,
             headerTitleAlign: "center",
             ...headerOptions.headerTitleStyle,
             ...headerOptions.leftAndRightPadding,
@@ -400,6 +404,7 @@ const RealForexStackNavigator = ({ navigation }) => {
             ...headerOptions.headerTitleStyle,
             ...headerOptions.leftAndRightPadding,
             ...headerOptions.whiteBackgroundHeader,
+            unmountOnBlur: true,
             headerLeft: () => (
               <HeaderLeft navigation={navigation} showDrawer={true} />
             ),
@@ -423,6 +428,7 @@ const RealForexStackNavigator = ({ navigation }) => {
             ...headerOptions.headerTitleStyle,
             ...headerOptions.leftAndRightPadding,
             ...headerOptions.whiteBackgroundHeader,
+            unmountOnBlur: true,
             headerLeft: () => (
               <HeaderLeft navigation={navigation} showDrawer={true} />
             ),

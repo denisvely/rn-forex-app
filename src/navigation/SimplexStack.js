@@ -40,6 +40,7 @@ const SimplexStackNavigator = ({ navigation }) => {
       screenOptions={{
         animationEnabled: true,
         headerShown: true,
+        unmountOnBlur: true,
       }}
     >
       <SimplexStack.Screen
@@ -51,6 +52,7 @@ const SimplexStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
+          unmountOnBlur: true,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
@@ -69,6 +71,7 @@ const SimplexStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
+          unmountOnBlur: true,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
@@ -87,6 +90,7 @@ const SimplexStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
+          unmountOnBlur: true,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
@@ -105,6 +109,7 @@ const SimplexStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
+          unmountOnBlur: true,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
@@ -123,6 +128,7 @@ const SimplexStackNavigator = ({ navigation }) => {
           ...headerOptions.headerTitleStyle,
           ...headerOptions.leftAndRightPadding,
           ...headerOptions.whiteBackgroundHeader,
+          unmountOnBlur: true,
           headerLeft: () => (
             <HeaderLeft navigation={navigation} showDrawer={true} />
           ),
