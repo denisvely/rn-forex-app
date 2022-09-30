@@ -125,7 +125,7 @@ const PendingOrdersTradeBox = ({
               style={styles.tradeInfoValue}
               text={
                 item.OrderDate
-                  ? moment(item.OrderDate).format("YYYY-MM-DD hh:mm:ss")
+                  ? moment(item.OrderDate).format("YYYY-MM-DD HH:mm:ss")
                   : "-"
               }
             />
@@ -141,7 +141,7 @@ const PendingOrdersTradeBox = ({
               style={styles.tradeInfoValue}
               text={
                 item.ExpirationDate
-                  ? moment(item.ExpirationDate).format("YYYY-MM-DD hh:mm:ss")
+                  ? moment(item.ExpirationDate).format("YYYY-MM-DD HH:mm:ss")
                   : "GTC"
               }
             />
