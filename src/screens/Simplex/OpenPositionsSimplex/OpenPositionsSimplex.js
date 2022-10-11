@@ -27,7 +27,8 @@ const OpenPositionsSimplex = ({ navigation }) => {
     closePosition
       .fetch({ positionId: id })
       .then(({ response }) => {
-        if (response.code == 200) {
+        if (response.body.data == true) {
+          navigation.navigate("quotes");
           Toast.show({
             type: "success",
             text1: "Position closed",

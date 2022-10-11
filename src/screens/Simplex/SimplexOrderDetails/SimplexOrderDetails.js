@@ -168,21 +168,24 @@ const SimplexOrderDetails = ({ route, navigation }) => {
 
     if (tradeDirection === "up") {
       realTPRate = parseFloat(
-        parseFloat(order ? order.rate : apiRate) +
+        parseFloat(order && !isReinvest ? order.rate : apiRate) +
           parseFloat(takeProfitPips * taPipValue)
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
       realSLRate = parseFloat(
-        parseFloat(assetSettings.modifyPosition ? order.rate : apiRate) -
-          parseFloat(stopLossPips * taPipValue)
+        parseFloat(
+          assetSettings.modifyPosition && !isReinvest ? order.rate : apiRate
+        ) - parseFloat(stopLossPips * taPipValue)
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
     } else {
       realTPRate = parseFloat(
-        parseFloat(assetSettings.modifyPosition ? order.rate : apiRate) -
-          parseFloat(takeProfitPips * taPipValue)
+        parseFloat(
+          assetSettings.modifyPosition && !isReinvest ? order.rate : apiRate
+        ) - parseFloat(takeProfitPips * taPipValue)
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
       realSLRate = parseFloat(
-        parseFloat(assetSettings.modifyPosition ? order.rate : apiRate) +
-          parseFloat(stopLossPips * taPipValue)
+        parseFloat(
+          assetSettings.modifyPosition && !isReinvest ? order.rate : apiRate
+        ) + parseFloat(stopLossPips * taPipValue)
       ).toFixed(simplexPrices[selectedOption.id].accuracy);
     }
 
