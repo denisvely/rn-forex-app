@@ -242,8 +242,7 @@ const PendingTab = ({
         "T" +
         sHours +
         ":" +
-        sMinutes +
-        ":00";
+        sMinutes;
       currDateAndTime.setMinutes(currDateAndTime.getMinutes() + 5);
       if (
         new Date(expirationDate) < convertUTCDateToLocalDate(currDateAndTime)

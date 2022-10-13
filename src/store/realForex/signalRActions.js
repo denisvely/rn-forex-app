@@ -69,18 +69,101 @@ const signalRMiddleware =
       });
 
       eventsHubProxy.on("forexPendingOrder", (event) => {
+        let pendingOrderEvent = null;
+        if (event.EventKey) {
+          pendingOrderEvent = event.EventKey;
+        }
         realForexServices
           .getRealForexPendingOrders(dispatch)
           .fetch()
           .then(({ response }) => {
             const body = response.body.data;
 
+            const payload = {
+              data: body,
+              pendingOrderEvent,
+            };
+
             dispatch({
               type: actionTypes.REAL_FOREX_PENDING_ORDERS,
-              payload: body.results,
+              payload: payload,
             });
           });
       });
+
+      // eventsHubProxy.client.tradeClosedTakeProfit = function (event) {
+      //   for (i = 0; i < forexHelper.forexOpenPositions.length; i++) {
+      //     if (forexHelper.forexOpenPositions[i].orderID == event.EventKey) {
+      //       var assetName = forexHelper.forexOpenPositions[i].description;
+
+      //       widgets.api.getPositionInfo(event.EventKey, function (response) {
+      //         var notificationValues = {
+      //           title: helper.getTranslation(
+      //             "order_take_profit_reached",
+      //             "Take profit reached"
+      //           ),
+      //           text:
+      //             helper.formatCurrency(
+      //               helper.getCurrencySymbol(),
+      //               parseFloat(
+      //                 response.data[response.data.length - 1].Profit
+      //               ).toFixed(2),
+      //               false
+      //             ) +
+      //             " - " +
+      //             assetName +
+      //             " at " +
+      //             response.data[response.data.length - 1].ExecutionPrice,
+      //           type: "TPSLReached",
+      //           action: "",
+      //           quantity: "",
+      //           option: assetName,
+      //           strike: response.data[response.data.length - 1].ExecutionPrice,
+      //         };
+
+      //         widgets.showForexNotification("positive", notificationValues);
+      //       });
+      //       break;
+      //     }
+      //   }
+      // };
+
+      // eventsHub.client.tradeClosedStopLoss = function (event) {
+      //   for (i = 0; i < forexHelper.forexOpenPositions.length; i++) {
+      //     if (forexHelper.forexOpenPositions[i].orderID == event.EventKey) {
+      //       var assetName = forexHelper.forexOpenPositions[i].description;
+
+      //       widgets.api.getPositionInfo(event.EventKey, function (response) {
+      //         var notificationValues = {
+      //           title: helper.getTranslation(
+      //             "order_stop_loss_reached",
+      //             "Stop loss reached"
+      //           ),
+      //           text:
+      //             helper.formatCurrency(
+      //               helper.getCurrencySymbol(),
+      //               parseFloat(
+      //                 response.data[response.data.length - 1].Profit
+      //               ).toFixed(2),
+      //               false
+      //             ) +
+      //             " - " +
+      //             assetName +
+      //             " at " +
+      //             response.data[response.data.length - 1].ExecutionPrice,
+      //           type: "TPSLReached",
+      //           action: "",
+      //           quantity: "",
+      //           option: assetName,
+      //           strike: response.data[response.data.length - 1].ExecutionPrice,
+      //         };
+
+      //         widgets.showForexNotification("negative", notificationValues);
+      //       });
+      //       break;
+      //     }
+      //   }
+      // };
 
       mergeHubProxy.on("forexTradingSettings", (response) => {
         console.log(response);

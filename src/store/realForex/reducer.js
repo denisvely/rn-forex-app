@@ -6,6 +6,7 @@ import {
   formatRealForexOptions,
   getRealForexTotalNotifications,
   updateFavourites,
+  checkPendingOrdersCache,
 } from "./helpers";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   realForexSwapRates: null,
   realForexOpenPositions: null,
   realForexPendingOrders: null,
+  realForexPendingOrdersCache: null,
   realForexClosedPositions: null,
   realForexOptions: null,
   realForexBalance: null,
@@ -72,9 +74,18 @@ const realForexReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.REAL_FOREX_PENDING_ORDERS: {
+      if (state.realForexPendingOrdersCache) {
+        checkPendingOrdersCache(
+          action.payload.data,
+          state.realForexPendingOrdersCache,
+          action.payload.pendingOrderEvent
+        );
+      }
+
       return {
         ...stateClone,
-        realForexPendingOrders: action.payload,
+        realForexPendingOrders: action.payload.data.results,
+        realForexPendingOrdersCache: action.payload.data.results,
       };
     }
     case actionTypes.REAL_FOREX_CLOSED_POSITIONS: {

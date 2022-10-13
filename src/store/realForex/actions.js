@@ -34,10 +34,16 @@ export const loadInitialRealForexData = async (dispatch) => {
     .fetch()
     .then(({ response }) => {
       const body = response.body.data;
+      const pendingOrderEvent = null;
+
+      const payload = {
+        data: body,
+        pendingOrderEvent,
+      };
 
       dispatch({
         type: actionTypes.REAL_FOREX_PENDING_ORDERS,
-        payload: body.results,
+        payload: payload,
       });
     })
     .catch((err) => {

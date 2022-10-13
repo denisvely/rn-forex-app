@@ -487,3 +487,150 @@ export const remainingTime = (asset) => {
     (remainingMins + "min)")
   );
 };
+
+export const checkPendingOrdersCache = (
+  data,
+  pendingOrdersCache,
+  pendingOrderEvent
+) => {
+  if (typeof data.results == "undefined") {
+    if (data.results.length == 0) {
+      pendingOrdersCache.forEach((item, index) => {
+        var values = {
+          title: pendingOrderEvent
+            ? "Pending Order Filled"
+            : "Pending Order Cancelled",
+          action: item.IsBuy ? true : false,
+          quantity: item.Volume,
+          option: item.Description,
+          strike: item.TradeRate,
+          takeProfit:
+            parseFloat(item.TakeProfitRate) === 0 ? null : item.TakeProfitRate,
+          stopLoss:
+            parseFloat(item.StopLossRate) === 0 ? null : item.StopLossRate,
+          pendingDate: item.ExpirationDate,
+        };
+
+        const orderInfo = `${values.isBuy ? "BUY" : "SELL"} ${
+          values.quantity
+        } ${values.option} at ${values.strike}`;
+        const orderTPandSL = `${values.takeProfit ? "TP" : ""} ${
+          values.takeProfit ? values.takeProfit : ""
+        } ${values.stopLoss ? "SL" : ""} ${
+          values.stopLoss ? values.stopLoss : ""
+        }`;
+        const expirationDate = `${values.pendingDate ? "EXP" : ""} ${
+          values.pendingDate
+            ? `${values.pendingDate.split("T")[0]} ${
+                values.pendingDate.split("T")[1]
+              }`
+            : ""
+        }`;
+
+        Toast.show({
+          type: "successForex",
+          props: {
+            text1: values.title,
+            text2: orderInfo,
+            text3: orderTPandSL.trim() !== "" ? orderTPandSL : "",
+            text4: expirationDate.trim() !== "" ? expirationDate : "",
+          },
+          topOffset: 100,
+          visibilityTime: 5000,
+          autoHide: true,
+        });
+
+        if (item.type !== "editTrade" && !pendingOrderEvent) {
+          if (item.ExpirationDate !== null) {
+            var currDate = new Date();
+
+            if (currDate > new Date(item.ExpirationDate)) {
+              Toast.show({
+                type: "success",
+                text1: "Pending Order Expired",
+                topOffset: 100,
+                visibilityTime: 5000,
+                autoHide: true,
+              });
+            }
+          }
+        }
+      });
+    }
+  } else {
+    pendingOrdersCache.forEach((item, index) => {
+      let orderId = item.OrderID,
+        existed = false;
+
+      data.results.forEach((trade, index) => {
+        if (trade && trade.OrderID == orderId) {
+          existed = true;
+        }
+      });
+
+      if (!existed) {
+        var title = "";
+
+        if (pendingOrdersCache[orderId].ExpirationDate) {
+          var currDate = new Date();
+
+          if (currDate > new Date(pendingOrdersCache[orderId].ExpirationDate)) {
+            var title = "Pending Order Expired";
+          }
+        }
+
+        let values = {
+          title: forexHelper.pendingOrderEvent
+            ? "Pending Order Filled"
+            : title
+            ? title
+            : "Pending Order Cancelled",
+          action: pendingOrdersCache[orderId].IsBuy ? true : false,
+          quantity: pendingOrdersCache[orderId].Volume,
+          option: pendingOrdersCache[orderId].Description,
+          strike: pendingOrdersCache[orderId].TradeRate,
+          takeProfit:
+            parseFloat(pendingOrdersCache[orderId].TakeProfitRate) === 0
+              ? null
+              : pendingOrdersCache[orderId].TakeProfitRate,
+          stopLoss:
+            parseFloat(pendingOrdersCache[orderId].StopLossRate) === 0
+              ? null
+              : pendingOrdersCache[orderId].StopLossRate,
+          pendingDate: pendingOrdersCache[orderId].ExpirationDate,
+        };
+
+        const orderInfo = `${values.isBuy ? "BUY" : "SELL"} ${
+          values.quantity
+        } ${values.option} at ${values.strike}`;
+        const orderTPandSL = `${values.takeProfit ? "TP" : ""} ${
+          values.takeProfit ? values.takeProfit : ""
+        } ${values.stopLoss ? "SL" : ""} ${
+          values.stopLoss ? values.stopLoss : ""
+        }`;
+        const expirationDate = `${values.pendingDate ? "EXP" : ""} ${
+          values.pendingDate
+            ? `${values.pendingDate.split("T")[0]} ${
+                values.pendingDate.split("T")[1]
+              }`
+            : ""
+        }`;
+
+        if (pendingOrdersCache[orderId].type !== "editTrade") {
+          Toast.show({
+            type: "successForex",
+            props: {
+              text1: values.title,
+              text2: orderInfo,
+              text3: orderTPandSL.trim() !== "" ? orderTPandSL : "",
+              text4: expirationDate.trim() !== "" ? expirationDate : "",
+            },
+            topOffset: 100,
+            visibilityTime: 5000,
+            autoHide: true,
+          });
+        }
+      }
+    });
+  }
+};
